@@ -1,0 +1,180 @@
+/* ==========================================================================
+   Runiverso · tema serio y elegante
+   Se carga después de los estilos propios de cada página y los ajusta:
+   tipografía Manrope en títulos y cifras, barra superior, tarjetas finas
+   y una portada con más presencia. No cambia contenido ni funciones.
+   ========================================================================== */
+
+:root {
+  --font-display: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --rv-navy: #0E1630;
+  --rv-navy-2: #16255A;
+  --rv-ink-soft: #A9B3C8;
+  --rv-sky: #7FA6FF;
+  --rv-radius: 16px;
+  --rv-shadow: 0 1px 2px rgba(14, 22, 48, 0.04), 0 8px 24px rgba(14, 22, 48, 0.05);
+  --rv-ring: color-mix(in srgb, var(--accent) 35%, var(--line));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --rv-shadow: none; }
+}
+:root[data-theme="dark"] { --rv-shadow: none; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { padding-top: 0 !important; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+.wrap { gap: 32px !important; max-width: 1040px !important; }
+::selection { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+:focus-visible { outline: 2px solid var(--accent) !important; outline-offset: 3px !important; }
+
+/* ---------- Títulos: fuera mayúsculas forzadas y letra estrecha ---------- */
+h1, h2, h3,
+.next b, .month h2, .maphead h2, .mappanel h3, .calc h2, .marcas h2,
+.promo b, .empty strong, .ss h3, .rv-word, .head h3, .big, .big small {
+  font-family: var(--font-display) !important;
+  text-transform: none !important;
+}
+h1 { font-weight: 800 !important; letter-spacing: -0.035em !important; line-height: 1.08 !important; font-size: clamp(2rem, 5.2vw, 3.1rem) !important; max-width: 20ch; }
+h2, .month h2, .maphead h2, .calc h2, .marcas h2 { font-weight: 800 !important; letter-spacing: -0.03em !important; line-height: 1.15 !important; }
+.maphead h2, .calc h2, .marcas h2 { font-size: clamp(1.45rem, 3.4vw, 1.85rem) !important; }
+h3, .head h3, .mappanel h3, .ss h3 { font-weight: 700 !important; letter-spacing: -0.02em !important; line-height: 1.25 !important; }
+.head h3 { font-size: 1.12rem !important; }
+.next b { font-weight: 700 !important; letter-spacing: -0.02em !important; font-size: 1.15rem !important; }
+.promo b { font-weight: 800 !important; letter-spacing: -0.02em !important; }
+.empty strong { font-weight: 800 !important; letter-spacing: -0.02em !important; font-size: 1.25rem !important; }
+.kicker { letter-spacing: 0.12em !important; font-size: 11.5px !important; }
+
+/* Cifras grandes */
+.big { font-weight: 800 !important; letter-spacing: -0.05em !important; line-height: 0.92 !important; font-size: clamp(3.2rem, 13vw, 6.4rem) !important; }
+.big small { font-weight: 700 !important; letter-spacing: -0.01em !important; font-size: 0.3em !important; margin-left: 0.2em !important; }
+.bib .day, .res b, .mline .tm, .mtable .tm, .mrow .tm { font-family: var(--font-display) !important; font-weight: 800 !important; letter-spacing: -0.04em !important; }
+
+/* Las tres rayas de pista eran lo más "cartel antiguo": fuera */
+.lanes { display: none !important; }
+
+/* ---------- Barra superior ---------- */
+.rv-bar {
+  position: sticky; top: 0; z-index: 50;
+  margin: 0 calc(50% - 50vw);
+  padding: 0 max(16px, calc(50vw - 520px));
+  height: 64px;
+  display: flex; align-items: center; gap: 12px;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+.rv-bar .rv-brand { margin: 0 !important; align-self: center !important; }
+.rv-ico { width: 34px !important; height: 34px !important; border-radius: 10px !important; background: linear-gradient(150deg, #3D7BFF, #2456D6) !important; box-shadow: 0 4px 12px rgba(47, 107, 255, 0.28); }
+.rv-word { font-weight: 800 !important; font-size: 21px !important; letter-spacing: -0.035em !important; }
+.rv-nav { display: flex; gap: 2px; margin-left: auto; }
+.rv-nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14.5px; padding: 8px 11px; border-radius: 9px; white-space: nowrap; }
+.rv-nav a:hover, .rv-nav a[aria-current="page"] { color: var(--fg); background: color-mix(in srgb, var(--fg) 6%, transparent); }
+.rv-soc { display: flex; gap: 4px; padding-left: 10px; margin-left: 4px; border-left: 1px solid var(--line); }
+.rv-soc a { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 9px; color: var(--fg); }
+.rv-soc a:hover { background: color-mix(in srgb, var(--fg) 6%, transparent); }
+.rv-soc svg { width: 18px; height: 18px; }
+@media (max-width: 720px) { .rv-nav a.opt { display: none; } }
+@media (max-width: 520px) {
+  .rv-bar { height: 58px; gap: 6px; }
+  .rv-nav a { padding: 8px 8px; font-size: 14px; }
+  .rv-word { font-size: 19px !important; }
+}
+@media (max-width: 400px) { .rv-nav { display: none; } .rv-soc { margin-left: auto; border-left: 0; } }
+
+/* Migas de pan (fichas y especial) */
+.crumbs { font-size: 13.5px !important; color: var(--muted) !important; margin-top: -8px; }
+.crumbs a { color: var(--muted) !important; text-decoration: none !important; }
+.crumbs a:hover { color: var(--accent) !important; }
+
+/* ---------- Portada con presencia ---------- */
+.hero {
+  background:
+    radial-gradient(90% 120% at 100% 0%, rgba(61, 123, 255, 0.32) 0%, transparent 55%),
+    radial-gradient(60% 80% at 0% 100%, rgba(127, 166, 255, 0.10) 0%, transparent 60%),
+    linear-gradient(165deg, var(--rv-navy-2) 0%, var(--rv-navy) 68%) !important;
+  border-radius: 24px !important;
+  padding: clamp(28px, 5vw, 52px) clamp(20px, 5vw, 52px) !important;
+  gap: 16px !important;
+  box-shadow: 0 30px 60px -20px rgba(14, 22, 48, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  position: relative; overflow: hidden;
+}
+.hero .kicker { color: var(--rv-sky) !important; }
+.hero .lead { font-size: 17px; max-width: 58ch !important; color: var(--rv-ink-soft) !important; }
+.hero .photo { border-radius: 16px !important; margin-top: 6px !important; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); }
+.hero .next { padding: 12px 16px !important; border: 1px solid rgba(255, 255, 255, 0.10); background: rgba(255, 255, 255, 0.04); border-radius: 14px; }
+.photo { border-radius: 18px !important; }
+.photo figcaption { background: rgba(14, 22, 48, 0.55) !important; backdrop-filter: blur(6px); }
+
+/* Promo del especial */
+.promo { border-radius: 16px !important; border-width: 1px !important; transition: transform .15s ease, border-color .15s ease; }
+.promo:hover { transform: translateY(-1px); }
+
+/* Botones de seguir (WhatsApp / TikTok): más sobrios */
+.rv-follow a { border-radius: 12px !important; font-weight: 600 !important; border: 1px solid rgba(255, 255, 255, 0.14); }
+.rv-follow .rv-wa { background: rgba(37, 211, 102, 0.14) !important; color: #7FE3A6 !important; border-color: rgba(37, 211, 102, 0.35); }
+.rv-follow .rv-tt { background: rgba(255, 255, 255, 0.08) !important; color: #F3F5FA !important; }
+.rv-follow a:hover { filter: none !important; background: rgba(255, 255, 255, 0.14) !important; }
+.rv-follow p { color: var(--rv-ink-soft) !important; }
+
+/* ---------- Superficies: tarjetas finas y suaves ---------- */
+.row, .mapbox, .mappanel, .calc, .marcas, .box, .ss, .card, .empty, .marks {
+  border-width: 1px !important;
+  border-radius: var(--rv-radius) !important;
+}
+.row, .calc, .marcas, .mapbox, .mappanel, .box, .ss { box-shadow: var(--rv-shadow); }
+.related li a { border-width: 1px !important; border-radius: 12px !important; box-shadow: var(--rv-shadow); }
+.related li a:hover { border-color: var(--rv-ring) !important; }
+.ss:target { border-color: var(--accent) !important; }
+.row { transition: border-color .15s ease, box-shadow .15s ease; }
+.row:hover { border-color: var(--rv-ring) !important; }
+.calc, .marcas { padding: clamp(18px, 3.5vw, 28px) !important; }
+
+/* Mes */
+.month h2 { border-bottom: 1px solid var(--line) !important; padding-bottom: 8px !important; font-size: 1.25rem !important; }
+
+/* Dorsal de fecha */
+.bib { border-width: 1.5px !important; border-radius: 12px !important; background: var(--surface); }
+.bib.prov { border-color: color-mix(in srgb, var(--muted) 60%, transparent) !important; }
+.bib .day { font-size: 2rem !important; line-height: 1.05 !important; }
+.legend i { border-width: 1.5px !important; border-radius: 4px !important; }
+
+/* Etiquetas */
+.pill { border: 0 !important; background: color-mix(in srgb, var(--accent) 10%, transparent) !important; color: var(--accent) !important; padding: 3px 9px !important; }
+
+/* Buscador, desplegables y filtros */
+.search, .select { border-width: 1px !important; border-radius: 12px !important; padding: 13px 15px !important; box-shadow: var(--rv-shadow); }
+.search:focus, .select:focus { border-color: var(--accent) !important; outline: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent) !important; }
+.tog, .seg button, .presets button { border-width: 1px !important; border-radius: 999px !important; }
+.seg button[aria-pressed="true"], .tog[aria-pressed="true"] { box-shadow: 0 4px 12px rgba(14, 22, 48, 0.18); }
+
+/* Botones */
+.btn { border-width: 1px !important; border-radius: 12px !important; padding: 10px 16px !important; background: var(--accent) !important; border-color: var(--accent) !important; color: var(--on-accent) !important; transition: filter .15s ease; }
+.btn:hover { filter: brightness(1.06); }
+.btn.alt { background: transparent !important; color: var(--accent) !important; border-color: color-mix(in srgb, var(--accent) 40%, var(--line)) !important; }
+.btn.alt:hover { background: color-mix(in srgb, var(--accent) 7%, transparent) !important; filter: none; }
+.link { color: var(--accent) !important; text-decoration: none !important; font-weight: 600; }
+.link:hover { text-decoration: underline !important; }
+
+/* Tablas */
+th { letter-spacing: 0.1em !important; font-size: 11px !important; }
+th, td { border-bottom-color: color-mix(in srgb, var(--line) 80%, transparent) !important; }
+
+/* Mapa */
+.mapbox { background: var(--surface) !important; }
+
+/* Pie y notas */
+.fine { color: var(--muted) !important; }
+.rv-foot { margin-top: 12px; padding-top: 28px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; color: var(--muted); font-size: 14px; }
+.rv-foot .rv-brand { margin: 0 !important; }
+.rv-foot .rv-ico { width: 28px !important; height: 28px !important; border-radius: 8px !important; box-shadow: none; }
+.rv-foot .rv-ico svg { width: 20px; height: 20px; }
+.rv-foot .rv-word { font-size: 17px !important; }
+.rv-foot nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.rv-foot a { color: var(--muted); text-decoration: none; }
+.rv-foot a:hover { color: var(--accent); }
+
+/* Pie de las fichas y del especial */
+footer { max-width: none !important; border-top: 1px solid var(--line); padding-top: 24px; margin-top: 8px; font-size: 13.5px; line-height: 1.6; }
+footer a, .fine a, .src a { color: var(--accent); text-decoration: none; }
+footer a:hover, .fine a:hover, .src a:hover { text-decoration: underline; }
