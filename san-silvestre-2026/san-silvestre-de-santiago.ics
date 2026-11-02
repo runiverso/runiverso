@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-de-santiago-2026-12-31@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:San Silvestre de Santiago
+LOCATION:Santiago de Compostela\, Galicia
+DESCRIPTION:5 km · Santiago de Compostela. Fecha provisional
+ : confirma en la web oficial.\nhttps://runiverso.com/san-si
+ lvestre-2026/#san-silvestre-de-santiago
+END:VEVENT
+END:VCALENDAR

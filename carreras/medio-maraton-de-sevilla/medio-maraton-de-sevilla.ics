@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:medio-maraton-de-sevilla-2026-12-13@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Medio Maratón de Sevilla
+LOCATION:Sevilla\, Andalucía
+DESCRIPTION:21\,1 km · Sevilla\nhttps://runiverso.com/carrer
+ as/medio-maraton-de-sevilla/
+END:VEVENT
+END:VCALENDAR

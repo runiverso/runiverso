@@ -1,67 +1,290 @@
 <!doctype html>
 <html lang="es">
 <head>
+<script>if(/\.pages\.dev$/.test(location.hostname))location.replace("https://runiverso.com"+location.pathname+location.search+location.hash);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Runiverso · Carreras de running en España</title>
-<meta name="description" content="Calendario de carreras de running en España: medias maratones, maratones, 10K y trail, con fechas, mapa, marcas de la última edición y calculadora de ritmo.">
-<meta name="theme-color" content="#0E1630">
-<meta property="og:title" content="Runiverso · Carreras de running en España">
-<meta property="og:description" content="Medias, maratones, 10K y trail en España: fechas, mapa, marcas y calculadora de ritmo.">
+<title>Carreras de running en España: medias, maratones, 10K y trail · Runiverso</title>
+<meta name="description" content="Calendario de medias maratones, maratones, 10K y trails en España con fechas, marcas de la última edición, botón para añadir a tu calendario y calculadora de ritmo.">
+<link rel="canonical" href="https://runiverso.com/">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Runiverso">
+<meta property="og:title" content="Carreras de running en España">
+<meta property="og:description" content="Medias maratones, maratones, 10K y trails con fecha, marcas y calculadora de ritmo. Marca tus favoritas y añádelas a tu calendario.">
 <meta property="og:url" content="https://runiverso.com/">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:image" content="https://images.unsplash.com/photo-1613936360976-8f35cf0e5461?fm=jpg&amp;fit=crop&amp;w=1200&amp;h=630&amp;q=75">
+<meta property="og:image:alt" content="Piernas de un grupo de corredores con dorsal durante una carrera sobre asfalto">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F4F6FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0E1A" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72"%3E%3Crect width="72" height="72" rx="16" fill="%233D7BFF"/%3E%3Cg transform="translate%286 6%29 scale%280.833%29"%3E%3Cg fill="none" stroke-linecap="round" stroke-linejoin="round"%3E%3Cpath d="M5 30h11M3 39h9M7 48h7" stroke="%23FF7A2F" stroke-width="5"/%3E%3Cpath d="M40 24L31 42M39 27l10 4 5-7M39 27l-10 1-6 6M31 42l12 6-2 14M31 42l-8 9-11-1" stroke="%23F3F5FA" stroke-width="7"/%3E%3C/g%3E%3Ccircle cx="46" cy="13" r="6.5" fill="%23F3F5FA"/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+:root { color-scheme: light; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Layout: cabecera con la distancia exacta (21,0975 km) como ancla tipográfica y tres líneas de calle de pista; después filtros, lista por meses con la fecha como dorsal, y una calculadora de ritmo. */
+:root {
+  --bg: #f1f3ef;
+  --surface: #ffffff;
+  --fg: #10150f;
+  --muted: #56605a;
+  --line: #d3dad0;
+  --accent: #c63c12;
+  --on-accent: #ffffff;
+  --ok: #1b7544;
+  --warn: #8f5a00;
+  --land: #dde3d8;
+  --land2: #e8ebe5;
+  --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e120e; --surface: #151a15; --fg: #eef1ec; --muted: #a0aa9f; --line: #2a332a;
+    --accent: #ff7a50; --on-accent: #1a0e08; --ok: #50cc86; --warn: #e8b04a; --land: #283228; --land2: #1b211b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e120e; --surface: #151a15; --fg: #eef1ec; --muted: #a0aa9f; --line: #2a332a;
+  --accent: #ff7a50; --on-accent: #1a0e08; --ok: #50cc86; --warn: #e8b04a; --land: #283228; --land2: #1b211b;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+
+/* Cabecera */
+.hero { display: flex; flex-direction: column; gap: 14px; }
+.kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.big { font-family: var(--font-display); font-weight: 900; font-size: clamp(3.4rem, 17vw, 8rem); line-height: 0.85; letter-spacing: -0.01em; margin: 0; color: var(--accent); font-variant-numeric: tabular-nums; }
+.big small { font-size: 0.34em; font-weight: 800; letter-spacing: 0.02em; color: var(--fg); margin-left: 0.18em; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.9rem, 6vw, 2.9rem); line-height: 1; text-transform: uppercase; letter-spacing: 0.01em; margin: 0; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); max-width: 60ch; }
+.lanes { height: 16px; background:
+  linear-gradient(var(--accent) 0 0) 0 0 / 100% 2px no-repeat,
+  linear-gradient(var(--accent) 0 0) 0 7px / 100% 2px no-repeat,
+  linear-gradient(var(--accent) 0 0) 0 14px / 100% 2px no-repeat; opacity: 0.9; }
+.next { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding-top: 4px; }
+.next b { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.01em; }
+.next span { color: var(--muted); }
+
+/* Filtros */
+.tools { display: grid; gap: 12px; }
+.search, .select { width: 100%; font-size: 16px; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--fg); }
+.search::placeholder { color: var(--muted); }
+.trow { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; align-items: center; }
+.toggles { display: flex; flex-wrap: wrap; gap: 8px; }
+.tog { padding: 9px 14px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--surface); font-weight: 600; font-size: 14px; display: inline-flex; gap: 7px; align-items: center; }
+.tog[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.tog svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.tog[aria-pressed="true"] svg.star { fill: currentColor; }
+.status { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 14px; color: var(--muted); }
+.legend { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { display: inline-block; width: 18px; height: 12px; border: 2px solid var(--fg); border-radius: 3px; }
+.legend i.dash { border-style: dashed; }
+.link { border: 0; background: none; padding: 0; color: var(--fg); text-decoration: underline; text-underline-offset: 3px; font-size: 14px; }
+
+/* Lista por meses */
+.list { display: flex; flex-direction: column; gap: 26px; }
+.month h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 10px; display: flex; align-items: baseline; gap: 10px; border-bottom: 2px solid var(--fg); padding-bottom: 4px; }
+.month h2 span { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--muted); letter-spacing: 0.04em; }
+.rows { display: flex; flex-direction: column; gap: 10px; }
+.row { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 12px 12px 12px; }
+.bib { align-self: start; width: 64px; text-align: center; border: 2px solid var(--fg); border-radius: 6px; padding: 4px 0 6px; display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.bib.prov { border-style: dashed; }
+.bib .dow { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.bib .day { font-family: var(--font-display); font-weight: 900; font-size: 2.3rem; line-height: 0.95; font-variant-numeric: tabular-nums; }
+.bib .mon { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+.head { text-align: left; border: 0; background: none; padding: 0; display: flex; flex-direction: column; gap: 3px; min-width: 0; padding-right: 40px; }
+.head h3 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.45rem; line-height: 1.05; letter-spacing: 0.005em; text-wrap: balance; }
+.place { font-size: 14.5px; color: var(--muted); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 13px; margin-top: 4px; }
+.pill { font-family: var(--font-mono); font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1.5px solid var(--line); }
+.st { font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.st::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.st.ok { color: var(--ok); } .st.prov { color: var(--warn); }
+.cd { font-family: var(--font-mono); color: var(--muted); font-size: 12.5px; }
+.chev { font-size: 12px; color: var(--muted); }
+.fav { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: transparent; display: grid; place-items: center; color: var(--muted); }
+.fav svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.fav[aria-pressed="true"] { color: var(--accent); }
+.fav[aria-pressed="true"] svg { fill: currentColor; }
+.fav:hover { background: var(--bg); }
+.detail { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
+.detail p { margin: 0; max-width: 64ch; }
+.detail .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { padding: 9px 14px; border-radius: 8px; border: 1.5px solid var(--fg); background: var(--fg); color: var(--bg); font-weight: 600; font-size: 14px; text-decoration: none; display: inline-block; }
+.btn.alt { background: transparent; color: var(--fg); }
+.empty { border: 1.5px dashed var(--line); border-radius: 10px; padding: 30px 18px; text-align: center; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.empty strong { font-family: var(--font-display); font-size: 1.4rem; color: var(--fg); text-transform: uppercase; }
+
+/* Calculadora */
+
+
+/* Foto de portada */
+.photo { position: relative; margin: 0; border-radius: 12px; overflow: hidden; aspect-ratio: 21 / 9; max-width: 100%; background: var(--land); }
+.photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.photo figcaption { position: absolute; right: 8px; bottom: 8px; font-size: 11.5px; line-height: 1.3; padding: 3px 9px; border-radius: 999px; background: rgba(0, 0, 0, 0.55); color: #ffffff; }
+.photo figcaption a { color: #ffffff; }
+@media (max-width: 600px) { .photo { aspect-ratio: 16 / 10; } }
+
+/* Mapa */
+.mapwrap { display: grid; gap: 12px; }
+.maphead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.maphead h2 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; text-transform: uppercase; line-height: 1; }
+.maphead .sub { color: var(--muted); font-size: 14px; }
+.mapgrid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 760px) { .mapgrid { grid-template-columns: minmax(0, 1fr); } }
+.mapbox { background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px; padding: 8px; }
+#map { display: block; width: 100%; height: auto; }
+#map .nb { fill: var(--land2); }
+#map .es { fill: var(--land); stroke: var(--surface); stroke-width: 1; }
+#map .frame { fill: none; stroke: var(--line); stroke-dasharray: 4 4; }
+#map .flabel { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
+#map .dot { cursor: pointer; }
+#map .dot circle { fill: var(--accent); fill-opacity: 0.85; stroke: var(--surface); stroke-width: 1.5; }
+#map .dot text { font-family: var(--font-mono); font-size: 10px; font-weight: 500; fill: var(--on-accent); pointer-events: none; }
+#map .dot:hover circle { fill-opacity: 1; }
+#map .dot.sel circle { fill: var(--fg); fill-opacity: 1; }
+#map .dot.sel text { fill: var(--bg); }
+#map .dot:focus { outline: none; }
+#map .dot:focus-visible circle { stroke: var(--fg); stroke-width: 3; }
+.mappanel { background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.mappanel h3 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; line-height: 1.05; text-transform: uppercase; }
+.mappanel p { margin: 0; color: var(--muted); font-size: 15px; }
+.mappanel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.mappanel li button { width: 100%; text-align: left; border: 1.5px solid var(--line); background: var(--bg); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; font: inherit; font-size: 15px; color: inherit; cursor: pointer; }
+.mappanel li button:hover { border-color: var(--fg); }
+.mappanel .when { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+.calc { background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 18px; }
+.calc h2 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; text-transform: uppercase; line-height: 1; }
+.calc .sub { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.cgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label, .field .lab { font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.time { display: flex; gap: 8px; align-items: center; }
+.time input { width: 76px; font-family: var(--font-mono); font-size: 22px; padding: 10px; text-align: center; border: 1.5px solid var(--line); border-radius: 8px; background: var(--bg); }
+.time span { color: var(--muted); font-size: 14px; }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.presets button { padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); font-family: var(--font-mono); font-size: 13px; }
+.presets button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.res { display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: baseline; }
+.res div { display: flex; flex-direction: column; }
+.res b { font-family: var(--font-display); font-weight: 900; font-size: 2.6rem; line-height: 0.95; color: var(--accent); font-variant-numeric: tabular-nums; }
+.res small { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+.wk { padding: 10px 12px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); font-size: 15px; }
+.splits { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 700; }
+td.m { font-family: var(--font-mono); }
+
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg button { padding: 9px 14px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--surface); font-weight: 600; font-size: 14px; }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.seg .n { font-family: var(--font-mono); font-size: 12px; font-weight: 400; opacity: 0.75; margin-left: 6px; }
+.pill.mk { border-color: var(--accent); color: var(--accent); }
+.marks { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.marks > b { font-size: 12px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.mline { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; }
+.mline span:first-child { font-size: 13px; color: var(--muted); }
+.mline .tm { font-family: var(--font-display); font-weight: 900; font-size: 1.6rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.marks p { font-size: 14px; color: var(--muted); }
+.marcas { background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 16px; }
+.marcas h2 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; text-transform: uppercase; line-height: 1; }
+.marcas .sub { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.mhead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 260px); gap: 16px; align-items: end; }
+@media (max-width: 640px) { .mhead { grid-template-columns: minmax(0, 1fr); } }
+.mtable { min-width: 560px; }
+.mtable td { vertical-align: top; }
+.mtable .cn { font-weight: 600; }
+.mtable .ce { display: block; font-size: 13px; color: var(--muted); font-weight: 400; }
+.mtable .tm { font-family: var(--font-display); font-weight: 900; font-size: 1.5rem; line-height: 1; color: var(--accent); display: block; font-variant-numeric: tabular-nums; }
+.mtable .who { display: block; font-size: 14px; }
+.mtable .pc { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.fine { font-size: 13.5px; color: var(--muted); margin: 0; max-width: 80ch; }
+.src { font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.src a { color: var(--fg); text-underline-offset: 3px; }
+
+@media (max-width: 420px) {
+  .row { grid-template-columns: 56px minmax(0, 1fr); gap: 12px; }
+  .bib { width: 56px; }
+  .bib .day { font-size: 2rem; }
+}
+@media (prefers-reduced-motion: no-preference) { .row { transition: border-color 0.15s; } .row:hover { border-color: var(--fg); } }
+.promo { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; padding: 16px 18px; border-radius: 12px; background: var(--fg); color: var(--bg); text-decoration: none; }
+.promo b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; line-height: 1; text-transform: uppercase; }
+.promo .pt { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.promo .pt span { font-size: 15px; opacity: 0.85; }
+.promo .go { font-weight: 700; border: 1.5px solid var(--bg); border-radius: 8px; padding: 8px 12px; white-space: nowrap; }
+.promo:hover .go { background: var(--bg); color: var(--fg); }
+</style>
+<style>.rv-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg);align-self:flex-start;margin-bottom:4px}.rv-ico{width:36px;height:36px;flex:none;border-radius:10px;background:#3D7BFF;display:flex;align-items:center;justify-content:center}.rv-word{font-family:var(--font-display,"Big Shoulders Display",Impact,sans-serif);font-weight:800;font-size:28px;line-height:1;letter-spacing:.04em;text-transform:uppercase}.rv-brand:hover .rv-word{color:var(--accent)}</style><style>:root{--bg:#F4F6FA;--surface:#FFFFFF;--fg:#0E1630;--muted:#5A6478;--line:#DCE1EA;--accent:#2F6BFF;--on-accent:#FFFFFF;--ok:#14804A;--warn:#9A6200;--land:#E2E7F0;--land2:#EEF1F6}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0A0E1A;--surface:#141A2B;--fg:#F3F5FA;--muted:#95A0B8;--line:#29324A;--accent:#6E9BFF;--on-accent:#0A0E1A;--ok:#3DD68C;--warn:#F2C14E;--land:#1C2438;--land2:#141A2B}}:root[data-theme="dark"]{--bg:#0A0E1A;--surface:#141A2B;--fg:#F3F5FA;--muted:#95A0B8;--line:#29324A;--accent:#6E9BFF;--on-accent:#0A0E1A;--ok:#3DD68C;--warn:#F2C14E;--land:#1C2438;--land2:#141A2B}.hero{--bg:#0E1630;--surface:#18213F;--fg:#F3F5FA;--muted:#A9B3C8;--line:#2B3656;--accent:#7FA6FF;--on-accent:#0E1630;background:linear-gradient(160deg,#16255A 0%,#0E1630 65%);color:var(--fg);border-radius:20px;padding:28px 26px;box-shadow:0 18px 44px rgba(14,22,48,.16)}@media (prefers-color-scheme: dark){.hero{background:linear-gradient(160deg,#1A2650 0%,#141A2B 70%);border:1px solid #29324A;box-shadow:none}}@media (max-width:560px){.hero{padding:22px 16px;border-radius:16px}}.hero .photo img{border-radius:12px}.ssmap .nb{fill:#EEF1F6}.ssmap .es{fill:#E2E7F0}@media (prefers-color-scheme: dark){.ssmap .nb{fill:#141A2B}.ssmap .es{fill:#1C2438}}</style><style>.rv-follow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:8px 0}.rv-follow p{margin:0;flex:1 1 220px;font-size:15px;color:var(--muted)}.rv-follow p b{color:var(--fg)}.rv-follow a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none}.rv-wa{background:#25D366;color:#0A2414}.rv-tt{background:var(--fg);color:var(--bg)}.rv-follow a:hover{filter:brightness(1.08)}</style>
 </head>
 <body>
-
-<header class="bar">
-  <div class="bar-in">
-    <a class="logo" href="#top" aria-label="Runiverso, inicio">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" class="ring"/><path d="M9 21c3-7 7-10 14-11" class="arc"/><circle cx="23" cy="10" r="2.6" class="dot"/></svg>
-      <span>runiverso</span>
-    </a>
-    <nav aria-label="Secciones">
-      <a href="#calendario">Calendario</a>
-      <a href="#mapa">Mapa</a>
-      <a href="#marcas">Marcas</a>
-      <a href="#ritmo">Ritmo</a>
-    </nav>
-    <div class="bar-social">
-      <a class="soc" href="https://www.tiktok.com/@runiverso_" target="_blank" rel="noopener" aria-label="Runiverso en TikTok"><i class="ico ico-tt" aria-hidden="true"></i></a>
-      <a class="soc" data-wa href="#comunidad" aria-label="Canal de WhatsApp de Runiverso"><i class="ico ico-wa" aria-hidden="true"></i></a>
-    </div>
-  </div>
-</header>
-
-<section class="hero" id="top">
-  <div class="hero-in">
-    <span class="kicker">Calendario de running · España</span>
-    <p class="nums" aria-hidden="true">10·21·42<small>km</small></p>
-    <h1>Todas las carreras de running de España, en un solo sitio.</h1>
-    <p class="lead" id="lead"></p>
-    <div class="next" id="next"></div>
-  </div>
-</section>
-
 <div class="wrap">
+  <a class="rv-brand" href="./" aria-label="Runiverso, inicio"><span class="rv-ico"><svg width="26" height="26" viewBox="0 0 72 72" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 30h11M3 39h9M7 48h7" stroke="#FF7A2F" stroke-width="5"/><path d="M40 24L31 42M39 27l10 4 5-7M39 27l-10 1-6 6M31 42l12 6-2 14M31 42l-8 9-11-1" stroke="#F3F5FA" stroke-width="7"/></g><circle cx="46" cy="13" r="6.5" fill="#F3F5FA"/></svg></span><span class="rv-word">Runiverso</span></a>
+  <noscript><p class="fine">Esta página necesita JavaScript para mostrar el calendario de carreras. Actívalo en tu navegador para verlo.</p></noscript>
+  <header class="hero">
+    <span class="kicker">Calendario de running · España</span>
+    <p class="big" aria-hidden="true">10·21·42<small>km</small></p>
+    <h1>Carreras de running en España</h1>
+    <p class="lead" id="lead"></p>
+    <figure class="photo"><img src="https://images.unsplash.com/photo-1613936360976-8f35cf0e5461?auto=format&fit=crop&q=70&w=1600&h=686" srcset="https://images.unsplash.com/photo-1613936360976-8f35cf0e5461?auto=format&fit=crop&q=70&w=800&h=343 800w, https://images.unsplash.com/photo-1613936360976-8f35cf0e5461?auto=format&fit=crop&q=70&w=1600&h=686 1600w" sizes="(max-width: 1000px) 100vw, 980px" alt="Piernas de un grupo de corredores con dorsal durante una carrera sobre asfalto" width="1600" height="686" fetchpriority="high" decoding="async" onerror="this.closest('figure').hidden=true"><figcaption>Foto: <a href="https://unsplash.com/photos/QDv-uBc-poY?utm_source=carreras_de_espana&utm_medium=referral" target="_blank" rel="noopener">Miguel A Amutio</a> / <a href="https://unsplash.com/?utm_source=carreras_de_espana&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a></figcaption></figure>
+    <a class="promo" href="san-silvestre-2026/"><span class="pt"><b>Especial San Silvestre 2026</b><span>32 carreras de Nochevieja en toda España, con mapa, horarios y web oficial</span></span><span class="go">Ver especial →</span></a>
+    <section class="rv-follow" aria-label="Síguenos"><p><b>Cada semana, las carreras que se corren y cuándo suben los dorsales.</b> Síguenos para no perderte nada.</p><a class="rv-wa" href="https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>Canal de WhatsApp</a><a class="rv-tt" href="https://www.tiktok.com/@runiverso_" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M16.6 2h-3.3v13.2a2.9 2.9 0 1 1-2-2.8V9a6.3 6.3 0 1 0 5.3 6.2V8.6a7.9 7.9 0 0 0 4.6 1.5V6.8A4.6 4.6 0 0 1 16.6 2z"/></svg>TikTok</a></section>
+    <div class="lanes" aria-hidden="true"></div>
+    <div class="next" id="next"></div>
+  </header>
 
-  <section class="tools" id="calendario" aria-label="Filtros">
+  <section class="tools" aria-label="Buscador y filtros">
+    <input id="q" class="search" type="search" placeholder="Busca por carrera, ciudad o tipo: «Sevilla», «trail», «10K»…" autocomplete="off" aria-label="Buscar carrera, ciudad o tipo">
     <div class="seg" id="kseg" role="group" aria-label="Tipo de prueba"></div>
     <div class="trow">
-      <label class="sr" for="q">Buscar carrera o ciudad</label>
-      <input id="q" class="input" type="search" placeholder="Buscar carrera, ciudad o comunidad" autocomplete="off">
-      <label class="sr" for="reg">Comunidad autónoma</label>
-      <select id="reg" class="input"><option value="">Toda España</option></select>
+      <select id="reg" class="select" aria-label="Comunidad autónoma"></select>
+      <div class="toggles">
+        <button type="button" class="tog" id="tok" aria-pressed="false">Solo fecha confirmada</button>
+        <button type="button" class="tog" id="tfav" aria-pressed="false"></button>
+      </div>
     </div>
     <div class="status">
-      <button type="button" class="tog" id="tok" aria-pressed="false">Solo fecha confirmada</button>
-      <button type="button" class="tog" id="tfav" aria-pressed="false"></button>
       <span id="count" aria-live="polite"></span>
+      <span class="legend"><i></i> Fecha confirmada</span>
+      <span class="legend"><i class="dash"></i> Fecha provisional</span>
       <button type="button" class="link" id="reset" hidden>Quitar filtros</button>
+      <button type="button" class="link" id="favics" hidden>Descargar mis favoritas al calendario (.ics)</button>
+    </div>
+  </section>
+
+  <section class="mapwrap" aria-labelledby="maptitle">
+    <div class="maphead"><h2 id="maptitle">Mapa de carreras</h2><span class="sub" id="mapcount"></span></div>
+    <div class="mapgrid">
+      <div class="mapbox"><svg id="map" viewBox="0 0 600 560" aria-labelledby="maptitle"></svg></div>
+      <div class="mappanel" id="mappanel" aria-live="polite"></div>
     </div>
   </section>
 
@@ -69,104 +292,657 @@
     <div class="list" id="list"></div>
     <div class="empty" id="empty" hidden>
       <strong>Ninguna carrera coincide</strong>
-      <span>Prueba con otra búsqueda o quita algún filtro.</span>
+      <span id="emptytxt"></span>
       <button type="button" class="btn" id="reset2">Quitar filtros</button>
     </div>
   </main>
 
-  <section class="card" id="mapa" aria-labelledby="maptitle">
-    <div class="shead">
-      <h2 id="maptitle">Mapa de carreras</h2>
-      <p class="sub" id="mapcount"></p>
-    </div>
-    <div class="mapgrid">
-      <div class="mapbox"><svg id="map" viewBox="0 0 600 560" role="group" aria-labelledby="maptitle"></svg></div>
-      <div class="mappanel" id="mappanel" aria-live="polite"></div>
-    </div>
-  </section>
-
-  <section class="card" id="marcas" aria-labelledby="mtitle">
+  <section class="marcas" id="marcas" aria-labelledby="mtitle">
     <div class="mhead">
-      <div class="shead">
+      <div>
         <h2 id="mtitle">Marcas de la última edición</h2>
         <p class="sub">Ganadores y tiempos de la edición más reciente de cada prueba, con su ritmo por kilómetro.</p>
       </div>
-      <div class="mctl">
+      <div class="field">
         <label for="mtype">Distancia</label>
-        <select id="mtype" class="input"><option value="21K">Media maratón</option><option value="42K">Maratón</option></select>
+        <select id="mtype" class="select"><option value="21K">Media maratón</option><option value="42K">Maratón</option></select>
         <label for="msort">Ordenar por</label>
-        <select id="msort" class="input">
+        <select id="msort" class="select">
           <option value="date">Edición más reciente</option>
           <option value="h">Marca masculina más rápida</option>
           <option value="f">Marca femenina más rápida</option>
         </select>
       </div>
     </div>
-    <div class="scroll"><table class="mtable">
+    <div class="splits"><table class="mtable">
       <thead><tr><th>Carrera</th><th>Hombres</th><th>Mujeres</th></tr></thead>
       <tbody id="mbody"></tbody>
     </table></div>
   </section>
 
-  <section class="card" id="ritmo" aria-labelledby="ctitle">
-    <div class="shead">
-      <h2 id="ctitle">Calculadora de ritmo</h2>
-      <p class="sub">Elige distancia y tiempo objetivo: te decimos a qué ritmo correr y qué parciales tocan.</p>
+  <section class="calc" id="calc" aria-labelledby="ctitle">
+    <div>
+      <h2 id="ctitle">Tu ritmo para la media</h2>
+      <p class="sub">Elige un tiempo objetivo y mira a qué ritmo hay que correr y qué parciales tocan.</p>
     </div>
     <div class="cgrid">
       <div class="field">
-        <label for="cdist">Distancia</label>
-        <select id="cdist" class="input">
-          <option value="10">10 km</option>
-          <option value="21.0975" selected>Media maratón (21,0975 km)</option>
-          <option value="42.195">Maratón (42,195 km)</option>
-        </select>
-        <div class="presets" id="presets"></div>
+        <label for="craceSel">Carrera</label>
+        <select id="craceSel" class="select"></select>
+        <div class="wk" id="wk"></div>
       </div>
       <div class="field">
+        <label for="cdist">Distancia</label>
+        <select id="cdist" class="select"><option value="10K">10 km</option><option value="21K" selected>Media maratón (21,0975 km)</option><option value="42K">Maratón (42,195 km)</option></select>
         <span class="lab" id="tlab">Tiempo objetivo</span>
         <div class="time" role="group" aria-labelledby="tlab">
-          <input id="hh" type="number" inputmode="numeric" min="0" max="7" value="1" aria-label="Horas"><span>h</span>
-          <input id="mm" type="number" inputmode="numeric" min="0" max="59" value="55" aria-label="Minutos"><span>min</span>
-          <input id="ss" type="number" inputmode="numeric" min="0" max="59" value="0" aria-label="Segundos"><span>s</span>
+          <input id="hh" type="number" inputmode="numeric" min="0" max="7" value="1" aria-label="Horas">
+          <span>h</span>
+          <input id="mm" type="number" inputmode="numeric" min="0" max="59" value="55" aria-label="Minutos">
+          <span>min</span>
         </div>
-        <div class="res" aria-live="polite">
-          <div><b id="pace">–</b><small>min/km</small></div>
-          <div><b id="speed">–</b><small>km/h</small></div>
-        </div>
+        <div class="presets" id="presets"></div>
       </div>
     </div>
-    <div class="scroll">
-      <table class="splits">
-        <thead><tr><th>Punto</th><th>Tiempo a ritmo constante</th></tr></thead>
+    <div class="res" aria-live="polite">
+      <div><b id="pace">–</b><small>min/km</small></div>
+      <div><b id="speed">–</b><small>km/h</small></div>
+    </div>
+    <div class="splits">
+      <table>
+        <thead><tr><th>Punto</th><th>Tiempo en ritmo constante</th></tr></thead>
         <tbody id="splits"></tbody>
       </table>
     </div>
   </section>
 
-  <footer class="foot">
-    <div class="foot-top">
-      <a class="logo" href="#top" aria-label="Runiverso, volver arriba">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" class="ring"/><path d="M9 21c3-7 7-10 14-11" class="arc"/><circle cx="23" cy="10" r="2.6" class="dot"/></svg>
-        <span>runiverso</span>
-      </a>
-      <div class="social" id="comunidad">
-        <a class="chip" href="https://www.tiktok.com/@runiverso_" rel="noopener" target="_blank"><i class="ico ico-tt" aria-hidden="true"></i>TikTok · @runiverso_</a>
-        <a class="chip" data-wa href="#comunidad"><i class="ico ico-wa" aria-hidden="true"></i>Canal de WhatsApp · Runiverso</a>
-      </div>
-    </div>
-    <p class="fine">Las fechas provisionales vienen de calendarios de terceros y pueden cambiar. Antes de inscribirte, comprueba la fecha, el precio y los plazos en la web oficial de cada prueba: las cuotas suben por tramos y algunas se agotan en horas. La lista no es exhaustiva y se amplía poco a poco.</p>
-    <details class="src">
-      <summary>Fuentes consultadas</summary>
-      <div class="srclist" id="srclist"></div>
-    </details>
-    <p class="copy">© <span id="yr"></span> Runiverso · runiverso.com</p>
-  </footer>
-
+  <section class="rv-follow" aria-label="Síguenos"><p><b>Cada semana, las carreras que se corren y cuándo suben los dorsales.</b> Síguenos para no perderte nada.</p><a class="rv-wa" href="https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>Canal de WhatsApp</a><a class="rv-tt" href="https://www.tiktok.com/@runiverso_" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M16.6 2h-3.3v13.2a2.9 2.9 0 1 1-2-2.8V9a6.3 6.3 0 1 0 5.3 6.2V8.6a7.9 7.9 0 0 0 4.6 1.5V6.8A4.6 4.6 0 0 1 16.6 2z"/></svg>TikTok</a></section>
+  <p class="fine"><b>Última revisión de los datos: 29 de octubre de 2026.</b> Las fechas provisionales vienen de calendarios de terceros y pueden cambiar. Antes de inscribirte, comprueba la fecha, el precio y los plazos en la web oficial de cada prueba: las cuotas suben por tramos y algunas se agotan en horas. Lista no exhaustiva: hay más medias, sobre todo populares y de ámbito local. Proyecto independiente, sin relación con las organizaciones de las carreras. <span id="report"></span></p>
+  <div class="src">
+    <span>Fuentes:</span>
+    <a href="https://www.hdsports.org/running/medio-maraton-espana">HDsports</a>
+    <a href="https://www.timeout.es/barcelona/es/noticias/inscripcions-obertes-per-la-hyundai-mitja-marato-barcelona-2027-dates-preus-i-recorregut-051426">Time Out Barcelona</a>
+    <a href="https://www.diariodeleon.es/deportes/260505/2083956/lleva-cabo-apertura-plazo-inscripcion-xvii-media-maraton-leon-correr-4-ano-2027.html">Diario de León</a>
+    <a href="https://www.finishers.com/es/articles/cual-es-la-nueva-fecha-del-medio-maraton-de-sevilla-2026">Finishers (Sevilla)</a>
+    <a href="https://www.finishers.com/es/evento/medio-maraton-de-malaga">Finishers (Málaga)</a>
+    <a href="https://www.democrata.es/actualidad/media-maraton-boom-running-madrid-cordoba-vitoria-granada/">Demócrata</a>
+    <a href="https://vivirediciones.es/?p=1041820">Vivir Ediciones</a>
+    <a href="https://haid.app/en/events/movistar-madrid-medio-maraton-2027-mq8s94w4">Haid (Madrid)</a>
+    <a href="https://www.correrjuntos.com/carreras">Correr Juntos</a>
+    <a href="https://www.finishers.com/es/evento/media-maraton-de-cordoba">Finishers (Córdoba)</a>
+    <a href="https://www.watchathletics.com/article/13613/dominant-performances-and-records-at-the-2026-barcelona-half-marathon">Watch Athletics (Barcelona)</a>
+    <a href="https://alicanteplaza.es/alicanteplaza/elcheplaza/unos-8000-corredores-se-citan-en-la-34-mitja-marato-internacional-villa-de-santa-pola">Alicante Plaza (Santa Pola)</a>
+    <a href="https://carrerasdemontana.com/2026/10/25/medio-maraton-valencia-2026-mayayo/">Carreras de Montaña (Valencia)</a>
+    <a href="https://www.finishers.com/es/evento/medio-maraton-de-madrid/p/resultados-movistar-medio-maraton-de-madrid">Finishers (Madrid)</a>
+    <a href="https://sportsafrica.net/?p=18145">Sports Africa (Málaga)</a>
+    <a href="https://www.elespanol.com/malaga/deporte/20260314/media-maraton-malaga-horario-recorrido-principales-novedades/1003744169516_0.html">El Español (Málaga)</a>
+    <a href="https://worldathletics.org/competition/calendar-results/results/7220610">World Athletics (Sevilla)</a>
+    <a href="https://carrerasdemontana.com/2025/01/25/medio-maraton-sevilla-2025-26ene-ultima-hora-17-000-inscritos/">Carreras de Montaña (Sevilla)</a>
+    <a href="https://www.gasteizhoy.com/foto-video-media-maraton-2025-vitoria/">Gasteiz Hoy</a>
+    <a href="https://www.diariodeleon.es/deportes/260319/2079181/horarios-recorrido-media-maraton-leon.html">Diario de León (2026)</a>
+    <a href="https://www.hdsports.org/running/maraton-espana">HDsports (maratones)</a>
+    <a href="https://www.hdsports.org/running/carreras-10-km-espana">HDsports (10K)</a>
+    <a href="https://www.hdsports.org/running/trail-runs-ultra-trails-espana">HDsports (trail)</a>
+    <a href="https://10kvalencia.com/en/10k-valencia-abre-inscripciones-2027-10-febrero/">10K Valencia</a>
+    <a href="https://www.picuco.com/es-es/blog/calendario-de-trail-running-en-espana-las-20-carreras-mas">Picuco (trail)</a>
+    <a href="https://carrerasdemontana.com/2025/12/07/maraton-valencia-2025-resultados-mayayo/">Carreras de Montaña (Maratón Valencia)</a>
+    <a href="https://es.soccerway.com/noticias/mande-bushendich-y-misgane-alemayehu-ganan-el-maraton-de-malaga-mas-rapido-de-la-historia/tzMAwq6U">Soccerway (Maratón Málaga)</a>
+    <a href="https://beteve.cat/esports/barcelona-ciutat-mes-rapida-mon-marato-mitja-5k/">betevé (Marató Barcelona)</a>
+  </div>
 </div>
 
-<script src="data.js?v=2"></script>
-<script src="sources.js"></script>
-<script src="app.js?v=2"></script>
-</body>
+<script>
+/* Configuración: escribe tu email para mostrar el enlace «Avisar de un error» al final de la página. */
+var CONFIG = { form: "https://docs.google.com/forms/d/e/1FAIpQLScWKG5bZNgG__DRS9tZC9J4-f8Osn2-LeMuAn11e-EZyFxO2A/viewform", email: "" };
+/* Carreras con ficha propia */
+var PAGES = {"10k-valencia-ibercaja": 1, "b100-cursa-dels-nassos": 1, "bilbao-rekalde-san-silvestre": 1, "carrera-san-silvestre-logronesa": 1, "generali-maraton-malaga": 1, "generali-maraton-malaga-21-km": 1, "hyundai-mitja-marato-barcelona": 1, "maratoia-donostia": 1, "maraton-valencia-trinidad-alfonso": 1, "media-maraton-de-cordoba": 1, "media-maraton-de-leon": 1, "media-maraton-de-valladolid": 1, "media-maraton-de-vitoria-gasteiz": 1, "media-maraton-internacional-de-torremolinos": 1, "medio-maraton-de-sevilla": 1, "medio-maraton-valencia-trinidad-alfonso": 1, "mitja-marato-internacional-vila-de-santa-pola": 1, "movistar-madrid-medio-maraton": 1, "nationale-nederlanden-san-silvestre-vallecana": 1, "oysho-san-silvestre-coruna": 1, "pucela-sansil": 1, "san-silvestre-ciudad-de-leon": 1, "san-silvestre-ciudad-de-oviedo": 1, "san-silvestre-de-murcia": 1, "san-silvestre-donostiarra": 1, "san-silvestre-irunea-pamplona": 1, "san-silvestre-las-palmas-de-gran-canaria": 1, "san-silvestre-salmantina": 1, "san-silvestre-sevillana": 1, "san-silvestre-toledana": 1, "san-silvestre-valencia": 1, "totalenergies-medio-maraton-de-malaga": 1, "totalenergies-san-silvestre-gijon": 1, "transvulcania": 1, "zurich-marato-de-barcelona": 1, "zurich-rock-n-roll-madrid-maraton": 1, "zurich-rock-n-roll-running-series-madrid-21-km": 1};
+
+/* n nombre, c ciudad, r comunidad, d fecha, ok fecha confirmada, x otras pruebas, t nota, w web */
+var R = [
+  {n:"21K Ciudad de Huelva", c:"Huelva", r:"Andalucía", d:"2026-11-01", ok:false, x:[], t:"Fecha tomada del calendario de Correr Juntos. Confirma en la web oficial antes de inscribirte."},
+  {n:"Generali Maratón Málaga (21 km)", c:"Málaga", r:"Andalucía", d:"2026-11-08", ok:true, x:["Maratón"], t:"La media se corre el mismo domingo 8 de noviembre de 2026 que el maratón.",w:"https://www.generalimaratonmalaga.com"},
+  {n:"Maratón Santa Cruz de Tenerife (21 km)", c:"Santa Cruz de Tenerife", r:"Canarias", d:"2026-11-15", ok:false, x:["Maratón","8 km"], t:"La media comparte jornada con el maratón y una prueba corta de 8 km."},
+  {n:"Maratón Imperial de Toledo (21 km)", c:"Toledo", r:"Castilla-La Mancha", d:"2026-11-15", ok:false, x:["Maratón"], t:"Media y maratón por la ciudad histórica de Toledo."},
+  {n:"Media Maratón de Córdoba", c:"Córdoba", r:"Andalucía", d:"2026-12-13", ok:true, x:[], t:"Domingo 13 de diciembre de 2026 a las 10:00, con salida en la avenida Conde de Vallellano y meta en la Puerta del Puente. Se movió desde el 29 de noviembre porque coincidía con las elecciones generales. La web oficial indica inscripciones agotadas y ofrece lista de espera. En 2026 se agotaron 4.000 dorsales a las pocas horas de abrir la inscripción.", w:"https://www.mediamaratoncordoba.es"},
+  {n:"Half Marathon Unión Alcoyana Seguros", c:"Alcoy", r:"Comunidad Valenciana", d:"2026-11-29", ok:false, x:["10,5 km"], t:"Media maratón de Alcoy con una prueba corta de 10,5 km. Otras pruebas del 29 de noviembre de 2026 se han movido por las elecciones generales (Sevilla y Córdoba, al 13 de diciembre), así que confirma esta fecha."},
+  {n:"Medio Maratón de Sevilla", c:"Sevilla", r:"Andalucía", d:"2026-12-13", ok:true, x:[], t:"Se movió del 29 de noviembre al 13 de diciembre de 2026 porque coincidía con las elecciones generales. Tiene etiqueta World Athletics y unos 22.000 corredores. Los dorsales ya comprados siguen valiendo."},
+  {n:"Lanzarote Marathon (21 km)", c:"Lanzarote", r:"Canarias", d:"2026-12-05", ok:false, x:["Maratón","10 km","5 km"], t:"Media maratón dentro del fin de semana del Maratón de Lanzarote."},
+  {n:"Media Maratón de Vitoria-Gasteiz", c:"Vitoria-Gasteiz", r:"País Vasco", d:"2026-12-20", ok:true, x:[], t:"48.ª edición con un máximo de 4.500 corredores y un límite de 2 h 30 min. La inscripción va de 21 € (hasta el 31 de mayo) a 50 € (hasta el 19 de diciembre), por tramos, y se gestiona desde la web oficial. Se corre desde 1980.",w:"https://www.mediamaratonvitoriagasteiz.com"},
+  {n:"Mitja Marató Internacional Vila de Santa Pola", c:"Santa Pola", r:"Comunidad Valenciana", d:"2027-01-24", ok:false, x:[], t:"Calendario de HDsports. Confirma la fecha cuando se abra la inscripción."},
+  {n:"Media Maratón Barcelona Granollers", c:"Granollers", r:"Cataluña", d:"2027-01-24", ok:false, x:["10 km"], t:"Calendario de HDsports. Se corre junto a La Mitja de Granollers."},
+  {n:"Media Maratón Internacional de Torremolinos", c:"Torremolinos", r:"Andalucía", d:"2027-02-07", ok:true, x:["5 km (sábado 6 de febrero)"], t:"2.750 plazas en la media, con salida a las 9:30 y meta en el Centro Cultural Pablo Ruiz Picasso, y 750 en la 5 km del sábado 6 de febrero. La inscripción está abierta en rockthesport.com y worldsmarathons.com.",w:"https://deportes.torremolinos.es/sin-categoria/5694/"},
+  {n:"Maratón Murcia (21 km)", c:"Murcia", r:"Región de Murcia", d:"2027-02-07", ok:false, x:["Maratón","10 km"], t:"Media maratón dentro del fin de semana del Maratón de Murcia."},
+  {n:"Hyundai Mitja Marató Barcelona", c:"Barcelona", r:"Cataluña", d:"2027-02-14", ok:true, x:[], t:"37.ª edición. La organización confirmó el 14 de febrero de 2027 para la Mitja y el 14 de marzo para la maratón. Inscripción abierta: Race Entry a 50 €, con otras tarifas con más servicios. Se esperan más de 40.000 dorsales (unos 36.000 en 2026). Sale del paseo de Picasso y termina en el paseo de Pujades. Quien esté inscrito en la maratón tiene 46 € de descuento.",w:"https://www.mitjamarato.barcelona/es/"},
+  {n:"TotalEnergies Medio Maratón de Málaga", c:"Málaga", r:"Andalucía", d:"2027-03-07", ok:true, x:[], t:"Domingo 7 de marzo de 2027, con salida a las 8:15 desde el Paseo del Parque y recorrido en un solo bucle. Hasta 14.000 dorsales (12.000 participantes en 2026). El primer tramo promocional costó 23 € más licencia federativa. Edad mínima de 18 años.",w:"https://www.mediamaratonmalaga.com"},
+  {n:"Caixabank Mitja Marató Ciutat de Palma", c:"Palma", r:"Illes Balears", d:"2027-03-21", ok:false, x:["10 km","3,3 km"], t:"Fecha de calendarios de terceros: marzo de 2027, día por confirmar."},
+  {n:"Ibiza Half Marathon", c:"Sant Josep de sa Talaia", r:"Illes Balears", d:"2027-04-03", ok:false, x:[], t:"Calendario de HDsports. Confirma la fecha en la web oficial."},
+  {n:"Media Maratón de León", c:"León", r:"Castilla y León", d:"2027-04-04", ok:true, x:["5 km","Carreras infantiles de 2 km"], t:"XVII edición. 3.500 plazas en los 21 km. Inscripción online hasta el 30 de marzo de 2027, o en persona desde el 15 de enero en El Corte Inglés de León. Salida en el Paseo del Parque y meta en el Estadio Hispánico.", w:"https://www.lamedialeon.com"},
+  {n:"Movistar Madrid Medio Maratón", c:"Madrid", r:"Comunidad de Madrid", d:"2027-04-04", ok:true, x:["5,8 km"], t:"Domingo 4 de abril de 2027, con un cupo de 30.000 dorsales (28.000 inscritos en la edición del 22 de marzo de 2026). Los primeros 2.000 dorsales costaron 35 €. Recorrido certificado de 21,097 km por el centro, con salida y meta en el paseo de Recoletos.",w:"https://www.mediomaratonmadrid.es/"},
+  {n:"Zurich Rock 'n' Roll Running Series Madrid (21 km)", c:"Madrid", r:"Comunidad de Madrid", d:"2027-04-25", ok:true, x:["Maratón"], t:"Edición del 25 de abril de 2027 con 47.000 dorsales: 30.000 para la media y 17.000 para el maratón. Deja de incluir los 10 km. La inscripción se abrió por fases (fidelidad, preferente y general) desde mayo de 2026, así que consulta si quedan dorsales o lista de espera.",w:"https://rocknrollmadridrun.com"},
+  {n:"Media Maratón de Granada", c:"Granada", r:"Andalucía", d:"2027-04-30", ok:false, x:["10 km"], t:"Fecha de un calendario de terceros, con pocos detalles. Confirma la fecha y las distancias con la organización."},
+  {n:"Media Maratón de Valladolid", c:"Valladolid", r:"Castilla y León", d:"2027-09-26", ok:false, x:["5,5 km"], t:"Calendario de HDsports. Web oficial: mediamaratonvalladolid.com.", w:"https://www.mediamaratonvalladolid.com"},
+  {n:"Rural Kutxa Half Marathon San Sebastián", c:"San Sebastián", r:"País Vasco", d:"2027-10-03", ok:false, x:[], t:"Octubre de 2027. Es la media de otoño de Donostia, distinta de la del maratón de noviembre."},
+  {n:"Bilbao Night Run Fest", c:"Bilbao", r:"País Vasco", d:"2027-10-16", ok:false, x:["10 km"], t:"Media maratón nocturna. La fecha de 2027 es una estimación a partir de la edición de 2026."},
+  {n:"Medio Maratón Valencia Trinidad Alfonso", c:"Valencia", r:"Comunidad Valenciana", d:"2027-10-24", ok:false, x:[], t:"La edición de 2026 se corrió el 25 de octubre. La fecha de 2027 sale de calendarios de terceros. Organiza la S. D. Correcaminos y, para 2027, ofrece 25.000 dorsales con una fase de fidelidad y un sorteo.",w:"https://www.valenciaciudaddelrunning.com"},
+
+  {n:"Generali Maratón Málaga", c:"Málaga", r:"Andalucía", d:"2026-11-08", ok:true, k:"42K", dist:"42,2 km", x:["21 km"], t:"Domingo 8 de noviembre de 2026, con maratón de 42 km y media de 21 km, además de una Brunch Run y carreras infantiles. La inscripción se gestiona desde la web oficial. La edición de 2025 (XV) fue la más rápida de su historia.",w:"https://www.generalimaratonmalaga.com"},
+  {n:"Maratón Santa Cruz de Tenerife", c:"Santa Cruz de Tenerife", r:"Canarias", d:"2026-11-15", ok:false, k:"42K", dist:"42,2 km", x:["21 km","8 km"], t:"Maratón con media maratón y una prueba corta de 8 km el mismo día."},
+  {n:"Maratón Imperial de Toledo", c:"Toledo", r:"Castilla-La Mancha", d:"2026-11-15", ok:false, k:"42K", dist:"42,2 km", x:["21 km"], t:"Maratón y media por la ciudad histórica de Toledo."},
+  {n:"Maratoia Donostia", c:"San Sebastián", r:"País Vasco", d:"2026-11-22", ok:true, k:"42K", dist:"42,2 km", x:["10 km"], t:"47.ª edición, el 22 de noviembre de 2026, con maratón de 42 km y 10 km. Los 7.000 dorsales del maratón se agotaron el 8 de junio de 2026. La feria del corredor es el 20 de noviembre.",w:"https://www.zurichmaratondonostia.com"},
+  {n:"Lanzarote Marathon", c:"Lanzarote", r:"Canarias", d:"2026-12-05", ok:false, k:"42K", dist:"42,2 km", x:["21 km","10 km","5 km"], t:"Maratón de Lanzarote con media, 10 km y 5 km el mismo fin de semana."},
+  {n:"Maratón Valencia Trinidad Alfonso", c:"Valencia", r:"Comunidad Valenciana", d:"2026-12-06", ok:true, k:"42K", dist:"42,2 km", x:[], t:"Organiza la S. D. Correcaminos. La edición de 2025 reunió a 30.777 finalistas, la primera vez que superó los 30.000. La web oficial muestra el 6 de diciembre de 2026 junto al logo de los 42 km.",w:"https://www.valenciaciudaddelrunning.com"},
+  {n:"Maratón Murcia", c:"Murcia", r:"Región de Murcia", d:"2027-02-07", ok:false, k:"42K", dist:"42,2 km", x:["21 km","10 km"], t:"Calendario de HDsports, con media y 10 km el mismo día."},
+  {n:"Maratón BP Castelló", c:"Castellón de la Plana", r:"Comunidad Valenciana", d:"2027-02-14", ok:false, k:"42K", dist:"42,2 km", x:[], t:"Calendario de HDsports. La edición de 2026 fue el 22 de febrero."},
+  {n:"Zurich Maratón de Sevilla", c:"Sevilla", r:"Andalucía", d:"2027-02-21", ok:true, k:"42K", dist:"42,2 km", x:[], t:"Febrero de 2027 según varios calendarios. La edición de 2026 se corrió el 15 de febrero."},
+  {n:"Zurich Marató de Barcelona", c:"Barcelona", r:"Cataluña", d:"2027-03-14", ok:true, k:"42K", dist:"42,2 km", x:[], t:"48.ª edición, el 14 de marzo de 2027, fecha confirmada por la organización. Quien se inscribe a la maratón tiene 46 € de descuento en la Mitja de Barcelona del 14 de febrero.",w:"https://zurichmaratobarcelona.es/es/"},
+  {n:"Ibiza Marathon", c:"Eivissa", r:"Illes Balears", d:"2027-04-17", ok:false, k:"42K", dist:"42,2 km", x:[], t:"Calendario de HDsports. La fecha de 2027 no está confirmada."},
+  {n:"Zurich Rock 'n' Roll Madrid Maratón", c:"Madrid", r:"Comunidad de Madrid", d:"2027-04-25", ok:true, k:"42K", dist:"42,2 km", x:["21 km"], t:"Edición del 25 de abril de 2027 con 47.000 dorsales: 30.000 para la media y 17.000 para el maratón. Deja de incluir los 10 km. La inscripción se abrió por fases (fidelidad, preferente y general) desde mayo de 2026, así que consulta si quedan dorsales o lista de espera.",w:"https://rocknrollmadridrun.com"},
+  {n:"Palma de Mallorca Marathon", c:"Palma", r:"Illes Balears", d:"2027-10-17", ok:false, k:"42K", dist:"42,2 km", x:["21 km","10 km"], t:"Calendario de HDsports. La edición de 2026 fue el 18 de octubre y la fecha de 2027 no está confirmada."},
+
+  {n:"El Tast de la Mitja Granollers", c:"Canovelles", r:"Cataluña", d:"2026-10-31", ok:false, k:"10K", dist:"10 km", x:[], t:"Aparece en el calendario de 10 km de HDsports. Confirma distancia y horario con la organización."},
+  {n:"10K Valencia Ibercaja", c:"Valencia", r:"Comunidad Valenciana", d:"2027-01-10", ok:true, k:"10K", dist:"10 km", x:["5 km"], t:"Hasta 16.000 dorsales en el 10K y 2.500 en la 5K, con precio por tramos: 15 €, 18 €, 22 € y 25 €. La inscripción cierra el 3 de enero de 2027 o al agotarse las plazas, y en la edición anterior se agotó dos meses antes. Incluye camiseta técnica y suma una licencia de día de 4 €. Según la prensa valenciana, la edición de 2026 batió los récords masculinos de Europa y de España.", w:"https://10kvalencia.com"},
+  {n:"Carrera Urbana Noche de San Antón", c:"Jaén", r:"Andalucía", d:"2027-01-16", ok:false, k:"10K", dist:"10 km", x:[], t:"Calendario de HDsports. La fecha de 2027 no está confirmada; en 2026 fue el 17 de enero."},
+  {n:"10K Ibiza Playa d'en Bossa", c:"Ibiza", r:"Illes Balears", d:"2027-02-14", ok:false, k:"10K", dist:"10 km", x:[], t:"Calendario de HDsports. La fecha de 2027 no está confirmada."},
+  {n:"10 Km Villa de Laredo", c:"Laredo", r:"Cantabria", d:"2027-04-10", ok:false, k:"10K", dist:"10 km", x:[], t:"Calendario de HDsports. La fecha de 2027 no está confirmada."},
+  {n:"Cursa El Corte Inglés", c:"Barcelona", r:"Cataluña", d:"2027-05-09", ok:false, k:"10K", dist:"10 km", x:[], t:"Aparece en el calendario de 10 km de HDsports. La fecha de 2027 no está confirmada."},
+
+  {n:"Marató dels Dements", c:"Eslida", r:"Comunidad Valenciana", d:"2026-11-07", ok:false, k:"TR", dist:"Trail · 43,3 km", x:["43,3 km (3.800 m de desnivel)","23 km","22,2 km"], t:"Trail de montaña en Eslida."},
+  {n:"Cursa de l'Alba – Marató de Montserrat", c:"Collbató", r:"Cataluña", d:"2026-11-07", ok:false, k:"TR", dist:"Trail · 42 km", x:["42 km (2.550 m de desnivel)"], t:"Maratón de montaña en Collbató, junto a Montserrat."},
+  {n:"3 días Trail Ibiza – Ultra Ibiza", c:"Sant Josep de sa Talaia", r:"Illes Balears", d:"2026-11-27", ok:false, k:"TR", dist:"Trail · hasta 73,5 km", x:["73,5 km","42 km (1.800 m de desnivel)","21 km","10 km"], t:"Prueba de varios días en Ibiza. La edición de 2027 también está fijada para el 27 de noviembre."},
+  {n:"Ultramediterrània", c:"Alcoi", r:"Comunidad Valenciana", d:"2027-01-22", ok:true, k:"TR", dist:"Trail · hasta 160 km", x:["160 km","86 km","84 km","50 km","14 km","6 km"], t:"Ultra y trails de todas las distancias en Alcoi. Fecha de 2027 confirmada."},
+  {n:"Trail Cap de Creus", c:"Roses", r:"Cataluña", d:"2027-01-17", ok:false, k:"TR", dist:"Trail · 38,5 km", x:["38,5 km","22 km","11,5 km"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Maratón del Meridiano", c:"El Hierro", r:"Canarias", d:"2027-02-06", ok:false, k:"TR", dist:"Trail · 42 km", x:["42 km (2.600 m de desnivel)","27 km","18 km","9 km"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Transgrancanaria HG", c:"Las Palmas de Gran Canaria", r:"Canarias", d:"2027-03-05", ok:false, k:"TR", dist:"Trail · hasta 128 km", x:["128 km","65 km","42 km","30 km","17 km"], t:"Una de las ultras más conocidas de España. La fecha de 2027 no está confirmada."},
+  {n:"Galatzó Trail Mallorca Mountain Marathon", c:"Es Capdellà", r:"Illes Balears", d:"2027-03-07", ok:true, k:"TR", dist:"Trail · 43 km", x:["43 km","23 km","12 km"], t:"Fecha de 2027 confirmada."},
+  {n:"Tenerife Bluetrail", c:"Adeje", r:"Canarias", d:"2027-04-09", ok:true, k:"TR", dist:"Trail · hasta 110 km", x:["110 km (6.250 m de desnivel)","73 km","47 km","24 km","3,5 km"], t:"Trail alrededor del Teide. Fecha de 2027 confirmada."},
+  {n:"Penyagolosa Trails", c:"Castellón de la Plana", r:"Comunidad Valenciana", d:"2027-04-17", ok:false, k:"TR", dist:"Trail · 106 km", x:["106 km (5.600 m de desnivel)","60 km (3.300 m de desnivel)"], t:"Incluye la MIM y la CSP, con material obligatorio. La fecha de 2027 no está confirmada."},
+  {n:"Transvulcania", c:"Fuencaliente", r:"Canarias", d:"2027-05-08", ok:true, k:"TR", dist:"Trail · 73 km", x:["73 km (4.350 m de desnivel)","45 km","24,28 km","7,6 km"], t:"Ruta volcánica en La Palma. Del 6 al 8 de mayo de 2027, con inscripción abierta. En 2026 se batieron los récords de las ocho categorías competitivas, con David Sinclair y Blandine L'Hirondel entre los protagonistas de la ultra. La organización cifra la carrera principal en 73 km.",w:"https://transvulcania.com"},
+  {n:"Kanpezu Ioar", c:"Santa Cruz de Campezo", r:"País Vasco", d:"2027-05-09", ok:false, k:"TR", dist:"Trail · 26,5 km", x:["26,5 km (1.930 m de desnivel)"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Zegama Aizkorri", c:"Zegama", r:"País Vasco", d:"2027-05-16", ok:false, k:"TR", dist:"Trail · 42,195 km", x:["42,195 km"], t:"Maratón de montaña técnica en Gipuzkoa. Los dorsales se asignan por sorteo. La fecha de 2027 no está confirmada."},
+  {n:"Ultra Trail Bosques del Sur", c:"Cazorla", r:"Andalucía", d:"2027-05-29", ok:false, k:"TR", dist:"Trail · 99 km", x:["99 km (4.652 m de desnivel)","50 km (2.809 m de desnivel)"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Gran Maratón Montañas de Benasque", c:"Benasque", r:"Aragón", d:"2027-06-12", ok:false, k:"TR", dist:"Trail · 42 km", x:["42 km"], t:"Maratón de montaña en el Pirineo aragonés. Calendario de HDsports."},
+  {n:"Trail Chulilla", c:"Chulilla", r:"Comunidad Valenciana", d:"2027-06-19", ok:false, k:"TR", dist:"Trail · 15,2 km", x:["15,2 km (520 m de desnivel)"], t:"Trail corto, apto para empezar. La fecha de 2027 no está confirmada."},
+  {n:"Epic Trail Vall de Boí", c:"Vall de Boí", r:"Cataluña", d:"2027-06-26", ok:false, k:"TR", dist:"Trail · 68 km", x:["68 km (5.000 m de desnivel)","42 km","26 km","12 km"], t:"Se celebra dentro del Garmin Mountain Festival. La fecha de 2027 no está confirmada."},
+  {n:"Val d'Aran by UTMB", c:"Vielha e Mijaran", r:"Cataluña", d:"2027-07-01", ok:false, k:"TR", dist:"Trail · hasta 161 km", x:["161 km (10.200 m de desnivel)","105 km","55 km"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Trail Vielha-Molières 3010", c:"Vielha e Mijaran", r:"Cataluña", d:"2027-07-10", ok:false, k:"TR", dist:"Trail · 43 km", x:["43 km (4.200 m de desnivel)","24 km (1.800 m de desnivel)"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Cursa per Muntanya Vistabella", c:"Vistabella del Maestrazgo", r:"Comunidad Valenciana", d:"2027-08-01", ok:false, k:"TR", dist:"Trail · 27 km", x:["27 km (1.500 m de desnivel)"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Montlude Skyrace – Trail – Ultra", c:"Bausen", r:"Cataluña", d:"2027-08-07", ok:false, k:"TR", dist:"Trail · 63 km", x:["63 km (6.100 m de desnivel)","27 km","10 km"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Pyrenees Stage Run", c:"Ribes de Freser", r:"Cataluña", d:"2027-08-28", ok:false, k:"TR", dist:"Trail · 220 km", x:["220 km (15.000 m de desnivel)"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Desafío Urbión", c:"Soria", r:"Castilla y León", d:"2027-09-03", ok:false, k:"TR", dist:"Trail · 60 km", x:["60 km","37 km","4,8 km"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Olla de Núria", c:"Vall de Núria", r:"Cataluña", d:"2027-09-18", ok:false, k:"TR", dist:"Trail · 21,5 km", x:["21,5 km (1.940 m de desnivel)"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Gorbeia Suzien Ternua", c:"Zeanuri", r:"País Vasco", d:"2027-09-25", ok:false, k:"TR", dist:"Trail · 31 km", x:["31 km (2.400 m de desnivel)","4,2 km (1.000 m de desnivel)"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Salomon Ultra Pirineu", c:"Bagà", r:"Cataluña", d:"2027-10-02", ok:false, k:"TR", dist:"Trail · 100 km", x:["100 km","42 km","21 km","5 km"], t:"La ultra de 100 km tiene unos 6.600 m de desnivel positivo y un límite de 26 horas y media. La fecha de 2027 no está confirmada."},
+  {n:"Ultra Trail Guara Somontano", c:"Alquézar", r:"Aragón", d:"2027-10-02", ok:false, k:"TR", dist:"Trail · 82 km", x:["82 km","48 km","30 km","17 km"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Sobrescobio Redes Trail & Skyrace", c:"Sobrescobio", r:"Asturias", d:"2027-10-24", ok:false, k:"TR", dist:"Trail · 32,3 km", x:["32,3 km (2.100 m de desnivel)","14,6 km (875 m de desnivel)"], t:"La fecha de 2027 no está confirmada."},
+  {n:"Mallorca by UTMB", c:"Sóller", r:"Illes Balears", d:"2027-10-29", ok:false, k:"TR", dist:"Trail · hasta 146 km", x:["146 km","69 km","47 km","26 km","8,5 km","0,4 km"], t:"La fecha de 2027 no está confirmada."},
+
+  {"n": "FNG San Silvestre Palma", "c": "Palma", "r": "Illes Balears", "d": "2026-12-26", "ok": false, "k": "SS", "dist": "5 o 10 km", "x": [], "t": "Se celebra el 26 de diciembre (Sant Esteve). En 2025 fue su 13.ª edición, con casi 1.000 corredores; cada corredor elige 5 o 10 km durante la carrera. Fecha de 2026 sin confirmar."},
+  {"n": "San Silvestre Solidaria de Alicante", "c": "Alicante", "r": "Comunidad Valenciana", "d": "2026-12-26", "ok": false, "k": "SS", "dist": "4,5 km", "x": [], "t": "Fecha de 2026 sin confirmar. En 2025 se corrió el 26 de diciembre a las 19:30 con salida y meta en la Rambla de Méndez Núñez; más de 5.000 corredores y dorsal de 5 €."},
+  {"n": "Pucela Sansil", "c": "Valladolid", "r": "Castilla y León", "d": "2026-12-27", "ok": true, "k": "SS", "dist": "5 km", "x": [], "t": "Salida y meta en la Cúpula del Milenio. Inscripción adulta de 6,50 €. La carrera infantil se corre el sábado 26 en la Feria de Valladolid. Organiza la Fundación Municipal de Deportes.", "h": "10:30", "w": "https://www.pucelasansil.com"},
+  {"n": "San Silvestre Ciudad de León", "c": "León", "r": "Castilla y León", "d": "2026-12-27", "ok": true, "k": "SS", "dist": "7 km", "x": [], "t": "XXIX edición, organizada por ULE Sprint At. León y anunciada en el calendario de la federación castellanoleonesa. En 2025 la prueba de 7 km salió a las 17:45 y agotó sus 2.300 dorsales.", "w": "https://www.sansilvestreleon.com"},
+  {"n": "San Silvestre Gaditana", "c": "Cádiz", "r": "Andalucía", "d": "2026-12-27", "ok": false, "k": "SS", "dist": "5,4 km", "x": [], "t": "La organiza el Club de Atletismo Olimpo. La VIII edición se corrió el sábado 27 de diciembre de 2025, con unos 1.000 participantes. Fecha de 2026 sin confirmar."},
+  {"n": "San Silvestre Salmantina", "c": "Salamanca", "r": "Castilla y León", "d": "2026-12-27", "ok": true, "k": "SS", "dist": "10 km", "x": [], "t": "XLI edición, con 7.007 dorsales. En 2025 se corrió el domingo 28, la prueba absoluta salió a las 12:30 y los dorsales se agotaron en una semana.", "w": "https://www.sansilvestresalmantina.com/"},
+  {"n": "San Silvestre Sevillana", "c": "Sevilla", "r": "Andalucía", "d": "2026-12-27", "ok": true, "k": "SS", "dist": "5 km", "x": [], "t": "31.ª edición, el domingo por la mañana. Inscripción de 10 € hasta el 31 de octubre, 12 € en noviembre y 15 € del 1 al 21 de diciembre. Límite de 4.500 corredores en la prueba principal.", "h": "10:00", "w": "https://www.sansilvestresevillana.com"},
+  {"n": "San Silvestre Valencia", "c": "Valencia", "r": "Comunidad Valenciana", "d": "2026-12-30", "ok": false, "k": "SS", "dist": "5 km", "x": [], "t": "41.ª edición, organizada por la Fundación Deportiva Municipal. La web oficial anuncia el 30 de diciembre, pero con un día de la semana que no cuadra, así que conviene confirmarlo. En 2025 hubo 17.000 dorsales a 2 €, donados a ASLEUVAL.", "h": "20:00", "w": "https://www.fdmvalencia.es/es/eventos/san-silvestre-valencia-2026/"},
+  {"n": "B100 Cursa dels Nassos", "c": "Barcelona", "r": "Cataluña", "d": "2026-12-31", "ok": true, "k": "SS", "dist": "10 km", "x": [], "t": "Es la Sant Silvestre de Barcelona y se corre por la tarde. Ha agotado dorsales en todas las ediciones desde 2019; en 2025 superó los 13.000. Inscripciones abiertas desde julio de 2026.", "w": "https://cursadenassos.barcelona"},
+  {"n": "Bilbao-Rekalde San Silvestre", "c": "Bilbao", "r": "País Vasco", "d": "2026-12-31", "ok": true, "k": "SS", "dist": "6,6 km", "x": [], "t": "XXV edición, con salida y meta en la plaza de Rekalde. Inscripción de 15 €, del 15 de octubre al 30 de diciembre o hasta agotar dorsales. En 2025 hubo más de 3.200 inscritos, récord.", "h": "16:30", "w": "https://sansilvestrebilbao.com/wp/"},
+  {"n": "Carrera San Silvestre Logroñesa", "c": "Logroño", "r": "La Rioja", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "8,8 km", "x": [], "t": "La organiza Logroño Deporte y sale de Vara de Rey, frente al Espolón. En 2025 la competitiva costaba 5 € y había una popular de 4,4 km (4 €) a las 18:00. Hora de 2025.", "h": "18:45", "w": "https://www.logronodeporte.es"},
+  {"n": "Carrera San Silvestre Palma-Palmilla", "c": "Málaga", "r": "Andalucía", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "10 km", "x": [], "t": "Carrera solidaria del distrito Palma-Palmilla, con una prueba de 2 km. En 2025 (XIV edición) el límite era de 1.000 corredores y la inscripción costaba 8 €. Hora de 2025.", "h": "09:00"},
+  {"n": "Nationale-Nederlanden San Silvestre Vallecana", "c": "Madrid", "r": "Comunidad de Madrid", "d": "2026-12-31", "ok": true, "k": "SS", "dist": "10 km", "x": [], "t": "62.ª edición. La Popular sale a las 16:55 con hasta 42.000 corredores y cuesta de 27 a 31 €. La Internacional, de 2.000 plazas con marca mínima, sale a las 19:55, cuesta 25 € y termina en el estadio de Vallecas.", "h": "16:55", "w": "https://sansilvestrevallecana.com/"},
+  {"n": "Oysho San Silvestre Coruña", "c": "A Coruña", "r": "Galicia", "d": "2026-12-31", "ok": true, "k": "SS", "dist": "7,5 km", "x": [], "t": "17.ª edición, con 6.000 dorsales (5.500 para la absoluta). Inscripción online del 16 de octubre al 22 de diciembre, con precio reducido hasta el 10 de diciembre.", "h": "17:00", "w": "https://www.sansilvestrecoruna.com"},
+  {"n": "San Silvestre Ciudad de Oviedo", "c": "Oviedo", "r": "Asturias", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "5,5 km", "x": [], "t": "En 2025 se celebró su 42.ª edición, a beneficio del Teléfono de la Esperanza. En ediciones anteriores la inscripción costaba 3 € y había hasta 6.500 plazas. Hora de 2025.", "h": "18:30", "w": "https://sansilvestreciudaddeoviedo.com/"},
+  {"n": "San Silvestre Cidiana", "c": "Burgos", "r": "Castilla y León", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "4,7 km", "x": [], "t": "La organiza el Club Florentino Díaz Reig. En 2025 la absoluta salió a las 19:00, con nuevo recorrido hasta el Espolón y unos 6.600 corredores; más de 8.000 contando la infantil."},
+  {"n": "San Silvestre Cordobesa", "c": "Córdoba", "r": "Andalucía", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "10 km", "x": [], "t": "La organiza la Asociación Vecinal El Parque, con salida en el Parque Figueroa. En 2025 se corrió su 41.ª edición, con 1.883 inscritos en total. Hora de 2025.", "h": "16:00"},
+  {"n": "San Silvestre de Albacete", "c": "Albacete", "r": "Castilla-La Mancha", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "5 km", "x": [], "t": "En 2025 se celebró su XX edición, con salida y meta en la avenida de España y circuito homologado. Agotó 6.000 dorsales y abrió 500 más. Hora de 2025.", "h": "17:00"},
+  {"n": "San Silvestre de Cáceres", "c": "Cáceres", "r": "Extremadura", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "2,8 km", "x": [], "t": "La organiza la Asociación de Vecinos Hispanoamérica, con salida en Gran Vía. En 2024 (27.ª edición) se esperaban 6.300 corredores. Hora de 2024.", "h": "18:00"},
+  {"n": "San Silvestre de Murcia", "c": "Murcia", "r": "Región de Murcia", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "6,5 km", "x": [], "t": "La organizan La Verdad, la Federación de Atletismo de la Región de Murcia y el Ayuntamiento. En 2025 la inscripción costaba de 12 a 14 € y había hasta 5.000 corredores. Hora de 2025.", "h": "17:00", "w": "https://www.laverdad.es/sansilvestremurcia"},
+  {"n": "San Silvestre de Santander", "c": "Santander", "r": "Cantabria", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "5 km", "x": [], "t": "La organiza la A.D. Peña de Fondo Cantabria. En 2025 se celebró su 43.ª edición; la inscripción costaba 10 € online y 15 € el mismo día. Hora de 2025.", "h": "18:00"},
+  {"n": "San Silvestre de Santiago", "c": "Santiago de Compostela", "r": "Galicia", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "5 km", "x": [], "t": "Salida y meta en la Praza do Obradoiro. En 2025 se celebró su XII edición, con carreras desde las 17:30 e inscripción de 4 €."},
+  {"n": "San Silvestre de Vigo", "c": "Vigo", "r": "Galicia", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "4,5 km", "x": [], "t": "La organiza el Concello de Vigo, con salida y meta en la Puerta del Sol. Es gratuita, con inscripción previa. En 2025 cumplió 20 años y salió a las 12:00."},
+  {"n": "San Silvestre de Vitoria-Gasteiz", "c": "Vitoria-Gasteiz", "r": "País Vasco", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "5,9 km", "x": [], "t": "La organiza la Federación Alavesa de Atletismo y se corre a mediodía. En 2025 hubo 2.500 dorsales adultos a 5 € y 800 para la txiki, a 2 €. Hora de 2025.", "h": "12:30"},
+  {"n": "San Silvestre Donostiarra", "c": "San Sebastián", "r": "País Vasco", "d": "2026-12-31", "ok": true, "k": "SS", "dist": "7,9 km", "x": [], "t": "La organiza Amara Kirol Elkartea. En 2025 se celebró su 40.ª edición, con unos 6.500 participantes entre sus dos carreras. La txiki se corre unos días antes.", "h": "14:00", "w": "https://www.sansilvestredonostiarra.com/home-CAS.html"},
+  {"n": "San Silvestre Iruñea-Pamplona", "c": "Pamplona", "r": "Navarra", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "4,5 km", "x": [], "t": "La organiza el Club Beste Iruña, con salida en Navas de Tolosa. Es la San Silvestre más numerosa de Navarra; en 2025 celebró su XLII edición. Hora de 2025.", "h": "18:30", "w": "http://besteiruna.es"},
+  {"n": "San Silvestre Lagunera", "c": "San Cristóbal de La Laguna", "r": "Canarias", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "5 km", "x": [], "t": "La organiza el Organismo Autónomo de Deportes de La Laguna. En 2025 se celebró su XLII edición, con 4.500 inscritos y aforo completo. Es la principal San Silvestre de Tenerife."},
+  {"n": "San Silvestre Las Palmas de Gran Canaria", "c": "Las Palmas de Gran Canaria", "r": "Canarias", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "6 km", "x": [], "t": "Carrera solidaria organizada por Top Time Eventos, con salida en León y Castillo, junto al Parque Doramas. En 2025 superó los 10.000 corredores. Hora de 2025.", "h": "17:00", "w": "https://www.sansilvestre.es/"},
+  {"n": "San Silvestre Toledana", "c": "Toledo", "r": "Castilla-La Mancha", "d": "2026-12-31", "ok": true, "k": "SS", "dist": "8 km", "x": [], "t": "Recorrido urbano de 8 km con salida por oleadas desde las 18:00. Las inscripciones de 2026 ya están abiertas; en 2025 se completó el cupo.", "h": "18:00", "w": "https://sansilvestretoledana.es/"},
+  {"n": "San Silvestre Zaragoza El Rincón", "c": "Zaragoza", "r": "Aragón", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "5 km", "x": [], "t": "La organiza la A.D. Jerónimo Zurita, con salida y meta en el Coso. En 2025 cumplió 20 años con unos 5.000 corredores y agotó las inscripciones semanas antes. Hora de 2025.", "h": "18:00"},
+  {"n": "Sant Silvestre Ciutat de Castelló", "c": "Castellón de la Plana", "r": "Comunidad Valenciana", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "5 km", "x": [], "t": "La organiza la Unió Atlètica de Castelló, con salida en el Paseo Ribalta. En 2025 se celebró su XXXIII edición; la inscripción costaba 8 € (10 € el mismo día). Hora de 2025.", "h": "18:00"},
+  {"n": "TotalEnergies San Silvestre Gijón", "c": "Gijón", "r": "Asturias", "d": "2026-12-31", "ok": false, "k": "SS", "dist": "6 km", "x": [], "t": "La organizan el Patronato Deportivo Municipal y la A.D. Gijón Atletismo. En 2025 (56.ª edición) la absoluta salió a las 17:00, con 5.400 plazas a 6 €.", "w": "https://www.sansilvestregijon.es/"}
+];
+
+/* Marcas de la última edición disputada. ed: etiqueta, od: fecha para ordenar, h/f: [nombre, país, tiempo], p: participación y notas */
+var MARCAS = {
+  "Hyundai Mitja Marató Barcelona": {ed:"15 feb 2026", od:"2026-02-15", h:["Hagos Gebrhiwet","ETH","58:05"], f:["Loice Chemnung","KEN","1:04:01"], p:"La marca masculina fue la mejor del mundo en 2026 hasta esa fecha, con más de un minuto de ventaja. Chemnung fijó nuevo récord de la carrera, y Weini Kelati (EE. UU.) fue segunda en 1:06:04 y batió el récord de su país por cinco segundos."},
+  "Mitja Marató Internacional Vila de Santa Pola": {ed:"18 ene 2026", od:"2026-01-18", h:["Brian Kibor","","1:00:49"], f:["Daisilah Jerono","","1:07:27"], p:"Unos 8.000 corredores. La edición estrenó una prueba de 10 km, que ganaron Jacob Krop (27:45) y Clare Chemtai Ndwia (31:31)."},
+  "TotalEnergies Medio Maratón de Málaga": {ed:"15 mar 2026", od:"2026-03-15", h:["Vincent Kipkorir","KEN","59:30"], f:["Esther Chebet","UGA","1:06:33"], p:"Cerca de 12.000 inscritos. En 2025, con el recorrido nuevo, ganaron Gilbert Kipkosgei Kiprotich (58:27) y Loice Chemnung (1:05:46)."},
+  "Movistar Madrid Medio Maratón": {ed:"22 mar 2026", od:"2026-03-22", h:["Levy Kibet Chematot","","1:00:50"], f:["Ludwina Chepngetich","","1:08:31"], p:"Marcas de la edición de 2026, con unos 28.000 inscritos según la organización. No he podido comprobar los récords."},
+  "Medio Maratón Valencia Trinidad Alfonso": {ed:"25 oct 2026", od:"2026-10-25", h:["Rodrigue Kwizera","ESP","58:03"], f:["Sheila Chepkirui","KEN","1:03:51"], p:"25.733 finalistas. Según la crónica de Carreras de Montaña, Kwizera mejoró el récord de España (59:39 de Carlos Mayo en 2023), aunque no se reconocerá como récord europeo. Chepkirui firmó la mejor marca mundial femenina de 2026 hasta esa fecha, por un segundo sobre Diana Wanza."},
+  "Medio Maratón de Sevilla": {ed:"26 ene 2025", od:"2025-01-26", h:["Vinicent Nyamongo Nyageo","KEN","59:33"], f:["Rebecca Chelangat","UGA","1:07:18"], p:"Edición de 2025 (la de 2026 se corre en diciembre). 17.000 inscritos, un récord de participación, en un circuito llano con unos 5 m de desnivel."},
+  "Media Maratón de Vitoria-Gasteiz": {ed:"2025 (47.ª edición)", od:"2025-12-01", h:["Urko Herrán","","1:06:58"], f:["Fernanda Fleischmann","","1:18:42"], p:"Corrieron 4.163 atletas y la participación femenina llegó a un récord del 22,1 %."},
+  "Media Maratón de León": {ed:"22 mar 2026", od:"2026-03-22", p:"Unos 3.000 corredores en los 21 km (3.470 con los 5 km), un récord de participación que supera los 2.180 de 2012. No he encontrado los ganadores ni los tiempos."}
+};
+MARCAS["Maratón Valencia Trinidad Alfonso"] = {ed:"7 dic 2025", od:"2025-12-07", h:["John Korir","KEN","2:02:24"], f:["Joyciline Jepkosgei","KEN","2:14:00"], p:"30.777 finalistas, la primera vez que supera los 30.000. Korir quedó a ocho segundos de la mejor marca mundial del año y Jepkosgei firmó la mejor marca mundial femenina de 2025. Amanal Petros fue segundo (2:04:03, récord de Alemania) y Suguru Osako cuarto (2:04:55, récord de Japón)."};
+MARCAS["Generali Maratón Málaga"] = {ed:"2025 (XV edición)", od:"2025-11-01", h:["Mande Bushendich","UGA","2:06:07"], f:["Misgane Alemayehu Wolteji","ETH","2:24:43"], p:"La edición más rápida de su historia: Bushendich rebajó el récord de la prueba en 1:32 y Alemayehu, en siete segundos. El mejor español fue Dani Mateo (2:13:14), su mejor marca en esta carrera. En la media ganaron Nabil Chahboun (1:07:58) y Laura Massik (1:16:36). No he encontrado el día exacto."};
+MARCAS["Zurich Marató de Barcelona"] = {ed:"15 mar 2026", od:"2026-03-15", f:["Fotyen Tesfay Haiylu","","2:10:53"], p:"No he encontrado el ganador masculino de 2026. La marca de Tesfay Haiylu, según la prensa catalana, es récord del circuito femenino. El récord masculino del circuito es de Tesfaye Deriba (2:04:13) en 2025."};
+var KN = { "21K": "media maraton 21k", "42K": "maraton 42k", "10K": "10k 10 km", "TR": "trail montana ultra", "SS": "san silvestre nochevieja fin de ano" };
+R.forEach(function (r) { r.k = r.k || "21K"; r.dist = r.dist || "21,1 km"; r.m = MARCAS[r.n] || null; });
+
+
+/* Mapa: contornos proyectados (Natural Earth vía world-atlas) y posición de cada ciudad */
+var MAP = {"W":600,"H":560,"MB":456,"spain":"M471,294L470,295L467,294L463,295L462,292L463,291L463,289L466,292L471,293ZM533,228L537,230L541,228L544,228L546,229L547,232L545,236L543,240L541,245L539,250L535,253L532,255L524,252L520,251L519,250L517,245L515,243L512,243L510,244L507,247L505,244L502,244L501,242L501,240L518,226L522,222L533,218L535,218L533,221L535,222L535,224L533,225ZM582,221L581,222L567,217L563,216L562,215L562,212L562,211L571,209L578,211L582,217L582,218ZM463,281L462,284L456,284L454,282L455,278L457,278L457,275L459,272L468,269L470,271L471,274L466,280ZM319,37L319,39L321,42L323,43L326,44L329,44L332,45L335,46L335,48L334,51L333,54L332,56L333,57L334,57L336,58L337,57L337,56L339,54L340,55L340,56L345,58L355,62L358,62L362,62L363,64L369,70L371,69L373,69L377,69L379,68L381,68L382,69L384,70L387,72L390,74L391,75L401,73L403,74L406,74L408,74L414,74L419,74L419,73L419,68L420,66L421,65L424,65L434,68L438,70L442,71L446,71L448,72L452,77L451,80L451,81L452,83L452,85L453,86L454,86L456,86L458,85L462,82L463,82L470,84L473,86L474,87L475,89L477,89L480,87L484,85L491,86L499,88L502,88L502,87L503,85L504,85L506,84L509,83L512,81L515,80L518,81L523,82L525,82L526,85L528,86L529,89L526,91L524,92L524,97L525,98L527,99L527,101L529,109L525,113L519,119L492,138L485,146L483,148L462,155L447,161L440,163L431,173L427,177L431,178L435,182L433,184L428,188L425,189L424,188L423,189L414,206L405,218L401,223L396,231L386,251L386,257L392,276L395,281L400,285L408,289L410,292L408,296L400,302L386,311L380,318L379,324L375,327L373,336L371,342L371,344L368,349L368,352L372,356L370,358L368,359L363,360L346,361L332,371L325,379L320,395L312,405L309,407L303,403L297,402L290,404L287,407L282,409L277,407L266,406L261,407L253,409L247,407L236,407L212,408L209,410L206,413L198,420L186,420L176,424L173,427L168,435L167,440L166,440L165,439L163,439L162,444L158,445L155,446L147,442L140,437L137,437L131,428L129,423L127,417L127,415L127,414L122,411L121,406L125,400L128,397L130,396L125,396L122,400L118,393L101,379L102,377L102,375L99,378L97,379L88,378L78,379L76,365L75,360L74,357L77,349L80,346L85,339L89,334L94,333L97,332L99,328L100,324L99,324L93,324L84,309L84,306L85,303L87,298L87,295L90,292L94,289L97,284L99,280L100,276L98,273L93,271L87,260L86,253L85,252L82,249L79,243L78,242L82,241L96,241L99,240L100,240L102,235L105,228L106,223L105,221L101,216L101,215L102,212L104,210L108,208L111,205L110,203L109,201L109,200L110,197L110,190L111,188L110,181L110,176L107,168L108,167L109,165L113,163L117,157L123,152L130,149L134,144L136,141L138,140L137,139L137,136L134,134L131,133L127,132L124,132L124,130L124,125L124,121L123,119L122,117L118,117L115,116L113,115L111,116L105,116L102,115L100,114L99,114L98,115L98,117L97,119L95,120L89,122L85,121L81,120L79,119L77,118L69,119L68,118L65,119L60,121L58,121L57,121L57,120L55,117L56,115L60,110L59,109L58,107L57,105L57,103L54,103L52,104L43,106L41,107L37,109L33,113L30,113L29,112L29,103L34,98L37,95L36,94L32,94L33,91L34,90L36,87L34,85L33,83L33,78L34,76L34,74L26,77L24,76L25,72L29,67L29,65L25,64L22,61L20,58L18,54L18,51L21,44L24,41L27,40L33,35L42,37L47,36L52,34L55,33L59,31L59,28L58,25L59,23L64,21L69,17L76,17L82,14L86,16L90,16L94,18L99,24L107,27L114,25L125,25L131,26L141,25L147,26L156,23L163,27L177,29L186,32L209,37L218,37L230,35L235,33L239,34L246,32L249,32L254,35L269,40L273,36L276,35L286,37L297,42L303,42L311,41L318,38Z","can":"M141,514L138,524L135,528L133,529L128,530L123,524L120,517L118,515L121,514L124,514L132,513L134,512L142,506L149,505L150,507ZM245,489L242,492L239,491L240,484L242,482L247,479L252,478L253,475L254,474L256,476L255,478L254,484L251,487ZM226,523L221,528L215,527L214,526L220,525L225,521L228,512L233,502L234,498L235,497L238,497L239,497L241,499L241,504L239,512L237,519ZM178,524L178,528L179,531L179,536L177,539L172,542L168,542L166,541L162,536L162,531L165,528L167,524L176,525L177,524L178,524ZM107,530L105,530L103,529L102,525L103,522L104,521L106,521L109,523L110,525L110,527ZM79,539L75,546L70,543L69,542L68,541L73,540L77,537ZM82,508L81,508L80,505L75,496L78,492L83,492L85,495L86,497L85,499L85,502L85,504Z","neigh":"M0,254L1,252L4,251L9,245L16,230L24,214L24,212L22,210L23,206L29,187L30,184L33,179L34,170L35,164L35,160L34,157L32,149L30,134L30,129L33,126L29,126L28,122L28,119L33,113L37,109L41,107L43,106L52,104L54,103L57,103L57,105L58,107L59,109L60,110L56,115L55,117L57,120L57,121L58,121L60,121L65,119L68,118L69,119L77,118L79,119L81,120L85,121L89,122L95,120L97,119L98,117L98,115L99,114L100,114L102,115L105,116L111,116L113,115L115,116L118,117L122,117L123,119L124,121L124,125L124,130L124,132L127,132L131,133L134,134L137,136L137,139L138,140L136,141L134,144L130,149L123,152L117,157L113,163L109,165L108,167L107,168L110,176L110,181L111,188L110,190L110,197L109,200L109,201L110,203L111,205L108,208L104,210L102,212L101,215L101,216L105,221L106,223L105,228L102,235L100,240L99,240L96,241L82,241L78,242L79,243L82,249L85,252L86,253L87,260L93,271L98,273L100,276L99,280L97,284L94,289L90,292L87,295L87,298L85,303L84,306L84,309L93,324L99,324L100,324L99,328L97,332L94,333L89,334L85,339L80,346L77,349L74,357L75,360L76,365L78,379L74,380L58,388L54,388L45,384L30,381L25,380L19,382L14,382L10,385L7,384L11,377L16,362L17,353L18,346L18,338L15,333L19,321L19,314L17,306L26,308L23,304L21,302L18,302L16,302L8,305L4,306L2,305L3,300L2,293L5,292L9,292L12,289L14,286L13,280L16,275L23,271L19,272L16,274L9,284L7,289L2,290L0,290L0,254ZM157,456L159,455L165,452L170,453L168,456L157,456ZM600,24L598,24L596,24L595,21L595,19L592,21L589,21L588,22L587,23L585,22L584,23L585,24L581,25L578,24L569,22L568,21L561,20L559,19L556,16L555,15L554,15L548,17L547,20L544,23L524,39L520,46L516,55L516,60L519,73L524,80L525,82L523,82L518,81L515,80L512,81L509,83L506,84L504,85L503,85L502,87L502,88L499,88L491,86L484,85L480,87L477,89L475,89L474,87L473,86L470,84L463,82L463,81L464,79L464,78L463,76L457,75L454,75L453,76L452,77L448,72L446,71L442,71L438,70L434,68L424,65L421,65L420,66L419,68L419,73L419,74L414,74L408,74L406,74L403,74L401,73L391,75L390,74L387,72L384,70L382,69L381,68L379,68L377,69L373,69L371,69L369,70L363,64L362,62L358,62L355,62L345,58L340,56L340,55L339,54L337,56L337,57L336,58L334,57L333,57L332,56L333,54L334,51L335,48L335,46L332,45L329,44L326,44L323,43L321,42L319,39L319,37L326,35L331,28L336,3L337,0L600,0ZM463,82L462,82L458,85L456,86L454,86L453,86L452,85L452,83L451,81L451,80L452,77L453,76L454,75L457,75L463,76L464,78L464,79L463,81Z","cities":{"Alicante":[382, 316],"Cádiz":[126, 417],"Salamanca":[160, 172],"Logroño":[294, 90],"A Coruña":[52, 35],"Oviedo":[156, 39],"Burgos":[242, 97],"Albacete":[321, 282],"Cáceres":[128, 254],"Santander":[238, 35],"Santiago de Compostela":[45, 62],"Vigo":[36, 96],"Pamplona":[326, 70],"San Cristóbal de La Laguna":[142, 509],"Zaragoza":[359, 134],"Gijón":[163, 30],"Adeje":[125,525],"Alcoi":[381,297],"Alcoy":[381,297],"Alquézar":[393,104],"Bagà":[470,95],"Barcelona":[486,143],"Bausen":[422,66],"Benasque":[415,79],"Bilbao":[273,46],"Canovelles":[490,129],"Castellón de la Plana":[397,225],"Cazorla":[272,342],"Chulilla":[362,244],"Collbató":[471,133],"Córdoba":[194,343],"Eivissa":[463,282],"El Hierro":[78,539],"Es Capdellà":[505,242],"Eslida":[386,231],"Fuencaliente":[81,508],"Granada":[246,383],"Granollers":[490,130],"Huelva":[98,376],"Ibiza":[463,282],"Jaén":[238,350],"Lanzarote":[251,486],"Laredo":[254,38],"Las Palmas de Gran Canaria":[177,525],"León":[166,82],"Madrid":[242,204],"Murcia":[354,337],"Málaga":[209,408],"Palma":[513,242],"Ribes de Freser":[483,92],"Roses":[524,91],"San Sebastián":[312,42],"Sant Josep de sa Talaia":[457,281],"Santa Cruz de Campezo":[297,78],"Santa Cruz de Tenerife":[144,510],"Santa Pola":[379,325],"Sevilla":[141,370],"Sobrescobio":[171,50],"Soria":[293,129],"Sóller":[515,231],"Toledo":[228,234],"Torremolinos":[206,414],"Valencia":[384,254],"Vall de Boí":[426,82],"Vall de Núria":[482,87],"Valladolid":[200,135],"Vielha e Mijaran":[426,73],"Vistabella del Maestrazgo":[386,208],"Vitoria-Gasteiz":[284,69],"Zeanuri":[281,55],"Zegama":[299,61]}};
+var mapSel = null;
+function escH(t) { return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function mapGroups(list) {
+  var groups = {}, order = [];
+  list.forEach(function (r) {
+    var xy = MAP.cities[r.c]; if (!xy) return;
+    var key = xy[0] + "," + xy[1];
+    if (!groups[key]) { groups[key] = { xy: xy, races: [], names: [] }; order.push(key); }
+    groups[key].races.push(r);
+    if (groups[key].names.indexOf(r.c) === -1) groups[key].names.push(r.c);
+  });
+  order.sort(function (a, b) { return groups[b].races.length - groups[a].races.length; });
+  return { groups: groups, order: order };
+}
+function renderMap(list) {
+  var m = mapGroups(list), g = m.groups;
+  if (mapSel && !g[mapSel]) mapSel = null;
+  var svg = '<path class="nb" d="' + MAP.neigh + '"/><path class="es" d="' + MAP.spain + '"/>' +
+    '<rect class="frame" x="14" y="' + (MAP.MB + 6) + '" width="300" height="' + (MAP.H - MAP.MB - 12) + '" rx="6"/>' +
+    '<text class="flabel" x="24" y="' + (MAP.MB + 22) + '">Islas Canarias</text><path class="es" d="' + MAP.can + '"/>';
+  m.order.forEach(function (k) {
+    var gr = g[k], n = gr.races.length, rad = (5 + Math.sqrt(n) * 3).toFixed(1);
+    var label = gr.names.join(" / ") + ": " + n + (n === 1 ? " carrera" : " carreras");
+    svg += '<g class="dot' + (k === mapSel ? " sel" : "") + '" data-k="' + k + '" tabindex="0" role="button" aria-label="' + escH(label) + '"><title>' + escH(label) + '</title>' +
+      '<circle cx="' + gr.xy[0] + '" cy="' + gr.xy[1] + '" r="' + rad + '"/>' +
+      (n > 1 ? '<text x="' + gr.xy[0] + '" y="' + gr.xy[1] + '" text-anchor="middle" dominant-baseline="central">' + n + '</text>' : '') + '</g>';
+  });
+  $("map").innerHTML = svg;
+  $("mapcount").textContent = m.order.length + (m.order.length === 1 ? " lugar" : " lugares") + " · " + list.length + (list.length === 1 ? " carrera" : " carreras") + " con los filtros actuales";
+  var p = $("mappanel");
+  if (!mapSel) {
+    p.innerHTML = '<h3>Elige un punto</h3><p>Toca una ciudad del mapa para ver sus carreras. Cuanto más grande el punto, más carreras hay. Los filtros de arriba también se aplican al mapa.</p>';
+    return;
+  }
+  var sel = g[mapSel];
+  p.innerHTML = '<h3>' + escH(sel.names.join(" / ")) + '</h3><ul>' + sel.races.map(function (r) {
+    return '<li><button type="button" data-go="' + r.id + '"><span>' + escH(r.n) + '</span><span class="when">' + r.date.getDate() + ' ' + MES_C[r.date.getMonth()] + ' ' + r.date.getFullYear() + ' · ' + escH(r.dist) + '</span></button></li>';
+  }).join("") + '</ul>';
+}
+function pickDot(el) {
+  var k = el.getAttribute("data-k");
+  mapSel = mapSel === k ? null : k;
+  render();
+  var again = document.querySelector('#map .dot[data-k="' + k + '"]');
+  if (again && again.focus) again.focus();
+}
+
+var DIAS = ["dom","lun","mar","mié","jue","vie","sáb"];
+var MES_C = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var MES_L = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+var DIAS_L = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" class="star"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.6l6.1-.8z"/></svg>';
+var DIST = 21.0975;
+
+function $(id) { return document.getElementById(id); }
+function slug(r) { return r.slug || (r.slug = norm(r.n).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")); }
+function base() { return location.href.split("#")[0]; }
+function raceUrl(r) { return base() + "#" + slug(r); }
+function waLink(r) { return "https://wa.me/?text=" + encodeURIComponent(r.n + " · " + fdate(r.date) + " · " + r.c + "\n" + raceUrl(r)); }
+function setHash(r) { try { history.replaceState(null, "", r ? "#" + slug(r) : location.pathname + location.search); } catch (e) {} }
+function flash(btn, msg) {
+  var old = btn.textContent; btn.textContent = msg;
+  setTimeout(function () { if (btn.isConnected) btn.textContent = old; }, 1800);
+}
+function copyText(t, btn) {
+  function fallback() {
+    var ta = document.createElement("textarea"); ta.value = t; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+    ta.remove(); flash(btn, ok ? "Enlace copiado" : "No se pudo copiar");
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { flash(btn, "Enlace copiado"); }, fallback);
+  else fallback();
+}
+function shareRace(r, btn) {
+  var text = r.n + " · " + fdate(r.date) + " · " + r.c;
+  if (navigator.share) { navigator.share({ title: r.n, text: text, url: raceUrl(r) }).catch(function () {}); return; }
+  copyText(raceUrl(r), btn);
+}
+function p2(n) { return (n < 10 ? "0" : "") + n; }
+function ymd(d) { return d.getFullYear() + p2(d.getMonth() + 1) + p2(d.getDate()); }
+function icsEsc(t) { return String(t).replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\n/g, "\\n"); }
+function fold(line) { var out = []; while (line.length > 60) { out.push(line.slice(0, 60)); line = " " + line.slice(60); } out.push(line); return out.join("\r\n"); }
+function downloadIcs(list, filename) {
+  if (!list.length) return;
+  var n = new Date();
+  var stamp = n.getUTCFullYear() + p2(n.getUTCMonth() + 1) + p2(n.getUTCDate()) + "T" + p2(n.getUTCHours()) + p2(n.getUTCMinutes()) + p2(n.getUTCSeconds()) + "Z";
+  var L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Runiverso//ES", "CALSCALE:GREGORIAN"];
+  list.forEach(function (r) {
+    var end = new Date(r.date.getFullYear(), r.date.getMonth(), r.date.getDate() + 1);
+    var desc = r.dist + " · " + r.c + (r.ok ? "" : ". Fecha provisional: confirma en la web oficial.") + (r.w ? "\n" + r.w : "") + "\n" + raceUrl(r);
+    L.push("BEGIN:VEVENT", "UID:" + slug(r) + "-" + r.d + "@carreras-de-espana", "DTSTAMP:" + stamp,
+      "DTSTART;VALUE=DATE:" + ymd(r.date), "DTEND;VALUE=DATE:" + ymd(end),
+      "SUMMARY:" + icsEsc(r.n), "LOCATION:" + icsEsc(r.c + ", " + r.r), "DESCRIPTION:" + icsEsc(desc), "END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  var blob = new Blob([L.map(fold).join("\r\n") + "\r\n"], { type: "text/calendar;charset=utf-8" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+}
+function openFromHash() {
+  var h = ""; try { h = decodeURIComponent((location.hash || "").slice(1)); } catch (e) {}
+  if (!h) return;
+  var r = R.filter(function (x) { return slug(x) === h; })[0];
+  if (!r) return;
+  resetAll(); open[r.id] = true; render();
+  var el = document.querySelector('.head[data-open="' + r.id + '"]');
+  if (el && el.scrollIntoView) el.scrollIntoView({ block: "center" });
+}
+function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+function pd(s) { var p = s.split("-"); return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2])); }
+var now = new Date();
+var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+function daysTo(r) { return Math.round((r.date - today) / 86400000); }
+function cdText(n) {
+  if (n === 0) return "hoy";
+  if (n === 1) return "mañana";
+  if (n < 0) return "ya celebrada";
+  if (n < 60) return "en " + n + " días";
+  return "en " + Math.round(n / 30.4) + " meses";
+}
+function fdate(d) { return DIAS_L[d.getDay()] + " " + d.getDate() + " de " + MES_L[d.getMonth()].toLowerCase() + " de " + d.getFullYear(); }
+
+R.forEach(function (r, i) {
+  r.id = i; r.date = pd(r.d);
+  r.hay = norm([r.n, r.c, r.r, KN[r.k]].join(" "));
+});
+R.sort(function (a, b) { return a.date - b.date || a.n.localeCompare(b.n, "es"); });
+R.forEach(function (r, i) { r.id = i; });
+
+var favs = {};
+try { JSON.parse(localStorage.getItem("medias-espana-fav") || "[]").forEach(function (n) { favs[n] = true; }); } catch (e) {}
+function saveFavs() { try { localStorage.setItem("medias-espana-fav", JSON.stringify(Object.keys(favs))); } catch (e) {} }
+function favCount() { return R.filter(function (r) { return favs[r.n]; }).length; }
+
+var state = { q: "", reg: "", ok: false, fav: false, k: "" };
+var open = {};
+
+/* Cabecera dinámica */
+var upcoming = R.filter(function (r) { return daysTo(r) >= 0; });
+$("lead").textContent = upcoming.length + " pruebas entre medias maratones, maratones, 10K y trails, con su fecha, su estado y lo que se sabe de cada una. Marca tus favoritas, consulta las marcas de la última edición y calcula el ritmo que necesitas.";
+if (upcoming.length) {
+  var nx = upcoming[0];
+  $("next").innerHTML = '<span>Próxima:</span><b>' + nx.n + '</b><span>' + nx.c + ' · ' + fdate(nx.date) + ' · ' + cdText(daysTo(nx)) + '</span>';
+}
+
+/* Tipos de prueba */
+(function () {
+  var tipos = [["", "Todas"], ["21K", "Medias"], ["42K", "Maratones"], ["10K", "10K"], ["TR", "Trail"], ["SS", "San Silvestre"]];
+  var h = "";
+  tipos.forEach(function (p) {
+    var n = p[0] ? upcoming.filter(function (r) { return r.k === p[0]; }).length : upcoming.length;
+    h += '<button type="button" data-k="' + p[0] + '" aria-pressed="' + (p[0] === "") + '">' + p[1] + '<span class="n">' + n + '</span></button>';
+  });
+  $("kseg").innerHTML = h;
+})();
+$("kseg").addEventListener("click", function (e) {
+  var b = e.target.closest("button"); if (!b) return;
+  state.k = b.getAttribute("data-k"); render();
+});
+
+/* Comunidades */
+(function () {
+  var regs = {};
+  R.forEach(function (r) { regs[r.r] = (regs[r.r] || 0) + 1; });
+  var h = '<option value="">Todas las comunidades</option>';
+  Object.keys(regs).sort(function (a, b) { return a.localeCompare(b, "es"); }).forEach(function (k) { h += '<option value="' + k + '">' + k + ' (' + regs[k] + ')</option>'; });
+  $("reg").innerHTML = h;
+})();
+
+function matches(r) {
+  if (daysTo(r) < 0) return false;
+  if (state.reg && r.r !== state.reg) return false;
+  if (state.k && r.k !== state.k) return false;
+  if (state.ok && !r.ok) return false;
+  if (state.fav && !favs[r.n]) return false;
+  if (state.q) {
+    var w = norm(state.q).split(/\s+/).filter(Boolean);
+    for (var i = 0; i < w.length; i++) if (r.hay.indexOf(w[i]) === -1) return false;
+  }
+  return true;
+}
+
+function rowHtml(r) {
+  var f = !!favs[r.n], o = !!open[r.id];
+  var det = "";
+  if (o) {
+    var mk = "";
+    if (r.m) {
+      mk = '<div class="marks"><b>Última edición · ' + r.m.ed + '</b>';
+      [["Hombres", r.m.h], ["Mujeres", r.m.f]].forEach(function (p) {
+        if (p[1]) mk += '<div class="mline"><span>' + p[0] + '</span><span>' + p[1][0] + (p[1][1] ? " (" + p[1][1] + ")" : "") + '</span><span class="tm">' + p[1][2] + '</span></div>';
+      });
+      if (r.m.p) mk += '<p>' + r.m.p + '</p>';
+      mk += '</div>';
+    }
+    det = '<div class="detail" id="d' + r.id + '"><p>' + r.t + '</p>' + (r.h ? '<p><b>Hora de salida:</b> ' + r.h + '</p>' : '') + mk +
+      (r.x.length ? '<p><b>' + (r.k === "TR" ? "Distancias:" : "También en el evento:") + '</b> ' + r.x.join(", ") + '</p>' : '') +
+      '<p>' + (r.ok ? 'Fecha confirmada por la web o la prensa de la prueba.' : 'Fecha provisional: puede cambiar hasta que la organización la publique.') + '</p>' +
+      '<div class="acts">' + (KM[r.k] ? '<button type="button" class="btn" data-plan="' + r.id + '">Calcular mi ritmo</button>' : '') +
+      '<button type="button" class="btn alt" data-ics="' + r.id + '">Añadir al calendario</button><button type="button" class="btn alt" data-share="' + r.id + '">Compartir</button><a class="btn alt" href="' + waLink(r) + '" target="_blank" rel="noopener">WhatsApp</a>' +
+      (r.w ? '<a class="btn alt" href="' + r.w + '" target="_blank" rel="noopener">Web oficial</a>' : '') + (PAGES[slug(r)] ? '<a class="btn alt" href="carreras/' + slug(r) + '/">Ver ficha completa</a>' : '') + (r.k === "SS" ? '<a class="btn alt" href="san-silvestre-2026/#' + slug(r) + '">Ver en el especial</a>' : '') + '</div></div>';
+  }
+  return '<article class="row">' +
+    '<div class="bib ' + (r.ok ? "" : "prov") + '" aria-hidden="true"><span class="dow">' + DIAS[r.date.getDay()] + '</span><span class="day">' + r.date.getDate() + '</span><span class="mon">' + MES_C[r.date.getMonth()] + '</span></div>' +
+    '<button type="button" class="head" data-open="' + r.id + '" aria-expanded="' + o + '"' + (o ? ' aria-controls="d' + r.id + '"' : '') + '>' +
+    '<h3>' + r.n + '</h3>' +
+    '<span class="place">' + r.c + ' · ' + r.r + '</span>' +
+    '<span class="meta"><span class="pill">' + r.dist + '</span>' + (r.m ? '<span class="pill mk">Con marcas</span>' : '') + '<span class="st ' + (r.ok ? "ok" : "prov") + '">' + (r.ok ? "Fecha confirmada" : "Fecha provisional") + '</span><span class="cd">' + cdText(daysTo(r)) + '</span><span class="chev">' + (o ? "Ocultar ▲" : "Ver más ▼") + '</span></span>' +
+    '</button>' +
+    '<button type="button" class="fav" data-fav="' + r.id + '" aria-pressed="' + f + '" aria-label="' + (f ? "Quitar de favoritas: " : "Guardar como favorita: ") + r.n + '">' + STAR + '</button>' +
+    det + '</article>';
+}
+
+function render() {
+  var list = R.filter(matches);
+  renderMap(list);
+  var groups = [], last = "";
+  list.forEach(function (r) {
+    var key = r.date.getFullYear() + "-" + r.date.getMonth();
+    if (key !== last) { groups.push({ label: MES_L[r.date.getMonth()] + " " + r.date.getFullYear(), items: [] }); last = key; }
+    groups[groups.length - 1].items.push(r);
+  });
+  $("list").innerHTML = groups.map(function (g) {
+    return '<section class="month"><h2>' + g.label + ' <span>' + g.items.length + (g.items.length === 1 ? " carrera" : " carreras") + '</span></h2><div class="rows">' + g.items.map(rowHtml).join("") + '</div></section>';
+  }).join("");
+  $("list").hidden = !list.length;
+  $("empty").hidden = !!list.length;
+  var total = R.filter(function (r) { return daysTo(r) >= 0; }).length;
+  $("count").textContent = list.length === total ? "Mostrando las " + total + " próximas carreras" : "Mostrando " + list.length + " de " + total + " carreras";
+  var act = !!(state.q || state.reg || state.ok || state.fav || state.k);
+  $("reset").hidden = !act;
+  var fc = favCount();
+  $("tfav").innerHTML = STAR + " Mis favoritas (" + fc + ")";
+  $("tfav").setAttribute("aria-pressed", String(state.fav));
+  $("favics").hidden = fc === 0;
+  $("tok").setAttribute("aria-pressed", String(state.ok));
+  Array.prototype.forEach.call(document.querySelectorAll("#kseg button"), function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-k") === state.k)); });
+  if (!list.length) $("emptytxt").textContent = state.fav && fc === 0 ? "Aún no tienes favoritas. Pulsa la estrella de una carrera para guardarla." : "Prueba con otra ciudad o quita algún filtro.";
+}
+
+function resetAll() { state = { q: "", reg: "", ok: false, fav: false, k: "" }; $("q").value = ""; $("reg").value = ""; render(); }
+$("q").addEventListener("input", function (e) { state.q = e.target.value.trim(); render(); });
+$("reg").addEventListener("change", function (e) { state.reg = e.target.value; render(); });
+$("tok").addEventListener("click", function () { state.ok = !state.ok; render(); });
+$("tfav").addEventListener("click", function () { state.fav = !state.fav; render(); });
+$("map").addEventListener("click", function (e) { var d = e.target.closest(".dot"); if (d) pickDot(d); });
+$("map").addEventListener("keydown", function (e) {
+  var d = e.target.closest && e.target.closest(".dot");
+  if (d && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); pickDot(d); }
+});
+$("mappanel").addEventListener("click", function (e) {
+  var b = e.target.closest("[data-go]"); if (!b) return;
+  var i = Number(b.getAttribute("data-go"));
+  open[i] = true; render();
+  var h = document.querySelector('.head[data-open="' + i + '"]');
+  if (h) {
+    h.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+    if (h.focus) h.focus({ preventScroll: true });
+  }
+});
+$("reset").addEventListener("click", resetAll);
+$("favics").addEventListener("click", function () { downloadIcs(R.filter(function (r) { return favs[r.n]; }), "mis-carreras.ics"); });
+$("reset2").addEventListener("click", resetAll);
+
+$("list").addEventListener("click", function (e) {
+  var f = e.target.closest(".fav");
+  if (f) {
+    var id = Number(f.getAttribute("data-fav")), n = R[id].n;
+    if (favs[n]) delete favs[n]; else favs[n] = true;
+    saveFavs(); render(); fillRaceSel();
+    var again = document.querySelector('.fav[data-fav="' + id + '"]'); if (again) again.focus();
+    return;
+  }
+  var p = e.target.closest("[data-plan]");
+  if (p) {
+    var rid = Number(p.getAttribute("data-plan"));
+    $("craceSel").value = String(rid);
+    if (R[rid].k !== CK) setDist(R[rid].k);
+    calc();
+    $("calc").scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    return;
+  }
+  var ic = e.target.closest("[data-ics]");
+  if (ic) { var rr = R[Number(ic.getAttribute("data-ics"))]; downloadIcs([rr], slug(rr) + ".ics"); return; }
+  var sh = e.target.closest("[data-share]");
+  if (sh) { shareRace(R[Number(sh.getAttribute("data-share"))], sh); return; }
+  var h = e.target.closest(".head");
+  if (h) {
+    var i = Number(h.getAttribute("data-open"));
+    open[i] = !open[i]; render(); setHash(open[i] ? R[i] : null);
+    var again2 = document.querySelector('.head[data-open="' + i + '"]'); if (again2) again2.focus();
+  }
+});
+
+/* Calculadora */
+function fmt(sec) {
+  sec = Math.round(sec);
+  var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+  return (h ? h + ":" + (m < 10 ? "0" : "") + m : m) + ":" + (s < 10 ? "0" : "") + s;
+}
+function fillRaceSel() {
+  var cur = $("craceSel").value;
+  var h = '<option value="">Sin carrera concreta</option>';
+  R.filter(function (r) { return daysTo(r) >= 0 && KM[r.k]; }).forEach(function (r) {
+    h += '<option value="' + r.id + '">' + (favs[r.n] ? "★ " : "") + r.n + " · " + r.date.getDate() + " " + MES_C[r.date.getMonth()] + " " + r.date.getFullYear() + '</option>';
+  });
+  $("craceSel").innerHTML = h;
+  $("craceSel").value = cur;
+  if ($("craceSel").value !== cur) $("craceSel").value = "";
+}
+var PSETS = {
+  "10K": [[0,40],[0,45],[0,50],[0,55],[1,0],[1,10]],
+  "21K": [[1,30],[1,40],[1,50],[2,0],[2,15],[2,30]],
+  "42K": [[3,0],[3,30],[4,0],[4,30],[5,0],[5,30]]
+};
+var KM = { "10K": 10, "21K": 21.0975, "42K": 42.195 };
+var SPL = { "10K": [2.5, 5, 7.5], "21K": [5, 10, 15, 20], "42K": [10, 20, 30, 40] };
+var LBL = { "10K": "10 km", "21K": "21,0975 km", "42K": "42,195 km" };
+var CK = "21K";
+var PRESETS = PSETS[CK];
+function renderPresets() {
+  PRESETS = PSETS[CK];
+  $("presets").innerHTML = PRESETS.map(function (p, i) { return '<button type="button" data-p="' + i + '" aria-pressed="false">' + p[0] + ':' + (p[1] < 10 ? "0" : "") + p[1] + '</button>'; }).join("");
+}
+function setDist(k) { CK = k; DIST = KM[k]; $("cdist").value = k; renderPresets(); $("hh").value = PRESETS[2][0]; $("mm").value = PRESETS[2][1]; }
+(function () {
+  $("presets").innerHTML = PRESETS.map(function (p, i) { return '<button type="button" data-p="' + i + '" aria-pressed="false">' + p[0] + ':' + (p[1] < 10 ? "0" : "") + p[1] + '</button>'; }).join("");
+})();
+function calc() {
+  var h = Math.max(0, Math.min(7, parseInt($("hh").value, 10) || 0));
+  var m = Math.max(0, Math.min(59, parseInt($("mm").value, 10) || 0));
+  var T = h * 3600 + m * 60;
+  Array.prototype.forEach.call($("presets").children, function (b) {
+    var p = PRESETS[Number(b.getAttribute("data-p"))];
+    b.setAttribute("aria-pressed", String(p[0] === h && p[1] === m));
+  });
+  if (T < DIST * 150) { $("pace").textContent = "–"; $("speed").textContent = "–"; $("splits").innerHTML = '<tr><td colspan="2">Pon un tiempo realista para esta distancia.</td></tr>'; }
+  else {
+    var pace = T / DIST;
+    $("pace").textContent = fmt(pace);
+    $("speed").textContent = (3600 / pace).toFixed(1).replace(".", ",");
+    var rows = SPL[CK].map(function (k) { return '<tr><td>Km ' + String(k).replace(".", ",") + '</td><td class="m">' + fmt(pace * k) + '</td></tr>'; });
+    rows.push('<tr><td><b>Meta (' + LBL[CK] + ')</b></td><td class="m"><b>' + fmt(T) + '</b></td></tr>');
+    $("splits").innerHTML = rows.join("");
+  }
+  var id = $("craceSel").value;
+  if (id === "") $("wk").textContent = "Elige una carrera para ver cuánto falta.";
+  else {
+    var r = R[Number(id)], d = daysTo(r), w = Math.floor(d / 7), rest = d % 7;
+    $("wk").textContent = d < 0 ? "Esta carrera ya se celebró." : d === 0 ? "Es hoy." : "Faltan " + (w ? w + (w === 1 ? " semana" : " semanas") : "") + (w && rest ? " y " : "") + (rest ? rest + (rest === 1 ? " día" : " días") : "") + ".";
+  }
+}
+$("hh").addEventListener("input", calc);
+$("mm").addEventListener("input", calc);
+$("craceSel").addEventListener("change", function () {
+  var id = $("craceSel").value;
+  if (id !== "" && R[Number(id)].k !== CK) setDist(R[Number(id)].k);
+  calc();
+});
+$("cdist").addEventListener("change", function (e) { setDist(e.target.value); calc(); });
+$("presets").addEventListener("click", function (e) {
+  var b = e.target.closest("button"); if (!b) return;
+  var p = PRESETS[Number(b.getAttribute("data-p"))];
+  $("hh").value = p[0]; $("mm").value = p[1]; calc();
+});
+
+/* Tabla de marcas */
+function tsec(t) { var p = t.split(":").map(Number); return p.length === 3 ? p[0] * 3600 + p[1] * 60 + p[2] : p[0] * 60 + p[1]; }
+function mcell(p, km) {
+  if (!p) return '<span class="pc">Sin dato</span>';
+  return '<span class="tm">' + p[2] + '</span><span class="who">' + p[0] + (p[1] ? " (" + p[1] + ")" : "") + '</span><span class="pc">' + fmt(tsec(p[2]) / km) + ' min/km</span>';
+}
+function renderMarcas() {
+  var k = $("msort").value;
+  var tp = $("mtype").value;
+  var L = R.filter(function (r) { return r.m && r.k === tp; });
+  L.sort(function (a, b) {
+    if (k === "date") return pd(b.m.od) - pd(a.m.od);
+    var x = a.m[k] ? tsec(a.m[k][2]) : 1e9, y = b.m[k] ? tsec(b.m[k][2]) : 1e9;
+    return x - y;
+  });
+  $("mbody").innerHTML = L.map(function (r) {
+    return '<tr><td class="cn">' + r.n + '<span class="ce">' + r.c + ' · ' + r.m.ed + '</span></td><td>' + mcell(r.m.h, KM[r.k]) + '</td><td>' + mcell(r.m.f, KM[r.k]) + '</td></tr>';
+  }).join("");
+}
+$("msort").addEventListener("change", renderMarcas);
+$("mtype").addEventListener("change", renderMarcas);
+
+fillRaceSel();
+render();
+renderMarcas();
+calc();
+
+/* Datos estructurados para buscadores: solo carreras con fecha confirmada */
+(function () {
+  var ev = R.filter(function (r) { return r.ok && daysTo(r) >= 0; }).map(function (r) {
+    return { "@type": "SportsEvent", "name": r.n, "startDate": r.d, "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": { "@type": "Place", "name": r.c, "address": { "@type": "PostalAddress", "addressLocality": r.c, "addressCountry": "ES" } },
+      "url": r.w || undefined };
+  });
+  var sc = document.createElement("script");
+  sc.type = "application/ld+json";
+  sc.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": ev });
+  document.head.appendChild(sc);
+})();
+if (CONFIG.form) $("report").innerHTML = '<a href="' + CONFIG.form + '" target="_blank" rel="noopener">Avisar de un error</a>';
+else if (CONFIG.email) $("report").innerHTML = '<a href="mailto:' + CONFIG.email + '">Avisar de un error</a>';
+openFromHash();
+window.addEventListener("hashchange", openFromHash);
+</script>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "40ca04a8b7a9431abd85aeb6243e2c21"}'></script><!-- Cloudflare Pages Analytics --></body>
 </html>

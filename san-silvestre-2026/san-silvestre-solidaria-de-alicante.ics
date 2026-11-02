@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-solidaria-de-alicante-2026-12-26@carreras-
+ de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+SUMMARY:San Silvestre Solidaria de Alicante
+LOCATION:Alicante\, Comunidad Valenciana
+DESCRIPTION:4\,5 km · Alicante. Fecha provisional: confirma 
+ en la web oficial.\nhttps://runiverso.com/san-silvestre-202
+ 6/#san-silvestre-solidaria-de-alicante
+END:VEVENT
+END:VCALENDAR

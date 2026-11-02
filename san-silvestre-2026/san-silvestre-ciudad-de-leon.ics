@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-ciudad-de-leon-2026-12-27@carreras-de-espa
+ na
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261227
+DTEND;VALUE=DATE:20261228
+SUMMARY:San Silvestre Ciudad de León
+LOCATION:León\, Castilla y León
+DESCRIPTION:7 km · León\nhttps://www.sansilvestreleon.com\nh
+ ttps://runiverso.com/carreras/san-silvestre-ciudad-de-leon/
+END:VEVENT
+END:VCALENDAR

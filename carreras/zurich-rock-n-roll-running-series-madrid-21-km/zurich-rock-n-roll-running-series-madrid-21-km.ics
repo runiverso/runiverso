@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:zurich-rock-n-roll-running-series-madrid-21-km-2027-04-2
+ 5@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20270425
+DTEND;VALUE=DATE:20270426
+SUMMARY:Zurich Rock 'n' Roll Running Series Madrid (21 km)
+LOCATION:Madrid\, Comunidad de Madrid
+DESCRIPTION:21\,1 km · Madrid\nhttps://rocknrollmadridrun.co
+ m\nhttps://runiverso.com/carreras/zurich-rock-n-roll-runnin
+ g-series-madrid-21-km/
+END:VEVENT
+END:VCALENDAR

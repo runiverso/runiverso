@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:10k-valencia-ibercaja-2027-01-10@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20270110
+DTEND;VALUE=DATE:20270111
+SUMMARY:10K Valencia Ibercaja
+LOCATION:Valencia\, Comunidad Valenciana
+DESCRIPTION:10 km · Valencia\nhttps://10kvalencia.com\nhttps
+ ://runiverso.com/carreras/10k-valencia-ibercaja/
+END:VEVENT
+END:VCALENDAR

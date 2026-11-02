@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-salmantina-2026-12-27@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261227
+DTEND;VALUE=DATE:20261228
+SUMMARY:San Silvestre Salmantina
+LOCATION:Salamanca\, Castilla y León
+DESCRIPTION:10 km · Salamanca\nhttps://www.sansilvestresalma
+ ntina.com/\nhttps://runiverso.com/carreras/san-silvestre-sa
+ lmantina/
+END:VEVENT
+END:VCALENDAR

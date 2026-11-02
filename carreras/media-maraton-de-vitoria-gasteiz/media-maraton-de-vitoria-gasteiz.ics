@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-de-vitoria-gasteiz-2026-12-20@carreras-de-
+ espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
+SUMMARY:Media Maratón de Vitoria-Gasteiz
+LOCATION:Vitoria-Gasteiz\, País Vasco
+DESCRIPTION:21\,1 km · Vitoria-Gasteiz\nhttps://www.mediamar
+ atonvitoriagasteiz.com\nhttps://runiverso.com/carreras/medi
+ a-maraton-de-vitoria-gasteiz/
+END:VEVENT
+END:VCALENDAR

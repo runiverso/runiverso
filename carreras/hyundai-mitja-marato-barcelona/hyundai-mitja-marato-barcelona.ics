@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:hyundai-mitja-marato-barcelona-2027-02-14@carreras-de-es
+ pana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20270214
+DTEND;VALUE=DATE:20270215
+SUMMARY:Hyundai Mitja Marató Barcelona
+LOCATION:Barcelona\, Cataluña
+DESCRIPTION:21\,1 km · Barcelona\nhttps://www.mitjamarato.ba
+ rcelona/es/\nhttps://runiverso.com/carreras/hyundai-mitja-m
+ arato-barcelona/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-de-vigo-2026-12-31@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:San Silvestre de Vigo
+LOCATION:Vigo\, Galicia
+DESCRIPTION:4\,5 km · Vigo. Fecha provisional: confirma en l
+ a web oficial.\nhttps://runiverso.com/san-silvestre-2026/#s
+ an-silvestre-de-vigo
+END:VEVENT
+END:VCALENDAR

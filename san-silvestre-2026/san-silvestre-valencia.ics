@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-valencia-2026-12-30@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261230
+DTEND;VALUE=DATE:20261231
+SUMMARY:San Silvestre Valencia
+LOCATION:Valencia\, Comunidad Valenciana
+DESCRIPTION:5 km · Valencia. Fecha provisional: confirma en 
+ la web oficial.\nhttps://www.fdmvalencia.es/es/eventos/san-
+ silvestre-valencia-2026/\nhttps://runiverso.com/carreras/sa
+ n-silvestre-valencia/
+END:VEVENT
+END:VCALENDAR

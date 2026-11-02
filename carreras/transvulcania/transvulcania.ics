@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:transvulcania-2027-05-08@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20270508
+DTEND;VALUE=DATE:20270509
+SUMMARY:Transvulcania
+LOCATION:Fuencaliente\, Canarias
+DESCRIPTION:Trail · 73 km · Fuencaliente\nhttps://transvulca
+ nia.com\nhttps://runiverso.com/carreras/transvulcania/
+END:VEVENT
+END:VCALENDAR

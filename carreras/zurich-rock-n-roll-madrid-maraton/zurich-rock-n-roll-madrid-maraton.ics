@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:zurich-rock-n-roll-madrid-maraton-2027-04-25@carreras-de
+ -espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20270425
+DTEND;VALUE=DATE:20270426
+SUMMARY:Zurich Rock 'n' Roll Madrid Maratón
+LOCATION:Madrid\, Comunidad de Madrid
+DESCRIPTION:42\,2 km · Madrid\nhttps://rocknrollmadridrun.co
+ m\nhttps://runiverso.com/carreras/zurich-rock-n-roll-madrid
+ -maraton/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-ciudad-de-oviedo-2026-12-31@carreras-de-es
+ pana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:San Silvestre Ciudad de Oviedo
+LOCATION:Oviedo\, Asturias
+DESCRIPTION:5\,5 km · Oviedo. Fecha provisional: confirma en
+  la web oficial.\nhttps://sansilvestreciudaddeoviedo.com/\n
+ https://runiverso.com/carreras/san-silvestre-ciudad-de-ovie
+ do/
+END:VEVENT
+END:VCALENDAR

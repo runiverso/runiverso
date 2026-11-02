@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-san-silvestre-logronesa-2026-12-31@carreras-de-e
+ spana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:Carrera San Silvestre Logroñesa
+LOCATION:Logroño\, La Rioja
+DESCRIPTION:8\,8 km · Logroño. Fecha provisional: confirma e
+ n la web oficial.\nhttps://www.logronodeporte.es\nhttps://r
+ universo.com/carreras/carrera-san-silvestre-logronesa/
+END:VEVENT
+END:VCALENDAR

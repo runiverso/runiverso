@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-internacional-de-torremolinos-2027-02-07@c
+ arreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20270207
+DTEND;VALUE=DATE:20270208
+SUMMARY:Media Maratón Internacional de Torremolinos
+LOCATION:Torremolinos\, Andalucía
+DESCRIPTION:21\,1 km · Torremolinos\nhttps://deportes.torrem
+ olinos.es/sin-categoria/5694/\nhttps://runiverso.com/carrer
+ as/media-maraton-internacional-de-torremolinos/
+END:VEVENT
+END:VCALENDAR

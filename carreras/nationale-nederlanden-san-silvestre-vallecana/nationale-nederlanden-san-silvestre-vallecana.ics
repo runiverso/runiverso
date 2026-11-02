@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:nationale-nederlanden-san-silvestre-vallecana-2026-12-31
+ @carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:Nationale-Nederlanden San Silvestre Vallecana
+LOCATION:Madrid\, Comunidad de Madrid
+DESCRIPTION:10 km · Madrid\nhttps://sansilvestrevallecana.co
+ m/\nhttps://runiverso.com/carreras/nationale-nederlanden-sa
+ n-silvestre-vallecana/
+END:VEVENT
+END:VCALENDAR

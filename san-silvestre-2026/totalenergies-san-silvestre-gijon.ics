@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:totalenergies-san-silvestre-gijon-2026-12-31@carreras-de
+ -espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:TotalEnergies San Silvestre Gijón
+LOCATION:Gijón\, Asturias
+DESCRIPTION:6 km · Gijón. Fecha provisional: confirma en la 
+ web oficial.\nhttps://www.sansilvestregijon.es/\nhttps://ru
+ niverso.com/carreras/totalenergies-san-silvestre-gijon/
+END:VEVENT
+END:VCALENDAR

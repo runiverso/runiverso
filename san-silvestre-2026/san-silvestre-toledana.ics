@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-toledana-2026-12-31@carreras-de-espana
+DTSTAMP:20261029T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:San Silvestre Toledana
+LOCATION:Toledo\, Castilla-La Mancha
+DESCRIPTION:8 km · Toledo\nhttps://sansilvestretoledana.es/\
+ nhttps://runiverso.com/carreras/san-silvestre-toledana/
+END:VEVENT
+END:VCALENDAR
