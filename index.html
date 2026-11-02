@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Runiverso · Carreras de running en España</title>
+<meta name="description" content="Calendario de carreras de running en España: medias maratones, maratones, 10K y trail, con fechas, mapa, marcas de la última edición y calculadora de ritmo.">
+<meta name="theme-color" content="#0E1630">
+<meta property="og:title" content="Runiverso · Carreras de running en España">
+<meta property="og:description" content="Medias, maratones, 10K y trail en España: fechas, mapa, marcas y calculadora de ritmo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runiverso.com/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-in">
+    <a class="logo" href="#top" aria-label="Runiverso, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" class="ring"/><path d="M9 21c3-7 7-10 14-11" class="arc"/><circle cx="23" cy="10" r="2.6" class="dot"/></svg>
+      <span>runiverso</span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#calendario">Calendario</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#marcas">Marcas</a>
+      <a href="#ritmo">Ritmo</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-in">
+    <span class="kicker">Calendario de running · España</span>
+    <p class="nums" aria-hidden="true">10·21·42<small>km</small></p>
+    <h1>Todas las carreras de running de España, en un solo sitio.</h1>
+    <p class="lead" id="lead"></p>
+    <div class="next" id="next"></div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <section class="tools" id="calendario" aria-label="Filtros">
+    <div class="seg" id="kseg" role="group" aria-label="Tipo de prueba"></div>
+    <div class="trow">
+      <label class="sr" for="q">Buscar carrera o ciudad</label>
+      <input id="q" class="input" type="search" placeholder="Buscar carrera, ciudad o comunidad" autocomplete="off">
+      <label class="sr" for="reg">Comunidad autónoma</label>
+      <select id="reg" class="input"><option value="">Toda España</option></select>
+    </div>
+    <div class="status">
+      <button type="button" class="tog" id="tok" aria-pressed="false">Solo fecha confirmada</button>
+      <button type="button" class="tog" id="tfav" aria-pressed="false"></button>
+      <span id="count" aria-live="polite"></span>
+      <button type="button" class="link" id="reset" hidden>Quitar filtros</button>
+    </div>
+  </section>
+
+  <main>
+    <div class="list" id="list"></div>
+    <div class="empty" id="empty" hidden>
+      <strong>Ninguna carrera coincide</strong>
+      <span>Prueba con otra búsqueda o quita algún filtro.</span>
+      <button type="button" class="btn" id="reset2">Quitar filtros</button>
+    </div>
+  </main>
+
+  <section class="card" id="mapa" aria-labelledby="maptitle">
+    <div class="shead">
+      <h2 id="maptitle">Mapa de carreras</h2>
+      <p class="sub" id="mapcount"></p>
+    </div>
+    <div class="mapgrid">
+      <div class="mapbox"><svg id="map" viewBox="0 0 600 560" role="group" aria-labelledby="maptitle"></svg></div>
+      <div class="mappanel" id="mappanel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="card" id="marcas" aria-labelledby="mtitle">
+    <div class="mhead">
+      <div class="shead">
+        <h2 id="mtitle">Marcas de la última edición</h2>
+        <p class="sub">Ganadores y tiempos de la edición más reciente de cada prueba, con su ritmo por kilómetro.</p>
+      </div>
+      <div class="mctl">
+        <label for="mtype">Distancia</label>
+        <select id="mtype" class="input"><option value="21K">Media maratón</option><option value="42K">Maratón</option></select>
+        <label for="msort">Ordenar por</label>
+        <select id="msort" class="input">
+          <option value="date">Edición más reciente</option>
+          <option value="h">Marca masculina más rápida</option>
+          <option value="f">Marca femenina más rápida</option>
+        </select>
+      </div>
+    </div>
+    <div class="scroll"><table class="mtable">
+      <thead><tr><th>Carrera</th><th>Hombres</th><th>Mujeres</th></tr></thead>
+      <tbody id="mbody"></tbody>
+    </table></div>
+  </section>
+
+  <section class="card" id="ritmo" aria-labelledby="ctitle">
+    <div class="shead">
+      <h2 id="ctitle">Calculadora de ritmo</h2>
+      <p class="sub">Elige distancia y tiempo objetivo: te decimos a qué ritmo correr y qué parciales tocan.</p>
+    </div>
+    <div class="cgrid">
+      <div class="field">
+        <label for="cdist">Distancia</label>
+        <select id="cdist" class="input">
+          <option value="10">10 km</option>
+          <option value="21.0975" selected>Media maratón (21,0975 km)</option>
+          <option value="42.195">Maratón (42,195 km)</option>
+        </select>
+        <div class="presets" id="presets"></div>
+      </div>
+      <div class="field">
+        <span class="lab" id="tlab">Tiempo objetivo</span>
+        <div class="time" role="group" aria-labelledby="tlab">
+          <input id="hh" type="number" inputmode="numeric" min="0" max="7" value="1" aria-label="Horas"><span>h</span>
+          <input id="mm" type="number" inputmode="numeric" min="0" max="59" value="55" aria-label="Minutos"><span>min</span>
+          <input id="ss" type="number" inputmode="numeric" min="0" max="59" value="0" aria-label="Segundos"><span>s</span>
+        </div>
+        <div class="res" aria-live="polite">
+          <div><b id="pace">–</b><small>min/km</small></div>
+          <div><b id="speed">–</b><small>km/h</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll">
+      <table class="splits">
+        <thead><tr><th>Punto</th><th>Tiempo a ritmo constante</th></tr></thead>
+        <tbody id="splits"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="foot-top">
+      <a class="logo" href="#top" aria-label="Runiverso, volver arriba">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" class="ring"/><path d="M9 21c3-7 7-10 14-11" class="arc"/><circle cx="23" cy="10" r="2.6" class="dot"/></svg>
+        <span>runiverso</span>
+      </a>
+      <div class="social">
+        <a href="https://www.tiktok.com/@runiverso_" rel="noopener" target="_blank">TikTok @runiverso_</a>
+        <span>Canal de WhatsApp «Runiverso»</span>
+      </div>
+    </div>
+    <p class="fine">Las fechas provisionales vienen de calendarios de terceros y pueden cambiar. Antes de inscribirte, comprueba la fecha, el precio y los plazos en la web oficial de cada prueba: las cuotas suben por tramos y algunas se agotan en horas. La lista no es exhaustiva y se amplía poco a poco.</p>
+    <details class="src">
+      <summary>Fuentes consultadas</summary>
+      <div class="srclist" id="srclist"></div>
+    </details>
+    <p class="copy">© <span id="yr"></span> Runiverso · runiverso.com</p>
+  </footer>
+
+</div>
+
+<script src="data.js"></script>
+<script src="sources.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
