@@ -217,3 +217,16 @@ th { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.08em; color
 .srclist { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; }
 .srclist a { color: var(--muted); }
 .copy { margin: 0; font-size: 13px; }
+
+/* Redes sociales (iconos de Simple Icons, coloreados con máscara) */
+.ico { display: inline-block; width: 18px; height: 18px; flex: none; background: currentColor; -webkit-mask: var(--i) center / contain no-repeat; mask: var(--i) center / contain no-repeat; }
+.ico-tt { --i: url("https://cdn.jsdelivr.net/npm/simple-icons@13/icons/tiktok.svg"); }
+.ico-wa { --i: url("https://cdn.jsdelivr.net/npm/simple-icons@13/icons/whatsapp.svg"); }
+.bar-social { display: flex; gap: 4px; margin-left: auto; }
+.bar .soc { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 8px; color: var(--hero-fg); }
+.bar .soc:hover { background: rgba(255,255,255,0.08); }
+.bar-in nav { margin-left: auto; }
+.bar-in nav + .bar-social { margin-left: 4px; padding-left: 6px; border-left: 1px solid rgba(255,255,255,0.12); }
+.social .chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--fg); font-weight: 600; text-decoration: none; }
+.social .chip:hover { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 420px) { .bar nav a:nth-child(n+2) { display: none; } }
