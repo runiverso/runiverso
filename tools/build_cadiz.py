@@ -8,7 +8,10 @@ import html
 import json
 import pathlib
 import re
+import sys
 import urllib.parse
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "cadiz"
@@ -210,7 +213,7 @@ def build():
         ev = {"@type": "SportsEvent", "name": r["n"], "startDate": r["d"] + (f"T{r['t']}:00+01:00" if r.get("t") else ""),
               "eventStatus": "https://schema.org/EventScheduled", "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
               "location": {"@type": "Place", "name": r["c"], "address": {"@type": "PostalAddress", "addressLocality": re.split(r" \(| →", r["c"])[0], "addressRegion": "Cádiz", "addressCountry": "ES"}},
-              "url": f"https://runiverso.com/cadiz/#{r['id']}"}
+              "url": f"https://runiverso.com/cadiz/#{r['id']}", "description": r["note"]}
         if r.get("web"):
             ev["sameAs"] = r["web"]
         events.append(ev)
@@ -235,6 +238,8 @@ def build():
     for r in races:
         if "d" in r:
             (OUT / f"{r['id']}.ics").write_bytes(ics(r).encode())
+    import fix_events
+    fix_events.fix_file(OUT / "index.html")
     print(f"{len(races)} carreras · {counts} · {len(towns)} municipios: {', '.join(towns)}")
 
 
