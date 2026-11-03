@@ -9,4 +9,5 @@ def nav(rel, cur=""):
         c = ' class="opt"' if cls else ""
         a = ' aria-current="page"' if key and key == cur else ""
         h += f'<a{c} href="{href}"{a}>{lab}</a>'
+    h += f'<a class="app" href="{rel}app/">App</a>'
     return h + "</nav>"
