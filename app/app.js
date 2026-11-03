@@ -21,16 +21,23 @@
 
   /* ---------- Datos guardados en el móvil ---------- */
   var KEY = "runiverso-app-v1";
-  var S = { name: "", mine: {}, marks: [] };
-  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; } } catch (e) {}
+  var S = { name: "", mine: {}, marks: [], prov: "", ccaa: "" };
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; S.prov = saved.prov || ""; S.ccaa = saved.ccaa || ""; } } catch (e) {}
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { toast("No se ha podido guardar en este móvil"); } }
 
   /* ---------- Carreras ---------- */
-  var RACES = (window.RV_RACES || []).map(function (r) { r.date = pd(r.d); r.hay = norm([r.n, r.c, r.r, r.k, r.cadiz ? "cadiz" : ""].join(" ")); return r; });
+  var RACES = (window.RV_RACES || []).map(function (r) { r.date = pd(r.d); r.hay = norm([r.n, r.c, r.r, r.p, r.k].join(" ")); return r; });
   var BY = {}; RACES.forEach(function (r) { BY[r.id] = r; });
   var RESULTS = window.RV_RESULTS || [];
   function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
   function upcoming() { return RACES.filter(function (r) { return daysTo(r.date) >= 0; }); }
+  var ZONES = window.RV_ZONES || {};
+  function ccaaOf(p) { for (var k in ZONES) if (ZONES[k].indexOf(p) >= 0) return k; return ""; }
+  function inProv(r) { return !!S.prov && r.p === S.prov; }
+  function inCcaa(r) { return !!S.ccaa && r.r === S.ccaa; }
+  function scopeName(sc) { return sc === "prov" ? (S.prov || "Tu provincia") : sc === "ccaa" ? (S.ccaa || "Tu comunidad") : "España"; }
+  /* Orden por cercanía: tu provincia, tu comunidad y luego el resto */
+  function near(a, b) { var x = inProv(a) ? 0 : inCcaa(a) ? 1 : 2, y = inProv(b) ? 0 : inCcaa(b) ? 1 : 2; return x - y || a.date - b.date; }
   var KM = { "21K": 21.0975, "42K": 42.195, "10K": 10 };
   var LABEL = { "21K": "Media", "42K": "Maratón", "10K": "10K", "TR": "Trail", "SS": "San Silvestre", "POP": "Popular" };
   var MARK = '<svg viewBox="12 12 96 96" aria-hidden="true"><path d="M44 30V90M44 30H64a17 17 0 0 1 0 34H44" fill="none" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 64L82 90" fill="none" stroke="#7FA6FF" stroke-width="11" stroke-linecap="round"/></svg>';
@@ -43,11 +50,11 @@
     var dist = String(r.dist || "").replace(/^Trail · /, "");
     if (/^(Trail|Popular|San Silvestre)$/.test(dist)) dist = "";
     return '<button class="poster"' + at + (extra || "") + '><span class="pt">' + MARK + LABEL[r.k] + (dist ? '<span class="pdist">' + esc(dist) + '</span>' : '') + '</span>' +
-      '<span class="pn">' + esc(r.n) + '</span><span class="pc">' + esc(r.c) + '</span>' +
+      '<span class="pn">' + esc(r.n) + '</span><span class="pc">' + esc(r.c) + (r.p && r.c.indexOf(r.p) < 0 && r.p !== S.prov ? " · " + esc(r.p) : "") + '</span>' +
       '<span class="pdate"><b>' + pad(r.date.getDate()) + '</b><span>' + MES_C[r.date.getMonth()] + '<small>' + r.date.getFullYear() + '</small></span></span>' + t + '</button>';
   }
   function item(r) {
-    return '<div class="item">' + poster(r) + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + pad(r.date.getDate()) + '/' + pad(r.date.getMonth() + 1) + '/' + r.date.getFullYear() + '</p></div></div>';
+    return '<div class="item">' + poster(r) + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + pad(r.date.getDate()) + '/' + pad(r.date.getMonth() + 1) + '</p></div></div>';
   }
 
   /* ---------- Marcas ---------- */
@@ -64,12 +71,12 @@
     ["clasificaciones", "Resultados", "M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"],
     ["comunidad", "Comunidad", "M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11.5a2.5 2.5 0 1 0 0-5M15 14.5c3 0 6 2 6 5.5"]
   ];
-  var view = { tab: "inicio", sub: "marcas", f: "", q: "", lim: 30 };
+  var view = { tab: "inicio", sub: "marcas", f: "", q: "", lim: 30, sc: S.prov ? "prov" : "es" };
   function route() {
     var h = (location.hash || "#inicio").slice(1).split("?");
     var t = h[0]; if (!TABS.some(function (x) { return x[0] === t; })) t = "inicio";
     view.tab = t;
-    if (h[1]) { var m = /f=([a-z0-9]+)/.exec(h[1]); if (m) view.f = m[1]; }
+    if (h[1]) { var m = /sc=(prov|ccaa|es)/.exec(h[1]); if (m) { view.sc = m[1]; view.f = ""; view.lim = 30; } }
     render(); window.scrollTo(0, 0);
   }
   function renderTabs() {
@@ -83,6 +90,12 @@
     renderTabs();
     var fn = { inicio: vInicio, carreras: vCarreras, perfil: vPerfil, clasificaciones: vResultados, comunidad: vComunidad }[view.tab];
     $("main").innerHTML = '<div class="view">' + fn() + '</div>';
+    if (!S.prov && !zoneAsked) { zoneAsked = true; zoneSheet(true); }
+  }
+  var zoneAsked = false;
+  function zoneChip() {
+    return '<button class="zone" type="button" data-act="zone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>' +
+      (S.prov ? esc(S.prov) + (S.ccaa && S.ccaa !== S.prov ? '<span> · ' + esc(S.ccaa) + '</span>' : '') : 'Elige tu zona') + '<em>Cambiar</em></button>';
   }
 
   /* ---------- Inicio ---------- */
@@ -100,7 +113,7 @@
     var mine = up.filter(function (r) { return S.mine[r.id]; });
     var h = installBanner();
     h += '<div><p class="kick">' + cap(fdate(today)) + '</p><h1>Hola' + (S.name ? ", " + esc(S.name.split(" ")[0]) : "") + '</h1>' +
-      (S.name ? '' : '<button class="btn sm alt" type="button" data-act="name" style="margin-top:10px">Pon tu nombre</button>') + '</div>';
+      '<div class="row" style="margin-top:10px">' + zoneChip() + (S.name ? '' : '<button class="btn sm alt" type="button" data-act="name">Pon tu nombre</button>') + '</div></div>';
     if (mine.length) {
       var r = mine[0], d = daysTo(r.date);
       h += '<button class="dorsal" type="button" data-race="' + r.id + '"><span class="band"><i></i>Tu próximo dorsal<i></i></span><span class="bd">' +
@@ -112,11 +125,17 @@
     var sm = seasonMarks(), km = sm.reduce(function (a, m) { return a + m.km; }, 0);
     h += '<div class="sec"><div class="sechd"><h2>Tu temporada ' + String(seasonStart().getFullYear()).slice(2) + '/' + String(seasonStart().getFullYear() + 1).slice(2) + '</h2><a href="#perfil">Mis marcas ›</a></div><div class="stats">' +
       '<div class="stat"><b>' + sm.length + '</b><span>Carreras</span></div><div class="stat"><b>' + Math.round(km) + '</b><span>Kilómetros</span></div><div class="stat"><b>' + S.marks.length + '</b><span>Medallas</span></div></div></div>';
-    h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas ›</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
-    var cad = up.filter(function (r) { return r.cadiz; });
-    h += '<a class="card" href="#carreras?f=cadiz" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span style="width:48px;height:48px;border-radius:14px;background:linear-gradient(160deg,#EE7F1E,#3B1806);display:grid;place-items:center;flex:none;font-family:var(--display);font-weight:800">CA</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px;letter-spacing:-.02em">Carreras en Cádiz</b><br><span class="muted" style="font-size:13.5px">' + cad.length + ' próximas en la provincia</span></span><span aria-hidden="true" style="color:var(--sky);font-weight:800">›</span></a>';
+    if (S.prov) {
+      var lp = up.filter(inProv), lc = up.filter(function (r) { return inCcaa(r) && !inProv(r); });
+      h += '<div class="sec"><div class="sechd"><h2>En ' + esc(S.prov) + '</h2><a href="#carreras?sc=prov">Ver ' + lp.length + ' ›</a></div>' + (lp.length ? '<div class="hscroll">' + lp.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<div class="card empty"><p>Aún no tenemos carreras en ' + esc(S.prov) + '. ¿Conoces alguna? Avísanos en el canal y la añadimos.</p></div>') + '</div>';
+      if (S.ccaa !== S.prov) h += '<div class="sec"><div class="sechd"><h2>Resto de ' + esc(S.ccaa) + '</h2><a href="#carreras?sc=ccaa">Ver ' + lc.length + ' ›</a></div>' + (lc.length ? '<div class="hscroll">' + lc.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<p class="muted" style="margin:0">Sin más carreras en tu comunidad de momento.</p>') + '</div>';
+      var rest = up.filter(function (r) { return !inCcaa(r); }).length;
+      h += '<a class="card" href="#carreras?sc=es" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span class="zic">ES</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px;letter-spacing:-.02em">Resto de España</b><br><span class="muted" style="font-size:13.5px">' + rest + ' carreras fuera de tu comunidad</span></span><span aria-hidden="true" style="color:var(--sky);font-weight:800">›</span></a>';
+    } else {
+      h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas ›</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
+    }
     if (RESULTS.length) {
-      h += '<div class="sec"><div class="sechd"><h2>Últimos resultados</h2><a href="#clasificaciones">Ver todos ›</a></div><div class="list">' + RESULTS.slice(0, 3).map(resLi).join("") + '</div></div>';
+      h += '<div class="sec"><div class="sechd"><h2>Últimos resultados</h2><a href="#clasificaciones">Ver todos ›</a></div><div class="list">' + RESULTS.slice().sort(function (a, b) { return near({ p: a.p, r: ccaaOf(a.p), date: -pd(a.d) }, { p: b.p, r: ccaaOf(b.p), date: -pd(b.d) }); }).slice(0, 3).map(resLi).join("") + '</div></div>';
     }
     h += '<p class="foot">Calendario completo y mapa en <a href="../">runiverso.com</a></p>';
     return h;
@@ -127,30 +146,55 @@
   }
 
   /* ---------- Carreras ---------- */
-  var CHIPS = [["", "Todas"], ["cadiz", "Cádiz"], ["21K", "Medias"], ["42K", "Maratones"], ["10K", "10K"], ["TR", "Trail"], ["SS", "San Silvestre"], ["mine", "Apuntadas"]];
+  var CHIPS = [["", "Todas"], ["21K", "Medias"], ["42K", "Maratones"], ["10K", "10K"], ["TR", "Trail"], ["SS", "San Silvestre"], ["POP", "Populares"], ["mine", "Apuntadas"]];
   function filtered() {
-    var q = norm(view.q.trim()).split(/\s+/).filter(Boolean);
+    var q = norm(view.q.trim()).split(/\s+/).filter(Boolean), sc = S.prov ? view.sc : "es";
     return upcoming().filter(function (r) {
-      if (view.f === "cadiz" && !r.cadiz) return false;
+      if (!q.length && sc === "prov" && !inProv(r)) return false;
+      if (!q.length && sc === "ccaa" && !inCcaa(r)) return false;
       if (view.f === "mine" && !S.mine[r.id]) return false;
-      if (view.f && view.f !== "cadiz" && view.f !== "mine" && r.k !== view.f) return false;
+      if (view.f && view.f !== "mine" && r.k !== view.f) return false;
       for (var i = 0; i < q.length; i++) if (r.hay.indexOf(q[i]) < 0) return false;
       return true;
     });
   }
   function vCarreras() {
-    var list = filtered();
-    var h = '<div><h1>Carreras</h1><p class="kick">' + upcoming().length + ' próximas en toda España</p></div>';
-    h += '<label class="sr" for="q">Buscar carrera o ciudad</label><input id="q" class="search" type="search" placeholder="Busca carrera o ciudad" value="' + esc(view.q) + '" autocomplete="off">';
-    h += '<div class="chips" role="group" aria-label="Filtrar">' + CHIPS.map(function (c) { return '<button type="button" class="chip" data-f="' + c[0] + '" aria-pressed="' + (view.f === c[0]) + '">' + c[1] + '</button>'; }).join("") + '</div>';
-    h += '<p class="count" id="cnt">' + list.length + (list.length === 1 ? " carrera" : " carreras") + '</p>';
+    var list = filtered(), up = upcoming();
+    var h = '<div><h1>Carreras</h1><div class="row" style="margin-top:8px">' + zoneChip() + '</div></div>';
+    if (S.prov) {
+      var n = { prov: up.filter(inProv).length, ccaa: up.filter(inCcaa).length, es: up.length };
+      h += '<div class="seg" role="tablist" aria-label="Zona">' + ["prov", "ccaa", "es"].filter(function (k) { return k !== "ccaa" || S.ccaa !== S.prov; }).map(function (k) {
+        return '<button type="button" role="tab" data-sc="' + k + '" aria-selected="' + (view.sc === k) + '">' + esc(scopeName(k)) + '<span class="n">' + n[k] + '</span></button>';
+      }).join("") + '</div>';
+    }
+    h += '<label class="sr" for="q">Buscar carrera o ciudad</label><input id="q" class="search" type="search" placeholder="Busca en toda España: carrera o ciudad" value="' + esc(view.q) + '" autocomplete="off">';
+    h += '<div class="chips" role="group" aria-label="Tipo de prueba">' + CHIPS.map(function (c) { return '<button type="button" class="chip" data-f="' + c[0] + '" aria-pressed="' + (view.f === c[0]) + '">' + c[1] + '</button>'; }).join("") + '</div>';
+    h += '<p class="count" id="cnt">' + countText(list) + '</p>';
     h += '<div id="rlist">' + raceGrid(list) + '</div>';
     return h;
   }
+  function countText(list) { return list.length + (list.length === 1 ? " carrera" : " carreras") + (view.q.trim() ? " en toda España" : S.prov ? " · " + scopeName(view.sc) : ""); }
+  /* Agrupa: en tu provincia por meses; en tu comunidad por provincias (la tuya primero); en España por comunidades (la tuya primero) */
   function raceGrid(list) {
-    if (!list.length) return '<div class="card empty"><p>' + (view.f === "mine" ? "Aún no te has apuntado a ninguna carrera." : "No hay carreras con ese filtro.") + '</p></div>';
-    var shown = list.slice(0, view.lim);
-    return '<div class="grid">' + shown.map(item).join("") + '</div>' + (list.length > shown.length ? '<button class="btn alt wide" type="button" data-act="more" style="margin-top:16px">Ver más (' + (list.length - shown.length) + ')</button>' : '');
+    if (!list.length) return '<div class="card empty"><p>' + (view.f === "mine" ? "Aún no te has apuntado a ninguna carrera." : "No hay carreras con ese filtro" + (S.prov && view.sc !== "es" ? " en " + esc(scopeName(view.sc)) + "." : ".")) + '</p>' + (S.prov && view.sc !== "es" ? '<button class="btn sm alt" type="button" data-sc="es">Ver toda España</button>' : '') + '</div>';
+    var sc = S.prov && !view.q.trim() ? view.sc : "month", key, groups = [], idx = {};
+    list.forEach(function (r) {
+      key = sc === "ccaa" ? r.p : sc === "es" ? r.r : (MES_L[r.date.getMonth()] + " " + r.date.getFullYear());
+      if (!(key in idx)) { idx[key] = groups.length; groups.push({ k: key, items: [] }); }
+      groups[idx[key]].items.push(r);
+    });
+    if (sc === "ccaa" || sc === "es") {
+      var mineK = sc === "ccaa" ? S.prov : S.ccaa;
+      groups.sort(function (a, b) { return (b.k === mineK) - (a.k === mineK) || b.items.length - a.items.length || a.k.localeCompare(b.k, "es"); });
+    }
+    var left = view.lim, out = "";
+    groups.forEach(function (g) {
+      if (left <= 0) return;
+      var it = g.items.slice(0, left); left -= it.length;
+      out += '<section class="grp"><h2 class="gh">' + cap(esc(g.k)) + '<span>' + g.items.length + '</span></h2><div class="grid">' + it.map(item).join("") + '</div></section>';
+    });
+    var shown = view.lim - Math.max(0, left);
+    return out + (list.length > shown ? '<button class="btn alt wide" type="button" data-act="more" style="margin-top:16px">Ver más (' + (list.length - shown) + ')</button>' : '');
   }
 
   /* ---------- Perfil ---------- */
@@ -194,8 +238,8 @@
     while (medals.length < 6) medals.push('<div class="medal lock"><span class="rib"><i></i><i></i></span><span class="disc"><b>?</b></span><span>Próxima medalla</span></div>');
     var h = '<div class="sechd"><h2>Mi vitrina</h2><span class="muted" style="font-size:13px">' + S.marks.length + (S.marks.length === 1 ? ' medalla' : ' medallas') + ' · en oro, tus récords</span></div><div class="vitrina">' + medals.join("") + '</div>';
     var sm = seasonMarks().length, regs = {};
-    S.marks.forEach(function (m) { var r = BY[m.raceId]; if (r) regs[r.r] = 1; });
-    var goals = [["5 carreras esta temporada", sm, 5], ["Tu primera media maratón", b["21K"] ? 1 : 0, 1], ["Correr en 3 comunidades", Object.keys(regs).length, 3]];
+    S.marks.forEach(function (m) { var r = BY[m.raceId]; if (r) regs[r.p] = 1; });
+    var goals = [["5 carreras esta temporada", sm, 5], ["Tu primera media maratón", b["21K"] ? 1 : 0, 1], ["Correr en 3 provincias", Object.keys(regs).length, 3]];
     if (b["10K"]) goals.push(["Bajar de 50 min en 10K", Math.min(1, 3000 / b["10K"].sec), 1, fmtT(b["10K"].sec) + " → 50:00"]);
     h += '<div class="sec"><h2>Retos</h2>' + goals.map(function (g) {
       var p = Math.min(1, g[1] / g[2]);
@@ -218,10 +262,17 @@
   /* ---------- Resultados ---------- */
   function vResultados() {
     var h = '<div><h1>Resultados</h1><p class="kick">Clasificaciones oficiales de las últimas carreras</p></div>';
-    h += '<div class="grid">' + RESULTS.map(function (r) {
-      var d = pd(r.d), fake = { id: r.id, n: r.n, c: r.c, k: r.k, dist: r.dist, date: d, ok: true };
-      return '<div class="item">' + poster(fake, '<span class="tag done">Terminada</span>', ' data-url="' + esc(r.url) + '"') + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + sdate(d) + '</p></div><a class="btn sm" href="' + esc(r.url) + '" target="_blank" rel="noopener">Clasificación ›</a></div>';
-    }).join("") + '</div>';
+    function cards(list) {
+      return '<div class="grid">' + list.map(function (r) {
+        var d = pd(r.d), fake = { id: r.id, n: r.n, c: r.c, p: r.p, k: r.k, dist: r.dist, date: d, ok: true };
+        return '<div class="item">' + poster(fake, '<span class="tag done">Terminada</span>', ' data-url="' + esc(r.url) + '"') + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + sdate(d) + '</p></div><a class="btn sm" href="' + esc(r.url) + '" target="_blank" rel="noopener">Clasificación ›</a></div>';
+      }).join("") + '</div>';
+    }
+    if (S.ccaa) {
+      var mine = RESULTS.filter(function (r) { return ccaaOf(r.p) === S.ccaa; }), rest = RESULTS.filter(function (r) { return ccaaOf(r.p) !== S.ccaa; });
+      h += '<section class="grp"><h2 class="gh">En ' + esc(S.ccaa) + '<span>' + mine.length + '</span></h2>' + (mine.length ? cards(mine) : '<p class="muted" style="margin:0">Todavía no hay resultados de tu comunidad. Los añadimos según se publican.</p>') + '</section>';
+      if (rest.length) h += '<section class="grp"><h2 class="gh">Resto de España<span>' + rest.length + '</span></h2>' + cards(rest) + '</section>';
+    } else h += cards(RESULTS);
     h += '<p class="foot">Cada clasificación la publica la organización o su empresa de cronometraje.</p>';
     return h;
   }
@@ -229,12 +280,12 @@
   /* ---------- Comunidad (próximamente) ---------- */
   function vComunidad() {
     var C = [
-      ["Ranking anual", "Quién hace más carreras, 10K, medias y maratones en la temporada. En España, en tu comunidad y en tu club.", "M9 21V9h6v12M3 21v-7h6M15 21v-5h6M3 21h18", ""],
-      ["Clubes", "Cada club con su espacio: sus corredores, sus carreras y su propio ranking.", "M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11.5a2.5 2.5 0 1 0 0-5M15 14.5c3 0 6 2 6 5.5", ""],
-      ["Muro", "Sube tus fotos de carrera y celebra las marcas de los demás.", "M4 5h16v15H4zM9 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM20 17l-5-5-9 8", ""],
+      ["Ranking anual", "Quién hace más carreras, 10K, medias y maratones en la temporada: en tu provincia, en tu comunidad y en toda España.", "M9 21V9h6v12M3 21v-7h6M15 21v-5h6M3 21h18", ""],
+      ["Clubes", "Los clubes de tu provincia con su espacio: sus corredores, sus carreras y su propio ranking.", "M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11.5a2.5 2.5 0 1 0 0-5M15 14.5c3 0 6 2 6 5.5", ""],
+      ["Muro", "Fotos y marcas de los corredores de tu zona después de cada carrera.", "M4 5h16v15H4zM9 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM20 17l-5-5-9 8", ""],
       ["Runiverso Pro", "Alertas antes de que suban los dorsales, plan hacia tu carrera, predicción de tiempos y ranking por edad.", "M13 2L4 14h7l-1 8 9-12h-7z", "pro"]
     ];
-    var h = '<div><h1>Comunidad</h1><p class="kick">Llega con las cuentas de Runiverso</p></div>';
+    var h = '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) + ", muy pronto" : "Llega con las cuentas de Runiverso") + '</p></div>';
     h += C.map(function (c) {
       return '<div class="card soon"><span class="ic"' + (c[3] ? ' style="color:var(--pro)"' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + c[2] + '"/></svg></span><div><h3>' + c[0] + (c[3] ? ' <span class="pill pro">Pro</span>' : ' <span class="pill">Próximamente</span>') + '</h3><p>' + c[1] + '</p></div></div>';
     }).join("");
@@ -300,6 +351,18 @@
     p.innerHTML = v.sec > 0 && v.km > 0 ? 'Ritmo: <b>' + pace(v.sec, v.km) + '</b>' : '';
   }
 
+  function zoneSheet(first) {
+    var cc = S.ccaa || "Andalucía";
+    var opts = Object.keys(ZONES).sort(function (a, b) { return a.localeCompare(b, "es"); });
+    openSheet('<h2>' + (first ? "¿Dónde sueles correr?" : "Tu zona") + '</h2><p class="muted" style="margin:0">' + (first ? "Te enseñamos primero las carreras de tu provincia y de tu comunidad. Puedes cambiarlo cuando quieras." : "Las carreras, resultados y retos se ordenan por cercanía.") + '</p>' +
+      '<form class="f" id="zonef"><div class="fld"><label for="zc">Comunidad autónoma</label><select id="zc">' + opts.map(function (k) { return '<option' + (k === cc ? " selected" : "") + '>' + esc(k) + '</option>'; }).join("") + '</select></div>' +
+      '<div class="fld"><label for="zp">Provincia</label><select id="zp">' + provOpts(cc, S.prov || "Cádiz") + '</select></div>' +
+      '<button class="btn wide" type="submit">Guardar mi zona</button>' + (first ? '<button class="btn alt wide" type="button" data-close="1">Ahora no, ver toda España</button>' : '<button class="btn alt wide" type="button" data-close="1">Cancelar</button>') + '</form>', "Tu zona");
+  }
+  function provOpts(cc, sel) {
+    var up = upcoming();
+    return (ZONES[cc] || []).map(function (p) { var n = up.filter(function (r) { return r.p === p; }).length; return '<option value="' + esc(p) + '"' + (p === sel ? " selected" : "") + '>' + esc(p) + (n ? " · " + n + (n === 1 ? " carrera" : " carreras") : "") + '</option>'; }).join("");
+  }
   function nameSheet() {
     openSheet('<h2>Tu nombre</h2><form class="f" id="namef"><div class="fld"><label for="nm">Cómo quieres que te llamemos</label><input id="nm" type="text" maxlength="40" autocomplete="given-name" value="' + esc(S.name) + '"></div><button class="btn wide" type="submit">Guardar</button><button class="btn alt wide" type="button" data-close="1">Cancelar</button></form>', "Tu nombre");
   }
@@ -339,6 +402,7 @@
     var ic = t.closest("[data-ics]"); if (ic) { ics(BY[ic.getAttribute("data-ics")]); return; }
     var sh = t.closest("[data-share]"); if (sh) { share(BY[sh.getAttribute("data-share")]); return; }
     var f = t.closest("[data-f]"); if (f) { view.f = f.getAttribute("data-f"); view.lim = 30; render(); return; }
+    var sc = t.closest("[data-sc]"); if (sc) { view.sc = sc.getAttribute("data-sc"); view.lim = 30; view.q = ""; render(); return; }
     var sb = t.closest("[data-sub]"); if (sb) { view.sub = sb.getAttribute("data-sub"); render(); return; }
     var dl = t.closest("[data-del]");
     if (dl) { var mid = dl.getAttribute("data-del"); if (dl.getAttribute("data-sure")) { S.marks = S.marks.filter(function (m) { return m.id !== mid; }); save(); toast("Marca borrada"); render(); } else { dl.setAttribute("data-sure", "1"); dl.style.borderColor = "#FF8A8A"; dl.style.color = "#FF8A8A"; dl.setAttribute("aria-label", "Pulsa otra vez para borrar"); toast("Pulsa otra vez para borrar"); } return; }
@@ -347,20 +411,23 @@
       var act = a.getAttribute("data-act");
       if (act === "more") { view.lim += 30; $("rlist").innerHTML = raceGrid(filtered()); }
       else if (act === "name") nameSheet();
+      else if (act === "zone") zoneSheet(false);
       else if (act === "addmark") markSheet(a.getAttribute("data-race") || "");
       else if (act === "install" && deferredInstall) { deferredInstall.prompt(); deferredInstall.userChoice.finally(function () { deferredInstall = null; render(); }); }
     }
   });
   document.addEventListener("input", function (e) {
-    if (e.target.id === "q") { view.q = e.target.value; view.lim = 30; var l = filtered(); $("rlist").innerHTML = raceGrid(l); $("cnt").textContent = l.length + (l.length === 1 ? " carrera" : " carreras"); }
+    if (e.target.id === "q") { view.q = e.target.value; view.lim = 30; var l = filtered(); $("rlist").innerHTML = raceGrid(l); $("cnt").textContent = countText(l); }
     if (e.target.closest && e.target.closest("#markf")) updPace();
   });
   document.addEventListener("change", function (e) {
     if (e.target.id === "mrace") { var r = BY[e.target.value]; $("mnamew").hidden = !!r; if (r) { $("mdate").value = r.d; if (KM[r.k]) { $("mdist").value = String(KM[r.k]); $("mkmw").hidden = true; } } updPace(); }
+    if (e.target.id === "zc") { $("zp").innerHTML = provOpts(e.target.value, ""); }
     if (e.target.id === "mdist") { $("mkmw").hidden = e.target.value !== "otra"; updPace(); }
   });
   document.addEventListener("submit", function (e) {
     e.preventDefault();
+    if (e.target.id === "zonef") { S.ccaa = $("zc").value; S.prov = $("zp").value; save(); view.sc = "prov"; view.f = ""; closeSheet(); render(); toast("Tu zona: " + S.prov); return; }
     if (e.target.id === "namef") { S.name = $("nm").value.trim(); save(); closeSheet(); render(); toast(S.name ? "¡Hola, " + S.name.split(" ")[0] + "!" : "Nombre borrado"); return; }
     if (e.target.id === "markf") {
       var v = readMark(), err = "";

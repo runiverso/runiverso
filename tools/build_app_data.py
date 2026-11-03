@@ -24,6 +24,39 @@ process.stdout.write(JSON.stringify(d));
 """
 CADIZ_K = {"21K": "21K", "pop": "POP", "trail": "TR", "ss": "SS"}
 
+# Provincia de cada localidad (las que no estén aquí se toman como provincia propia)
+PROV = {
+    "Algeciras": "Cádiz", "Cazorla": "Jaén", "Chiclana de la Frontera": "Cádiz", "Chipiona": "Cádiz", "Chipiona → Rota": "Cádiz", "Cádiz": "Cádiz",
+    "El Gastor": "Cádiz", "El Puerto de Santa María": "Cádiz", "Facinas (Tarifa)": "Cádiz", "Grazalema": "Cádiz", "Jerez de la Frontera": "Cádiz",
+    "Medina Sidonia": "Cádiz", "Prado del Rey": "Cádiz", "Puerto Serrano": "Cádiz", "San Roque": "Cádiz", "Tarifa": "Cádiz", "Rota": "Cádiz",
+    "Villaluenga del Rosario": "Cádiz", "Zahara de los Atunes": "Cádiz", "San Fernando": "Cádiz", "Torremolinos": "Málaga",
+    "Alquézar": "Huesca", "Benasque": "Huesca", "Gijón": "Asturias", "Oviedo": "Asturias", "Sobrescobio": "Asturias",
+    "Adeje": "Santa Cruz de Tenerife", "El Hierro": "Santa Cruz de Tenerife", "Fuencaliente": "Santa Cruz de Tenerife", "San Cristóbal de La Laguna": "Santa Cruz de Tenerife",
+    "Lanzarote": "Las Palmas", "Las Palmas de Gran Canaria": "Las Palmas", "Laredo": "Cantabria", "Santander": "Cantabria",
+    "Bagà": "Barcelona", "Bausen": "Lleida", "Canovelles": "Barcelona", "Collbató": "Barcelona", "Granollers": "Barcelona", "Ribes de Freser": "Girona",
+    "Roses": "Girona", "Vall de Boí": "Lleida", "Vall de Núria": "Girona", "Vielha e Mijaran": "Lleida",
+    "Alcoi": "Alicante", "Alcoy": "Alicante", "Castellón de la Plana": "Castellón", "Chulilla": "Valencia", "Eslida": "Castellón", "Santa Pola": "Alicante",
+    "Vistabella del Maestrazgo": "Castellón", "Santiago de Compostela": "A Coruña", "Vigo": "Pontevedra",
+    "Eivissa": "Illes Balears", "Es Capdellà": "Illes Balears", "Ibiza": "Illes Balears", "Palma": "Illes Balears", "Sant Josep de sa Talaia": "Illes Balears", "Sóller": "Illes Balears",
+    "Logroño": "La Rioja", "Pamplona": "Navarra", "Bilbao": "Bizkaia", "San Sebastián": "Gipuzkoa", "Santa Cruz de Campezo": "Álava", "Vitoria-Gasteiz": "Álava",
+    "Zeanuri": "Bizkaia", "Zegama": "Gipuzkoa", "Murcia": "Murcia", "Madrid": "Madrid", "Valencia": "Valencia",
+}
+ZONES = {
+    "Andalucía": ["Almería", "Cádiz", "Córdoba", "Granada", "Huelva", "Jaén", "Málaga", "Sevilla"],
+    "Aragón": ["Huesca", "Teruel", "Zaragoza"], "Asturias": ["Asturias"], "Illes Balears": ["Illes Balears"],
+    "Canarias": ["Las Palmas", "Santa Cruz de Tenerife"], "Cantabria": ["Cantabria"],
+    "Castilla y León": ["Ávila", "Burgos", "León", "Palencia", "Salamanca", "Segovia", "Soria", "Valladolid", "Zamora"],
+    "Castilla-La Mancha": ["Albacete", "Ciudad Real", "Cuenca", "Guadalajara", "Toledo"],
+    "Cataluña": ["Barcelona", "Girona", "Lleida", "Tarragona"], "Comunidad Valenciana": ["Alicante", "Castellón", "Valencia"],
+    "Extremadura": ["Badajoz", "Cáceres"], "Galicia": ["A Coruña", "Lugo", "Ourense", "Pontevedra"],
+    "Comunidad de Madrid": ["Madrid"], "Región de Murcia": ["Murcia"], "Navarra": ["Navarra"],
+    "País Vasco": ["Álava", "Bizkaia", "Gipuzkoa"], "La Rioja": ["La Rioja"], "Ceuta": ["Ceuta"], "Melilla": ["Melilla"],
+}
+
+
+def prov(city):
+    return PROV.get(city, city.split(" (")[0])
+
 
 def slug(t):
     t = unicodedata.normalize("NFD", t.lower())
@@ -51,17 +84,19 @@ def main():
         races.append({"id": slug(r["n"]), "n": r["n"], "c": r["c"], "r": "Andalucía", "d": r["d"], "ok": r["ok"], "k": CADIZ_K[r["k"]],
                       "dist": r["dist"], "t": r["note"], "x": [], "w": r.get("web", ""), "h": r.get("t", ""), "cadiz": True})
         seen.add(slug(r["n"]))
-    cad_towns = {"Cádiz", "Jerez de la Frontera", "El Puerto de Santa María", "Chiclana de la Frontera", "San Fernando", "Algeciras", "Tarifa", "Chipiona", "Rota"}
     for r in races:
-        if r["c"].split(" (")[0] in cad_towns or r["c"].startswith("Chipiona"):
-            r["cadiz"] = True
+        r["p"] = prov(r["c"])
+        r.pop("cadiz", None)
     races.sort(key=lambda r: (r["d"], r["n"]))
     results = sorted(build_results.RESULTS, key=lambda r: r["d"], reverse=True)
+    for r in results:
+        r["p"] = prov(r["c"])
     out = ROOT / "app" / "data.js"
     out.write_text("/* Generado por tools/build_app_data.py: no editar a mano */\n"
                    "window.RV_RACES = " + json.dumps(races, ensure_ascii=False) + ";\n"
-                   "window.RV_RESULTS = " + json.dumps(results, ensure_ascii=False) + ";\n")
-    print(f"{len(races)} carreras ({sum(1 for r in races if r.get('cadiz'))} de Cádiz) · {len(results)} clasificaciones")
+                   "window.RV_RESULTS = " + json.dumps(results, ensure_ascii=False) + ";\n"
+                   "window.RV_ZONES = " + json.dumps(ZONES, ensure_ascii=False) + ";\n")
+    print(f"{len(races)} carreras ({sum(1 for r in races if r['p'] == 'Cádiz')} de Cádiz) · {len(results)} clasificaciones")
 
 
 if __name__ == "__main__":
