@@ -61,6 +61,16 @@
   var DKEYS = [[5, "5K"], [10, "10K"], [21.0975, "21K"], [42.195, "42K"]];
   function dLabel(km) { for (var i = 0; i < DKEYS.length; i++) if (Math.abs(DKEYS[i][0] - km) < 0.05) return DKEYS[i][1]; return (Math.round(km * 10) / 10 + " km").replace(".", ","); }
   function prs() { var b = {}; S.marks.forEach(function (m) { var l = dLabel(m.km); if (!b[l] || m.sec < b[l].sec) b[l] = m; }); return b; }
+  /* Predicción de tiempos (fórmula de Riegel): usa la marca de distancia más parecida */
+  function predict(km) {
+    var best = null;
+    S.marks.forEach(function (m) {
+      if (daysTo(pd(m.date)) < -730) return;
+      var t = m.sec * Math.pow(km / m.km, 1.06), w = Math.abs(Math.log(km / m.km));
+      if (!best || w < best.w - 1e-9 || (Math.abs(w - best.w) < 1e-9 && t < best.sec)) best = { sec: t, from: m, w: w };
+    });
+    return best;
+  }
   function seasonMarks() { var s = seasonStart(); return S.marks.filter(function (m) { return pd(m.date) >= s; }); }
 
   /* ---------- Navegación ---------- */
@@ -118,7 +128,8 @@
       var r = mine[0], d = daysTo(r.date);
       h += '<button class="dorsal" type="button" data-race="' + r.id + '"><span class="band"><i></i>Tu próximo dorsal<i></i></span><span class="bd">' +
         '<span class="nums"><span class="num">' + pad(r.date.getDate()) + ' ' + MES_C[r.date.getMonth()].toUpperCase() + '</span><span class="days"><b>' + (d === 0 ? "HOY" : d) + '</b><span>' + (d === 0 ? "a correr" : d === 1 ? "día" : "días") + '</span></span></span>' +
-        '<span class="nm">' + esc(r.n) + '</span><span class="mt">' + esc(r.c) + ' · ' + esc(r.dist) + (r.h ? ' · salida ' + esc(r.h) : '') + '</span></span></button>';
+        '<span class="nm">' + esc(r.n) + '</span><span class="mt">' + esc(r.c) + ' · ' + esc(r.dist) + (r.h ? ' · salida ' + esc(r.h) : '') + '</span>' +
+        (KM[r.k] && S.marks.length ? '<span class="est">Tu tiempo estimado: <b>≈ ' + fmtT(predict(KM[r.k]).sec) + '</b> · ' + pace(predict(KM[r.k]).sec, KM[r.k]) + '</span>' : '') + '</span></button>';
     } else {
       h += '<div class="card empty"><h2>Apúntate a tu primera carrera</h2><p>Elige una carrera, pulsa «Apuntarme» y aquí verás la cuenta atrás.</p><a class="btn" href="#carreras">Ver carreras</a></div>';
     }
@@ -214,11 +225,17 @@
       var m = b[k[1]];
       return '<div class="pr' + (m ? "" : " none") + '"><span class="d">' + (k[1] === "21K" ? "Media" : k[1] === "42K" ? "Maratón" : k[1]) + '</span><b>' + (m ? fmtT(m.sec) : "—") + '</b><span>' + (m ? pace(m.sec, m.km) + " · " + sdate(pd(m.date)) : "Sin marca todavía") + '</span></div>';
     }).join("") + '</div>';
+    if (S.marks.length) {
+      h += '<div class="sec"><div class="sechd"><h2>Tu predicción</h2><span class="muted" style="font-size:12.5px">según tus marcas</span></div><div class="prs">' + DKEYS.map(function (k) {
+        var pr = predict(k[0]), own = b[k[1]];
+        return '<div class="pr pred"><span class="d">' + (k[1] === "21K" ? "Media" : k[1] === "42K" ? "Maratón" : k[1]) + '</span><b>≈ ' + fmtT(pr.sec) + '</b><span>' + pace(pr.sec, k[0]) + (own && Math.abs(own.km - k[0]) < 0.05 ? " · tu récord: " + fmtT(own.sec) : " · desde tu " + dLabel(pr.from.km)) + '</span></div>';
+      }).join("") + '</div><p class="muted" style="margin:0;font-size:12.5px">Estimación con la fórmula de Riegel a partir de tu marca más parecida en distancia. Cuanto más entrenes la distancia, más se acerca.</p></div>';
+    }
     h += '<button class="btn wide" type="button" data-act="addmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Añadir marca</button>';
     var ms = S.marks.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
     h += '<div class="sec"><h2>Historial</h2>' + (ms.length ? '<div class="list">' + ms.map(function (m) {
       var d = pd(m.date);
-      return '<div class="li"><span class="dt"><b>' + d.getDate() + '</b><span>' + MES_C[d.getMonth()] + '</span></span><span class="tx"><b>' + esc(m.name) + '</b><span>' + dLabel(m.km) + ' · ' + d.getFullYear() + '</span></span><span class="tm">' + fmtT(m.sec) + '<small>' + pace(m.sec, m.km) + '</small></span><button class="x" type="button" data-del="' + m.id + '" aria-label="Borrar marca de ' + esc(m.name) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
+      return '<div class="li"><span class="dt"><b>' + d.getDate() + '</b><span>' + MES_C[d.getMonth()] + '</span></span><span class="tx"><b>' + esc(m.name) + '</b><span>' + dLabel(m.km) + ' · ' + d.getFullYear() + '</span></span><span class="tm">' + fmtT(m.sec) + '<small>' + pace(m.sec, m.km) + '</small></span><button class="x sh" type="button" data-card="' + m.id + '" aria-label="Compartir marca de ' + esc(m.name) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg></button><button class="x" type="button" data-del="' + m.id + '" aria-label="Borrar marca de ' + esc(m.name) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
     }).join("") + '</div>' : '<div class="card empty"><p>Registra el tiempo de tus carreras y aquí verás tu evolución y tus récords.</p></div>') + '</div>';
     return h;
   }
@@ -308,6 +325,10 @@
     var h = '<div class="shead">' + poster(r).replace('data-race="', 'data-x="') + '<div style="display:flex;flex-direction:column;gap:8px"><h2>' + esc(r.n) + '</h2><span class="st ' + (r.ok ? "ok" : "prov") + '">' + (r.ok ? "Fecha confirmada" : "Fecha por confirmar") + '</span><span class="muted" style="font-size:14px">' + (d === 0 ? "Es hoy" : d > 0 ? "Faltan " + d + (d === 1 ? " día" : " días") : "Ya celebrada") + '</span></div></div>';
     h += '<dl class="facts"><div><dt>Fecha</dt><dd>' + cap(fdate(r.date)) + (r.h ? ", " + esc(r.h) : "") + '</dd></div><div><dt>Lugar</dt><dd>' + esc(r.c) + ', ' + esc(r.r) + '</dd></div><div><dt>Distancia</dt><dd>' + esc(r.dist || LABEL[r.k]) + '</dd></div>' + (r.x && r.x.length ? '<div><dt>También</dt><dd>' + r.x.map(esc).join(" · ") + '</dd></div>' : '') + '</dl>';
     if (r.t) h += '<p class="note">' + esc(r.t) + '</p>';
+    if (KM[r.k] && S.marks.length) {
+      var pe = predict(KM[r.k]);
+      h += '<div class="marks"><span class="k">Tu tiempo estimado aquí</span><span class="r"><span>Según tu ' + dLabel(pe.from.km) + ' de ' + fmtT(pe.from.sec) + '</span><b>≈ ' + fmtT(pe.sec) + '</b></span><span class="muted" style="font-size:12.5px">Ritmo ' + pace(pe.sec, KM[r.k]) + '</span></div>';
+    }
     if (r.m && (r.m.h || r.m.f)) {
       h += '<div class="marks"><span class="k">Ganadores · ' + esc(r.m.ed) + '</span>' + [["Hombres", r.m.h], ["Mujeres", r.m.f]].filter(function (x) { return x[1]; }).map(function (x) { return '<span class="r"><span>' + x[0] + ': ' + esc(x[1][0]) + '</span><b>' + esc(x[1][2]) + '</b></span>'; }).join("") + '</div>';
     }
@@ -363,6 +384,67 @@
     var up = upcoming();
     return (ZONES[cc] || []).map(function (p) { var n = up.filter(function (r) { return r.p === p; }).length; return '<option value="' + esc(p) + '"' + (p === sel ? " selected" : "") + '>' + esc(p) + (n ? " · " + n + (n === 1 ? " carrera" : " carreras") : "") + '</option>'; }).join("");
   }
+  /* ---------- Tarjeta para compartir (imagen 1080 × 1350) ---------- */
+  var RIBC = { "5K": ["#FF7A2F", "#F3F5FA"], "10K": ["#14B8A6", "#F3F5FA"], "21K": ["#3D7BFF", "#F3F5FA"], "42K": ["#7A5CFF", "#F2C14E"] };
+  function drawCard(m, isPr) {
+    var W = 1080, H = 1350, c = document.createElement("canvas"); c.width = W; c.height = H;
+    var x = c.getContext("2d"), F = "Manrope, 'Hanken Grotesk', system-ui, sans-serif", d = pd(m.date), l = dLabel(m.km);
+    var g = x.createRadialGradient(W * 0.85, 0, 50, W * 0.85, 0, 1100); g.addColorStop(0, "#2A4BB5"); g.addColorStop(0.55, "#0E1630"); g.addColorStop(1, "#0A0E1A");
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    x.strokeStyle = "rgba(127,166,255,0.16)"; x.lineWidth = 3;
+    [260, 360, 460].forEach(function (rr, i) { x.setLineDash(i === 2 ? [4, 18] : []); x.beginPath(); x.arc(W - 90, 150, rr, 0, Math.PI * 2); x.stroke(); });
+    x.setLineDash([]);
+    // logo
+    x.save(); x.translate(80, 80); x.fillStyle = "#0E1630"; x.beginPath(); x.roundRect ? x.roundRect(0, 0, 76, 76, 20) : x.rect(0, 0, 76, 76); x.fill();
+    x.strokeStyle = "rgba(255,255,255,0.18)"; x.lineWidth = 2; x.stroke();
+    x.scale(76 / 96, 76 / 96); x.translate(-12, -12); x.lineCap = "round"; x.lineJoin = "round"; x.lineWidth = 11;
+    x.strokeStyle = "#F3F5FA"; x.stroke(new Path2D("M44 30V90M44 30H64a17 17 0 0 1 0 34H44")); x.strokeStyle = "#7FA6FF"; x.stroke(new Path2D("M60 64L82 90")); x.restore();
+    x.fillStyle = "#F3F5FA"; x.font = "800 44px " + F; x.textBaseline = "middle"; x.fillText("Runiverso", 176, 120);
+    // medalla
+    var rb = RIBC[l] || ["#3DD68C", "#0A0E1A"], cx = W / 2, cy = 430;
+    x.save(); x.fillStyle = rb[0]; x.translate(cx - 70, 200); x.transform(1, 0, 0.25, 1, 0, 0); x.fillRect(0, 0, 62, 130); x.restore();
+    x.save(); x.fillStyle = rb[1]; x.translate(cx + 8, 200); x.transform(1, 0, -0.25, 1, 0, 0); x.fillRect(0, 0, 62, 130); x.restore();
+    var mg = x.createRadialGradient(cx - 45, cy - 50, 10, cx, cy, 150);
+    if (isPr) { mg.addColorStop(0, "#FFE7A3"); mg.addColorStop(0.5, "#F2C14E"); mg.addColorStop(1, "#B8862A"); } else { mg.addColorStop(0, "#FFFFFF"); mg.addColorStop(0.5, "#C9D1DE"); mg.addColorStop(1, "#7E889C"); }
+    x.shadowColor = isPr ? "rgba(242,193,78,0.45)" : "rgba(0,0,0,0.4)"; x.shadowBlur = 60;
+    x.fillStyle = mg; x.beginPath(); x.arc(cx, cy, 140, 0, Math.PI * 2); x.fill(); x.shadowBlur = 0;
+    x.strokeStyle = "rgba(255,255,255,0.45)"; x.lineWidth = 12; x.beginPath(); x.arc(cx, cy, 126, 0, Math.PI * 2); x.stroke();
+    x.fillStyle = "#0A0E1A"; x.textAlign = "center"; x.font = "800 " + (l.length > 3 ? 54 : 84) + "px " + F; x.fillText(l.length > 4 ? "★" : l, cx, cy - 8);
+    x.font = "600 30px 'DM Mono', ui-monospace, monospace"; x.fillText(String(d.getFullYear()), cx, cy + 60);
+    // etiqueta récord
+    var ty = 640;
+    if (isPr) { x.fillStyle = "#F2C14E"; var tw = 420; x.beginPath(); x.roundRect ? x.roundRect(cx - tw / 2, ty - 34, tw, 68, 34) : x.rect(cx - tw / 2, ty - 34, tw, 68); x.fill(); x.fillStyle = "#3A2600"; x.font = "800 30px " + F; x.fillText("RÉCORD PERSONAL", cx, ty + 2); }
+    else { x.fillStyle = "#7FA6FF"; x.font = "700 30px " + F; x.fillText("NUEVA MEDALLA", cx, ty); }
+    // nombre (hasta 2 líneas)
+    x.fillStyle = "#F3F5FA"; x.font = "800 58px " + F;
+    var words = m.name.split(" "), lines = [""], i;
+    for (i = 0; i < words.length; i++) { var t = (lines[lines.length - 1] + " " + words[i]).trim(); if (x.measureText(t).width > W - 160 && lines[lines.length - 1]) lines.push(words[i]); else lines[lines.length - 1] = t; }
+    if (lines.length > 2) { lines = lines.slice(0, 2); lines[1] += "…"; }
+    lines.forEach(function (ln, k) { x.fillText(ln, cx, 750 + k * 70); });
+    // tiempo
+    x.font = "800 190px " + F; x.fillStyle = "#FFFFFF"; x.fillText(fmtT(m.sec), cx, 760 + lines.length * 70 + 110);
+    // fila de datos
+    var yy = 1150, cols = [["DISTANCIA", l.length <= 3 ? (l === "21K" ? "21,1 km" : l === "42K" ? "42,2 km" : l.replace("K", " km")) : l], ["RITMO", pace(m.sec, m.km).replace(" /km", "/km")], ["FECHA", d.getDate() + " " + MES_C[d.getMonth()] + " " + d.getFullYear()]];
+    x.strokeStyle = "rgba(255,255,255,0.14)"; x.lineWidth = 2; x.beginPath(); x.moveTo(80, yy - 70); x.lineTo(W - 80, yy - 70); x.stroke();
+    cols.forEach(function (col, k) { var px = 80 + (W - 160) / 6 * (k * 2 + 1); x.fillStyle = "#A9B3C8"; x.font = "700 24px " + F; x.fillText(col[0], px, yy - 20); x.fillStyle = "#F3F5FA"; x.font = "800 40px " + F; x.fillText(col[1], px, yy + 30); });
+    x.fillStyle = "#7FA6FF"; x.font = "700 28px " + F; x.fillText("runiverso.com · Tu próxima meta empieza aquí", cx, H - 70);
+    return c;
+  }
+  function cardSheet(id, fresh) {
+    var m = S.marks.filter(function (z) { return z.id === id; })[0]; if (!m) return;
+    var b = prs()[dLabel(m.km)], isPr = b && b.id === m.id;
+    var go = function () {
+      var c = drawCard(m, isPr);
+      openSheet((fresh ? '<h2>' + (isPr ? "¡Récord personal!" : "¡Nueva medalla!") + '</h2><p class="muted" style="margin:0">Compártelo con tu gente: la imagen está lista para Instagram y WhatsApp.</p>' : '<h2>Compartir marca</h2>') +
+        '<img class="cardimg" src="' + c.toDataURL("image/png") + '" alt="Tarjeta de ' + esc(m.name) + ': ' + fmtT(m.sec) + '">' +
+        '<button class="btn wide" type="button" data-sharecard="' + id + '">Compartir imagen</button><button class="btn alt wide" type="button" data-dlcard="' + id + '">Descargar imagen</button><button class="btn alt wide" type="button" data-close="1">' + (fresh ? "Ahora no" : "Cerrar") + '</button>', "Compartir marca");
+    };
+    if (document.fonts && document.fonts.load) Promise.all([document.fonts.load("800 80px Manrope"), document.fonts.load("600 30px 'DM Mono'")]).then(go, go); else go();
+  }
+  function cardBlob(id, cb) {
+    var m = S.marks.filter(function (z) { return z.id === id; })[0], b = prs()[dLabel(m.km)];
+    drawCard(m, b && b.id === m.id).toBlob(function (bl) { cb(bl, m); }, "image/png");
+  }
   function nameSheet() {
     openSheet('<h2>Tu nombre</h2><form class="f" id="namef"><div class="fld"><label for="nm">Cómo quieres que te llamemos</label><input id="nm" type="text" maxlength="40" autocomplete="given-name" value="' + esc(S.name) + '"></div><button class="btn wide" type="submit">Guardar</button><button class="btn alt wide" type="button" data-close="1">Cancelar</button></form>', "Tu nombre");
   }
@@ -399,6 +481,18 @@
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
     if (mi) { var id = mi.getAttribute("data-mine"); if (S.mine[id]) delete S.mine[id]; else S.mine[id] = true; save(); toast(S.mine[id] ? "¡Apuntada! La verás en Inicio" : "Ya no estás apuntado"); render(); raceSheet(id); return; }
+    var cd = t.closest("[data-card]"); if (cd) { cardSheet(cd.getAttribute("data-card")); return; }
+    var dc = t.closest("[data-dlcard]");
+    if (dc) { cardBlob(dc.getAttribute("data-dlcard"), function (bl, m) { var a = document.createElement("a"); a.href = URL.createObjectURL(bl); a.download = "runiverso-" + dLabel(m.km).replace(/[^a-z0-9]+/gi, "") + "-" + m.date + ".png"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500); toast("Imagen descargada"); }); return; }
+    var sc2 = t.closest("[data-sharecard]");
+    if (sc2) {
+      cardBlob(sc2.getAttribute("data-sharecard"), function (bl, m) {
+        var file = new File([bl], "runiverso-marca.png", { type: "image/png" }), txt = m.name + ": " + fmtT(m.sec) + " (" + pace(m.sec, m.km) + "). Mis carreras en runiverso.com";
+        if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file], text: txt }).catch(function () {});
+        else { toast("Tu móvil no permite compartir imágenes desde aquí: descárgala y súbela"); }
+      });
+      return;
+    }
     var ic = t.closest("[data-ics]"); if (ic) { ics(BY[ic.getAttribute("data-ics")]); return; }
     var sh = t.closest("[data-share]"); if (sh) { share(BY[sh.getAttribute("data-share")]); return; }
     var f = t.closest("[data-f]"); if (f) { view.f = f.getAttribute("data-f"); view.lim = 30; render(); return; }
@@ -438,12 +532,12 @@
       else if (!(v.sec > 0)) err = "Escribe tu tiempo oficial (horas, minutos y segundos).";
       else if (v.sec / v.km < 120) err = "Ese tiempo es demasiado rápido para la distancia: revísalo.";
       if (err) { var keep = { name: v.name, date: v.date, km: v.km, h: v.h, m: v.m, s: v.s }; markSheet(v.rid, err, keep); return; }
-      var b = prs()[dLabel(v.km)], isPr = !b || v.sec < b.sec;
-      S.marks.push({ id: "m" + Date.now().toString(36), raceId: v.rid || "", name: v.name, km: v.km, sec: v.sec, date: v.date });
+      var b = prs()[dLabel(v.km)], isPr = !b || v.sec < b.sec, nid = "m" + Date.now().toString(36);
+      S.marks.push({ id: nid, raceId: v.rid || "", name: v.name, km: v.km, sec: v.sec, date: v.date });
       if (v.rid) delete S.mine[v.rid];
       save(); closeSheet(); view.tab = "perfil"; view.sub = isPr ? "vitrina" : "marcas";
       if (location.hash !== "#perfil") location.hash = "#perfil"; else render();
-      toast(isPr ? "¡Nuevo récord en " + dLabel(v.km) + "! Medalla de oro" : "Marca guardada. ¡Nueva medalla!");
+      cardSheet(nid, true);
     }
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("layer").innerHTML) closeSheet(); });

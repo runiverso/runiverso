@@ -239,3 +239,9 @@ form.f { display: flex; flex-direction: column; gap: 14px; }
 .gh span { font-family: var(--mono); font-weight: 400; font-size: 12px; color: var(--muted); }
 .zic { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(160deg, #3D7BFF, #16255A); display: grid; place-items: center; flex: none; font-family: var(--display); font-weight: 800; }
 .poster.img .tag { top: auto; bottom: 10px; right: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35); }
+.pr.pred { background: linear-gradient(160deg, #16255A, #0E1630); border-color: #2B3656; }
+.pr.pred b { color: #FFFFFF; }
+.dorsal .est { margin-top: 6px; padding-top: 8px; border-top: 1px dashed #C9D1DE; font-size: 13px; color: #4A5470; }
+.dorsal .est b { color: var(--accent); font-family: var(--display); font-weight: 800; }
+.cardimg { display: block; width: 100%; max-width: 360px; align-self: center; border-radius: 16px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); }
+.li .x.sh { color: var(--sky); }
