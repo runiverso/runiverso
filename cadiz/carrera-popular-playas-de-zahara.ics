@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-playas-de-zahara-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:Carrera Popular Playas de Zahara
+LOCATION:Zahara de los Atunes\, Cádiz
+DESCRIPTION:12.ª edición. Fecha por confirmar. Más info: https://runive
+ rso.com/cadiz/#carrera-popular-playas-de-zahara
+URL:https://runiverso.com/cadiz/#carrera-popular-playas-de-zahara
+END:VEVENT
+END:VCALENDAR

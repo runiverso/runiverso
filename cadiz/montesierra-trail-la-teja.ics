@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:montesierra-trail-la-teja-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:Montesierra Trail La Teja
+LOCATION:Jerez de la Frontera\, Cádiz
+DESCRIPTION:Trail por la zona de Montesierra\, en Jerez. Fecha por confirm
+ ar. Más info: https://runiverso.com/cadiz/#montesierra-trail-la-teja
+URL:https://runiverso.com/cadiz/#montesierra-trail-la-teja
+END:VEVENT
+END:VCALENDAR

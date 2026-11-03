@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-ciudad-de-chiclana-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20270411T090000
+DTEND;TZID=Europe/Madrid:20270411T120000
+SUMMARY:Media Maratón Ciudad de Chiclana
+LOCATION:Chiclana de la Frontera\, Cádiz
+DESCRIPTION:4.ª edición. Salida y meta en el Centro Deportivo Urbano Cos
+ ta Sancti Petri\, en un circuito llano y homologado por la RFEA\, con 3 h
+ oras de tiempo máximo. Inscripción desde 14 €. Más info: https://run
+ iverso.com/cadiz/#media-maraton-ciudad-de-chiclana
+URL:https://runiverso.com/cadiz/#media-maraton-ciudad-de-chiclana
+END:VEVENT
+END:VCALENDAR

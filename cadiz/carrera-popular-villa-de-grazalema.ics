@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-villa-de-grazalema-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:Carrera Popular Villa de Grazalema
+LOCATION:Grazalema\, Cádiz
+DESCRIPTION:46.ª edición\, en plena Sierra de Grazalema. Fecha por confi
+ rmar. Más info: https://runiverso.com/cadiz/#carrera-popular-villa-de-gr
+ azalema
+URL:https://runiverso.com/cadiz/#carrera-popular-villa-de-grazalema
+END:VEVENT
+END:VCALENDAR

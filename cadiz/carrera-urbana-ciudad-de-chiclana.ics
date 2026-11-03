@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-urbana-ciudad-de-chiclana-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera Urbana Ciudad de Chiclana
+LOCATION:Chiclana de la Frontera\, Cádiz
+DESCRIPTION:44.ª edición. Fecha por confirmar. Más info: https://runive
+ rso.com/cadiz/#carrera-urbana-ciudad-de-chiclana
+URL:https://runiverso.com/cadiz/#carrera-urbana-ciudad-de-chiclana
+END:VEVENT
+END:VCALENDAR

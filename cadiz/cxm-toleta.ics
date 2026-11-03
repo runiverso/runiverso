@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cxm-toleta-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:CxM Toleta
+LOCATION:Puerto Serrano\, Cádiz
+DESCRIPTION:6.ª edición. Fecha por confirmar. Más info: https://runiver
+ so.com/cadiz/#cxm-toleta
+URL:https://runiverso.com/cadiz/#cxm-toleta
+END:VEVENT
+END:VCALENDAR

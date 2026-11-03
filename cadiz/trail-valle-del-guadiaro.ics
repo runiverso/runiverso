@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:trail-valle-del-guadiaro-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:Trail Valle del Guadiaro
+LOCATION:San Roque\, Cádiz
+DESCRIPTION:2.ª edición. Fecha por confirmar. Más info: https://runiver
+ so.com/cadiz/#trail-valle-del-guadiaro
+URL:https://runiverso.com/cadiz/#trail-valle-del-guadiaro
+END:VEVENT
+END:VCALENDAR

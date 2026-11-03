@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-el-puerto-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20270131T090000
+DTEND;TZID=Europe/Madrid:20270131T120000
+SUMMARY:Media Maratón y 10K El Puerto
+LOCATION:El Puerto de Santa María\, Cádiz
+DESCRIPTION:Salida y meta en el Centro Comercial El Paseo. Hasta 4.500 dor
+ sales entre media y 10K\; la inscripción cierra el 17 de enero de 2027 o
+  al agotarse. La media cuesta de 20 a 30 € y el 10K de 15 a 25 €\, se
+ gún el tramo. Más info: https://runiverso.com/cadiz/#media-maraton-el-p
+ uerto
+URL:https://runiverso.com/cadiz/#media-maraton-el-puerto
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-roque-corre-contra-la-violencia-de-genero-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+SUMMARY:San Roque Corre contra la Violencia de Género
+LOCATION:San Roque\, Cádiz
+DESCRIPTION:Carrera solidaria\, 7.ª edición. Fecha por confirmar. Más i
+ nfo: https://runiverso.com/cadiz/#san-roque-corre-contra-la-violencia-de-
+ genero
+URL:https://runiverso.com/cadiz/#san-roque-corre-contra-la-violencia-de-ge
+ nero
+END:VEVENT
+END:VCALENDAR

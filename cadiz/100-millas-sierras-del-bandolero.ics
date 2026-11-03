@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:100-millas-sierras-del-bandolero-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270305
+DTEND;VALUE=DATE:20270306
+SUMMARY:100 Millas Sierras del Bandolero
+LOCATION:Prado del Rey\, Cádiz
+DESCRIPTION:Del 5 al 7 de marzo de 2027 por la Sierra de Grazalema\, entre
+  Cádiz y Málaga. 15.ª edición\, con las 100 millas\, la Maratón Band
+ olera y la Bandolerita. Más info: https://runiverso.com/cadiz/#100-milla
+ s-sierras-del-bandolero
+URL:https://runiverso.com/cadiz/#100-millas-sierras-del-bandolero
+END:VEVENT
+END:VCALENDAR

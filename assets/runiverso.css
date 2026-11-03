@@ -83,7 +83,7 @@ h3, .head h3, .mappanel h3, .ss h3 { font-weight: 700 !important; letter-spacing
   .rv-nav a { padding: 8px 8px; font-size: 14px; }
   .rv-word { font-size: 19px !important; }
 }
-@media (max-width: 400px) { .rv-nav { display: none; } .rv-soc { margin-left: auto; border-left: 0; } }
+@media (max-width: 420px) { .rv-nav { display: none; } .rv-soc { margin-left: auto; border-left: 0; } }
 
 /* Migas de pan (fichas y especial) */
 .crumbs { font-size: 13.5px !important; color: var(--muted) !important; margin-top: -8px; }
@@ -225,3 +225,4 @@ footer a:hover, .fine a:hover, .src a:hover { text-decoration: underline; }
   .hero .emblem svg { filter: drop-shadow(0 10px 18px rgba(29, 78, 216, 0.45)); }
   .hero .eyebrow { margin-right: 96px; }
 }
+@media (max-width: 560px) { .rv-nav a:first-child { display: none; } }

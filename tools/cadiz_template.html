@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+<script>if(/^(runiverso|carrerasdeespana)\.pages\.dev$/.test(location.hostname))location.replace("https://runiverso.com"+location.pathname+location.search+location.hash);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carreras en Cádiz 2026/27: medias, populares, trail y San Silvestre · Runiverso</title>
+<meta name="description" content="Calendario de carreras de running en la provincia de Cádiz: Media Maratón de Cádiz, El Puerto, Chiclana, Costa de la Luz, Jerez, trails de la Sierra y San Silvestres, con fecha y web oficial.">
+<link rel="canonical" href="https://runiverso.com/cadiz/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Runiverso">
+<meta property="og:title" content="Carreras en Cádiz · Runiverso">
+<meta property="og:description" content="{{N}} carreras de running en la provincia de Cádiz: medias, populares, trail y San Silvestres, con fecha y web oficial.">
+<meta property="og:url" content="https://runiverso.com/cadiz/">
+<meta property="og:image" content="https://runiverso.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F4F6FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0E1A" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/races.css">
+<style>
+.wrap { max-width: 860px !important; }
+.hero .eyebrow { display: inline-flex; align-items: center; gap: 9px; align-self: flex-start; padding: 6px 12px 6px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: var(--muted); font-size: 13px; font-weight: 600; }
+.hero .eyebrow svg { width: 15px; height: 15px; color: var(--accent); }
+.hero h1 { font-size: clamp(2.6rem, 9vw, 4.6rem) !important; letter-spacing: -0.05em !important; line-height: 1 !important; margin-top: 4px !important; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lead { margin: 0; color: var(--muted); max-width: 56ch; font-size: clamp(16px, 2.2vw, 18px); }
+.hstats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 8px 0 0; border-top: 1px solid var(--line); }
+.hstats > div { padding: 14px 12px 2px 0; display: flex; flex-direction: column-reverse; gap: 2px; min-width: 0; border: 0; }
+.hstats > div + div { padding-left: 14px; border-left: 1px solid var(--line); }
+.hstats dt { font-size: 12.5px; letter-spacing: 0; text-transform: none; font-weight: 500; color: var(--muted); }
+.hstats dd { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: -0.04em; line-height: 1.1; color: var(--fg); font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .hstats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hstats > div:nth-child(3) { padding-left: 0; border-left: 0; } .hstats > div:nth-child(n+3) { border-top: 1px solid var(--line); } }
+
+.feat { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px 22px; align-items: center; padding: clamp(18px, 3.5vw, 26px); border-radius: 18px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: 0 1px 2px rgba(14, 22, 48, 0.04), 0 14px 34px -12px rgba(47, 107, 255, 0.28); }
+.feat .cd { width: 112px; aspect-ratio: 1; border-radius: 22px; background: var(--accent); color: var(--on-accent); display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
+.feat .cd b { font-family: var(--font-display); font-weight: 800; font-size: 3.1rem; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+.feat .cd span { font-size: 13px; font-weight: 600; margin-top: 4px; }
+.feat .cd span::before { content: ""; }
+.feat .k { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.feat h2 { margin: 4px 0 6px !important; font-size: clamp(1.4rem, 3.6vw, 1.9rem) !important; }
+.feat p { margin: 0; color: var(--muted); font-size: 15px; }
+.feat ul { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.feat li { font-size: 13.5px; padding: 6px 11px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 9%, transparent); color: var(--fg); }
+.feat .acts { grid-column: 1 / -1; }
+@media (max-width: 520px) { .acts .btn { padding: 7px 11px !important; font-size: 13px; } .feat { grid-template-columns: minmax(0, 1fr); } .feat .cd { width: 100%; aspect-ratio: auto; flex-direction: row; gap: 10px; padding: 14px; border-radius: 14px; justify-content: flex-start; } .feat .cd b { font-size: 2.2rem; } .feat .cd span { margin: 0; font-size: 15px; } }
+
+.ftools { display: grid; gap: 10px; }
+.seg { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.seg::-webkit-scrollbar { display: none; }
+.seg button { flex: none; font: inherit; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font-weight: 600; font-size: 14.5px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.seg .n { font-family: var(--font-mono); font-size: 12px; font-weight: 400; opacity: 0.7; margin-left: 7px; }
+.status { font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; }
+.legend { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { display: inline-block; width: 16px; height: 11px; border: 1.5px solid var(--fg); border-radius: 4px; }
+.legend i.dash { border-style: dashed; border-color: var(--muted); }
+
+.list { display: flex; flex-direction: column; gap: 28px; }
+.month h2 { margin: 0 0 10px !important; font-size: 1.25rem !important; display: flex; gap: 10px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.month h2 .mc { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+.rows { display: flex; flex-direction: column; gap: 10px; }
+.cz { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; scroll-margin-top: 84px; box-shadow: 0 1px 2px rgba(14, 22, 48, 0.04), 0 8px 24px rgba(14, 22, 48, 0.05); }
+.cz:target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.cz .bib { width: 64px; align-self: start; border-width: 1.5px !important; border-radius: 12px !important; padding: 5px 0 6px; }
+.cz .bib .day { font-size: 1.9rem !important; line-height: 1.05; }
+.cz .bib .day.mo { font-size: 1.15rem !important; text-transform: uppercase; padding: 5px 0 4px; letter-spacing: -0.01em !important; }
+.czb { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.czb h3 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: -0.02em; line-height: 1.25; text-wrap: balance; }
+.czb .place { margin: 0; color: var(--muted); font-size: 14px; }
+.czb > p { margin: 0; font-size: 14.5px; max-width: 64ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.pill { font-family: var(--font-mono); font-size: 11.5px; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent); }
+.pill.ty { background: var(--fg) !important; color: var(--bg) !important; }
+.meta .st { margin-left: 0; font-size: 13px; }
+.acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.acts .btn { font-size: 13.5px; padding: 8px 13px !important; text-decoration: none; font-weight: 600; }
+.empty { text-align: center; color: var(--muted); padding: 28px; border: 1px dashed var(--line); border-radius: 16px; }
+.src { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: 13px; }
+.src summary { cursor: pointer; font-weight: 600; color: var(--fg); }
+</style>
+{{HEAD_TAIL}}
+<script type="application/ld+json">{{LD}}</script>
+</head>
+<body>
+<div class="wrap">
+  {{BAR}}
+  <nav class="crumbs" aria-label="Ruta"><a href="../">Runiverso</a><span aria-hidden="true">/</span><span>Cádiz</span></nav>
+  <header class="hero">
+    <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Provincia de Cádiz · 2026/27</span>
+    <h1>Cádiz <em>se corre.</em></h1>
+    <p class="lead">Las carreras de la provincia en un solo sitio: de La Caleta a la Sierra de Grazalema, con medias, populares, trail y San Silvestres. Fecha, distancia y web oficial de cada una.</p>
+    <dl class="hstats" aria-label="Cádiz en cifras"><div><dt>Carreras</dt><dd>{{N}}</dd></div><div><dt>Medias maratones</dt><dd>{{N21}}</dd></div><div><dt>Trails</dt><dd>{{NTR}}</dd></div><div><dt>Localidades</dt><dd>{{NTOWN}}</dd></div></dl>
+  </header>
+
+  <section class="feat" id="destacada" data-end="{{FEAT_DATE}}" aria-labelledby="feat-t">
+    <div class="cd" aria-hidden="true"><b id="feat-days">{{FEAT_DAY}}</b><span id="feat-unit">nov</span></div>
+    <div>
+      <span class="k">Próxima gran cita</span>
+      <h2 id="feat-t">Media Maratón Ciudad de Cádiz</h2>
+      <p>La gran cita de la ciudad: tercera edición, récord de inscritos y un recorrido de dos vueltas por el casco histórico.</p>
+      <ul><li>Domingo 8 de noviembre · 09:00</li><li>Salida en La Caleta, meta en la Catedral</li><li>Unos 3.000 corredores</li><li>Dorsales: jueves a sábado en El Corte Inglés</li></ul>
+    </div>
+    <div class="acts"><a class="btn" href="#{{FEAT_ID}}">Ver ficha</a><a class="btn alt" href="{{FEAT_ID}}.ics" download>+ Calendario</a><a class="btn alt" href="https://mediamaratonciudaddecadiz.com" target="_blank" rel="noopener">Web oficial</a></div>
+  </section>
+
+  <section class="ftools" aria-label="Filtros">
+    <div class="seg" id="seg" role="group" aria-label="Tipo de prueba">{{SEG}}</div>
+    <div class="status"><span id="count" aria-live="polite"></span><span class="legend"><i></i> Fecha confirmada</span><span class="legend"><i class="dash"></i> Por confirmar</span></div>
+  </section>
+
+  <main class="list" id="list">
+{{LIST}}
+    <p class="empty" id="empty" hidden>No hay carreras de este tipo en las próximas fechas.</p>
+  </main>
+
+  <footer>
+    <p>Las fechas «por confirmar» salen de calendarios de carreras y de ediciones anteriores: confírmalas siempre en la web oficial antes de inscribirte. ¿Falta la carrera de tu pueblo? <a href="{{FORM}}" target="_blank" rel="noopener">Avísanos</a> y la añadimos.</p>
+    <p>Proyecto independiente, sin relación con las organizaciones de las carreras. Última revisión: {{REVISADO}}.</p>
+    <details><summary>Fuentes consultadas</summary><div class="src">{{SOURCES}}</div></details>
+  </footer>
+</div>
+<script>
+(function () {
+  var t = new Date(), today = new Date(t.getFullYear(), t.getMonth(), t.getDate());
+  function pd(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function past(el) { return pd(el.getAttribute("data-end")) < today; }
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".cz"));
+  cards.forEach(function (c) { if (past(c)) c.remove(); });
+  var f = document.getElementById("destacada");
+  if (past(f)) { f.hidden = true; } else {
+    var d = Math.round((pd(f.getAttribute("data-end")) - today) / 86400000);
+    document.getElementById("feat-days").textContent = d === 0 ? "Hoy" : d;
+    document.getElementById("feat-unit").textContent = d === 0 ? "es el día" : (d === 1 ? "día" : "días");
+  }
+  var state = "";
+  function render() {
+    var n = 0;
+    document.querySelectorAll(".month").forEach(function (m) {
+      var vis = 0;
+      m.querySelectorAll(".cz").forEach(function (c) { var show = !state || c.getAttribute("data-k") === state; c.hidden = !show; if (show) vis++; });
+      m.hidden = vis === 0; n += vis;
+      var mc = m.querySelector(".mc"); if (mc) mc.textContent = vis + (vis === 1 ? " carrera" : " carreras");
+    });
+    document.getElementById("count").textContent = n + (n === 1 ? " carrera" : " carreras");
+    document.getElementById("empty").hidden = n > 0;
+    document.querySelectorAll("#seg button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-k") === state)); });
+  }
+  document.querySelectorAll("#seg button").forEach(function (b) {
+    var k = b.getAttribute("data-k");
+    var c = document.querySelectorAll(".cz" + (k ? '[data-k="' + k + '"]' : "")).length;
+    b.querySelector(".n").textContent = c;
+    b.hidden = c === 0;
+  });
+  document.getElementById("seg").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; state = b.getAttribute("data-k"); render(); });
+  render();
+})();
+</script>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "40ca04a8b7a9431abd85aeb6243e2c21"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>

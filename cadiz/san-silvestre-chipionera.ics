@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-chipionera-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261229
+DTEND;VALUE=DATE:20261230
+SUMMARY:San Silvestre Chipionera
+LOCATION:Chipiona\, Cádiz
+DESCRIPTION:33.ª edición. Fecha por confirmar. Más info: https://runive
+ rso.com/cadiz/#san-silvestre-chipionera
+URL:https://runiverso.com/cadiz/#san-silvestre-chipionera
+END:VEVENT
+END:VCALENDAR

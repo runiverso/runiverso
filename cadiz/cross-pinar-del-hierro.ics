@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-pinar-del-hierro-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Cross Pinar del Hierro y la Espartosa
+LOCATION:Chiclana de la Frontera\, Cádiz
+DESCRIPTION:20.ª edición. Fecha por confirmar. Más info: https://runive
+ rso.com/cadiz/#cross-pinar-del-hierro
+URL:https://runiverso.com/cadiz/#cross-pinar-del-hierro
+END:VEVENT
+END:VCALENDAR

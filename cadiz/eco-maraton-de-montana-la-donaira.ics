@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:eco-maraton-de-montana-la-donaira-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+SUMMARY:Eco Maratón de Montaña La Donaira
+LOCATION:El Gastor\, Cádiz
+DESCRIPTION:7.ª edición. Fecha por confirmar. Más info: https://runiver
+ so.com/cadiz/#eco-maraton-de-montana-la-donaira
+URL:https://runiverso.com/cadiz/#eco-maraton-de-montana-la-donaira
+END:VEVENT
+END:VCALENDAR

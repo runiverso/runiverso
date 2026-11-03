@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:trail-sierra-de-facinas-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+SUMMARY:Trail Sierra de Facinas
+LOCATION:Facinas (Tarifa)\, Cádiz
+DESCRIPTION:4.ª edición\, por la sierra de Facinas. Fecha por confirmar.
+  Más info: https://runiverso.com/cadiz/#trail-sierra-de-facinas
+URL:https://runiverso.com/cadiz/#trail-sierra-de-facinas
+END:VEVENT
+END:VCALENDAR

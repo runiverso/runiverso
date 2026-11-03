@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-urbana-ciudad-de-algeciras-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:Carrera Urbana Ciudad de Algeciras
+LOCATION:Algeciras\, Cádiz
+DESCRIPTION:26.ª edición. Fecha por confirmar. Más info: https://runive
+ rso.com/cadiz/#carrera-urbana-ciudad-de-algeciras
+URL:https://runiverso.com/cadiz/#carrera-urbana-ciudad-de-algeciras
+END:VEVENT
+END:VCALENDAR
