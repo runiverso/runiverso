@@ -12,6 +12,8 @@ import sys
 import urllib.parse
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from nav import nav  # noqa: E402
+from poster import poster_html  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "cadiz"
@@ -157,9 +159,12 @@ def when(r):
     return f"{MES_L[m-1]} de {y}, día por anunciar"
 
 
+PK = {"21K": "21K", "pop": "POP", "trail": "TR", "ss": "SS"}
+
+
 def card(r):
     share = urllib.parse.quote(f"{r['n']} · {when(r)} · {r['c']}\nhttps://runiverso.com/cadiz/#{r['id']}")
-    st = '<span class="st ok">Fecha confirmada</span>' if r["ok"] else '<span class="st prov">Por confirmar</span>'
+    st = '<span class="st ok">Confirmada</span>' if r["ok"] else '<span class="st prov">Por confirmar</span>'
     acts = []
     if r.get("web"):
         acts.append(f'<a class="btn" href="{e(r["web"])}" target="_blank" rel="noopener">Web oficial</a>')
@@ -172,11 +177,17 @@ def card(r):
         acts.append(f'<a class="btn alt" href="{e(r["also"])}">Ver en el especial</a>')
     acts.append(f'<a class="btn alt" href="https://wa.me/?text={share}" target="_blank" rel="noopener">Compartir</a>')
     end = r.get("d", r.get("m", "") + "-28")
-    dist_pill = "" if r["dist"] in ("Trail", "Popular", "San Silvestre") else f'<span class="pill">{e(r["dist"])}</span>'
-    return (f'<article class="cz" id="{r["id"]}" data-k="{r["k"]}" data-end="{end}">{bib(r)}'
-            f'<div class="czb"><h3>{e(r["n"])}</h3><p class="place">{e(r["c"])} · {e(when(r))}</p>'
-            f'<div class="meta"><span class="pill ty">{TYPES[r["k"]]}</span>{dist_pill}{st}</div>'
-            f'<p>{e(r["note"])}</p><div class="acts">{"".join(acts)}</div></div></article>')
+    if "d" in r:
+        d = dt.date.fromisoformat(r["d"])
+        dd = f"{d.day:02d}/{d.month:02d}/{d.year}" + (f" · {r['t']}" if r.get("t") else "")
+    else:
+        y, m = map(int, r["m"].split("-"))
+        dd = f"{MES_L[m-1].capitalize()} {y}"
+    poster = poster_html(r["id"], r["n"], r["c"], PK[r["k"]], r["dist"], r.get("d"), r.get("m"), r["ok"], tag="button", root="../")
+    poster = poster.replace('type="button"', f'type="button" data-tog="{r["id"]}"', 1)
+    return (f'<article class="pcard" id="{r["id"]}" data-k="{r["k"]}" data-end="{end}">{poster}'
+            f'<div class="pinfo"><h3>{e(r["n"])}</h3><p class="pl">{e(r["c"])}</p><p class="pd">{dd}{st}</p>'
+            f'<details class="pmore" id="m-{r["id"]}"><summary>Ver más</summary><p>{e(r["note"])}</p><div class="acts">{"".join(acts)}</div></details></div></article>')
 
 
 def build():
@@ -200,7 +211,7 @@ def build():
         y, m = map(int, key.split("-"))
         list_html += (f'<section class="month" data-m="{key}"><h2>{MES_L[m-1].capitalize()} {y}'
                       f'<span class="mc">{len(items)} {"carrera" if len(items) == 1 else "carreras"}</span></h2>'
-                      f'<div class="rows">{"".join(card(r) for r in items)}</div></section>\n')
+                      f'<div class="pgrid">{"".join(card(r) for r in items)}</div></section>\n')
 
     fd = dt.date.fromisoformat(feat["d"])
     seg = "".join(f'<button type="button" data-k="{k}" aria-pressed="{str(k == "").lower()}">{lab}<span class="n">{n}</span></button>'
@@ -224,7 +235,7 @@ def build():
 
     tpl = (ROOT / "tools" / "cadiz_template.html").read_text()
     page = (tpl.replace("{{HEAD_TAIL}}", (ROOT / "tools" / "head_tail.html").read_text())
-               .replace("{{BAR}}", (ROOT / "tools" / "bar.html").read_text())
+               .replace("{{BAR}}", (ROOT / "tools" / "bar.html").read_text().replace("{{NAV}}", nav("../", "cadiz")))
                .replace("{{LD}}", json.dumps(ld, ensure_ascii=False))
                .replace("{{N}}", str(len(races))).replace("{{N21}}", str(counts["21K"]))
                .replace("{{NTR}}", str(counts["trail"])).replace("{{NTOWN}}", str(len(towns)))

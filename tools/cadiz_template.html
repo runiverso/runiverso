@@ -79,6 +79,14 @@
 .meta .st { margin-left: 0; font-size: 13px; }
 .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 .acts .btn { font-size: 13.5px; padding: 8px 13px !important; text-decoration: none; font-weight: 600; }
+.pmore { margin-top: 4px; font-size: 14px; }
+.pmore summary { cursor: pointer; display: inline-flex; align-items: center; padding: 7px 12px; border-radius: 10px; font-size: 13px; font-weight: 700; background: var(--accent); color: var(--on-accent); list-style: none; }
+.pmore summary::-webkit-details-marker { display: none; }
+.pmore[open] summary { background: transparent; color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line)); }
+.pmore p { margin: 10px 0 0; line-height: 1.5; }
+.pmore .acts .btn { font-size: 12.5px; padding: 6px 10px !important; }
+.pcard:has(.pmore[open]) { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 520px) { .pcard:has(.pmore[open]) { grid-template-columns: minmax(0, 132px) minmax(0, 1fr); gap: 14px; } }
 .empty { text-align: center; color: var(--muted); padding: 28px; border: 1px dashed var(--line); border-radius: 16px; }
 .src { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: 13px; }
 .src summary { cursor: pointer; font-weight: 600; color: var(--fg); }
@@ -129,8 +137,10 @@
   var t = new Date(), today = new Date(t.getFullYear(), t.getMonth(), t.getDate());
   function pd(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
   function past(el) { return pd(el.getAttribute("data-end")) < today; }
-  var cards = Array.prototype.slice.call(document.querySelectorAll(".cz"));
+  var cards = Array.prototype.slice.call(document.querySelectorAll(".pcard"));
   cards.forEach(function (c) { if (past(c)) c.remove(); });
+  document.addEventListener("click", function (ev) { var b = ev.target.closest("[data-tog]"); if (!b) return; var d = document.getElementById("m-" + b.getAttribute("data-tog")); if (d) d.open = !d.open; });
+  var hs = (location.hash || "").slice(1); if (hs) { var dm = document.getElementById("m-" + hs); if (dm) dm.open = true; }
   var f = document.getElementById("destacada");
   if (past(f)) { f.hidden = true; } else {
     var d = Math.round((pd(f.getAttribute("data-end")) - today) / 86400000);
@@ -142,7 +152,7 @@
     var n = 0;
     document.querySelectorAll(".month").forEach(function (m) {
       var vis = 0;
-      m.querySelectorAll(".cz").forEach(function (c) { var show = !state || c.getAttribute("data-k") === state; c.hidden = !show; if (show) vis++; });
+      m.querySelectorAll(".pcard").forEach(function (c) { var show = !state || c.getAttribute("data-k") === state; c.hidden = !show; if (show) vis++; });
       m.hidden = vis === 0; n += vis;
       var mc = m.querySelector(".mc"); if (mc) mc.textContent = vis + (vis === 1 ? " carrera" : " carreras");
     });
@@ -152,7 +162,7 @@
   }
   document.querySelectorAll("#seg button").forEach(function (b) {
     var k = b.getAttribute("data-k");
-    var c = document.querySelectorAll(".cz" + (k ? '[data-k="' + k + '"]' : "")).length;
+    var c = document.querySelectorAll(".pcard" + (k ? '[data-k="' + k + '"]' : "")).length;
     b.querySelector(".n").textContent = c;
     b.hidden = c === 0;
   });
