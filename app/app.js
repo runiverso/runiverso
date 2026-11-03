@@ -46,7 +46,7 @@
     var C = window.CARTELES || {};
     var at = ' data-k="' + r.k + '" data-race="' + r.id + '" type="button" aria-label="' + esc(r.n) + ': ver ficha"';
     var t = tag || (S.mine[r.id] ? '<span class="tag mine">Apuntada</span>' : (r.ok ? '' : '<span class="tag">Por confirmar</span>'));
-    if (C[r.id]) return '<button class="poster"' + at + ' style="padding:0"><img src="../carteles/' + C[r.id] + '" alt="" style="width:100%;height:100%;object-fit:cover">' + t + '</button>';
+    if (C[r.id]) return '<button class="poster img"' + at + ' style="padding:0"><img src="../carteles/' + C[r.id] + '" alt="" style="width:100%;height:100%;object-fit:cover">' + t + '</button>';
     var dist = String(r.dist || "").replace(/^Trail · /, "");
     if (/^(Trail|Popular|San Silvestre)$/.test(dist)) dist = "";
     return '<button class="poster"' + at + (extra || "") + '><span class="pt">' + MARK + LABEL[r.k] + (dist ? '<span class="pdist">' + esc(dist) + '</span>' : '') + '</span>' +
