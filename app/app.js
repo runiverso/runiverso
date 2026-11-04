@@ -19,6 +19,12 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
+  var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
+  var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
+  function canalCard(title, text) {
+    return '<a class="canal" href="' + CANAL + '" target="_blank" rel="noopener"><span class="ci">' + WA_ICO + '</span><span class="ct"><b>' + title + '</b><span>' + text + '</span></span><span class="cb">Unirme</span></a>';
+  }
+
   /* ---------- Datos guardados en el móvil ---------- */
   var KEY = "runiverso-app-v1";
   var S = { name: "", mine: {}, marks: [], prov: "", ccaa: "" };
@@ -145,6 +151,7 @@
     } else {
       h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas ›</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
     }
+    h += canalCard("Avisos de dorsales en WhatsApp", "Cuándo abren y suben las inscripciones" + (S.prov ? " en " + esc(S.prov) : "") + ", horarios y novedades. Gratis.");
     if (RESULTS.length) {
       h += '<div class="sec"><div class="sechd"><h2>Últimos resultados</h2><a href="#clasificaciones">Ver todos ›</a></div><div class="list">' + RESULTS.slice().sort(function (a, b) { return near({ p: a.p, r: ccaaOf(a.p), date: -pd(a.d) }, { p: b.p, r: ccaaOf(b.p), date: -pd(b.d) }); }).slice(0, 3).map(resLi).join("") + '</div></div>';
     }
@@ -333,6 +340,7 @@
       h += '<div class="marks"><span class="k">Ganadores · ' + esc(r.m.ed) + '</span>' + [["Hombres", r.m.h], ["Mujeres", r.m.f]].filter(function (x) { return x[1]; }).map(function (x) { return '<span class="r"><span>' + x[0] + ': ' + esc(x[1][0]) + '</span><b>' + esc(x[1][2]) + '</b></span>'; }).join("") + '</div>';
     }
     h += '<button class="btn wide ' + (on ? "ok" : "") + '" type="button" data-mine="' + id + '">' + (on ? "✓ Apuntada · quitar" : "Apuntarme") + '</button>';
+    if (on && d >= 0) h += canalCard("¿Te avisamos de esta carrera?", "Recogida de dorsales, horarios y cambios de última hora en nuestro canal.");
     h += '<div class="row">' + (r.w ? '<a class="btn sm alt" href="' + esc(r.w) + '" target="_blank" rel="noopener">Web oficial</a>' : '<a class="btn sm alt" href="https://www.google.com/search?q=' + encodeURIComponent(r.n + " " + r.date.getFullYear() + " inscripción") + '" target="_blank" rel="noopener">Buscar inscripción</a>') +
       '<button class="btn sm alt" type="button" data-ics="' + id + '">Añadir al calendario</button><button class="btn sm alt" type="button" data-share="' + id + '">Compartir</button>' +
       (KM[r.k] && d < 0 ? '<button class="btn sm alt" type="button" data-act="addmark" data-race="' + id + '">Añadir mi marca</button>' : '') + '</div>';
@@ -466,7 +474,7 @@
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
   }
   function share(r) {
-    var text = r.n + " · " + sdate(r.date) + " · " + r.c, url = "https://runiverso.com/app/";
+    var text = r.n + " · " + sdate(r.date) + " · " + r.c + "\nAvisos de dorsales: " + CANAL, url = "https://runiverso.com/app/";
     if (navigator.share) { navigator.share({ title: r.n, text: text, url: url }).catch(function () {}); return; }
     var full = text + "\n" + url;
     if (navigator.clipboard) navigator.clipboard.writeText(full).then(function () { toast("Enlace copiado"); }, function () { window.open("https://wa.me/?text=" + encodeURIComponent(full), "_blank"); });
@@ -487,7 +495,7 @@
     var sc2 = t.closest("[data-sharecard]");
     if (sc2) {
       cardBlob(sc2.getAttribute("data-sharecard"), function (bl, m) {
-        var file = new File([bl], "runiverso-marca.png", { type: "image/png" }), txt = m.name + ": " + fmtT(m.sec) + " (" + pace(m.sec, m.km) + "). Mis carreras en runiverso.com";
+        var file = new File([bl], "runiverso-marca.png", { type: "image/png" }), txt = m.name + ": " + fmtT(m.sec) + " (" + pace(m.sec, m.km) + "). Mis carreras en runiverso.com · Avisos de carreras: " + CANAL;
         if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file], text: txt }).catch(function () {});
         else { toast("Tu móvil no permite compartir imágenes desde aquí: descárgala y súbela"); }
       });
