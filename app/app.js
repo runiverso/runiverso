@@ -231,13 +231,13 @@
       return '<a href="#' + t[0] + '"' + (view.tab === t[0] ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + t[2] + '"/></svg>' + t[1] + '</a>';
     }).join("");
     var ini = (S.name || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
-    $("topav").textContent = ini;
+    $("topav").textContent = ini; $("topav").classList.toggle("on", !!user); $("topav").setAttribute("aria-label", user ? "Mi perfil (sesión iniciada)" : "Mi perfil");
   }
   function render() {
     renderTabs();
     var fn = { inicio: vInicio, carreras: vCarreras, perfil: vPerfil, clasificaciones: vResultados, comunidad: vComunidad }[view.tab];
     $("main").innerHTML = '<div class="view">' + fn() + '</div>';
-    if (!S.prov && !zoneAsked) { zoneAsked = true; zoneSheet(true); }
+    if (!S.prov && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; zoneSheet(true); }
   }
   var zoneAsked = false;
   function zoneChip() {
