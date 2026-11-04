@@ -19,6 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
+  var APP_V = "16";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -213,7 +214,7 @@
       (mode === "signup" ? '<ul class="aperks"><li>Tus marcas y medallas, a salvo aunque cambies de móvil</li><li>Ranking de corredores de ' + (S.prov ? esc(S.prov) : "tu provincia") + '</li><li>Tus carreras apuntadas en todos tus dispositivos</li></ul>' : '') +
       body + '<p class="alegal">Al continuar aceptas las <a href="../condiciones/" target="_blank" rel="noopener">condiciones de uso</a> y la <a href="../privacidad/" target="_blank" rel="noopener">política de privacidad</a>. Puedes borrar tu cuenta cuando quieras.</p></div></div>';
     var f = $("layer").querySelector(mode.indexOf("code") === 0 ? "#otp" : "#ae, #ap"); if (f) setTimeout(function () { f.focus(); }, 50);
-    if (!authScreen.open) motion.screen($("layer").firstChild); authScreen.open = true;
+    if (!authScreen.open) motion.screen($("layer").firstChild); authScreen.open = true; document.documentElement.classList.add("lock");
   }
   function authErr(e) {
     var m = (e && e.message) || "";
@@ -503,7 +504,7 @@
     }).join("") + '</div>';
     h += accountCard();
     h += { marcas: pMarcas, vitrina: pVitrina, mis: pMis }[view.sub]();
-    h += '<p class="foot">' + (user ? "Tus datos se guardan en tu cuenta Runiverso y en este móvil." : "Sin cuenta, tus datos se guardan solo en este móvil.") + '</p>';
+    h += '<p class="foot">' + (user ? "Tus datos se guardan en tu cuenta Runiverso y en este móvil." : "Sin cuenta, tus datos se guardan solo en este móvil.") + ' · Versión ' + APP_V + '</p>';
     return h;
   }
   function pMarcas() {
@@ -597,7 +598,7 @@
     resState = { id: id, q: q || "" };
     var head = '<div class="rhead">' + poster(fake, '<span class="tag done">Terminada</span>').replace('data-race="', 'data-x="') + '<div><p class="kick">Clasificación</p><h1>' + esc(r.n) + '</h1><p class="asub">' + cap(fdate(d)) + ' · ' + esc(r.c) + (r.extra ? ' · ' + esc(r.extra) : '') + '</p></div></div>';
     $("layer").innerHTML = '<div class="auth res" role="dialog" aria-modal="true" aria-label="Clasificación ' + esc(r.n) + '"><div class="auth-in"><button class="aclose" type="button" data-close="1" aria-label="Cerrar">×</button>' + head + '<div id="resbody"><p class="muted">Cargando clasificación…</p></div></div></div>';
-    motion.screen($("layer").firstChild);
+    motion.screen($("layer").firstChild); document.documentElement.classList.add("lock");
     if (!sb) { resEmpty(r); return; }
     var base = function () { return sb.from("results").select("id,pos,name,sex,category,club,sec,user_id").eq("race_id", id); };
     Promise.all([
@@ -685,7 +686,7 @@
     var f = $("layer").querySelector(".sheet input, .sheet button, .sheet a"); if (f) f.focus();
     motion.sheet($("layer").firstChild);
   }
-  function closeSheet() { authScreen.open = false; resState = null; $("layer").innerHTML = ""; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  function closeSheet() { authScreen.open = false; resState = null; document.documentElement.classList.remove("lock"); $("layer").innerHTML = ""; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 
   function raceSheet(id) {
     var r = BY[id]; if (!r) return;
@@ -982,7 +983,19 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("layer").innerHTML) closeSheet(); });
   window.addEventListener("hashchange", route);
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferredInstall = e; if (view.tab === "inicio") render(); });
-  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});
+  // Actualización automática: al volver a la app busca versión nueva y, si la hay, recarga una vez
+  if ("serviceWorker" in navigator && location.protocol === "https:") {
+    var hadCtrl = !!navigator.serviceWorker.controller, reloaded = false;
+    navigator.serviceWorker.register("sw.js").then(function (reg) {
+      var check = function () { reg.update().catch(function () {}); };
+      document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") check(); });
+      setInterval(check, 30 * 60 * 1000);
+    }).catch(function () {});
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (!hadCtrl || reloaded || $("layer").innerHTML) { hadCtrl = true; return; }
+      reloaded = true; location.reload();
+    });
+  }
   route();
   initCloud();
   motion.tilt();

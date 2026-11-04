@@ -362,3 +362,6 @@ h1 .w > span { display: inline-block; }
 .rhead { grid-template-columns: 118px minmax(0, 1fr); }
 .rhead .poster { width: 118px; }
 .rhead .poster .tag { display: none; }
+.auth { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+html.lock, html.lock body { overflow: hidden; }
+html.lock .tabbar { visibility: hidden; }
