@@ -3,14 +3,13 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:san-silvestre-sevillana-2026-12-27@carreras-de-espana
-DTSTAMP:20261029T120000Z
-DTSTART;VALUE=DATE:20261227
-DTEND;VALUE=DATE:20261228
+UID:san-silvestre-sevillana-2026-12-27@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20261227T100000
+DTEND;TZID=Europe/Madrid:20261227T130000
 SUMMARY:San Silvestre Sevillana
 LOCATION:Sevilla\, Andalucía
 DESCRIPTION:5 km · Sevilla\nhttps://www.sansilvestresevillan
- a.com\nhttps://runiverso.com/carreras/san-silvestre-sevilla
- na/
+ a.com\nhttps://runiverso.com/carreras/san-silvestre-sevillana/
 END:VEVENT
 END:VCALENDAR

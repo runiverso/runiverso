@@ -3,9 +3,8 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:media-maraton-internacional-de-torremolinos-2027-02-07@c
- arreras-de-espana
-DTSTAMP:20261029T120000Z
+UID:media-maraton-internacional-de-torremolinos-2027-02-07@runiverso.com
+DTSTAMP:20261104T120000Z
 DTSTART;VALUE=DATE:20270207
 DTEND;VALUE=DATE:20270208
 SUMMARY:Media Maratón Internacional de Torremolinos

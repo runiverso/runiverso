@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:kanpezu-ioar-2027-05-09@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270509
+DTEND;VALUE=DATE:20270510
+SUMMARY:Kanpezu Ioar
+LOCATION:Santa Cruz de Campezo\, País Vasco
+DESCRIPTION:Trail · 26\,5 km · Santa Cruz de Campezo\nhttps:
+ //runiverso.com/carreras/kanpezu-ioar/
+END:VEVENT
+END:VCALENDAR

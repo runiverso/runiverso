@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:penyagolosa-trails-2027-04-17@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270417
+DTEND;VALUE=DATE:20270418
+SUMMARY:Penyagolosa Trails
+LOCATION:Castellón de la Plana\, Comunidad Valenciana
+DESCRIPTION:Trail · 106 km · Castellón de la Plana\nhttps://
+ runiverso.com/carreras/penyagolosa-trails/
+END:VEVENT
+END:VCALENDAR

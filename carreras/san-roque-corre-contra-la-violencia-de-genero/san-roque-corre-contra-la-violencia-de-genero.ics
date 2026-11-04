@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-roque-corre-contra-la-violencia-de-genero-2026-11-21@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+SUMMARY:San Roque Corre contra la Violencia de Género
+LOCATION:San Roque\, Andalucía
+DESCRIPTION:Popular · San Roque\nhttps://runiverso.com/carre
+ ras/san-roque-corre-contra-la-violencia-de-genero/
+END:VEVENT
+END:VCALENDAR

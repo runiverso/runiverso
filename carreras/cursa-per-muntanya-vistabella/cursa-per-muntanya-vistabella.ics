@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cursa-per-muntanya-vistabella-2027-08-01@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270801
+DTEND;VALUE=DATE:20270802
+SUMMARY:Cursa per Muntanya Vistabella
+LOCATION:Vistabella del Maestrazgo\, Comunidad Valenciana
+DESCRIPTION:Trail · 27 km · Vistabella del Maestrazgo\nhttps
+ ://runiverso.com/carreras/cursa-per-muntanya-vistabella/
+END:VEVENT
+END:VCALENDAR

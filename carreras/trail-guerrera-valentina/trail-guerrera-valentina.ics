@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:trail-guerrera-valentina-2027-02-13@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270213
+DTEND;VALUE=DATE:20270214
+SUMMARY:Trail Guerrera Valentina
+LOCATION:Jerez de la Frontera\, Andalucía
+DESCRIPTION:Trail · Jerez de la Frontera\nhttps://runiverso.
+ com/carreras/trail-guerrera-valentina/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:desafio-sierra-de-villaluenga-2026-11-15@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Desafío Sierra de Villaluenga
+LOCATION:Villaluenga del Rosario\, Andalucía
+DESCRIPTION:Trail · Villaluenga del Rosario\nhttps://runiver
+ so.com/carreras/desafio-sierra-de-villaluenga/
+END:VEVENT
+END:VCALENDAR

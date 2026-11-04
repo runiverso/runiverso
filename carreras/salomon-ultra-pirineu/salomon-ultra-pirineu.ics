@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:salomon-ultra-pirineu-2027-10-02@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20271002
+DTEND;VALUE=DATE:20271003
+SUMMARY:Salomon Ultra Pirineu
+LOCATION:Bagà\, Cataluña
+DESCRIPTION:Trail · 100 km · Bagà\nhttps://runiverso.com/car
+ reras/salomon-ultra-pirineu/
+END:VEVENT
+END:VCALENDAR

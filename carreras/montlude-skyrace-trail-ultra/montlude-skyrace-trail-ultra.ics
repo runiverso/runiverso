@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:montlude-skyrace-trail-ultra-2027-08-07@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270807
+DTEND;VALUE=DATE:20270808
+SUMMARY:Montlude Skyrace – Trail – Ultra
+LOCATION:Bausen\, Cataluña
+DESCRIPTION:Trail · 63 km · Bausen\nhttps://runiverso.com/ca
+ rreras/montlude-skyrace-trail-ultra/
+END:VEVENT
+END:VCALENDAR

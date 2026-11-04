@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:half-marathon-union-alcoyana-seguros-2026-11-29@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261129
+DTEND;VALUE=DATE:20261130
+SUMMARY:Half Marathon Unión Alcoyana Seguros
+LOCATION:Alcoy\, Comunidad Valenciana
+DESCRIPTION:21\,1 km · Alcoy\nhttps://runiverso.com/carreras
+ /half-marathon-union-alcoyana-seguros/
+END:VEVENT
+END:VCALENDAR

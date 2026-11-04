@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-ciudad-de-cadiz-2026-11-08@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20261108T090000
+DTEND;TZID=Europe/Madrid:20261108T120000
+SUMMARY:Media Maratón Ciudad de Cádiz
+LOCATION:Cádiz\, Andalucía
+DESCRIPTION:21\,1 km · Cádiz\nhttps://mediamaratonciudaddeca
+ diz.com\nhttps://runiverso.com/carreras/media-maraton-ciudad-de-cadiz/
+END:VEVENT
+END:VCALENDAR

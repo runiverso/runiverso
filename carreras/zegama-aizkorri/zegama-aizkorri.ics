@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:zegama-aizkorri-2027-05-16@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270516
+DTEND;VALUE=DATE:20270517
+SUMMARY:Zegama Aizkorri
+LOCATION:Zegama\, País Vasco
+DESCRIPTION:Trail · 42\,195 km · Zegama\nhttps://runiverso.c
+ om/carreras/zegama-aizkorri/
+END:VEVENT
+END:VCALENDAR

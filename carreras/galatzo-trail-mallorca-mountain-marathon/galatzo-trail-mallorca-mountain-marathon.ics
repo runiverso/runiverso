@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:galatzo-trail-mallorca-mountain-marathon-2027-03-07@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270307
+DTEND;VALUE=DATE:20270308
+SUMMARY:Galatzó Trail Mallorca Mountain Marathon
+LOCATION:Es Capdellà\, Illes Balears
+DESCRIPTION:Trail · 43 km · Es Capdellà\nhttps://runiverso.c
+ om/carreras/galatzo-trail-mallorca-mountain-marathon/
+END:VEVENT
+END:VCALENDAR

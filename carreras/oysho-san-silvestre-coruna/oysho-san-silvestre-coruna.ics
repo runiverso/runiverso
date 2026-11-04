@@ -3,14 +3,13 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:oysho-san-silvestre-coruna-2026-12-31@carreras-de-espana
-DTSTAMP:20261029T120000Z
-DTSTART;VALUE=DATE:20261231
-DTEND;VALUE=DATE:20270101
+UID:oysho-san-silvestre-coruna-2026-12-31@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20261231T170000
+DTEND;TZID=Europe/Madrid:20261231T200000
 SUMMARY:Oysho San Silvestre Coruña
 LOCATION:A Coruña\, Galicia
 DESCRIPTION:7\,5 km · A Coruña\nhttps://www.sansilvestrecoru
- na.com\nhttps://runiverso.com/carreras/oysho-san-silvestre-
- coruna/
+ na.com\nhttps://runiverso.com/carreras/oysho-san-silvestre-coruna/
 END:VEVENT
 END:VCALENDAR

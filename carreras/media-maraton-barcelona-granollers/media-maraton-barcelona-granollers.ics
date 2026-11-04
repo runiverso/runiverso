@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-barcelona-granollers-2027-01-24@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270124
+DTEND;VALUE=DATE:20270125
+SUMMARY:Media Maratón Barcelona Granollers
+LOCATION:Granollers\, Cataluña
+DESCRIPTION:21\,1 km · Granollers\nhttps://runiverso.com/car
+ reras/media-maraton-barcelona-granollers/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:transgrancanaria-hg-2027-03-05@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270305
+DTEND;VALUE=DATE:20270306
+SUMMARY:Transgrancanaria HG
+LOCATION:Las Palmas de Gran Canaria\, Canarias
+DESCRIPTION:Trail · hasta 128 km · Las Palmas de Gran Canari
+ a\nhttps://runiverso.com/carreras/transgrancanaria-hg/
+END:VEVENT
+END:VCALENDAR

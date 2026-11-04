@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:epic-trail-vall-de-boi-2027-06-26@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270626
+DTEND;VALUE=DATE:20270627
+SUMMARY:Epic Trail Vall de Boí
+LOCATION:Vall de Boí\, Cataluña
+DESCRIPTION:Trail · 68 km · Vall de Boí\nhttps://runiverso.c
+ om/carreras/epic-trail-vall-de-boi/
+END:VEVENT
+END:VCALENDAR

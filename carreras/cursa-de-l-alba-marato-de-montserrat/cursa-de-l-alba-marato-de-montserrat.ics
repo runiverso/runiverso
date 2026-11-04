@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cursa-de-l-alba-marato-de-montserrat-2026-11-07@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+SUMMARY:Cursa de l'Alba – Marató de Montserrat
+LOCATION:Collbató\, Cataluña
+DESCRIPTION:Trail · 42 km · Collbató\nhttps://runiverso.com/
+ carreras/cursa-de-l-alba-marato-de-montserrat/
+END:VEVENT
+END:VCALENDAR

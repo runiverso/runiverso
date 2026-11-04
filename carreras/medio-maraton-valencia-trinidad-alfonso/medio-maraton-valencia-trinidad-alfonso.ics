@@ -3,16 +3,14 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:medio-maraton-valencia-trinidad-alfonso-2027-10-24@carre
- ras-de-espana
-DTSTAMP:20261029T120000Z
+UID:medio-maraton-valencia-trinidad-alfonso-2027-10-24@runiverso.com
+DTSTAMP:20261104T120000Z
 DTSTART;VALUE=DATE:20271024
 DTEND;VALUE=DATE:20271025
 SUMMARY:Medio Maratón Valencia Trinidad Alfonso
 LOCATION:Valencia\, Comunidad Valenciana
-DESCRIPTION:21\,1 km · Valencia. Fecha provisional: confirma
-  en la web oficial.\nhttps://www.valenciaciudaddelrunning.c
- om\nhttps://runiverso.com/carreras/medio-maraton-valencia-t
- rinidad-alfonso/
+DESCRIPTION:21\,1 km · Valencia\nhttps://www.valenciaciudadd
+ elrunning.com\nhttps://runiverso.com/carreras/medio-maraton
+ -valencia-trinidad-alfonso/
 END:VEVENT
 END:VCALENDAR

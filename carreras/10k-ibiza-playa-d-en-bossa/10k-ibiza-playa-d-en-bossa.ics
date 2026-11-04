@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:10k-ibiza-playa-d-en-bossa-2027-02-14@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270214
+DTEND;VALUE=DATE:20270215
+SUMMARY:10K Ibiza Playa d'en Bossa
+LOCATION:Ibiza\, Illes Balears
+DESCRIPTION:10 km · Ibiza\nhttps://runiverso.com/carreras/10
+ k-ibiza-playa-d-en-bossa/
+END:VEVENT
+END:VCALENDAR

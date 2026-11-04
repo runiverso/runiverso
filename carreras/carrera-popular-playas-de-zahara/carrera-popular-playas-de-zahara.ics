@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-playas-de-zahara-2026-11-08@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:Carrera Popular Playas de Zahara
+LOCATION:Zahara de los Atunes\, Andalucía
+DESCRIPTION:Popular · Zahara de los Atunes\nhttps://runivers
+ o.com/carreras/carrera-popular-playas-de-zahara/
+END:VEVENT
+END:VCALENDAR

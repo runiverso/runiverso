@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:trail-sierra-de-facinas-2026-11-07@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+SUMMARY:Trail Sierra de Facinas
+LOCATION:Facinas (Tarifa)\, Andalucía
+DESCRIPTION:Trail · Facinas (Tarifa)\nhttps://runiverso.com/
+ carreras/trail-sierra-de-facinas/
+END:VEVENT
+END:VCALENDAR

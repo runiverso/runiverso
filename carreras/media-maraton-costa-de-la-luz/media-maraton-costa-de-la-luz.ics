@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-costa-de-la-luz-2027-03-14@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20270314T093000
+DTEND;TZID=Europe/Madrid:20270314T123000
+SUMMARY:Media Maratón Costa de la Luz
+LOCATION:Chipiona → Rota\, Andalucía
+DESCRIPTION:21\,1 km · Chipiona → Rota\nhttps://runiverso.co
+ m/carreras/media-maraton-costa-de-la-luz/
+END:VEVENT
+END:VCALENDAR

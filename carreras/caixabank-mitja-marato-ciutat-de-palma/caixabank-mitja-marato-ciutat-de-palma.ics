@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:caixabank-mitja-marato-ciutat-de-palma-2027-03-21@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270321
+DTEND;VALUE=DATE:20270322
+SUMMARY:Caixabank Mitja Marató Ciutat de Palma
+LOCATION:Palma\, Illes Balears
+DESCRIPTION:21\,1 km · Palma\nhttps://runiverso.com/carreras
+ /caixabank-mitja-marato-ciutat-de-palma/
+END:VEVENT
+END:VCALENDAR

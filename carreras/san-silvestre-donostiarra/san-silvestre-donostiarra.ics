@@ -3,10 +3,10 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:san-silvestre-donostiarra-2026-12-31@carreras-de-espana
-DTSTAMP:20261029T120000Z
-DTSTART;VALUE=DATE:20261231
-DTEND;VALUE=DATE:20270101
+UID:san-silvestre-donostiarra-2026-12-31@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20261231T140000
+DTEND;TZID=Europe/Madrid:20261231T170000
 SUMMARY:San Silvestre Donostiarra
 LOCATION:San Sebastián\, País Vasco
 DESCRIPTION:7\,9 km · San Sebastián\nhttps://www.sansilvestr

@@ -1,0 +1,206 @@
+[
+ {
+  "path": "carreras-en/andalucia/",
+  "name": "Andalucía",
+  "kind": "r",
+  "n": 38
+ },
+ {
+  "path": "carreras-en/cataluna/",
+  "name": "Cataluña",
+  "kind": "r",
+  "n": 14
+ },
+ {
+  "path": "carreras-en/comunidad-valenciana/",
+  "name": "Comunidad Valenciana",
+  "kind": "r",
+  "n": 14
+ },
+ {
+  "path": "carreras-en/canarias/",
+  "name": "Canarias",
+  "kind": "r",
+  "n": 10
+ },
+ {
+  "path": "carreras-en/pais-vasco/",
+  "name": "País Vasco",
+  "kind": "r",
+  "n": 10
+ },
+ {
+  "path": "carreras-en/illes-balears/",
+  "name": "Illes Balears",
+  "kind": "r",
+  "n": 9
+ },
+ {
+  "path": "carreras-en/castilla-y-leon/",
+  "name": "Castilla y León",
+  "kind": "r",
+  "n": 7
+ },
+ {
+  "path": "carreras-en/castilla-la-mancha/",
+  "name": "Castilla-La Mancha",
+  "kind": "r",
+  "n": 4
+ },
+ {
+  "path": "carreras-en/comunidad-de-madrid/",
+  "name": "Comunidad de Madrid",
+  "kind": "r",
+  "n": 4
+ },
+ {
+  "path": "carreras-en/galicia/",
+  "name": "Galicia",
+  "kind": "r",
+  "n": 3
+ },
+ {
+  "path": "carreras-en/asturias/",
+  "name": "Asturias",
+  "kind": "r",
+  "n": 3
+ },
+ {
+  "path": "carreras-en/aragon/",
+  "name": "Aragón",
+  "kind": "r",
+  "n": 3
+ },
+ {
+  "path": "carreras-en/region-de-murcia/",
+  "name": "Región de Murcia",
+  "kind": "r",
+  "n": 3
+ },
+ {
+  "path": "cadiz/",
+  "name": "Cádiz",
+  "kind": "p",
+  "n": 25
+ },
+ {
+  "path": "carreras-en/barcelona/",
+  "name": "Barcelona",
+  "kind": "p",
+  "n": 7
+ },
+ {
+  "path": "carreras-en/santa-cruz-de-tenerife/",
+  "name": "Santa Cruz de Tenerife",
+  "kind": "p",
+  "n": 6
+ },
+ {
+  "path": "carreras-en/castellon/",
+  "name": "Castellón",
+  "kind": "p",
+  "n": 5
+ },
+ {
+  "path": "carreras-en/malaga/",
+  "name": "Málaga",
+  "kind": "p",
+  "n": 5
+ },
+ {
+  "path": "carreras-en/valencia/",
+  "name": "Valencia",
+  "kind": "p",
+  "n": 5
+ },
+ {
+  "path": "carreras-en/gipuzkoa/",
+  "name": "Gipuzkoa",
+  "kind": "p",
+  "n": 4
+ },
+ {
+  "path": "carreras-en/alicante/",
+  "name": "Alicante",
+  "kind": "p",
+  "n": 4
+ },
+ {
+  "path": "carreras-en/las-palmas/",
+  "name": "Las Palmas",
+  "kind": "p",
+  "n": 4
+ },
+ {
+  "path": "carreras-en/lleida/",
+  "name": "Lleida",
+  "kind": "p",
+  "n": 4
+ },
+ {
+  "path": "carreras-en/toledo/",
+  "name": "Toledo",
+  "kind": "p",
+  "n": 3
+ },
+ {
+  "path": "carreras-en/sevilla/",
+  "name": "Sevilla",
+  "kind": "p",
+  "n": 3
+ },
+ {
+  "path": "carreras-en/alava/",
+  "name": "Álava",
+  "kind": "p",
+  "n": 3
+ },
+ {
+  "path": "carreras-en/bizkaia/",
+  "name": "Bizkaia",
+  "kind": "p",
+  "n": 3
+ },
+ {
+  "path": "carreras-en/girona/",
+  "name": "Girona",
+  "kind": "p",
+  "n": 3
+ },
+ {
+  "path": "maratones/",
+  "name": "Maratones",
+  "kind": "t",
+  "n": 13
+ },
+ {
+  "path": "medias-maratones/",
+  "name": "Medias maratones",
+  "kind": "t",
+  "n": 28
+ },
+ {
+  "path": "carreras-10k/",
+  "name": "Carreras de 10 km",
+  "kind": "t",
+  "n": 5
+ },
+ {
+  "path": "trail/",
+  "name": "Trail y montaña",
+  "kind": "t",
+  "n": 38
+ },
+ {
+  "path": "carreras-populares/",
+  "name": "Carreras populares",
+  "kind": "t",
+  "n": 9
+ },
+ {
+  "path": "san-silvestre-2026/",
+  "name": "San Silvestres",
+  "kind": "t",
+  "n": 34
+ }
+]

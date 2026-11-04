@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:3-dias-trail-ibiza-ultra-ibiza-2026-11-27@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261127
+DTEND;VALUE=DATE:20261128
+SUMMARY:3 días Trail Ibiza – Ultra Ibiza
+LOCATION:Sant Josep de sa Talaia\, Illes Balears
+DESCRIPTION:Trail · hasta 73\,5 km · Sant Josep de sa Talaia
+ \nhttps://runiverso.com/carreras/3-dias-trail-ibiza-ultra-ibiza/
+END:VEVENT
+END:VCALENDAR

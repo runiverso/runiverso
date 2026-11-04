@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:el-tast-de-la-mitja-granollers-2026-10-31@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261031
+DTEND;VALUE=DATE:20261101
+SUMMARY:El Tast de la Mitja Granollers
+LOCATION:Canovelles\, Cataluña
+DESCRIPTION:10 km · Canovelles\nhttps://runiverso.com/carrer
+ as/el-tast-de-la-mitja-granollers/
+END:VEVENT
+END:VCALENDAR

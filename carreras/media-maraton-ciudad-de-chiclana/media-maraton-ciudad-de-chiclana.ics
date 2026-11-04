@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-ciudad-de-chiclana-2027-04-11@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20270411T090000
+DTEND;TZID=Europe/Madrid:20270411T120000
+SUMMARY:Media Maratón Ciudad de Chiclana
+LOCATION:Chiclana de la Frontera\, Andalucía
+DESCRIPTION:21\,1 km · Chiclana de la Frontera\nhttps://runi
+ verso.com/carreras/media-maraton-ciudad-de-chiclana/
+END:VEVENT
+END:VCALENDAR

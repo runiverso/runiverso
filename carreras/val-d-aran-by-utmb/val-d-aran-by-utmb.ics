@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:val-d-aran-by-utmb-2027-07-01@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270701
+DTEND;VALUE=DATE:20270702
+SUMMARY:Val d'Aran by UTMB
+LOCATION:Vielha e Mijaran\, Cataluña
+DESCRIPTION:Trail · hasta 161 km · Vielha e Mijaran\nhttps:/
+ /runiverso.com/carreras/val-d-aran-by-utmb/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-zaragoza-el-rincon-2026-12-31@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20261231T180000
+DTEND;TZID=Europe/Madrid:20261231T210000
+SUMMARY:San Silvestre Zaragoza El Rincón
+LOCATION:Zaragoza\, Aragón
+DESCRIPTION:5 km · Zaragoza\nhttps://runiverso.com/carreras/
+ san-silvestre-zaragoza-el-rincon/
+END:VEVENT
+END:VCALENDAR

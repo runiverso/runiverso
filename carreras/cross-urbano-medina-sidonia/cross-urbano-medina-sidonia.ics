@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-urbano-medina-sidonia-2026-11-15@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Cross Urbano Medina Sidonia
+LOCATION:Medina Sidonia\, Andalucía
+DESCRIPTION:Cross · Medina Sidonia\nhttps://runiverso.com/ca
+ rreras/cross-urbano-medina-sidonia/
+END:VEVENT
+END:VCALENDAR

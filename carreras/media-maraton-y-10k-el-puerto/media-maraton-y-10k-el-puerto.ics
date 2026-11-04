@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-y-10k-el-puerto-2027-01-31@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20270131T090000
+DTEND;TZID=Europe/Madrid:20270131T120000
+SUMMARY:Media Maratón y 10K El Puerto
+LOCATION:El Puerto de Santa María\, Andalucía
+DESCRIPTION:21\,1 km y 10 km · El Puerto de Santa María\nhtt
+ ps://runiverso.com/carreras/media-maraton-y-10k-el-puerto/
+END:VEVENT
+END:VCALENDAR

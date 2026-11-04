@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-urbana-ciudad-de-chiclana-2026-11-22@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera Urbana Ciudad de Chiclana
+LOCATION:Chiclana de la Frontera\, Andalucía
+DESCRIPTION:Urbana · Chiclana de la Frontera\nhttps://runive
+ rso.com/carreras/carrera-urbana-ciudad-de-chiclana/
+END:VEVENT
+END:VCALENDAR

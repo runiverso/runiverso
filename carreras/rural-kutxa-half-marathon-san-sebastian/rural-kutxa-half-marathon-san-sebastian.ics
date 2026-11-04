@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:rural-kutxa-half-marathon-san-sebastian-2027-10-03@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20271003
+DTEND;VALUE=DATE:20271004
+SUMMARY:Rural Kutxa Half Marathon San Sebastián
+LOCATION:San Sebastián\, País Vasco
+DESCRIPTION:21\,1 km · San Sebastián\nhttps://runiverso.com/
+ carreras/rural-kutxa-half-marathon-san-sebastian/
+END:VEVENT
+END:VCALENDAR

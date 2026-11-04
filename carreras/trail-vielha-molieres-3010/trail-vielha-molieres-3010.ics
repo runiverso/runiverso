@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:trail-vielha-molieres-3010-2027-07-10@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270710
+DTEND;VALUE=DATE:20270711
+SUMMARY:Trail Vielha-Molières 3010
+LOCATION:Vielha e Mijaran\, Cataluña
+DESCRIPTION:Trail · 43 km · Vielha e Mijaran\nhttps://runive
+ rso.com/carreras/trail-vielha-molieres-3010/
+END:VEVENT
+END:VCALENDAR

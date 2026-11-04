@@ -3,14 +3,13 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:zurich-marato-de-barcelona-2027-03-14@carreras-de-espana
-DTSTAMP:20261029T120000Z
+UID:zurich-marato-de-barcelona-2027-03-14@runiverso.com
+DTSTAMP:20261104T120000Z
 DTSTART;VALUE=DATE:20270314
 DTEND;VALUE=DATE:20270315
 SUMMARY:Zurich Marató de Barcelona
 LOCATION:Barcelona\, Cataluña
 DESCRIPTION:42\,2 km · Barcelona\nhttps://zurichmaratobarcel
- ona.es/es/\nhttps://runiverso.com/carreras/zurich-marato-de
- -barcelona/
+ ona.es/es/\nhttps://runiverso.com/carreras/zurich-marato-de-barcelona/
 END:VEVENT
 END:VCALENDAR

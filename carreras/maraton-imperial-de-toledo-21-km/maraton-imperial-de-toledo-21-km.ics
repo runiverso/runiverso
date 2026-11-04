@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:maraton-imperial-de-toledo-21-km-2026-11-15@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Maratón Imperial de Toledo (21 km)
+LOCATION:Toledo\, Castilla-La Mancha
+DESCRIPTION:21\,1 km · Toledo\nhttps://runiverso.com/carrera
+ s/maraton-imperial-de-toledo-21-km/
+END:VEVENT
+END:VCALENDAR

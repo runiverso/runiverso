@@ -3,16 +3,14 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:media-maraton-de-valladolid-2027-09-26@carreras-de-espan
- a
-DTSTAMP:20261029T120000Z
+UID:media-maraton-de-valladolid-2027-09-26@runiverso.com
+DTSTAMP:20261104T120000Z
 DTSTART;VALUE=DATE:20270926
 DTEND;VALUE=DATE:20270927
 SUMMARY:Media Maratón de Valladolid
 LOCATION:Valladolid\, Castilla y León
-DESCRIPTION:21\,1 km · Valladolid. Fecha provisional: confir
- ma en la web oficial.\nhttps://www.mediamaratonvalladolid.c
- om\nhttps://runiverso.com/carreras/media-maraton-de-vallado
- lid/
+DESCRIPTION:21\,1 km · Valladolid\nhttps://www.mediamaratonv
+ alladolid.com\nhttps://runiverso.com/carreras/media-maraton
+ -de-valladolid/
 END:VEVENT
 END:VCALENDAR

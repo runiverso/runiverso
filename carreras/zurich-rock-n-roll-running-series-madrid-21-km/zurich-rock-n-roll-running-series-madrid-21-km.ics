@@ -4,8 +4,8 @@ PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:zurich-rock-n-roll-running-series-madrid-21-km-2027-04-2
- 5@carreras-de-espana
-DTSTAMP:20261029T120000Z
+ 5@runiverso.com
+DTSTAMP:20261104T120000Z
 DTSTART;VALUE=DATE:20270425
 DTEND;VALUE=DATE:20270426
 SUMMARY:Zurich Rock 'n' Roll Running Series Madrid (21 km)

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:gorbeia-suzien-ternua-2027-09-25@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270925
+DTEND;VALUE=DATE:20270926
+SUMMARY:Gorbeia Suzien Ternua
+LOCATION:Zeanuri\, País Vasco
+DESCRIPTION:Trail · 31 km · Zeanuri\nhttps://runiverso.com/c
+ arreras/gorbeia-suzien-ternua/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:eco-maraton-de-montana-la-donaira-2026-11-21@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+SUMMARY:Eco Maratón de Montaña La Donaira
+LOCATION:El Gastor\, Andalucía
+DESCRIPTION:Maratón de montaña · El Gastor\nhttps://runivers
+ o.com/carreras/eco-maraton-de-montana-la-donaira/
+END:VEVENT
+END:VCALENDAR

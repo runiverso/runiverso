@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:olla-de-nuria-2027-09-18@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270918
+DTEND;VALUE=DATE:20270919
+SUMMARY:Olla de Núria
+LOCATION:Vall de Núria\, Cataluña
+DESCRIPTION:Trail · 21\,5 km · Vall de Núria\nhttps://runive
+ rso.com/carreras/olla-de-nuria/
+END:VEVENT
+END:VCALENDAR

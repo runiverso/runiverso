@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:maraton-bp-castello-2027-02-14@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270214
+DTEND;VALUE=DATE:20270215
+SUMMARY:Maratón BP Castelló
+LOCATION:Castellón de la Plana\, Comunidad Valenciana
+DESCRIPTION:42\,2 km · Castellón de la Plana\nhttps://runive
+ rso.com/carreras/maraton-bp-castello/
+END:VEVENT
+END:VCALENDAR

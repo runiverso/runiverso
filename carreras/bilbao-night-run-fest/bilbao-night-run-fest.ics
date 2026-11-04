@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:bilbao-night-run-fest-2027-10-16@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20271016
+DTEND;VALUE=DATE:20271017
+SUMMARY:Bilbao Night Run Fest
+LOCATION:Bilbao\, País Vasco
+DESCRIPTION:21\,1 km · Bilbao\nhttps://runiverso.com/carrera
+ s/bilbao-night-run-fest/
+END:VEVENT
+END:VCALENDAR

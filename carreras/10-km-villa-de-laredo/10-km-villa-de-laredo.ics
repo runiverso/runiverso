@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:10-km-villa-de-laredo-2027-04-10@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270410
+DTEND;VALUE=DATE:20270411
+SUMMARY:10 Km Villa de Laredo
+LOCATION:Laredo\, Cantabria
+DESCRIPTION:10 km · Laredo\nhttps://runiverso.com/carreras/1
+ 0-km-villa-de-laredo/
+END:VEVENT
+END:VCALENDAR

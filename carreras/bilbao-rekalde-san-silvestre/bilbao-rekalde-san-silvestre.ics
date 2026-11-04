@@ -3,15 +3,13 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:bilbao-rekalde-san-silvestre-2026-12-31@carreras-de-espa
- na
-DTSTAMP:20261029T120000Z
-DTSTART;VALUE=DATE:20261231
-DTEND;VALUE=DATE:20270101
+UID:bilbao-rekalde-san-silvestre-2026-12-31@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20261231T163000
+DTEND;TZID=Europe/Madrid:20261231T193000
 SUMMARY:Bilbao-Rekalde San Silvestre
 LOCATION:Bilbao\, País Vasco
 DESCRIPTION:6\,6 km · Bilbao\nhttps://sansilvestrebilbao.com
- /wp/\nhttps://runiverso.com/carreras/bilbao-rekalde-san-sil
- vestre/
+ /wp/\nhttps://runiverso.com/carreras/bilbao-rekalde-san-silvestre/
 END:VEVENT
 END:VCALENDAR

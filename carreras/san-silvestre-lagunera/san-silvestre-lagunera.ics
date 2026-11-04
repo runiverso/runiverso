@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-lagunera-2026-12-31@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:San Silvestre Lagunera
+LOCATION:San Cristóbal de La Laguna\, Canarias
+DESCRIPTION:5 km · San Cristóbal de La Laguna\nhttps://runiv
+ erso.com/carreras/san-silvestre-lagunera/
+END:VEVENT
+END:VCALENDAR

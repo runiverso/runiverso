@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:marato-dels-dements-2026-11-07@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+SUMMARY:Marató dels Dements
+LOCATION:Eslida\, Comunidad Valenciana
+DESCRIPTION:Trail · 43\,3 km · Eslida\nhttps://runiverso.com
+ /carreras/marato-dels-dements/
+END:VEVENT
+END:VCALENDAR

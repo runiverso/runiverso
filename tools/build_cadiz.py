@@ -159,6 +159,14 @@ def when(r):
     return f"{MES_L[m-1]} de {y}, día por anunciar"
 
 
+FICHA_ID = {"cross-pinar-del-hierro": "cross-pinar-del-hierro-y-la-espartosa", "media-maraton-el-puerto": "media-maraton-y-10k-el-puerto"}
+
+
+def ficha_id(r):
+    fid = FICHA_ID.get(r["id"], r["id"])
+    return fid if (ROOT / "carreras" / fid / "index.html").exists() else None
+
+
 PK = {"21K": "21K", "pop": "POP", "trail": "TR", "ss": "SS"}
 
 
@@ -173,6 +181,9 @@ def card(r):
         acts.append(f'<a class="btn alt" href="https://www.google.com/search?q={q}" target="_blank" rel="noopener">Inscripción</a>')
     if "d" in r:
         acts.append(f'<a class="btn alt" href="{r["id"]}.ics" download>+ Calendario</a>')
+    fid = ficha_id(r)
+    if fid:
+        acts.insert(0, f'<a class="btn alt" href="../carreras/{fid}/">Ficha completa</a>')
     if r.get("also"):
         acts.append(f'<a class="btn alt" href="{e(r["also"])}">Ver en el especial</a>')
     acts.append(f'<a class="btn alt" href="https://wa.me/?text={share}" target="_blank" rel="noopener">Compartir</a>')
@@ -186,7 +197,7 @@ def card(r):
     poster = poster_html(r["id"], r["n"], r["c"], PK[r["k"]], r["dist"], r.get("d"), r.get("m"), r["ok"], tag="button", root="../")
     poster = poster.replace('type="button"', f'type="button" data-tog="{r["id"]}"', 1)
     return (f'<article class="pcard" id="{r["id"]}" data-k="{r["k"]}" data-end="{end}">{poster}'
-            f'<div class="pinfo"><h3>{e(r["n"])}</h3><p class="pl">{e(r["c"])}</p><p class="pd">{dd}{st}</p>'
+            f'<div class="pinfo"><h3>{(f'<a href="../carreras/{fid}/">{e(r["n"])}</a>') if fid else e(r["n"])}</h3><p class="pl">{e(r["c"])}</p><p class="pd">{dd}{st}</p>'
             f'<details class="pmore" id="m-{r["id"]}"><summary>Ver más</summary><p>{e(r["note"])}</p><div class="acts">{"".join(acts)}</div></details></div></article>')
 
 

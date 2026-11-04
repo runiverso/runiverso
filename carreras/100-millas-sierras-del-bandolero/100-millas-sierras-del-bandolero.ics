@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:100-millas-sierras-del-bandolero-2027-03-05@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270305
+DTEND;VALUE=DATE:20270306
+SUMMARY:100 Millas Sierras del Bandolero
+LOCATION:Prado del Rey\, Andalucía
+DESCRIPTION:100 millas\, maratón y Bandolerita · Prado del R
+ ey\nhttps://www.clubtriton.es/cienmillassb/\nhttps://runive
+ rso.com/carreras/100-millas-sierras-del-bandolero/
+END:VEVENT
+END:VCALENDAR

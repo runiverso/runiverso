@@ -3,14 +3,13 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:san-silvestre-de-murcia-2026-12-31@carreras-de-espana
-DTSTAMP:20261029T120000Z
-DTSTART;VALUE=DATE:20261231
-DTEND;VALUE=DATE:20270101
+UID:san-silvestre-de-murcia-2026-12-31@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;TZID=Europe/Madrid:20261231T170000
+DTEND;TZID=Europe/Madrid:20261231T200000
 SUMMARY:San Silvestre de Murcia
 LOCATION:Murcia\, Región de Murcia
-DESCRIPTION:6\,5 km · Murcia. Fecha provisional: confirma en
-  la web oficial.\nhttps://www.laverdad.es/sansilvestremurci
- a\nhttps://runiverso.com/carreras/san-silvestre-de-murcia/
+DESCRIPTION:6\,5 km · Murcia\nhttps://www.laverdad.es/sansil
+ vestremurcia\nhttps://runiverso.com/carreras/san-silvestre-de-murcia/
 END:VEVENT
 END:VCALENDAR

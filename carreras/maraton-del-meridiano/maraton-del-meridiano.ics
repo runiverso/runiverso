@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:maraton-del-meridiano-2027-02-06@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270206
+DTEND;VALUE=DATE:20270207
+SUMMARY:Maratón del Meridiano
+LOCATION:El Hierro\, Canarias
+DESCRIPTION:Trail · 42 km · El Hierro\nhttps://runiverso.com
+ /carreras/maraton-del-meridiano/
+END:VEVENT
+END:VCALENDAR

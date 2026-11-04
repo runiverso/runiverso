@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:gran-maraton-montanas-de-benasque-2027-06-12@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270612
+DTEND;VALUE=DATE:20270613
+SUMMARY:Gran Maratón Montañas de Benasque
+LOCATION:Benasque\, Aragón
+DESCRIPTION:Trail · 42 km · Benasque\nhttps://runiverso.com/
+ carreras/gran-maraton-montanas-de-benasque/
+END:VEVENT
+END:VCALENDAR

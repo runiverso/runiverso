@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:ultra-trail-bosques-del-sur-2027-05-29@runiverso.com
+DTSTAMP:20261104T120000Z
+DTSTART;VALUE=DATE:20270529
+DTEND;VALUE=DATE:20270530
+SUMMARY:Ultra Trail Bosques del Sur
+LOCATION:Cazorla\, Andalucía
+DESCRIPTION:Trail · 99 km · Cazorla\nhttps://runiverso.com/c
+ arreras/ultra-trail-bosques-del-sur/
+END:VEVENT
+END:VCALENDAR
