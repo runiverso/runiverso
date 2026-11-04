@@ -117,16 +117,16 @@
   function loginSheet(step, email, err) {
     if (!cloudReady) { toast("Sin conexión: inténtalo en un momento"); return; }
     if (step === "code") {
-      openSheet('<h2>Revisa tu correo</h2><p class="muted" style="margin:0">Te hemos enviado un correo a <b>' + esc(email) + '</b>. Ábrelo en este móvil y pulsa el enlace: entrarás directamente. Si el correo trae un código, puedes escribirlo aquí.</p><p class="muted" style="margin:0;font-size:12.5px">¿No llega? Mira en la carpeta de spam o promociones.</p>' +
+      openSheet('<h2>Revisa tu correo</h2><p class="muted" style="margin:0">Te hemos enviado un correo a <b>' + esc(email) + '</b>. Pulsa el botón del correo o escribe aquí el código de 6 cifras que trae.</p><p class="muted" style="margin:0;font-size:12.5px">¿No llega? Mira en la carpeta de spam o promociones.</p>' +
         '<form class="f" id="codef" data-email="' + esc(email) + '"><div class="fld"><label for="otp">Código</label><input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*" required></div>' +
         (err ? '<p class="err" role="alert">' + esc(err) + '</p>' : '') +
         '<button class="btn wide" type="submit">Entrar</button><button class="btn alt wide" type="button" data-act="login">Usar otro correo</button></form>', "Código de acceso");
       return;
     }
-    openSheet('<h2>Entra o crea tu cuenta</h2><p class="muted" style="margin:0">Es el mismo paso para las dos cosas y no hay contraseña: pon tu correo y te mandamos un enlace. Si ya tienes cuenta, entras; si no, se crea sola.</p>' +
+    openSheet('<h2>Entra o crea tu cuenta</h2><p class="muted" style="margin:0">Es el mismo paso para las dos cosas y no hay contraseña: pon tu correo y te mandamos un enlace y un código. Si ya tienes cuenta, entras; si no, se crea sola.</p>' +
       '<form class="f" id="loginf"><div class="fld"><label for="em">Correo electrónico</label><input id="em" type="email" autocomplete="email" required value="' + esc(email || "") + '"></div>' +
       (err ? '<p class="err" role="alert">' + esc(err) + '</p>' : '') +
-      '<button class="btn wide" type="submit">Enviarme el enlace para entrar</button><button class="btn alt wide" type="button" data-close="1">Ahora no</button>' +
+      '<button class="btn wide" type="submit">Enviarme el acceso</button><button class="btn alt wide" type="button" data-close="1">Ahora no</button>' +
       '<p class="muted" style="margin:0;font-size:12.5px">Al crear tu cuenta aceptas que guardemos tu correo y tus marcas para darte el servicio. Puedes borrar tu cuenta cuando quieras escribiéndonos al canal.</p></form>', "Iniciar sesión");
   }
   function accountCard() {
