@@ -101,7 +101,7 @@
       if (!window.supabase || !window.supabase.createClient) return;
       sb = window.supabase.createClient(SUPA_URL, SUPA_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: "implicit", storageKey: "runiverso-auth" } });
       cloudReady = true;
-      sb.auth.onAuthStateChange(function (ev, session) { onSession(session); });
+      sb.auth.onAuthStateChange(function (ev, session) { onSession(session); if (ev === "PASSWORD_RECOVERY") setTimeout(function () { authScreen("newpass"); }, 50); });
       sb.auth.getSession().then(function (r) { onSession(r.data && r.data.session); if (view.tab === "comunidad" || view.tab === "perfil") render(); });
     };
     document.head.appendChild(sc);
@@ -114,23 +114,64 @@
       toast("Sesión cerrada. Tus datos siguen guardados en tu cuenta"); render();
     });
   }
-  function loginSheet(step, email, err) {
+  /* Pantalla de acceso: correo y contraseña, código por correo y (cuando se active) Google */
+  var GOOGLE_ON = false;
+  var AUTH_ICO = '<svg viewBox="12 12 96 96" aria-hidden="true"><path d="M44 30V90M44 30H64a17 17 0 0 1 0 34H44" fill="none" stroke="#F3F5FA" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 64L82 90" fill="none" stroke="#7FA6FF" stroke-width="11" stroke-linecap="round"/></svg>';
+  var G_ICO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 6-1.1 7.9-2.9l-3.9-3c-1.1.7-2.4 1.2-4 1.2-3.1 0-5.7-2.1-6.6-4.9h-4v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.4 14.4a7.2 7.2 0 0 1 0-4.7V6.6h-4a12 12 0 0 0 0 10.8l4-3z"/><path fill="#EA4335" d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.4 6.6l4 3.1C6.3 6.9 8.9 4.8 12 4.8z"/></svg>';
+  var authEmail = "";
+  function authScreen(mode, err, info) {
     if (!cloudReady) { toast("Sin conexión: inténtalo en un momento"); return; }
-    if (step === "code") {
-      openSheet('<h2>Revisa tu correo</h2><p class="muted" style="margin:0">Te hemos enviado un correo a <b>' + esc(email) + '</b>. Pulsa el botón del correo o escribe aquí el código de 6 cifras que trae.</p><p class="muted" style="margin:0;font-size:12.5px">¿No llega? Mira en la carpeta de spam o promociones.</p>' +
-        '<form class="f" id="codef" data-email="' + esc(email) + '"><div class="fld"><label for="otp">Código</label><input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*" required></div>' +
-        (err ? '<p class="err" role="alert">' + esc(err) + '</p>' : '') +
-        '<button class="btn wide" type="submit">Entrar</button><button class="btn alt wide" type="button" data-act="login">Usar otro correo</button></form>', "Código de acceso");
-      return;
+    mode = mode || "login";
+    var em = esc(authEmail), body = "", title = "", sub = "";
+    var errH = err ? '<p class="err" role="alert">' + esc(err) + '</p>' : "", infoH = info ? '<p class="ok" role="status">' + esc(info) + '</p>' : "";
+    if (mode === "login" || mode === "signup") {
+      var isUp = mode === "signup";
+      title = isUp ? "Crea tu cuenta" : "Entra en Runiverso"; sub = isUp ? "Gratis. Tus marcas, medallas y carreras, guardadas para siempre." : "Tus marcas, medallas y carreras, en cualquier móvil.";
+      body = (GOOGLE_ON ? '<button class="abtn g" type="button" data-auth="google">' + G_ICO + 'Continuar con Google</button><div class="or"><span>o con tu correo</span></div>' : '') +
+        '<div class="seg atabs" role="tablist"><button type="button" role="tab" data-auth="login" aria-selected="' + !isUp + '">Entrar</button><button type="button" role="tab" data-auth="signup" aria-selected="' + isUp + '">Crear cuenta</button></div>' +
+        '<form class="f" id="authf" data-mode="' + mode + '" novalidate>' +
+        (isUp ? '<div class="fld"><label for="an">Nombre</label><input id="an" type="text" maxlength="40" autocomplete="name" placeholder="Cómo quieres aparecer" value="' + esc(S.name) + '"></div>' : '') +
+        '<div class="fld"><label for="ae">Correo electrónico</label><input id="ae" type="email" autocomplete="email" inputmode="email" required value="' + em + '"></div>' +
+        '<div class="fld"><label for="ap">Contraseña</label><div class="pw"><input id="ap" type="password" autocomplete="' + (isUp ? "new-password" : "current-password") + '" minlength="8" required' + (isUp ? ' placeholder="Mínimo 8 caracteres"' : '') + '><button type="button" class="eye" data-auth="eye" aria-label="Mostrar contraseña">Ver</button></div></div>' +
+        errH + infoH + '<button class="btn wide" type="submit">' + (isUp ? "Crear cuenta" : "Entrar") + '</button></form>' +
+        '<div class="alinks">' + (isUp ? '' : '<button type="button" class="link" data-auth="forgot">¿Has olvidado la contraseña?</button>') + '<button type="button" class="link" data-auth="otp">Entrar sin contraseña, con un código</button></div>';
+    } else if (mode === "otp" || mode === "forgot") {
+      var fg = mode === "forgot";
+      title = fg ? "Recupera tu contraseña" : "Entra con un código"; sub = fg ? "Te mandamos un código para crear una contraseña nueva." : "Te mandamos un código de 6 cifras a tu correo. Sin contraseña.";
+      body = '<form class="f" id="sendf" data-mode="' + mode + '" novalidate><div class="fld"><label for="ae">Correo electrónico</label><input id="ae" type="email" autocomplete="email" inputmode="email" required value="' + em + '"></div>' + errH +
+        '<button class="btn wide" type="submit">Enviarme el código</button></form><div class="alinks"><button type="button" class="link" data-auth="login">Volver a entrar con contraseña</button></div>';
+    } else if (mode === "code-email" || mode === "code-signup" || mode === "code-recovery") {
+      title = "Revisa tu correo"; sub = 'Hemos enviado un código a ' + em + '. Escríbelo aquí o pulsa el botón del correo.';
+      body = '<form class="f" id="codef" data-type="' + mode.slice(5) + '" novalidate><div class="fld"><label for="otp">Código de 6 cifras</label><input id="otp" class="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*" required></div>' + errH + infoH +
+        '<button class="btn wide" type="submit">Continuar</button></form><div class="alinks"><button type="button" class="link" data-auth="resend" data-type="' + mode.slice(5) + '">Reenviar el código</button><button type="button" class="link" data-auth="login">Usar otro correo</button></div><p class="ahint">¿No llega? Mira en spam o promociones.</p>';
+    } else if (mode === "newpass") {
+      title = "Nueva contraseña"; sub = "Elige una contraseña para entrar a partir de ahora.";
+      body = '<form class="f" id="newpf" novalidate><div class="fld"><label for="ap">Contraseña nueva</label><div class="pw"><input id="ap" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo 8 caracteres"><button type="button" class="eye" data-auth="eye" aria-label="Mostrar contraseña">Ver</button></div></div>' + errH + '<button class="btn wide" type="submit">Guardar contraseña</button></form>';
     }
-    openSheet('<h2>Entra o crea tu cuenta</h2><p class="muted" style="margin:0">Es el mismo paso para las dos cosas y no hay contraseña: pon tu correo y te mandamos un enlace y un código. Si ya tienes cuenta, entras; si no, se crea sola.</p>' +
-      '<form class="f" id="loginf"><div class="fld"><label for="em">Correo electrónico</label><input id="em" type="email" autocomplete="email" required value="' + esc(email || "") + '"></div>' +
-      (err ? '<p class="err" role="alert">' + esc(err) + '</p>' : '') +
-      '<button class="btn wide" type="submit">Enviarme el acceso</button><button class="btn alt wide" type="button" data-close="1">Ahora no</button>' +
-      '<p class="muted" style="margin:0;font-size:12.5px">Al crear tu cuenta aceptas que guardemos tu correo y tus marcas para darte el servicio. Puedes borrar tu cuenta cuando quieras escribiéndonos al canal.</p></form>', "Iniciar sesión");
+    lastFocus = lastFocus || document.activeElement;
+    $("layer").innerHTML = '<div class="auth" role="dialog" aria-modal="true" aria-label="' + esc(title) + '"><div class="auth-in">' +
+      '<button class="aclose" type="button" data-close="1" aria-label="Cerrar">×</button>' +
+      '<div class="abrand"><span class="amark">' + AUTH_ICO + '</span><span class="lw">Runiverso<small>el universo del running</small></span></div>' +
+      '<h1>' + title + '</h1><p class="asub">' + sub + '</p>' +
+      (mode === "signup" ? '<ul class="aperks"><li>Tus marcas y medallas, a salvo aunque cambies de móvil</li><li>Ranking de corredores de ' + (S.prov ? esc(S.prov) : "tu provincia") + '</li><li>Tus carreras apuntadas en todos tus dispositivos</li></ul>' : '') +
+      body + '<p class="alegal">Al continuar aceptas que guardemos tu correo y tus datos de carreras para darte el servicio. Puedes borrar tu cuenta cuando quieras.</p></div></div>';
+    var f = $("layer").querySelector(mode.indexOf("code") === 0 ? "#otp" : "#ae, #ap"); if (f) setTimeout(function () { f.focus(); }, 50);
   }
+  function authErr(e) {
+    var m = (e && e.message) || "";
+    if (/invalid login credentials/i.test(m)) return "Correo o contraseña incorrectos.";
+    if (/email not confirmed/i.test(m)) return "confirm";
+    if (/already registered|already been registered/i.test(m)) return "Ya hay una cuenta con ese correo. Entra con tu contraseña o con un código.";
+    if (/password/i.test(m) && /(least|short|weak)/i.test(m)) return "La contraseña es demasiado corta o sencilla: usa al menos 8 caracteres.";
+    if (/rate|limit|seconds|too many/i.test(m)) return "Demasiados intentos seguidos. Espera un minuto y vuelve a probar.";
+    if (/token|otp|expired|invalid/i.test(m)) return "Código incorrecto o caducado. Revísalo o pide otro.";
+    return "Algo ha fallado. Inténtalo de nuevo en un momento.";
+  }
+  function busyBtn(form, txt) { var b = form.querySelector("button[type=submit]"); if (b) { b.disabled = true; b.textContent = txt; } }
+  function authDone(msg) { closeSheet(); toast(msg || "¡Bienvenido a Runiverso!"); view.tab = "perfil"; if (location.hash !== "#perfil") location.hash = "#perfil"; else render(); }
+  function loginSheet() { authScreen("login"); }
   function accountCard() {
-    if (!user) return '<div class="card acct"><div><h3>Guarda tus marcas en la nube</h3><p>Crea tu cuenta gratis con tu correo: no pierdes nada si cambias de móvil y puedes salir en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + '.</p></div><button class="btn" type="button" data-act="login">Entrar o crear cuenta</button></div>';
+    if (!user) return '<div class="card acct"><div><h3>Guarda tus marcas en la nube</h3><p>Crea tu cuenta gratis con tu correo: no pierdes nada si cambias de móvil y puedes salir en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + '.</p></div><button class="btn" type="button" data-act="login">Crear cuenta o entrar</button></div>';
     var pend = S.q.length;
     return '<div class="card acct on"><div><h3>' + esc(user.email || "Tu cuenta") + '</h3><p>' + (pend ? "Sincronizando " + pend + (pend === 1 ? " cambio" : " cambios") + "…" : "Todo guardado en tu cuenta ✓") + '</p></div>' +
       '<label class="sw"><input type="checkbox" id="pubtog"' + (S.pub ? " checked" : "") + '><span>Aparecer en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + ' con mi nombre</span></label>' +
@@ -617,6 +658,14 @@
     var t = e.target;
     if (t.classList && t.classList.contains("scrim")) { closeSheet(); return; }
     var c = t.closest("button[data-close]"); if (c) { closeSheet(); return; }
+    var au = t.closest("[data-auth]");
+    if (au) {
+      var am = au.getAttribute("data-auth"), aei = $("ae"); if (aei) authEmail = aei.value.trim();
+      if (am === "eye") { var pi = $("ap"); if (pi) { var sh = pi.type === "password"; pi.type = sh ? "text" : "password"; au.textContent = sh ? "Ocultar" : "Ver"; } return; }
+      if (am === "google") { sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: location.origin + location.pathname } }); return; }
+      if (am === "resend") { var rt = au.getAttribute("data-type"); (rt === "recovery" ? sb.auth.resetPasswordForEmail(authEmail, { redirectTo: location.origin + location.pathname }) : rt === "signup" ? sb.auth.resend({ type: "signup", email: authEmail }) : sb.auth.signInWithOtp({ email: authEmail })).then(function (r) { authScreen("code-" + rt, r.error ? authErr(r.error) : "", r.error ? "" : "Código reenviado."); }); return; }
+      authScreen(am); return;
+    }
     var pu = t.closest(".poster[data-url]"); if (pu) { window.open(pu.getAttribute("data-url"), "_blank", "noopener"); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
@@ -647,7 +696,7 @@
       else if (act === "name") nameSheet();
       else if (act === "zone") zoneSheet(false);
       else if (act === "addmark") markSheet(a.getAttribute("data-race") || "");
-      else if (act === "login") loginSheet();
+      else if (act === "login") authScreen("signup");
       else if (act === "logout") logout();
       else if (act === "gopublic") { S.pub = true; save(); queue({ t: "prof" }); rankCache = {}; toast("¡Ya apareces en el ranking!"); setTimeout(function () { rankCache = {}; render(); }, 1500); render(); }
       else if (act === "install" && deferredInstall) { deferredInstall.prompt(); deferredInstall.userChoice.finally(function () { deferredInstall = null; render(); }); }
@@ -667,24 +716,53 @@
     e.preventDefault();
     if (e.target.id === "zonef") { S.ccaa = $("zc").value; S.prov = $("zp").value; save(); queue({ t: "prof" }); rankCache = {}; view.sc = "prov"; view.f = ""; closeSheet(); render(); toast("Tu zona: " + S.prov); return; }
     if (e.target.id === "namef") { S.name = $("nm").value.trim(); save(); queue({ t: "prof" }); closeSheet(); render(); toast(S.name ? "¡Hola, " + S.name.split(" ")[0] + "!" : "Nombre borrado"); return; }
-    if (e.target.id === "loginf") {
-      var em = $("em").value.trim(), bt = e.target.querySelector("button[type=submit]");
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { loginSheet("", em, "Ese correo no parece válido."); return; }
-      bt.disabled = true; bt.textContent = "Enviando…";
-      sb.auth.signInWithOtp({ email: em, options: { emailRedirectTo: location.origin + location.pathname } }).then(function (r) {
-        if (r.error) loginSheet("", em, /rate|limit|seconds/i.test(r.error.message) ? "Has pedido muchos códigos seguidos. Espera un minuto y vuelve a intentarlo." : "No hemos podido enviar el correo. Inténtalo de nuevo.");
-        else loginSheet("code", em);
-      });
+    if (e.target.id === "authf") {
+      var fm = e.target, up = fm.getAttribute("data-mode") === "signup", em = $("ae").value.trim(), pw = $("ap").value;
+      authEmail = em;
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { authScreen(up ? "signup" : "login", "Ese correo no parece válido."); return; }
+      if (pw.length < (up ? 8 : 1)) { authScreen(up ? "signup" : "login", up ? "La contraseña necesita al menos 8 caracteres." : "Escribe tu contraseña."); return; }
+      if (up) {
+        var nmv = $("an").value.trim(); if (nmv) { S.name = nmv; save(); }
+        busyBtn(fm, "Creando tu cuenta…");
+        sb.auth.signUp({ email: em, password: pw, options: { data: { name: nmv }, emailRedirectTo: location.origin + location.pathname } }).then(function (r) {
+          if (r.error) { authScreen("signup", authErr(r.error)); return; }
+          if (r.data.user && r.data.user.identities && !r.data.user.identities.length) { authScreen("login", "Ya hay una cuenta con ese correo. Entra con tu contraseña o con un código."); return; }
+          if (r.data.session) { authDone("¡Cuenta creada!"); return; }
+          authScreen("code-signup");
+        });
+      } else {
+        busyBtn(fm, "Entrando…");
+        sb.auth.signInWithPassword({ email: em, password: pw }).then(function (r) {
+          if (r.error) { var m = authErr(r.error); if (m === "confirm") { sb.auth.resend({ type: "signup", email: em }); authScreen("code-signup", "", "Antes de entrar confirma tu correo: te hemos enviado un código."); } else authScreen("login", m); return; }
+          authDone("¡Hola de nuevo!");
+        });
+      }
+      return;
+    }
+    if (e.target.id === "sendf") {
+      var fm2 = e.target, fg = fm2.getAttribute("data-mode") === "forgot", em2 = $("ae").value.trim();
+      authEmail = em2;
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em2)) { authScreen(fg ? "forgot" : "otp", "Ese correo no parece válido."); return; }
+      busyBtn(fm2, "Enviando…");
+      var pr = fg ? sb.auth.resetPasswordForEmail(em2, { redirectTo: location.origin + location.pathname }) : sb.auth.signInWithOtp({ email: em2, options: { emailRedirectTo: location.origin + location.pathname } });
+      pr.then(function (r) { if (r.error) authScreen(fg ? "forgot" : "otp", authErr(r.error)); else authScreen(fg ? "code-recovery" : "code-email"); });
       return;
     }
     if (e.target.id === "codef") {
-      var em2 = e.target.getAttribute("data-email"), tk = $("otp").value.replace(/\D/g, ""), bt2 = e.target.querySelector("button[type=submit]");
-      if (tk.length < 6) { loginSheet("code", em2, "El código tiene 6 cifras."); return; }
-      bt2.disabled = true; bt2.textContent = "Comprobando…";
-      sb.auth.verifyOtp({ email: em2, token: tk, type: "email" }).then(function (r) {
-        if (r.error) { loginSheet("code", em2, "Código incorrecto o caducado. Revísalo o pide otro."); return; }
-        closeSheet(); toast("¡Bienvenido a Runiverso!"); view.tab = "perfil"; if (location.hash !== "#perfil") location.hash = "#perfil"; else render();
+      var ty = e.target.getAttribute("data-type"), tk = $("otp").value.replace(/\D/g, "");
+      if (tk.length < 6) { authScreen("code-" + ty, "El código tiene 6 cifras."); return; }
+      busyBtn(e.target, "Comprobando…");
+      sb.auth.verifyOtp({ email: authEmail, token: tk, type: ty }).then(function (r) {
+        if (r.error) { authScreen("code-" + ty, authErr(r.error)); return; }
+        if (ty === "recovery") authScreen("newpass"); else authDone(ty === "signup" ? "¡Cuenta creada!" : "");
       });
+      return;
+    }
+    if (e.target.id === "newpf") {
+      var np = $("ap").value;
+      if (np.length < 8) { authScreen("newpass", "La contraseña necesita al menos 8 caracteres."); return; }
+      busyBtn(e.target, "Guardando…");
+      sb.auth.updateUser({ password: np }).then(function (r) { if (r.error) authScreen("newpass", authErr(r.error)); else authDone("Contraseña guardada"); });
       return;
     }
     if (e.target.id === "markf") {
