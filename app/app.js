@@ -31,6 +31,62 @@
   try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; S.prov = saved.prov || ""; S.ccaa = saved.ccaa || ""; S.pub = !!saved.pub; S.acct = saved.acct || ""; S.q = saved.q || []; S.push = !!saved.push; } } catch (e) {}
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { toast("No se ha podido guardar en este móvil"); } }
 
+
+  /* ---------- Movimiento (GSAP): solo transform y opacidad; nada si el sistema pide reducir movimiento ---------- */
+  var motion = (function () {
+    var G = window.gsap, RM = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches, on = !!G && !RM;
+    var D = 0.55, E = "power3.out", CLR = "transform,opacity";
+    function q(el, sel) { return el ? [].slice.call(el.querySelectorAll(sel)) : []; }
+    function splitWords(h) {
+      if (!h || h.getAttribute("data-split")) return [];
+      if ([].some.call(h.childNodes, function (n) { return n.nodeType === 1; })) return [];
+      var words = h.textContent.split(/(\s+)/);
+      h.setAttribute("data-split", "1"); h.setAttribute("aria-label", h.textContent);
+      h.innerHTML = words.map(function (w) { return /^\s+$/.test(w) ? w : '<span class="w" aria-hidden="true"><span>' + esc(w) + '</span></span>'; }).join("");
+      return q(h, ".w > span");
+    }
+    function count(el) {
+      q(el, ".stat b, .pr b, .hnum").forEach(function (b) {
+        var txt = b.textContent.trim(); if (!/^\d{1,5}$/.test(txt) || txt === "0") return;
+        var o = { v: 0 }, n = +txt; b.textContent = "0";
+        G.to(o, { v: n, duration: 1.1, ease: "power2.out", delay: 0.15, onUpdate: function () { b.textContent = Math.round(o.v); } });
+      });
+    }
+    function view(el) {
+      if (!on || !el) return;
+      var w = splitWords(el.querySelector("h1"));
+      if (w.length) G.from(w, { yPercent: 110, duration: 0.7, ease: "power4.out", stagger: 0.06, clearProps: "transform" });
+      G.from([].slice.call(el.children).slice(0, 12), { y: 18, opacity: 0, duration: D, ease: E, stagger: 0.05, clearProps: CLR });
+      count(el);
+      var m = q(el, ".medal"); if (m.length) medals(m);
+      var rk = q(el, ".rank li"); if (rk.length) G.from(rk, { x: -18, opacity: 0, duration: 0.45, ease: E, stagger: 0.05, delay: 0.2, clearProps: CLR });
+    }
+    function medals(list) { G.from(list, { scale: 0.55, rotation: -16, opacity: 0, duration: 0.75, ease: "back.out(1.9)", stagger: 0.06, delay: 0.15, clearProps: CLR }); }
+    function list(el) { if (!on || !el) return; G.from(q(el, ".mineres, .pod, .rsearch, .rrow, .card, .ahint").slice(0, 40), { y: 12, opacity: 0, duration: 0.45, ease: E, stagger: 0.025, clearProps: CLR }); }
+    function screen(el) {
+      if (!on || !el) return;
+      G.from(el, { opacity: 0, duration: 0.25, ease: "power1.out" });
+      G.from(q(el, ".abrand, .rhead, h1, .asub, .aperks li, .abtn, .or, .atabs, .fld, .f > .btn, .alinks, .ahint"), { y: 18, opacity: 0, duration: D, ease: E, stagger: 0.04, delay: 0.05, clearProps: CLR });
+    }
+    function sheet(el) {
+      if (!on || !el) return;
+      G.from(el, { opacity: 0, duration: 0.2, ease: "power1.out" });
+      var sh = el.querySelector(".sheet"); if (sh) G.from(sh, { yPercent: 100, duration: 0.5, ease: "power4.out", clearProps: "transform" });
+    }
+    function tilt() {
+      if (!on || !(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
+      var cur = null, rect = null;
+      document.addEventListener("pointerover", function (e) { var p = e.target.closest && e.target.closest(".poster"); if (p && p !== cur) { cur = p; rect = p.getBoundingClientRect(); G.set(p, { transformPerspective: 700 }); } });
+      document.addEventListener("pointermove", function (e) {
+        if (!cur || !rect) return;
+        var x = (e.clientX - rect.left) / rect.width - 0.5, y = (e.clientY - rect.top) / rect.height - 0.5;
+        if (Math.abs(x) > 0.6 || Math.abs(y) > 0.6) { G.to(cur, { rotationY: 0, rotationX: 0, scale: 1, duration: 0.5, ease: E }); cur = null; return; }
+        G.to(cur, { rotationY: x * 10, rotationX: -y * 10, scale: 1.03, duration: 0.4, ease: "power2.out", overwrite: "auto" });
+      }, { passive: true });
+    }
+    return { view: view, list: list, screen: screen, sheet: sheet, tilt: tilt, on: on };
+  })();
+
   /* ---------- Cuenta y sincronización (Supabase) ----------
      El móvil guarda una copia; con sesión iniciada, cada cambio va a una cola que se sube a la cuenta.
      La clave es la pública (publishable): la seguridad la ponen las políticas RLS de la base de datos. */
@@ -93,6 +149,7 @@
   function onSession(session) {
     var was = user; user = session ? session.user : null;
     if (user && S.acct !== user.id) link(); else if (user) flush();
+    checkAdmin();
     if (!!was !== !!user && !$("layer").innerHTML) render();
   }
   function initCloud() {
@@ -156,6 +213,7 @@
       (mode === "signup" ? '<ul class="aperks"><li>Tus marcas y medallas, a salvo aunque cambies de móvil</li><li>Ranking de corredores de ' + (S.prov ? esc(S.prov) : "tu provincia") + '</li><li>Tus carreras apuntadas en todos tus dispositivos</li></ul>' : '') +
       body + '<p class="alegal">Al continuar aceptas las <a href="../condiciones/" target="_blank" rel="noopener">condiciones de uso</a> y la <a href="../privacidad/" target="_blank" rel="noopener">política de privacidad</a>. Puedes borrar tu cuenta cuando quieras.</p></div></div>';
     var f = $("layer").querySelector(mode.indexOf("code") === 0 ? "#otp" : "#ae, #ap"); if (f) setTimeout(function () { f.focus(); }, 50);
+    if (!authScreen.open) motion.screen($("layer").firstChild); authScreen.open = true;
   }
   function authErr(e) {
     var m = (e && e.message) || "";
@@ -308,6 +366,7 @@
   ];
   var view = { tab: "inicio", sub: "marcas", f: "", q: "", lim: 30, sc: S.prov ? "prov" : "es" };
   function route() {
+    if ($("layer").innerHTML) closeSheet();
     var h = (location.hash || "#inicio").slice(1).split("?");
     var t = h[0]; if (!TABS.some(function (x) { return x[0] === t; })) t = "inicio";
     view.tab = t;
@@ -325,9 +384,10 @@
     renderTabs();
     var fn = { inicio: vInicio, carreras: vCarreras, perfil: vPerfil, clasificaciones: vResultados, comunidad: vComunidad }[view.tab];
     $("main").innerHTML = '<div class="view">' + fn() + '</div>';
+    var vk = view.tab + "/" + view.sub; if (vk !== lastView) { lastView = vk; motion.view($("main").firstChild); }
     if (!S.prov && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; zoneSheet(true); }
   }
-  var zoneAsked = false;
+  var zoneAsked = false, lastView = "";
   function zoneChip() {
     return '<button class="zone" type="button" data-act="zone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>' +
       (S.prov ? esc(S.prov) + (S.ccaa && S.ccaa !== S.prov ? '<span> · ' + esc(S.ccaa) + '</span>' : '') : 'Elige tu zona') + '<em>Cambiar</em></button>';
@@ -509,7 +569,7 @@
     function cards(list) {
       return '<div class="grid">' + list.map(function (r) {
         var d = pd(r.d), fake = { id: r.id, n: r.n, c: r.c, p: r.p, k: r.k, dist: r.dist, date: d, ok: true };
-        return '<div class="item">' + poster(fake, '<span class="tag done">Terminada</span>', ' data-url="' + esc(r.url) + '"') + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + sdate(d) + '</p></div><a class="btn sm" href="' + esc(r.url) + '" target="_blank" rel="noopener">Clasificación ›</a></div>';
+        return '<div class="item">' + poster(fake, '<span class="tag done">Terminada</span>', ' data-res="' + esc(r.id) + '"') + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + sdate(d) + '</p></div><button class="btn sm" type="button" data-res="' + esc(r.id) + '">Ver clasificación ›</button></div>';
       }).join("") + '</div>';
     }
     if (S.ccaa) {
@@ -517,8 +577,88 @@
       h += '<section class="grp"><h2 class="gh">En ' + esc(S.ccaa) + '<span>' + mine.length + '</span></h2>' + (mine.length ? cards(mine) : '<p class="muted" style="margin:0">Todavía no hay resultados de tu comunidad. Los añadimos según se publican.</p>') + '</section>';
       if (rest.length) h += '<section class="grp"><h2 class="gh">Resto de España<span>' + rest.length + '</span></h2>' + cards(rest) + '</section>';
     } else h += cards(RESULTS);
-    h += '<p class="foot">Cada clasificación la publica la organización o su empresa de cronometraje.</p>';
+    h += '<p class="foot">Las clasificaciones las publica cada organización o su empresa de cronometraje. Las cargamos en Runiverso con su permiso; si aún no está, te llevamos a la oficial.</p>';
     return h;
+  }
+
+  /* ---------- Clasificación dentro de la app ---------- */
+  var RES_BY = {}; RESULTS.forEach(function (r) { RES_BY[r.id] = r; });
+  var isAdmin = false, resState = null;
+  function checkAdmin() { if (!user || !sb) { isAdmin = false; return; } sb.from("admins").select("user_id").eq("user_id", user.id).maybeSingle().then(function (r) { isAdmin = !!(r && r.data); }); }
+  function kmOfRes(r) { return KM[r.k] || parseFloat(String(r.dist || "").replace(",", ".")) || null; }
+  function resRow(x, km) {
+    var me = user && x.user_id === user.id, pc = x.sec && km ? pace(x.sec, km) : "";
+    return '<li class="rrow' + (me ? ' me' : '') + '"><span class="rp">' + (x.pos || "—") + '</span><span class="rn"><b>' + esc(x.name) + (me ? ' <em>Tú</em>' : '') + '</b><span>' + [x.category, x.club].filter(Boolean).map(esc).join(" · ") + '</span></span><span class="rt"><b>' + (x.sec ? fmtT(x.sec) : "—") + '</b><span>' + pc + '</span></span>' +
+      (user && !x.user_id ? '<button class="rclaim" type="button" data-claim="' + x.id + '" aria-label="Soy yo: ' + esc(x.name) + '">Soy yo</button>' : '') + '</li>';
+  }
+  function resScreen(id, q) {
+    var r = RES_BY[id]; if (!r) return;
+    var d = pd(r.d), km = kmOfRes(r), fake = { id: r.id, n: r.n, c: r.c, p: r.p, k: r.k, dist: r.dist, date: d, ok: true };
+    resState = { id: id, q: q || "" };
+    var head = '<div class="rhead">' + poster(fake, '<span class="tag done">Terminada</span>').replace('data-race="', 'data-x="') + '<div><p class="kick">Clasificación</p><h1>' + esc(r.n) + '</h1><p class="asub">' + cap(fdate(d)) + ' · ' + esc(r.c) + (r.extra ? ' · ' + esc(r.extra) : '') + '</p></div></div>';
+    $("layer").innerHTML = '<div class="auth res" role="dialog" aria-modal="true" aria-label="Clasificación ' + esc(r.n) + '"><div class="auth-in"><button class="aclose" type="button" data-close="1" aria-label="Cerrar">×</button>' + head + '<div id="resbody"><p class="muted">Cargando clasificación…</p></div></div></div>';
+    motion.screen($("layer").firstChild);
+    if (!sb) { resEmpty(r); return; }
+    var base = function () { return sb.from("results").select("id,pos,name,sex,category,club,sec,user_id").eq("race_id", id); };
+    Promise.all([
+      (q ? base().ilike("name", "%" + q + "%") : base()).order("pos", { ascending: true, nullsFirst: false }).limit(q ? 200 : 100),
+      sb.from("results").select("id", { count: "exact", head: true }).eq("race_id", id),
+      base().eq("sex", "M").order("pos").limit(3), base().eq("sex", "F").order("pos").limit(3),
+      user ? base().eq("user_id", user.id).limit(1) : Promise.resolve({ data: [] })
+    ]).then(function (rs) {
+      if (!resState || resState.id !== id) return;
+      var total = rs[1].count || 0;
+      if (!total) { resEmpty(r); return; }
+      var rows = rs[0].data || [], mine = (rs[4].data || [])[0];
+      var pod = function (list, lab) { return list.length ? '<div class="pod"><h3>' + lab + '</h3>' + list.map(function (x, i) { return '<div class="pp p' + (i + 1) + '"><span class="pm">' + (i + 1) + '</span><span class="pnm">' + esc(x.name) + '</span><b>' + (x.sec ? fmtT(x.sec) : "") + '</b></div>'; }).join("") + '</div>' : ''; };
+      var h = (mine ? '<div class="card mineres"><span>Tu resultado</span><b>' + (mine.pos ? "Puesto " + mine.pos + " · " : "") + (mine.sec ? fmtT(mine.sec) : "") + '</b><button class="link" type="button" data-unclaim="' + mine.id + '">No soy yo</button></div>' : '') +
+        (q ? '' : '<div class="pods">' + pod(rs[2].data || [], "Hombres") + pod(rs[3].data || [], "Mujeres") + '</div>') +
+        '<form class="rsearch" id="resq" role="search"><input id="rq" type="search" placeholder="Busca tu nombre entre ' + total.toLocaleString("es-ES") + ' finalistas" value="' + esc(q || "") + '" autocomplete="off"><button class="btn sm" type="submit">Buscar</button></form>' +
+        (rows.length ? '<ol class="rlist">' + rows.map(function (x) { return resRow(x, km); }).join("") + '</ol>' : '<p class="muted">Nadie con ese nombre. Prueba solo con el apellido.</p>') +
+        (!q && total > rows.length ? '<p class="muted" style="text-align:center;margin:0">Mostrando los ' + rows.length + ' primeros. Busca tu nombre para encontrarte.</p>' : '') +
+        (!user ? '<button class="btn alt wide" type="button" data-act="login">Entra para guardar tu resultado en tu perfil</button>' : '') +
+        '<p class="ahint">Fuente: clasificación oficial · <a href="' + esc(r.url) + '" target="_blank" rel="noopener">ver original</a></p>' + adminBox(r);
+      $("resbody").innerHTML = h; motion.list($("resbody"));
+    });
+  }
+  function resEmpty(r) {
+    $("resbody").innerHTML = '<div class="card empty"><p><b>Todavía no tenemos esta clasificación en Runiverso.</b> Estamos pidiendo permiso a las organizaciones para cargarlas aquí, con buscador y para que guardes tu resultado con un toque.</p><a class="btn" href="' + esc(r.url) + '" target="_blank" rel="noopener">Ver clasificación oficial ›</a></div>' + adminBox(r);
+    motion.list($("resbody"));
+  }
+  function adminBox(r) {
+    if (!isAdmin) return "";
+    return '<div class="card admin"><h3>Administrador · Subir clasificación</h3><p class="muted" style="margin:0;font-size:13px">Archivo CSV con columnas: puesto; dorsal; nombre; sexo (M/F); categoría; club; tiempo. Solo con permiso de la organización. Sustituye la clasificación anterior.</p><label class="btn sm alt" style="align-self:flex-start">Elegir CSV<input type="file" id="rescsv" accept=".csv,text/csv" hidden data-race="' + esc(r.id) + '"></label><p id="resmsg" class="muted" style="margin:0"></p></div>';
+  }
+  function parseTime(t) { t = String(t || "").trim().replace(",", "."); if (!t) return null; var p = t.split(":").map(Number); if (p.some(isNaN)) return null; var s2 = p.length === 3 ? p[0] * 3600 + p[1] * 60 + p[2] : p.length === 2 ? p[0] * 60 + p[1] : null; return s2 ? Math.round(s2) : null; }
+  function parseCSV(text) {
+    var lines = text.replace(/\r/g, "").split("\n").filter(function (l) { return l.trim(); });
+    var sep = (lines[0].match(/;/g) || []).length >= (lines[0].match(/,/g) || []).length ? ";" : ",";
+    var split = function (l) { var out = [], cur = "", qq = false; for (var i = 0; i < l.length; i++) { var c = l[i]; if (c === '"') qq = !qq; else if (c === sep && !qq) { out.push(cur); cur = ""; } else cur += c; } out.push(cur); return out.map(function (x) { return x.trim(); }); };
+    var rows = lines.map(split), hdr = rows[0].map(function (h) { return norm(h); }), has = /nombre|name|puesto|pos/.test(hdr.join(" "));
+    var idx = function (re, def) { for (var i = 0; i < hdr.length; i++) if (re.test(hdr[i])) return i; return has ? -1 : def; };
+    var I = { pos: idx(/^(pos|puesto|clas|lugar)/, 0), bib: idx(/dorsal|bib/, 1), name: idx(/nombre|name|corredor|atleta/, 2), sex: idx(/^(sexo|sex|genero|g)$/, 3), cat: idx(/categ/, 4), club: idx(/club|equipo/, 5), time: idx(/tiempo|time|neto|real|oficial/, 6) };
+    return rows.slice(has ? 1 : 0).map(function (c) {
+      var sx = String(c[I.sex] || "").trim().toUpperCase().charAt(0); sx = sx === "H" ? "M" : sx === "M" || sx === "F" ? sx : null;
+      return { pos: parseInt(c[I.pos], 10) || null, bib: c[I.bib] || null, name: c[I.name] || "", sex: sx, category: c[I.cat] || null, club: c[I.club] || null, sec: parseTime(c[I.time]) };
+    }).filter(function (x) { return x.name; });
+  }
+  function importCSV(file, raceId) {
+    var r = RES_BY[raceId], msg = function (t) { var m = $("resmsg"); if (m) m.textContent = t; };
+    var fr = new FileReader();
+    fr.onload = function () {
+      var rows = parseCSV(String(fr.result)); if (!rows.length) { msg("No he encontrado filas válidas en el archivo."); return; }
+      msg("Subiendo " + rows.length + " filas…");
+      sb.from("races").upsert({ id: r.id, name: r.n, city: r.c, prov: r.p, ccaa: r.r, date: r.d, kind: r.k, km: kmOfRes(r), official_url: r.url, source: r.src || "Organización" }).then(function (a) {
+        if (a.error) throw a.error;
+        return sb.from("results").delete().eq("race_id", r.id);
+      }).then(function (b) {
+        if (b && b.error) throw b.error;
+        var chunks = []; for (var i = 0; i < rows.length; i += 500) chunks.push(rows.slice(i, i + 500).map(function (x) { x.race_id = r.id; return x; }));
+        return chunks.reduce(function (pr, ch) { return pr.then(function () { return sb.from("results").insert(ch).then(function (c) { if (c.error) throw c.error; }); }); }, Promise.resolve());
+      }).then(function () { msg("Clasificación subida: " + rows.length + " corredores."); setTimeout(function () { resScreen(r.id); }, 700); })
+        .catch(function (e) { console.warn(e); msg("Error al subir: " + (e.message || e)); });
+    };
+    fr.readAsText(file, "utf-8");
   }
 
   /* ---------- Comunidad (próximamente) ---------- */
@@ -543,8 +683,9 @@
     lastFocus = document.activeElement;
     $("layer").innerHTML = '<div class="scrim" data-close="1"><div class="sheet" role="dialog" aria-modal="true" aria-label="' + esc(label) + '"><span class="grab" aria-hidden="true"></span>' + html + '</div></div>';
     var f = $("layer").querySelector(".sheet input, .sheet button, .sheet a"); if (f) f.focus();
+    motion.sheet($("layer").firstChild);
   }
-  function closeSheet() { $("layer").innerHTML = ""; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  function closeSheet() { authScreen.open = false; resState = null; $("layer").innerHTML = ""; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 
   function raceSheet(id) {
     var r = BY[id]; if (!r) return;
@@ -713,6 +854,11 @@
       if (am === "resend") { var rt = au.getAttribute("data-type"); (rt === "recovery" ? sb.auth.resetPasswordForEmail(authEmail, { redirectTo: location.origin + location.pathname }) : rt === "signup" ? sb.auth.resend({ type: "signup", email: authEmail }) : sb.auth.signInWithOtp({ email: authEmail })).then(function (r) { authScreen("code-" + rt, r.error ? authErr(r.error) : "", r.error ? "" : "Código reenviado."); }); return; }
       authScreen(am); return;
     }
+    var rs0 = t.closest("[data-res]"); if (rs0) { resScreen(rs0.getAttribute("data-res")); return; }
+    var cl0 = t.closest("[data-claim]");
+    if (cl0) { cl0.disabled = true; sb.rpc("claim_result", { rid: +cl0.getAttribute("data-claim") }).then(function (r) { if (r.error) { toast("No se ha podido guardar"); cl0.disabled = false; return; } toast("¡Resultado guardado en tu perfil!"); pull(); resScreen(resState.id, resState.q); }); return; }
+    var uc0 = t.closest("[data-unclaim]");
+    if (uc0) { sb.rpc("unclaim_result", { rid: +uc0.getAttribute("data-unclaim") }).then(function () { toast("Hecho"); resScreen(resState.id, resState.q); }); return; }
     var pu = t.closest(".poster[data-url]"); if (pu) { window.open(pu.getAttribute("data-url"), "_blank", "noopener"); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
@@ -759,12 +905,14 @@
     if (e.target.id === "mrace") { var r = BY[e.target.value]; $("mnamew").hidden = !!r; if (r) { $("mdate").value = r.d; if (KM[r.k]) { $("mdist").value = String(KM[r.k]); $("mkmw").hidden = true; } } updPace(); }
     if (e.target.id === "zc") { $("zp").innerHTML = provOpts(e.target.value, ""); }
     if (e.target.id === "mdist") { $("mkmw").hidden = e.target.value !== "otra"; updPace(); }
+    if (e.target.id === "rescsv" && e.target.files[0]) { importCSV(e.target.files[0], e.target.getAttribute("data-race")); return; }
     if (e.target.id === "pubtog") { S.pub = e.target.checked; save(); queue({ t: "prof" }); rankCache = {}; toast(S.pub ? "Apareces en el ranking" : "Ya no apareces en el ranking"); }
   });
   document.addEventListener("submit", function (e) {
     e.preventDefault();
     if (e.target.id === "zonef") { S.ccaa = $("zc").value; S.prov = $("zp").value; save(); queue({ t: "prof" }); rankCache = {}; view.sc = "prov"; view.f = ""; closeSheet(); render(); toast("Tu zona: " + S.prov); return; }
     if (e.target.id === "namef") { S.name = $("nm").value.trim(); save(); queue({ t: "prof" }); closeSheet(); render(); toast(S.name ? "¡Hola, " + S.name.split(" ")[0] + "!" : "Nombre borrado"); return; }
+    if (e.target.id === "resq") { resScreen(resState.id, $("rq").value.trim()); return; }
     if (e.target.id === "authf") {
       var fm = e.target, up = fm.getAttribute("data-mode") === "signup", em = $("ae").value.trim(), pw = $("ap").value;
       authEmail = em;
@@ -837,4 +985,5 @@
   if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});
   route();
   initCloud();
+  motion.tilt();
 })();
