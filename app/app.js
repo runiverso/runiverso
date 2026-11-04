@@ -28,7 +28,7 @@
   /* ---------- Datos guardados en el móvil ---------- */
   var KEY = "runiverso-app-v1";
   var S = { name: "", mine: {}, marks: [], prov: "", ccaa: "", pub: false, acct: "", q: [] };
-  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; S.prov = saved.prov || ""; S.ccaa = saved.ccaa || ""; S.pub = !!saved.pub; S.acct = saved.acct || ""; S.q = saved.q || []; } } catch (e) {}
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; S.prov = saved.prov || ""; S.ccaa = saved.ccaa || ""; S.pub = !!saved.pub; S.acct = saved.acct || ""; S.q = saved.q || []; S.push = !!saved.push; } } catch (e) {}
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { toast("No se ha podido guardar en este móvil"); } }
 
   /* ---------- Cuenta y sincronización (Supabase) ----------
@@ -170,12 +170,54 @@
   function busyBtn(form, txt) { var b = form.querySelector("button[type=submit]"); if (b) { b.disabled = true; b.textContent = txt; } }
   function authDone(msg) { closeSheet(); toast(msg || "¡Bienvenido a Runiverso!"); view.tab = "perfil"; if (location.hash !== "#perfil") location.hash = "#perfil"; else render(); }
   function loginSheet() { authScreen("login"); }
+  /* Avisos en el móvil (Web Push) */
+  var VAPID = "BB5nI_SSbF0fduXzLz4eApzI6ugPWw0ON7ZXtbUW7ronNCu7FIyG5Gy5-WnE4USQQN89YJuQDw4sDCYc0U-dUzI";
+  var IOS = /iphone|ipad|ipod/i.test(navigator.userAgent), STANDALONE = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
+  function pushOK() { return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window; }
+  function pushOn() { return S.push && pushOK() && Notification.permission === "granted"; }
+  function b64u(str) { var pad = "=".repeat((4 - str.length % 4) % 4), b = atob((str + pad).replace(/-/g, "+").replace(/_/g, "/")), out = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) out[i] = b.charCodeAt(i); return out; }
+  function testPush() {
+    sb.auth.getSession().then(function (r) {
+      var tk = r.data && r.data.session && r.data.session.access_token; if (!tk) return;
+      fetch(SUPA_URL + "/functions/v1/avisos", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + tk, apikey: SUPA_KEY }, body: JSON.stringify({ test: true }) }).catch(function () {});
+    });
+  }
+  function enablePush() {
+    if (!user) { authScreen("signup"); return; }
+    if (!pushOK()) { toast(IOS && !STANDALONE ? "En iPhone: añade Runiverso a la pantalla de inicio y ábrela desde allí para recibir avisos" : "Este navegador no permite avisos"); return; }
+    Notification.requestPermission().then(function (perm) {
+      if (perm !== "granted") { toast("Has bloqueado los avisos. Actívalos en los ajustes del navegador para Runiverso"); return; }
+      navigator.serviceWorker.ready.then(function (reg) {
+        return reg.pushManager.getSubscription().then(function (ex) { return ex || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64u(VAPID) }); });
+      }).then(function (sub) {
+        var j = sub.toJSON();
+        return sb.from("push_subs").upsert({ endpoint: j.endpoint, user_id: user.id, p256dh: j.keys.p256dh, auth: j.keys.auth });
+      }).then(function (r) {
+        if (r && r.error) throw r.error;
+        S.push = true; save(); render(); toast("¡Avisos activados!"); testPush();
+      }).catch(function (e) { console.warn("Runiverso avisos", e); toast("No hemos podido activar los avisos. Inténtalo de nuevo"); });
+    });
+  }
+  function disablePush() {
+    var done = function () { S.push = false; save(); render(); toast("Avisos desactivados"); };
+    if (!pushOK()) { done(); return; }
+    navigator.serviceWorker.ready.then(function (reg) { return reg.pushManager.getSubscription(); }).then(function (sub) {
+      if (!sub) return; var ep = sub.endpoint;
+      return sub.unsubscribe().then(function () { return sb.from("push_subs").delete().eq("endpoint", ep); });
+    }).then(done, done);
+  }
+  function pushRow() {
+    var on = pushOn();
+    return '<div class="pushrow"><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span><span class="pt"><b>Avisos de mis carreras</b><span>' +
+      (on ? "Activados en este móvil: una semana antes, el día antes y el mismo día." : "Te recordamos cada carrera a la que te apuntes: una semana antes, el día antes y el mismo día.") +
+      '</span></span><button class="btn sm' + (on ? ' alt' : '') + '" type="button" data-act="' + (on ? "pushoff" : "pushon") + '">' + (on ? "Desactivar" : "Activar") + '</button></div>';
+  }
   function accountCard() {
     if (!user) return '<div class="card acct"><div><h3>Guarda tus marcas en la nube</h3><p>Crea tu cuenta gratis con tu correo: no pierdes nada si cambias de móvil y puedes salir en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + '.</p></div><button class="btn" type="button" data-act="login">Crear cuenta o entrar</button></div>';
     var pend = S.q.length;
     return '<div class="card acct on"><div><h3>' + esc(user.email || "Tu cuenta") + '</h3><p>' + (pend ? "Sincronizando " + pend + (pend === 1 ? " cambio" : " cambios") + "…" : "Todo guardado en tu cuenta ✓") + '</p></div>' +
       '<label class="sw"><input type="checkbox" id="pubtog"' + (S.pub ? " checked" : "") + '><span>Aparecer en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + ' con mi nombre</span></label>' +
-      '<button class="btn sm alt" type="button" data-act="logout">Cerrar sesión</button></div>';
+      pushRow() + '<button class="btn sm alt" type="button" data-act="logout">Cerrar sesión</button></div>';
   }
   function rankingHtml() {
     if (!S.prov) return '<div class="card"><p style="margin:0">Elige tu zona para ver el ranking de tu provincia.</p><button class="btn sm alt" type="button" data-act="zone" style="margin-top:10px">Elegir zona</button></div>';
@@ -669,7 +711,7 @@
     var pu = t.closest(".poster[data-url]"); if (pu) { window.open(pu.getAttribute("data-url"), "_blank", "noopener"); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
-    if (mi) { var id = mi.getAttribute("data-mine"); if (S.mine[id]) { delete S.mine[id]; queue({ t: "mine-", id: id }); } else { S.mine[id] = true; queue({ t: "mine+", id: id }); } save(); toast(S.mine[id] ? "¡Apuntada! La verás en Inicio" : "Ya no estás apuntado"); render(); raceSheet(id); return; }
+    if (mi) { var id = mi.getAttribute("data-mine"); if (S.mine[id]) { delete S.mine[id]; queue({ t: "mine-", id: id }); } else { S.mine[id] = true; queue({ t: "mine+", id: id }); } save(); toast(S.mine[id] ? (user && !pushOn() ? "¡Apuntada! Activa los avisos en tu perfil y te la recordamos" : "¡Apuntada! La verás en Inicio") : "Ya no estás apuntado"); render(); raceSheet(id); return; }
     var cd = t.closest("[data-card]"); if (cd) { cardSheet(cd.getAttribute("data-card")); return; }
     var dc = t.closest("[data-dlcard]");
     if (dc) { cardBlob(dc.getAttribute("data-dlcard"), function (bl, m) { var a = document.createElement("a"); a.href = URL.createObjectURL(bl); a.download = "runiverso-" + dLabel(m.km).replace(/[^a-z0-9]+/gi, "") + "-" + m.date + ".png"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500); toast("Imagen descargada"); }); return; }
@@ -698,6 +740,8 @@
       else if (act === "addmark") markSheet(a.getAttribute("data-race") || "");
       else if (act === "login") authScreen("signup");
       else if (act === "logout") logout();
+      else if (act === "pushon") enablePush();
+      else if (act === "pushoff") disablePush();
       else if (act === "gopublic") { S.pub = true; save(); queue({ t: "prof" }); rankCache = {}; toast("¡Ya apareces en el ranking!"); setTimeout(function () { rankCache = {}; render(); }, 1500); render(); }
       else if (act === "install" && deferredInstall) { deferredInstall.prompt(); deferredInstall.userChoice.finally(function () { deferredInstall = null; render(); }); }
     }
