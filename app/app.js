@@ -154,7 +154,7 @@
       '<div class="abrand"><span class="amark">' + AUTH_ICO + '</span><span class="lw">Runiverso<small>el universo del running</small></span></div>' +
       '<h1>' + title + '</h1><p class="asub">' + sub + '</p>' +
       (mode === "signup" ? '<ul class="aperks"><li>Tus marcas y medallas, a salvo aunque cambies de móvil</li><li>Ranking de corredores de ' + (S.prov ? esc(S.prov) : "tu provincia") + '</li><li>Tus carreras apuntadas en todos tus dispositivos</li></ul>' : '') +
-      body + '<p class="alegal">Al continuar aceptas que guardemos tu correo y tus datos de carreras para darte el servicio. Puedes borrar tu cuenta cuando quieras.</p></div></div>';
+      body + '<p class="alegal">Al continuar aceptas las <a href="../condiciones/" target="_blank" rel="noopener">condiciones de uso</a> y la <a href="../privacidad/" target="_blank" rel="noopener">política de privacidad</a>. Puedes borrar tu cuenta cuando quieras.</p></div></div>';
     var f = $("layer").querySelector(mode.indexOf("code") === 0 ? "#otp" : "#ae, #ap"); if (f) setTimeout(function () { f.focus(); }, 50);
   }
   function authErr(e) {
