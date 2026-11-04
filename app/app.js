@@ -123,14 +123,14 @@
         '<button class="btn wide" type="submit">Entrar</button><button class="btn alt wide" type="button" data-act="login">Usar otro correo</button></form>', "Código de acceso");
       return;
     }
-    openSheet('<h2>Tu cuenta Runiverso</h2><p class="muted" style="margin:0">Sin contraseñas: te mandamos un enlace a tu correo y entras con un toque. Tus marcas, medallas y carreras quedan guardadas en la nube y las ves en cualquier móvil.</p>' +
+    openSheet('<h2>Entra o crea tu cuenta</h2><p class="muted" style="margin:0">Es el mismo paso para las dos cosas y no hay contraseña: pon tu correo y te mandamos un enlace. Si ya tienes cuenta, entras; si no, se crea sola.</p>' +
       '<form class="f" id="loginf"><div class="fld"><label for="em">Correo electrónico</label><input id="em" type="email" autocomplete="email" required value="' + esc(email || "") + '"></div>' +
       (err ? '<p class="err" role="alert">' + esc(err) + '</p>' : '') +
-      '<button class="btn wide" type="submit">Enviarme el enlace</button><button class="btn alt wide" type="button" data-close="1">Ahora no</button>' +
+      '<button class="btn wide" type="submit">Enviarme el enlace para entrar</button><button class="btn alt wide" type="button" data-close="1">Ahora no</button>' +
       '<p class="muted" style="margin:0;font-size:12.5px">Al crear tu cuenta aceptas que guardemos tu correo y tus marcas para darte el servicio. Puedes borrar tu cuenta cuando quieras escribiéndonos al canal.</p></form>', "Iniciar sesión");
   }
   function accountCard() {
-    if (!user) return '<div class="card acct"><div><h3>Guarda tus marcas en la nube</h3><p>Crea tu cuenta gratis con tu correo: no pierdes nada si cambias de móvil y puedes salir en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + '.</p></div><button class="btn" type="button" data-act="login">Crear cuenta o entrar</button></div>';
+    if (!user) return '<div class="card acct"><div><h3>Guarda tus marcas en la nube</h3><p>Crea tu cuenta gratis con tu correo: no pierdes nada si cambias de móvil y puedes salir en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + '.</p></div><button class="btn" type="button" data-act="login">Entrar o crear cuenta</button></div>';
     var pend = S.q.length;
     return '<div class="card acct on"><div><h3>' + esc(user.email || "Tu cuenta") + '</h3><p>' + (pend ? "Sincronizando " + pend + (pend === 1 ? " cambio" : " cambios") + "…" : "Todo guardado en tu cuenta ✓") + '</p></div>' +
       '<label class="sw"><input type="checkbox" id="pubtog"' + (S.pub ? " checked" : "") + '><span>Aparecer en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + ' con mi nombre</span></label>' +
