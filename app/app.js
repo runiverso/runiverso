@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "16";
+  var APP_V = "17";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -66,13 +66,13 @@
     function list(el) { if (!on || !el) return; G.from(q(el, ".mineres, .pod, .rsearch, .rrow, .card, .ahint").slice(0, 40), { y: 12, opacity: 0, duration: 0.45, ease: E, stagger: 0.025, clearProps: CLR }); }
     function screen(el) {
       if (!on || !el) return;
-      G.from(el, { opacity: 0, duration: 0.25, ease: "power1.out" });
+      G.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power1.out", clearProps: "opacity" });
       G.from(q(el, ".abrand, .rhead, h1, .asub, .aperks li, .abtn, .or, .atabs, .fld, .f > .btn, .alinks, .ahint"), { y: 18, opacity: 0, duration: D, ease: E, stagger: 0.04, delay: 0.05, clearProps: CLR });
     }
     function sheet(el) {
       if (!on || !el) return;
-      G.from(el, { opacity: 0, duration: 0.2, ease: "power1.out" });
-      var sh = el.querySelector(".sheet"); if (sh) G.from(sh, { yPercent: 100, duration: 0.5, ease: "power4.out", clearProps: "transform" });
+      G.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out", clearProps: "opacity" });
+      var sh = el.querySelector(".sheet"); if (sh) G.fromTo(sh, { yPercent: 100 }, { yPercent: 0, duration: 0.5, ease: "power4.out", clearProps: "transform" });
     }
     function tilt() {
       if (!on || !(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
@@ -85,6 +85,7 @@
         G.to(cur, { rotationY: x * 10, rotationX: -y * 10, scale: 1.03, duration: 0.4, ease: "power2.out", overwrite: "auto" });
       }, { passive: true });
     }
+    if (on) document.documentElement.classList.add("gs");
     return { view: view, list: list, screen: screen, sheet: sheet, tilt: tilt, on: on };
   })();
 
