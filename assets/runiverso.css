@@ -291,7 +291,7 @@ footer a:hover, .fine a:hover, .src a:hover { text-decoration: underline; }
 .rv-nav a.app { color: #FFFFFF !important; background: var(--accent) !important; margin-left: 4px; }
 .rv-nav a.app:hover { filter: brightness(1.08); }
 @media (max-width: 560px) { .rv-nav a.app { padding: 8px 10px; } }
-@media (max-width: 540px) { .rv-nav a:not(.app):not(:nth-child(3)) { display: none !important; } }
+@media (max-width: 580px) { .rv-nav a:not(.app):not(:nth-child(3)) { display: none !important; } }
 /* Canal de WhatsApp */
 .rv-canal { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 18px; text-decoration: none !important; color: var(--fg) !important; background: color-mix(in srgb, #25D366 9%, var(--surface)); border: 1px solid color-mix(in srgb, #25D366 45%, var(--line)); }
 .rv-canal .ci { width: 48px; height: 48px; flex: none; border-radius: 14px; background: #25D366; color: #06210F; display: grid; place-items: center; }
@@ -301,3 +301,8 @@ footer a:hover, .fine a:hover, .src a:hover { text-decoration: underline; }
 .rv-canal .ct span { font-size: 14px; color: var(--muted); line-height: 1.4; }
 .rv-canal .cb { flex: none; padding: 10px 16px; border-radius: 12px; background: #25D366; color: #06210F; font-weight: 800; font-size: 14px; white-space: nowrap; }
 @media (max-width: 520px) { .rv-canal { flex-wrap: wrap; } .rv-canal .cb { width: 100%; text-align: center; } }
+/* Lema bajo el nombre */
+.rv-word { display: inline-flex !important; flex-direction: column; line-height: 1 !important; }
+.rv-word small { display: block; margin-top: 3px; font-family: var(--font-body, system-ui); font-size: 11.5px; font-weight: 600; letter-spacing: 0.01em; color: var(--muted); text-transform: none; white-space: nowrap; }
+.rv-bar .rv-word small { color: var(--accent); }
+@media (max-width: 380px) { .rv-word small { font-size: 10.5px; } }

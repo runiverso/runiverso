@@ -1,7 +1,7 @@
 {
   "name": "Runiverso",
   "short_name": "Runiverso",
-  "description": "Todas las carreras de running de España. Apúntate, guarda tus marcas y colecciona tus medallas.",
+  "description": "El universo del running: todas las carreras de running de España. Apúntate, guarda tus marcas y colecciona tus medallas.",
   "lang": "es",
   "start_url": "./#inicio",
   "scope": "./",

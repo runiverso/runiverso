@@ -435,7 +435,7 @@
     var yy = 1150, cols = [["DISTANCIA", l.length <= 3 ? (l === "21K" ? "21,1 km" : l === "42K" ? "42,2 km" : l.replace("K", " km")) : l], ["RITMO", pace(m.sec, m.km).replace(" /km", "/km")], ["FECHA", d.getDate() + " " + MES_C[d.getMonth()] + " " + d.getFullYear()]];
     x.strokeStyle = "rgba(255,255,255,0.14)"; x.lineWidth = 2; x.beginPath(); x.moveTo(80, yy - 70); x.lineTo(W - 80, yy - 70); x.stroke();
     cols.forEach(function (col, k) { var px = 80 + (W - 160) / 6 * (k * 2 + 1); x.fillStyle = "#A9B3C8"; x.font = "700 24px " + F; x.fillText(col[0], px, yy - 20); x.fillStyle = "#F3F5FA"; x.font = "800 40px " + F; x.fillText(col[1], px, yy + 30); });
-    x.fillStyle = "#7FA6FF"; x.font = "700 28px " + F; x.fillText("runiverso.com · Tu próxima meta empieza aquí", cx, H - 70);
+    x.fillStyle = "#7FA6FF"; x.font = "700 28px " + F; x.fillText("Runiverso · El universo del running · runiverso.com", cx, H - 70);
     return c;
   }
   function cardSheet(id, fresh) {

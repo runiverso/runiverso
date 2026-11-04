@@ -1,6 +1,6 @@
 /* Runiverso App · funciona sin conexión. Sube la versión al cambiar archivos. */
-const CACHE = "runiverso-app-v6";
-const SHELL = ["./", "./index.html", "./app.css?v=6", "./app.js?v=6", "./data.js?v=2", "../carteles/carteles.js", "./manifest.webmanifest", "./icons/icon-192.png", "../favicon.svg"];
+const CACHE = "runiverso-app-v7";
+const SHELL = ["./", "./index.html", "./app.css?v=7", "./app.js?v=7", "./data.js?v=2", "../carteles/carteles.js", "./manifest.webmanifest", "./icons/icon-192.png", "../favicon.svg"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", (e) => {

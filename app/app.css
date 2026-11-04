@@ -253,3 +253,5 @@ form.f { display: flex; flex-direction: column; gap: 14px; }
 .canal .ct b { font-family: var(--display); font-weight: 800; font-size: 15.5px; letter-spacing: -0.02em; }
 .canal .ct span { font-size: 13px; color: #B9E9CB; line-height: 1.35; }
 .canal .cb { flex: none; padding: 9px 14px; border-radius: 12px; background: #25D366; color: #06210F; font-weight: 800; font-size: 13.5px; }
+.logo .lw { display: inline-flex; flex-direction: column; line-height: 1; }
+.logo .lw small { margin-top: 3px; font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: 0.01em; color: var(--sky); }
