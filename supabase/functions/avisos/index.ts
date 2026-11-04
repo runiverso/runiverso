@@ -1,17 +1,30 @@
 // Runiverso · avisos de carreras en el móvil (Web Push)
 // - Cada mañana (pg_cron): avisa a los corredores apuntados 7 días antes, el día antes y el mismo día.
 // - POST {"test":true} con la sesión del usuario: le manda un aviso de prueba.
-// Secretos: VAPID_PRIVATE_KEY (Edge Functions → Secrets). SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY los pone Supabase.
+// - POST {"key":true}: devuelve la clave pública de envío (la app la usa para suscribirse).
+// Las claves de envío las genera la función la primera vez y las guarda en push_config (solo accesible con service role).
 import webpush from "npm:web-push@3.6.7";
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
-const VAPID_PUBLIC = "BB5nI_SSbF0fduXzLz4eApzI6ugPWw0ON7ZXtbUW7ronNCu7FIyG5Gy5-WnE4USQQN89YJuQDw4sDCYc0U-dUzI";
 const DATA_URL = "https://runiverso.com/app/data.js";
 const APP_URL = "https://runiverso.com/app/";
 const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, content-type, apikey, x-client-info", "Access-Control-Allow-Methods": "POST, OPTIONS" };
 
-webpush.setVapidDetails("mailto:hola@runiverso.com", VAPID_PUBLIC, Deno.env.get("VAPID_PRIVATE_KEY") ?? "");
 const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
+
+let keys: { public_key: string; private_key: string } | null = null;
+async function vapid() {
+  if (keys) return keys;
+  let { data } = await db.from("push_config").select("public_key,private_key").eq("id", 1).maybeSingle();
+  if (!data) {
+    const k = webpush.generateVAPIDKeys();
+    await db.from("push_config").upsert({ id: 1, public_key: k.publicKey, private_key: k.privateKey }, { onConflict: "id", ignoreDuplicates: true });
+    ({ data } = await db.from("push_config").select("public_key,private_key").eq("id", 1).maybeSingle());
+  }
+  keys = data!;
+  webpush.setVapidDetails("mailto:hola@runiverso.com", keys.public_key, keys.private_key);
+  return keys;
+}
 
 type Sub = { endpoint: string; user_id: string; p256dh: string; auth: string };
 type Race = { id: string; n: string; c: string; d: string; h?: string };
@@ -83,7 +96,9 @@ async function daily() {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
-  let body: { test?: boolean } = {};
+  let body: { test?: boolean; key?: boolean } = {};
   try { body = await req.json(); } catch { /* sin cuerpo */ }
+  const k = await vapid();
+  if (body.key) return json({ publicKey: k.public_key });
   return body.test ? testFor(req) : daily();
 });

@@ -21,3 +21,12 @@ create table if not exists public.push_log (
   primary key (user_id, race_id, kind)
 );
 alter table public.push_log enable row level security;
+
+-- Claves de envío (las genera la propia función la primera vez). Sin políticas: solo el servidor las lee.
+create table if not exists public.push_config (
+  id          int primary key default 1 check (id = 1),
+  public_key  text not null,
+  private_key text not null,
+  created_at  timestamptz not null default now()
+);
+alter table public.push_config enable row level security;

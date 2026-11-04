@@ -171,16 +171,18 @@
   function authDone(msg) { closeSheet(); toast(msg || "¡Bienvenido a Runiverso!"); view.tab = "perfil"; if (location.hash !== "#perfil") location.hash = "#perfil"; else render(); }
   function loginSheet() { authScreen("login"); }
   /* Avisos en el móvil (Web Push) */
-  var VAPID = "BB5nI_SSbF0fduXzLz4eApzI6ugPWw0ON7ZXtbUW7ronNCu7FIyG5Gy5-WnE4USQQN89YJuQDw4sDCYc0U-dUzI";
   var IOS = /iphone|ipad|ipod/i.test(navigator.userAgent), STANDALONE = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone;
   function pushOK() { return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window; }
   function pushOn() { return S.push && pushOK() && Notification.permission === "granted"; }
   function b64u(str) { var pad = "=".repeat((4 - str.length % 4) % 4), b = atob((str + pad).replace(/-/g, "+").replace(/_/g, "/")), out = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) out[i] = b.charCodeAt(i); return out; }
-  function testPush() {
-    sb.auth.getSession().then(function (r) {
-      var tk = r.data && r.data.session && r.data.session.access_token; if (!tk) return;
-      fetch(SUPA_URL + "/functions/v1/avisos", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + tk, apikey: SUPA_KEY }, body: JSON.stringify({ test: true }) }).catch(function () {});
+  function fnCall(body) {
+    return sb.auth.getSession().then(function (r) {
+      var tk = (r.data && r.data.session && r.data.session.access_token) || SUPA_KEY;
+      return fetch(SUPA_URL + "/functions/v1/avisos", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + tk, apikey: SUPA_KEY }, body: JSON.stringify(body) }).then(function (res) { return res.json(); });
     });
+  }
+  function testPush() {
+    fnCall({ test: true }).catch(function () {});
   }
   function enablePush() {
     if (!user) { authScreen("signup"); return; }
@@ -188,7 +190,10 @@
     Notification.requestPermission().then(function (perm) {
       if (perm !== "granted") { toast("Has bloqueado los avisos. Actívalos en los ajustes del navegador para Runiverso"); return; }
       navigator.serviceWorker.ready.then(function (reg) {
-        return reg.pushManager.getSubscription().then(function (ex) { return ex || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64u(VAPID) }); });
+        return reg.pushManager.getSubscription().then(function (ex) {
+          if (ex) return ex;
+          return fnCall({ key: true }).then(function (k) { if (!k || !k.publicKey) throw new Error("sin clave"); return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64u(k.publicKey) }); });
+        });
       }).then(function (sub) {
         var j = sub.toJSON();
         return sb.from("push_subs").upsert({ endpoint: j.endpoint, user_id: user.id, p256dh: j.keys.p256dh, auth: j.keys.auth });
