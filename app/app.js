@@ -686,7 +686,7 @@
     var sh = t.closest("[data-share]"); if (sh) { share(BY[sh.getAttribute("data-share")]); return; }
     var f = t.closest("[data-f]"); if (f) { view.f = f.getAttribute("data-f"); view.lim = 30; render(); return; }
     var sc = t.closest("[data-sc]"); if (sc) { view.sc = sc.getAttribute("data-sc"); view.lim = 30; view.q = ""; render(); return; }
-    var sb = t.closest("[data-sub]"); if (sb) { view.sub = sb.getAttribute("data-sub"); render(); return; }
+    var sbt = t.closest("[data-sub]"); if (sbt) { view.sub = sbt.getAttribute("data-sub"); render(); return; }
     var dl = t.closest("[data-del]");
     if (dl) { var mid = dl.getAttribute("data-del"); if (dl.getAttribute("data-sure")) { S.marks = S.marks.filter(function (m) { return m.id !== mid; }); queue({ t: "mark-", id: mid }); save(); toast("Marca borrada"); render(); } else { dl.setAttribute("data-sure", "1"); dl.style.borderColor = "#FF8A8A"; dl.style.color = "#FF8A8A"; dl.setAttribute("aria-label", "Pulsa otra vez para borrar"); toast("Pulsa otra vez para borrar"); } return; }
     var a = t.closest("[data-act]");
