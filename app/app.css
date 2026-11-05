@@ -497,3 +497,146 @@ body { background: radial-gradient(120% 40% at 100% 0%, #DDE6FF 0%, var(--bg) 55
 .logo .lw small { white-space: nowrap; }
 @media (max-width: 400px) { .top { gap: 8px; } .logo .lw small { font-size: 10.5px; } }
 @media (max-width: 350px) { .logo .lw small { display: none; } }
+
+/* =====================================================================
+   Tema 2026 · sobrio y deportivo
+   Archivo (ancho variable): estrecha para titulares y cifras, normal para texto.
+   Blanco y gris, tinta casi negra, un solo azul. Sin degradados ni sombras de color.
+   ===================================================================== */
+:root {
+  --bg: #F3F4F6;
+  --surface: #FFFFFF;
+  --surface-2: #F0F2F5;
+  --line: #E1E4E9;
+  --fg: #14171C;
+  --muted: #5F6673;
+  --accent: #1C4FD8;
+  --sky: #1C4FD8;
+  --ok: #157A3E;
+  --warn: #A15C07;
+  --sun: #1C4FD8;
+  --rose: #1C4FD8;
+  --sea: #157A3E;
+  --display: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Archivo", system-ui, sans-serif;
+  --lift: none;
+  --r: 10px;
+  --tabbar: 64px;
+}
+body { background: var(--bg); font-size: 15.5px; font-stretch: 100%; letter-spacing: 0; }
+h1, h2, .logo, .poster .pn, .poster .pdate b, .dorsal .num, .dorsal .days b, .dorsal .nm, .stat b, .pr b, .li .dt b, .avatar, .prof .av {
+  font-family: var(--display); font-stretch: 78%; letter-spacing: -0.01em; }
+h1 { font-weight: 700; font-size: 34px; line-height: 1; }
+h2 { font-weight: 700; font-size: 22px; line-height: 1.1; }
+.kick { font-size: 14px; }
+.muted, .count, .item p { color: var(--muted); }
+
+/* Cabecera blanca con línea fina; redes monocromas */
+.top { background: #FFFFFF; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: 1px solid var(--line); padding-top: calc(env(safe-area-inset-top, 0px) + 10px); padding-bottom: 10px; }
+.logo { font-weight: 700; font-size: 22px; }
+.logo svg { width: 30px; height: 30px; border-radius: 7px; background: var(--fg); box-shadow: none; }
+.logo .lw small { color: var(--muted); font-stretch: 100%; font-weight: 500; letter-spacing: 0; }
+.iconbtn, .iconbtn.tt, .iconbtn.ig { width: 36px; height: 36px; border: 0; border-radius: 8px; background: transparent; box-shadow: none; color: var(--fg); }
+.iconbtn:active { background: var(--surface-2); }
+.top .iconbtn + .iconbtn { margin-left: -6px; }
+.avatar { width: 36px; height: 36px; background: var(--surface-2); box-shadow: none; border: 1px solid var(--line); color: var(--fg); font-weight: 700; font-size: 15px; }
+
+/* Superficies: borde fino, sin sombra, radio contenido */
+.card, .li, .pr, .stat, .pod, .rrow, .rank li, .zone, .canal, .pushrow, .acct, .mineres { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: none; }
+.card { padding: 18px; }
+.acct.on { box-shadow: none; border-color: var(--ok); }
+.rank li.me, .rrow.me, .mineres { box-shadow: none; border-color: var(--accent); background: #F2F5FD; }
+.rank li:nth-child(1) { background: var(--surface); }
+.pr.pred { background: #F2F5FD; border-color: #D6DFF7; }
+.pr .d, .li .dt span, .seg .n, .dorsal .band { font-family: var(--body); font-stretch: 100%; letter-spacing: 0; text-transform: none; }
+.pr .d { color: var(--muted); font-size: 13px; font-weight: 600; }
+.pr.none b { color: #B9BEC8; }
+.li .dt { background: var(--surface-2); color: var(--fg); border-radius: 8px; }
+
+/* Botones */
+.btn { min-height: 46px; border-radius: 8px; font-weight: 600; font-size: 15px; box-shadow: none; }
+.btn.alt { background: var(--surface); color: var(--fg); border-color: #CDD1D8; }
+.btn.sm { border-radius: 8px; }
+.sechd button, .sechd a { color: var(--accent); font-weight: 600; }
+
+/* Filtros: rectángulos sobrios */
+.search { border-radius: 8px; background-color: var(--surface); border: 1px solid #CDD1D8; box-shadow: none; }
+.chip { min-height: 36px; border-radius: 8px; background: var(--surface); color: var(--fg); border: 1px solid #CDD1D8; box-shadow: none; font-weight: 600; font-size: 14px; }
+.chip[aria-pressed="true"] { background: var(--fg); color: #FFFFFF; border-color: var(--fg); }
+.seg { background: var(--surface-2); border: 0; border-radius: 9px; padding: 3px; box-shadow: none; }
+.seg button { min-height: 36px; border-radius: 7px; font-weight: 600; color: var(--muted); }
+.seg button[aria-selected="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 2px rgba(20, 23, 28, 0.12); }
+
+/* Temporada: una sola tarjeta con tres cifras */
+.stats { gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.stats .stat, .stats .stat:nth-child(1), .stats .stat:nth-child(2), .stats .stat:nth-child(3) { background: var(--surface); color: var(--fg); border: 0; border-radius: 0; padding: 14px 16px; }
+.stats .stat + .stat { border-left: 1px solid var(--line); }
+.stat b { font-weight: 700; font-size: 34px; }
+.stat span { color: var(--muted); font-weight: 500; }
+
+/* Tarjetas de carrera: color plano por prueba */
+.poster { border-radius: var(--r); padding: 12px; box-shadow: none; background: var(--pa); }
+.poster[data-k="21K"] { --pa: #1C4FD8; }
+.poster[data-k="42K"] { --pa: #232A5C; }
+.poster[data-k="10K"] { --pa: #0F6E6A; }
+.poster[data-k="TR"], .poster[data-k="TR"] { --pa: #3C5A1E; background: var(--pa); }
+.poster[data-k="SS"] { --pa: #B3261E; background: var(--pa); }
+.poster[data-k="POP"] { --pa: #C04A12; }
+.poster .pt { font-size: 12px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+.poster .pt svg { background: rgba(0, 0, 0, 0.22); border-radius: 5px; }
+.poster .pdist { background: rgba(0, 0, 0, 0.22); border-radius: 5px; font-weight: 600; }
+.poster .pn { font-weight: 700; font-size: 19px; line-height: 1.02; }
+.poster .pdate { border-top-color: rgba(255, 255, 255, 0.3); }
+.poster .pdate b { font-weight: 700; font-size: 36px; }
+.poster .pdate span { font-weight: 600; letter-spacing: 0; text-transform: none; font-size: 12px; }
+.poster .tag { border-radius: 4px; font-weight: 600; letter-spacing: 0; background: #FFFFFF; color: var(--warn); }
+.poster .tag.mine { background: #FFFFFF; color: var(--ok); }
+.item h3 { font-weight: 600; font-size: 15px; letter-spacing: 0; }
+
+/* Próximo dorsal: blanco, número grande, sin brillo naranja */
+.dorsal { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: none; }
+.dorsal .band { background: var(--fg); font-size: 13px; font-weight: 600; }
+.dorsal .num { font-weight: 800; font-size: 72px; }
+.dorsal .days b { color: var(--accent); font-weight: 800; }
+.dorsal .bd::before, .dorsal .bd::after { box-shadow: inset 0 0 0 1px var(--line); }
+
+/* Bloques de color que sobraban */
+.zone svg, .zone em { color: var(--accent); }
+.install { background: var(--fg); box-shadow: none; border-radius: var(--r); }
+.install .btn { color: var(--fg); }
+.zic { background: var(--fg); }
+.vitrina { background: var(--fg); box-shadow: none; border-radius: var(--r); }
+.bar i { background: var(--accent); }
+.canal { background: var(--surface); }
+.canal .ct span { color: var(--muted); }
+.pushrow { background: var(--surface-2); border: 0; }
+.pushrow .pi { background: var(--surface); }
+.note { color: var(--muted); }
+
+/* Barra inferior fija, ancho completo, estilo sistema */
+.tabbar { left: 0; right: 0; transform: none; bottom: 0; width: auto; max-width: none; border-radius: 0; border: 0; border-top: 1px solid var(--line); background: rgba(255, 255, 255, 0.97); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: none; padding: 4px max(8px, env(safe-area-inset-left, 0px)) calc(env(safe-area-inset-bottom, 0px) + 4px); gap: 0; }
+.tabbar a, .tabbar a[aria-current="page"] { min-height: 52px; border-radius: 0; background: transparent; box-shadow: none; font-size: 11px; font-weight: 500; color: #7A818D; }
+.tabbar a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+.tabbar a svg { width: 23px; height: 23px; }
+@media (min-width: 560px) { .tabbar { left: 50%; right: auto; width: 520px; transform: translateX(-50%); border-left: 1px solid var(--line); border-right: 1px solid var(--line); } }
+
+/* Hojas y campos */
+.sheet { border-radius: 14px 14px 0 0; box-shadow: 0 -8px 30px rgba(20, 23, 28, 0.14); }
+.sheet .fld input, .sheet .fld select, .fld input, .fld select { background: var(--surface); border: 1px solid #CDD1D8; border-radius: 8px; }
+.toast { border-radius: 8px; box-shadow: 0 6px 20px rgba(20, 23, 28, 0.25); }
+
+/* Resultados */
+.auth.res { background: var(--bg); }
+.auth.res .aclose { box-shadow: none; border: 1px solid var(--line); }
+.rsearch input { box-shadow: none; border: 1px solid #CDD1D8; border-radius: 8px; }
+.rclaim { border-radius: 8px; }
+
+/* Acceso: azul noche liso, sin halo */
+.auth:not(.res) { --accent: #3D6BFF; }
+.auth:not(.res) { background: #0E1630; }
+h1, h2, .logo, .poster .pn, .poster .pdate b, .dorsal .num, .dorsal .days b, .dorsal .nm, .stat b, .pr b, .li .dt b, .avatar, .prof .av { font-variation-settings: "wdth" 80; }
+h1 { font-size: 36px; }
+.prof .av { box-shadow: none; border: 1px solid var(--line); background: var(--surface-2); color: var(--fg); }
+.poster .pdate span { font-size: 12.5px; }
+.logo .lw small { font-variation-settings: "wdth" 100; font-size: 11.5px; }

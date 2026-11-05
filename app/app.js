@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "20";
+  var APP_V = "21";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -421,20 +421,20 @@
       h += '<div class="card empty"><h2>Apúntate a tu primera carrera</h2><p>Elige una carrera, pulsa «Apuntarme» y aquí verás la cuenta atrás.</p><a class="btn" href="#carreras">Ver carreras</a></div>';
     }
     var sm = seasonMarks(), km = sm.reduce(function (a, m) { return a + m.km; }, 0);
-    h += '<div class="sec"><div class="sechd"><h2>Tu temporada ' + String(seasonStart().getFullYear()).slice(2) + '/' + String(seasonStart().getFullYear() + 1).slice(2) + '</h2><a href="#perfil">Mis marcas ›</a></div><div class="stats">' +
+    h += '<div class="sec"><div class="sechd"><h2>Tu temporada ' + String(seasonStart().getFullYear()).slice(2) + '/' + String(seasonStart().getFullYear() + 1).slice(2) + '</h2><a href="#perfil">Mis marcas</a></div><div class="stats">' +
       '<div class="stat"><b>' + sm.length + '</b><span>Carreras</span></div><div class="stat"><b>' + Math.round(km) + '</b><span>Kilómetros</span></div><div class="stat"><b>' + S.marks.length + '</b><span>Medallas</span></div></div></div>';
     if (S.prov) {
       var lp = up.filter(inProv), lc = up.filter(function (r) { return inCcaa(r) && !inProv(r); });
-      h += '<div class="sec"><div class="sechd"><h2>En ' + esc(S.prov) + '</h2><a href="#carreras?sc=prov">Ver ' + lp.length + ' ›</a></div>' + (lp.length ? '<div class="hscroll">' + lp.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<div class="card empty"><p>Aún no tenemos carreras en ' + esc(S.prov) + '. ¿Conoces alguna? Avísanos en el canal y la añadimos.</p></div>') + '</div>';
-      if (S.ccaa !== S.prov) h += '<div class="sec"><div class="sechd"><h2>Resto de ' + esc(S.ccaa) + '</h2><a href="#carreras?sc=ccaa">Ver ' + lc.length + ' ›</a></div>' + (lc.length ? '<div class="hscroll">' + lc.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<p class="muted" style="margin:0">Sin más carreras en tu comunidad de momento.</p>') + '</div>';
+      h += '<div class="sec"><div class="sechd"><h2>En ' + esc(S.prov) + '</h2><a href="#carreras?sc=prov">Ver ' + lp.length + '</a></div>' + (lp.length ? '<div class="hscroll">' + lp.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<div class="card empty"><p>Aún no tenemos carreras en ' + esc(S.prov) + '. ¿Conoces alguna? Avísanos en el canal y la añadimos.</p></div>') + '</div>';
+      if (S.ccaa !== S.prov) h += '<div class="sec"><div class="sechd"><h2>Resto de ' + esc(S.ccaa) + '</h2><a href="#carreras?sc=ccaa">Ver ' + lc.length + '</a></div>' + (lc.length ? '<div class="hscroll">' + lc.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<p class="muted" style="margin:0">Sin más carreras en tu comunidad de momento.</p>') + '</div>';
       var rest = up.filter(function (r) { return !inCcaa(r); }).length;
       h += '<a class="card" href="#carreras?sc=es" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span class="zic">ES</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px;letter-spacing:-.02em">Resto de España</b><br><span class="muted" style="font-size:13.5px">' + rest + ' carreras fuera de tu comunidad</span></span><span aria-hidden="true" style="color:var(--sky);font-weight:800">›</span></a>';
     } else {
-      h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas ›</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
+      h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
     }
     h += canalCard("Avisos de dorsales en WhatsApp", "Cuándo abren y suben las inscripciones" + (S.prov ? " en " + esc(S.prov) : "") + ", horarios y novedades. Gratis.");
     if (RESULTS.length) {
-      h += '<div class="sec"><div class="sechd"><h2>Últimos resultados</h2><a href="#clasificaciones">Ver todos ›</a></div><div class="list">' + RESULTS.slice().sort(function (a, b) { return near({ p: a.p, r: ccaaOf(a.p), date: -pd(a.d) }, { p: b.p, r: ccaaOf(b.p), date: -pd(b.d) }); }).slice(0, 3).map(resLi).join("") + '</div></div>';
+      h += '<div class="sec"><div class="sechd"><h2>Últimos resultados</h2><a href="#clasificaciones">Ver todos</a></div><div class="list">' + RESULTS.slice().sort(function (a, b) { return near({ p: a.p, r: ccaaOf(a.p), date: -pd(a.d) }, { p: b.p, r: ccaaOf(b.p), date: -pd(b.d) }); }).slice(0, 3).map(resLi).join("") + '</div></div>';
     }
     h += '<p class="foot">Calendario completo y mapa en <a href="../">runiverso.com</a></p>';
     return h;
@@ -571,7 +571,7 @@
     function cards(list) {
       return '<div class="grid">' + list.map(function (r) {
         var d = pd(r.d), fake = { id: r.id, n: r.n, c: r.c, p: r.p, k: r.k, dist: r.dist, date: d, ok: true };
-        return '<div class="item">' + poster(fake, '<span class="tag done">Terminada</span>', ' data-res="' + esc(r.id) + '"') + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + sdate(d) + '</p></div><button class="btn sm" type="button" data-res="' + esc(r.id) + '">Ver clasificación ›</button></div>';
+        return '<div class="item">' + poster(fake, '<span class="tag done">Terminada</span>', ' data-res="' + esc(r.id) + '"') + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + sdate(d) + '</p></div><button class="btn sm" type="button" data-res="' + esc(r.id) + '">Ver clasificación</button></div>';
       }).join("") + '</div>';
     }
     if (S.ccaa) {
@@ -624,7 +624,7 @@
     });
   }
   function resEmpty(r) {
-    $("resbody").innerHTML = '<div class="card empty"><p><b>Todavía no tenemos esta clasificación en Runiverso.</b> Estamos pidiendo permiso a las organizaciones para cargarlas aquí, con buscador y para que guardes tu resultado con un toque.</p><a class="btn" href="' + esc(r.url) + '" target="_blank" rel="noopener">Ver clasificación oficial ›</a></div>' + adminBox(r);
+    $("resbody").innerHTML = '<div class="card empty"><p><b>Todavía no tenemos esta clasificación en Runiverso.</b> Estamos pidiendo permiso a las organizaciones para cargarlas aquí, con buscador y para que guardes tu resultado con un toque.</p><a class="btn" href="' + esc(r.url) + '" target="_blank" rel="noopener">Ver clasificación oficial</a></div>' + adminBox(r);
     motion.list($("resbody"));
   }
   function adminBox(r) {
