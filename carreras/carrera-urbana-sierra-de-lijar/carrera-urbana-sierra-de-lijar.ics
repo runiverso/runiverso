@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-urbana-sierra-de-lijar-2026-11-28@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20261129
+SUMMARY:Carrera Urbana Sierra de Líjar
+LOCATION:Algodonales\, Andalucía
+DESCRIPTION:Urbana · Algodonales\nhttps://runiverso.com/carr
+ eras/carrera-urbana-sierra-de-lijar/
+END:VEVENT
+END:VCALENDAR

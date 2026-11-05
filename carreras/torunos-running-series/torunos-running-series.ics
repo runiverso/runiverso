@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:torunos-running-series-2027-01-10@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20270110
+DTEND;VALUE=DATE:20270111
+SUMMARY:Toruños Running Series
+LOCATION:El Puerto de Santa María\, Andalucía
+DESCRIPTION:9\, 10 o 21 km · El Puerto de Santa María\nhttps
+ ://runiverso.com/carreras/torunos-running-series/
+END:VEVENT
+END:VCALENDAR

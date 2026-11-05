@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:trail-cruz-del-valle-2026-12-06@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:Trail Cruz del Valle
+LOCATION:San José del Valle\, Andalucía
+DESCRIPTION:Trail · San José del Valle\nhttps://runiverso.co
+ m/carreras/trail-cruz-del-valle/
+END:VEVENT
+END:VCALENDAR

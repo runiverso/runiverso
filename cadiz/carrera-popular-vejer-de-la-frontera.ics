@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-vejer-de-la-frontera-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Carrera Popular Vejer de la Frontera
+LOCATION:Vejer de la Frontera\, Cádiz
+DESCRIPTION:29.ª edición. Aparece en el calendario de ClubRunning. Fecha
+  por confirmar. Más info: https://runiverso.com/cadiz/#carrera-popular-v
+ ejer-de-la-frontera
+URL:https://runiverso.com/cadiz/#carrera-popular-vejer-de-la-frontera
+END:VEVENT
+END:VCALENDAR

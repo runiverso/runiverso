@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-san-sebastian-de-puerto-real-2026-12-19@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261219
+DTEND;VALUE=DATE:20261220
+SUMMARY:Cross San Sebastián de Puerto Real
+LOCATION:Puerto Real\, Andalucía
+DESCRIPTION:Cross · Puerto Real\nhttps://runiverso.com/carre
+ ras/cross-san-sebastian-de-puerto-real/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-popular-ludico-y-solidario-de-castellar-2026-12-12@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261212
+DTEND;VALUE=DATE:20261213
+SUMMARY:Cross Popular Lúdico y Solidario de Castellar
+LOCATION:Castellar de la Frontera\, Andalucía
+DESCRIPTION:Cross · Castellar de la Frontera\nhttps://runive
+ rso.com/carreras/cross-popular-ludico-y-solidario-de-castellar/
+END:VEVENT
+END:VCALENDAR

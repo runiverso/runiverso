@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-de-navidad-de-algeciras-2026-12-20@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
+SUMMARY:Carrera Solidaria de Navidad de Algeciras
+LOCATION:Algeciras\, Andalucía
+DESCRIPTION:Solidaria · Algeciras\nhttps://runiverso.com/car
+ reras/carrera-solidaria-de-navidad-de-algeciras/
+END:VEVENT
+END:VCALENDAR

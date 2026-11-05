@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-popular-ludico-solidario-castellar-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261212
+DTEND;VALUE=DATE:20261213
+SUMMARY:Cross Popular Lúdico y Solidario de Castellar
+LOCATION:Castellar de la Frontera\, Cádiz
+DESCRIPTION:3.ª edición\, cross solidario. Aparece en el calendario de C
+ lubRunning. Fecha por confirmar. Más info: https://runiverso.com/cadiz/#
+ cross-popular-ludico-solidario-castellar
+URL:https://runiverso.com/cadiz/#cross-popular-ludico-solidario-castellar
+END:VEVENT
+END:VCALENDAR

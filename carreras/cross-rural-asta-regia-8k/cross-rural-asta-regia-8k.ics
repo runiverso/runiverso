@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-rural-asta-regia-8k-2026-12-12@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261212
+DTEND;VALUE=DATE:20261213
+SUMMARY:Cross Rural Asta Regia 8K
+LOCATION:Jerez de la Frontera\, Andalucía
+DESCRIPTION:8 km · Jerez de la Frontera\nhttps://runiverso.c
+ om/carreras/cross-rural-asta-regia-8k/
+END:VEVENT
+END:VCALENDAR

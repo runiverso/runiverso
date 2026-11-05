@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-por-la-eliminacion-de-la-violencia-contra-las-mu
+ jeres-2026-11-22@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera por la Eliminación de la Violencia contra las Mujeres
+LOCATION:Cádiz\, Andalucía
+DESCRIPTION:3 o 6 km · Cádiz\nhttps://runiverso.com/carreras
+ /carrera-por-la-eliminacion-de-la-violencia-contra-las-mujeres/
+END:VEVENT
+END:VCALENDAR

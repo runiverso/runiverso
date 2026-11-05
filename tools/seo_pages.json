@@ -3,7 +3,7 @@
   "path": "carreras-en/andalucia/",
   "name": "Andalucía",
   "kind": "r",
-  "n": 38
+  "n": 63
  },
  {
   "path": "carreras-en/cataluna/",
@@ -81,7 +81,7 @@
   "path": "cadiz/",
   "name": "Cádiz",
   "kind": "p",
-  "n": 25
+  "n": 50
  },
  {
   "path": "carreras-en/barcelona/",
@@ -189,18 +189,18 @@
   "path": "trail/",
   "name": "Trail y montaña",
   "kind": "t",
-  "n": 38
+  "n": 39
  },
  {
   "path": "carreras-populares/",
   "name": "Carreras populares",
   "kind": "t",
-  "n": 9
+  "n": 31
  },
  {
   "path": "san-silvestre-2026/",
   "name": "San Silvestres",
   "kind": "t",
-  "n": 34
+  "n": 36
  }
 ]

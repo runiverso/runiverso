@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-de-navidad-de-algeciras-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
+SUMMARY:Carrera Solidaria de Navidad de Algeciras
+LOCATION:Algeciras\, Cádiz
+DESCRIPTION:13.ª edición. Aparece en el calendario de ClubRunning. Fecha
+  por confirmar. Más info: https://runiverso.com/cadiz/#carrera-solidaria
+ -de-navidad-de-algeciras
+URL:https://runiverso.com/cadiz/#carrera-solidaria-de-navidad-de-algeciras
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-pinar-publico-la-barrosa-2026-12-13@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Cross Pinar Público La Barrosa
+LOCATION:Chiclana de la Frontera\, Andalucía
+DESCRIPTION:Cross · Chiclana de la Frontera\nhttps://runiver
+ so.com/carreras/cross-pinar-publico-la-barrosa/
+END:VEVENT
+END:VCALENDAR

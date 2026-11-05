@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-de-navidad-villa-de-rota-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+SUMMARY:Carrera Popular de Navidad Villa de Rota
+LOCATION:Rota\, Cádiz
+DESCRIPTION:22.ª edición\, 5 km. Aparece en el calendario de ClubRunning
+ . Fecha por confirmar. Más info: https://runiverso.com/cadiz/#carrera-po
+ pular-de-navidad-villa-de-rota
+URL:https://runiverso.com/cadiz/#carrera-popular-de-navidad-villa-de-rota
+END:VEVENT
+END:VCALENDAR

@@ -17,13 +17,65 @@ from poster import poster_html  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "cadiz"
-REVISADO = "3 de noviembre de 2026"
+REVISADO = "5 de noviembre de 2026"
 FORM = "https://docs.google.com/forms/d/e/1FAIpQLScWKG5bZNgG__DRS9tZC9J4-f8Osn2-LeMuAn11e-EZyFxO2A/viewform"
 
 # k: 21K (media), pop (popular, urbana o cross), trail, ss (San Silvestre)
 # d: fecha exacta AAAA-MM-DD, o m: solo mes AAAA-MM si aún no hay día
 # ok: True si la fecha está confirmada por la organización
 RACES = [
+    dict(id="carrera-por-la-eliminacion-de-la-violencia-contra-las-mujeres-cadiz", n="Carrera por la Eliminación de la Violencia contra las Mujeres", c="Cádiz", d="2026-11-22", k="pop", dist="3 o 6 km", ok=False,
+         note="Carrera solidaria con recorridos de 3 y 6 km. Aparece en el calendario de Running.life."),
+    dict(id="carrera-popular-acogimiento-familiar-y-adopcion", n="Carrera Popular por el Acogimiento Familiar y Adopción", c="El Puerto de Santa María", m="2026-11", k="pop", dist="9 km", ok=False,
+         note="Carrera solidaria de 9 km y marcha de 4 km, a finales de noviembre a las 10:00. Día exacto por anunciar."),
+    dict(id="carrera-urbana-sierra-de-lijar", n="Carrera Urbana Sierra de Líjar", c="Algodonales", d="2026-11-28", k="pop", dist="Urbana", ok=False,
+         note="16.ª edición. Aparece en el calendario de ClubRunning."),
+    dict(id="carrera-solidaria-inmaculada-alcaldesa-perpetua", n="Carrera Solidaria Inmaculada Alcaldesa Perpetua", c="La Línea de la Concepción", d="2026-11-28", k="pop", dist="Solidaria", ok=False,
+         note="13.ª edición, carrera solidaria. Aparece en el calendario de ClubRunning."),
+    dict(id="fungo-hybrid-race", n="Fungo Hybrid Race", c="El Puerto de Santa María", d="2026-11-28", k="pop", dist="Obstáculos", ok=False,
+         note="Carrera de obstáculos. Aparece en el calendario de ClubRunning. Running.life la sitúa en Jerez: confirma la sede en la web oficial."),
+    dict(id="cross-pinar-del-rey", n="Cross Pinar del Rey", c="San Roque", d="2026-11-29", k="pop", dist="Cross", ok=False,
+         note="7.ª edición, en el Pinar del Rey. Aparece en el calendario de ClubRunning."),
+    dict(id="cross-popular-ciudad-de-jerez", n="Cross Popular Ciudad de Jerez", c="Jerez de la Frontera", d="2026-11-29", k="pop", dist="Cross", ok=False,
+         note="Aparece en el calendario de Running.life."),
+    dict(id="trail-cruz-del-valle", n="Trail Cruz del Valle", c="San José del Valle", d="2026-12-06", k="trail", dist="Trail", ok=False,
+         note="12.ª edición. Aparece en el calendario de ClubRunning."),
+    dict(id="carrera-del-estrecho-memorial-pepe-serrano", n="Carrera del Estrecho Memorial Pepe Serrano", c="Tarifa", d="2026-12-06", k="pop", dist="Popular", ok=False,
+         note="17.ª edición. Aparece en el calendario de ClubRunning."),
+    dict(id="cross-popular-ludico-solidario-castellar", n="Cross Popular Lúdico y Solidario de Castellar", c="Castellar de la Frontera", d="2026-12-12", k="pop", dist="Cross", ok=False,
+         note="3.ª edición, cross solidario. Aparece en el calendario de ClubRunning."),
+    dict(id="cross-rural-asta-regia", n="Cross Rural Asta Regia 8K", c="Jerez de la Frontera", d="2026-12-12", k="pop", dist="8 km", ok=False,
+         note="Cross rural de 8 km. Aparece en el calendario de Running.life."),
+    dict(id="cross-pinar-publico-la-barrosa", n="Cross Pinar Público La Barrosa", c="Chiclana de la Frontera", d="2026-12-13", k="pop", dist="Cross", ok=False,
+         note="33.ª edición, en el pinar de La Barrosa. Aparece en el calendario de ClubRunning."),
+    dict(id="carrera-popular-vejer-de-la-frontera", n="Carrera Popular Vejer de la Frontera", c="Vejer de la Frontera", d="2026-12-13", k="pop", dist="Popular", ok=False,
+         note="29.ª edición. Aparece en el calendario de ClubRunning."),
+    dict(id="carrera-infantil-benefica-bomberos-de-jerez", n="Carrera Infantil Benéfica Bomberos de Jerez", c="Jerez de la Frontera", d="2026-12-13", k="pop", dist="Infantil", ok=False,
+         note="6.ª edición, carrera benéfica para niños. Aparece en el calendario de ClubRunning."),
+    dict(id="cross-san-sebastian-de-puerto-real", n="Cross San Sebastián de Puerto Real", c="Puerto Real", d="2026-12-19", k="pop", dist="Cross", ok=False,
+         note="Aparece en el calendario de Running.life."),
+    dict(id="carrera-urbana-navidena-puerto-serrano", n="Carrera Urbana Navideña de Puerto Serrano", c="Puerto Serrano", d="2026-12-20", k="pop", dist="Urbana", ok=False,
+         note="7.ª edición, carrera de Navidad. Aparece en el calendario de ClubRunning."),
+    dict(id="carrera-solidaria-de-navidad-de-algeciras", n="Carrera Solidaria de Navidad de Algeciras", c="Algeciras", d="2026-12-20", k="pop", dist="Solidaria", ok=False,
+         note="13.ª edición. Aparece en el calendario de ClubRunning."),
+    dict(id="carrera-popular-de-navidad-villa-de-rota", n="Carrera Popular de Navidad Villa de Rota", c="Rota", d="2026-12-26", k="pop", dist="5 km", ok=False,
+         note="22.ª edición, 5 km. Aparece en el calendario de ClubRunning."),
+    dict(id="san-silvestre-el-puerto-de-santa-maria", n="San Silvestre El Puerto de Santa María", c="El Puerto de Santa María", d="2026-12-27", k="ss", dist="5 km", ok=False,
+         note="5 km por El Puerto. Aparece en el calendario de ClubRunning."),
+    dict(id="san-silvestre-chiclanera", n="San Silvestre Chiclanera", c="Chiclana de la Frontera", d="2026-12-30", k="ss", dist="San Silvestre", ok=False,
+         note="Aparece en el calendario de Running.life."),
+    dict(id="cross-pinar-de-rota", n="Cross Pinar de Rota", c="Rota", d="2027-01-03", k="pop", dist="Cross", ok=False,
+         note="Aparece en el calendario de Running.life. Detalles por anunciar."),
+    dict(id="maraton-del-pavo-de-espera", n="Maratón del Pavo de Espera", c="Espera", d="2027-01-06", k="pop", dist="Popular", ok=False,
+         note="47.ª edición de esta carrera popular de Reyes, pese a su nombre no es una maratón. Aparece en el calendario de ClubRunning."),
+    dict(id="torunos-running-series", n="Toruños Running Series", c="El Puerto de Santa María", d="2027-01-10", k="pop", dist="9, 10 o 21 km", ok=False,
+         note="Por el Parque de los Toruños, con 9 km, 10 km y media maratón. Aparece en el calendario de Running.life."),
+    dict(id="fungo-race", n="Fungo Race", c="El Puerto de Santa María", d="2027-03-14", k="pop", dist="Obstáculos · 7 km", ok=False,
+         note="Carrera de obstáculos de 7 km. Aparece en el calendario de ClubRunning."),
+    dict(id="fan-pin-civico-militar", n="Fan-Pin Cívico-Militar", c="San Fernando", d="2027-06-19", k="pop", dist="3 u 8 km", ok=False,
+         note="Carrera cívico-militar en San Fernando con 3 y 8 km. Aparece en el calendario de GoTrail."),
+    dict(id="cerrocross-melkart-gadeiras", n="Cerrocross Melkart Gadeiras", c="San Fernando", d="2027-10-31", k="pop", dist="Cross", ok=False,
+         note="Cross por el Cerro de los Mártires. Aparece en el calendario de GoTrail."),
     dict(id="media-maraton-ciudad-de-cadiz", n="Media Maratón Ciudad de Cádiz", c="Cádiz", d="2026-11-08", t="09:00", k="21K", dist="21,1 km", ok=True,
          note="3.ª edición, con récord de participación: unos 3.000 inscritos. Salida en La Caleta y meta en la Catedral, a dos vueltas por el casco urbano. Recogida de dorsales del jueves 5 al sábado 7 de noviembre, de 12:00 a 20:00, en El Corte Inglés de Cádiz; el domingo no se entregan. Tiempo máximo: 2 h 30 min.",
          web="https://mediamaratonciudaddecadiz.com", feat=True),
@@ -100,6 +152,8 @@ SOURCES = [
     ("Diario Bahía de Cádiz", "https://www.diariobahiadecadiz.com/deportes/todo-listo-para-la-xxxvi-media-maraton-bahia-de-cadiz-de-este-domingo-una-gran-fiesta-del-deporte-que-une-a-san-fernando-y-cadiz"),
     ("Finishers (Jerez)", "https://www.finishers.com/es/evento/medio-maraton-de-jerez"),
     ("GoTrail (Bandolero)", "https://gotrail.run/es/carrera/100-millas-sierras-del-bandolero"),
+    ("GoTrail (Cádiz)", "https://gotrail.run/calendario-montana/espana/andalucia/cadiz"),
+    ("Running.life (Cádiz)", "https://running.life/running-calendar/spain/andalucia/cadiz"),
 ]
 
 e = lambda x: html.escape(str(x), quote=True)
@@ -163,8 +217,12 @@ FICHA_ID = {"cross-pinar-del-hierro": "cross-pinar-del-hierro-y-la-espartosa", "
 
 
 def ficha_id(r):
-    fid = FICHA_ID.get(r["id"], r["id"])
-    return fid if (ROOT / "carreras" / fid / "index.html").exists() else None
+    import unicodedata
+    by_name = re.sub(r"[^a-z0-9]+", "-", "".join(c for c in unicodedata.normalize("NFD", r["n"].lower()) if unicodedata.category(c) != "Mn")).strip("-")
+    for fid in (FICHA_ID.get(r["id"], r["id"]), by_name):
+        if (ROOT / "carreras" / fid / "index.html").exists():
+            return fid
+    return None
 
 
 PK = {"21K": "21K", "pop": "POP", "trail": "TR", "ss": "SS"}

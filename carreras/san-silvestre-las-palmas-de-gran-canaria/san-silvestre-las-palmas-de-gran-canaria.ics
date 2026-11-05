@@ -4,7 +4,7 @@ PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:san-silvestre-las-palmas-de-gran-canaria-2026-12-31@runiverso.com
-DTSTAMP:20261104T120000Z
+DTSTAMP:20261105T120000Z
 DTSTART;TZID=Atlantic/Canary:20261231T170000
 DTEND;TZID=Atlantic/Canary:20261231T200000
 SUMMARY:San Silvestre Las Palmas de Gran Canaria

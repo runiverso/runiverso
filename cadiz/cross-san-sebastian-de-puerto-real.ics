@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-san-sebastian-de-puerto-real-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261219
+DTEND;VALUE=DATE:20261220
+SUMMARY:Cross San Sebastián de Puerto Real
+LOCATION:Puerto Real\, Cádiz
+DESCRIPTION:Aparece en el calendario de Running.life. Fecha por confirmar.
+  Más info: https://runiverso.com/cadiz/#cross-san-sebastian-de-puerto-re
+ al
+URL:https://runiverso.com/cadiz/#cross-san-sebastian-de-puerto-real
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:torunos-running-series-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270110
+DTEND;VALUE=DATE:20270111
+SUMMARY:Toruños Running Series
+LOCATION:El Puerto de Santa María\, Cádiz
+DESCRIPTION:Por el Parque de los Toruños\, con 9 km\, 10 km y media marat
+ ón. Aparece en el calendario de Running.life. Fecha por confirmar. Más 
+ info: https://runiverso.com/cadiz/#torunos-running-series
+URL:https://runiverso.com/cadiz/#torunos-running-series
+END:VEVENT
+END:VCALENDAR

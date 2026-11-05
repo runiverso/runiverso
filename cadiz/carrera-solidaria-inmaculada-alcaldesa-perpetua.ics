@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-inmaculada-alcaldesa-perpetua-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20261129
+SUMMARY:Carrera Solidaria Inmaculada Alcaldesa Perpetua
+LOCATION:La Línea de la Concepción\, Cádiz
+DESCRIPTION:13.ª edición\, carrera solidaria. Aparece en el calendario d
+ e ClubRunning. Fecha por confirmar. Más info: https://runiverso.com/cadi
+ z/#carrera-solidaria-inmaculada-alcaldesa-perpetua
+URL:https://runiverso.com/cadiz/#carrera-solidaria-inmaculada-alcaldesa-pe
+ rpetua
+END:VEVENT
+END:VCALENDAR

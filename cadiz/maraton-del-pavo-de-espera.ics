@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:maraton-del-pavo-de-espera-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270106
+DTEND;VALUE=DATE:20270107
+SUMMARY:Maratón del Pavo de Espera
+LOCATION:Espera\, Cádiz
+DESCRIPTION:47.ª edición de esta carrera popular de Reyes\, pese a su no
+ mbre no es una maratón. Aparece en el calendario de ClubRunning. Fecha p
+ or confirmar. Más info: https://runiverso.com/cadiz/#maraton-del-pavo-de
+ -espera
+URL:https://runiverso.com/cadiz/#maraton-del-pavo-de-espera
+END:VEVENT
+END:VCALENDAR

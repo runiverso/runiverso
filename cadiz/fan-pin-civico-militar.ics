@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:fan-pin-civico-militar-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270619
+DTEND;VALUE=DATE:20270620
+SUMMARY:Fan-Pin Cívico-Militar
+LOCATION:San Fernando\, Cádiz
+DESCRIPTION:Carrera cívico-militar en San Fernando con 3 y 8 km. Aparece 
+ en el calendario de GoTrail. Fecha por confirmar. Más info: https://runi
+ verso.com/cadiz/#fan-pin-civico-militar
+URL:https://runiverso.com/cadiz/#fan-pin-civico-militar
+END:VEVENT
+END:VCALENDAR

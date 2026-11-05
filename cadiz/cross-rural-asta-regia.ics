@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-rural-asta-regia-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261212
+DTEND;VALUE=DATE:20261213
+SUMMARY:Cross Rural Asta Regia 8K
+LOCATION:Jerez de la Frontera\, Cádiz
+DESCRIPTION:Cross rural de 8 km. Aparece en el calendario de Running.life.
+  Fecha por confirmar. Más info: https://runiverso.com/cadiz/#cross-rural
+ -asta-regia
+URL:https://runiverso.com/cadiz/#cross-rural-asta-regia
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:fungo-hybrid-race-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20261129
+SUMMARY:Fungo Hybrid Race
+LOCATION:El Puerto de Santa María\, Cádiz
+DESCRIPTION:Carrera de obstáculos. Aparece en el calendario de ClubRunnin
+ g. Running.life la sitúa en Jerez: confirma la sede en la web oficial. F
+ echa por confirmar. Más info: https://runiverso.com/cadiz/#fungo-hybrid-
+ race
+URL:https://runiverso.com/cadiz/#fungo-hybrid-race
+END:VEVENT
+END:VCALENDAR

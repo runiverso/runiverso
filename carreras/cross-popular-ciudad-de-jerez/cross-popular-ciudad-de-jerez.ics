@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-popular-ciudad-de-jerez-2026-11-29@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261129
+DTEND;VALUE=DATE:20261130
+SUMMARY:Cross Popular Ciudad de Jerez
+LOCATION:Jerez de la Frontera\, Andalucía
+DESCRIPTION:Cross · Jerez de la Frontera\nhttps://runiverso.
+ com/carreras/cross-popular-ciudad-de-jerez/
+END:VEVENT
+END:VCALENDAR

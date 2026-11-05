@@ -82,10 +82,10 @@ def main():
         if "d" not in r or slug(r["n"]) in seen:
             continue
         races.append({"id": slug(r["n"]), "n": r["n"], "c": r["c"], "r": "Andalucía", "d": r["d"], "ok": r["ok"], "k": CADIZ_K[r["k"]],
-                      "dist": r["dist"], "t": r["note"], "x": [], "w": r.get("web", ""), "h": r.get("t", ""), "cadiz": True})
+                      "dist": r["dist"], "t": r["note"], "x": [], "w": r.get("web", ""), "h": r.get("t", ""), "cadiz": True, "p": "Cádiz"})
         seen.add(slug(r["n"]))
     for r in races:
-        r["p"] = prov(r["c"])
+        r["p"] = r.get("p") or prov(r["c"])
         r.pop("cadiz", None)
     races.sort(key=lambda r: (r["d"], r["n"]))
     results = sorted(build_results.RESULTS, key=lambda r: r["d"], reverse=True)

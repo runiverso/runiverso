@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-infantil-benefica-bomberos-de-jerez-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Carrera Infantil Benéfica Bomberos de Jerez
+LOCATION:Jerez de la Frontera\, Cádiz
+DESCRIPTION:6.ª edición\, carrera benéfica para niños. Aparece en el c
+ alendario de ClubRunning. Fecha por confirmar. Más info: https://runiver
+ so.com/cadiz/#carrera-infantil-benefica-bomberos-de-jerez
+URL:https://runiverso.com/cadiz/#carrera-infantil-benefica-bomberos-de-jer
+ ez
+END:VEVENT
+END:VCALENDAR

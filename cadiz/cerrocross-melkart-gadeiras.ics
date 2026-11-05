@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cerrocross-melkart-gadeiras-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20271031
+DTEND;VALUE=DATE:20271101
+SUMMARY:Cerrocross Melkart Gadeiras
+LOCATION:San Fernando\, Cádiz
+DESCRIPTION:Cross por el Cerro de los Mártires. Aparece en el calendario 
+ de GoTrail. Fecha por confirmar. Más info: https://runiverso.com/cadiz/#
+ cerrocross-melkart-gadeiras
+URL:https://runiverso.com/cadiz/#cerrocross-melkart-gadeiras
+END:VEVENT
+END:VCALENDAR

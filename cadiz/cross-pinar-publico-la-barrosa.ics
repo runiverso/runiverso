@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-pinar-publico-la-barrosa-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Cross Pinar Público La Barrosa
+LOCATION:Chiclana de la Frontera\, Cádiz
+DESCRIPTION:33.ª edición\, en el pinar de La Barrosa. Aparece en el cale
+ ndario de ClubRunning. Fecha por confirmar. Más info: https://runiverso.
+ com/cadiz/#cross-pinar-publico-la-barrosa
+URL:https://runiverso.com/cadiz/#cross-pinar-publico-la-barrosa
+END:VEVENT
+END:VCALENDAR

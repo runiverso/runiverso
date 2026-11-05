@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-pinar-del-rey-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261129
+DTEND;VALUE=DATE:20261130
+SUMMARY:Cross Pinar del Rey
+LOCATION:San Roque\, Cádiz
+DESCRIPTION:7.ª edición\, en el Pinar del Rey. Aparece en el calendario 
+ de ClubRunning. Fecha por confirmar. Más info: https://runiverso.com/cad
+ iz/#cross-pinar-del-rey
+URL:https://runiverso.com/cadiz/#cross-pinar-del-rey
+END:VEVENT
+END:VCALENDAR

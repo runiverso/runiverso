@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-por-la-eliminacion-de-la-violencia-contra-las-mujeres-cadiz-20
+ 26@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera por la Eliminación de la Violencia contra las Mujeres
+LOCATION:Cádiz\, Cádiz
+DESCRIPTION:Carrera solidaria con recorridos de 3 y 6 km. Aparece en el ca
+ lendario de Running.life. Fecha por confirmar. Más info: https://runiver
+ so.com/cadiz/#carrera-por-la-eliminacion-de-la-violencia-contra-las-mujer
+ es-cadiz
+URL:https://runiverso.com/cadiz/#carrera-por-la-eliminacion-de-la-violenci
+ a-contra-las-mujeres-cadiz
+END:VEVENT
+END:VCALENDAR

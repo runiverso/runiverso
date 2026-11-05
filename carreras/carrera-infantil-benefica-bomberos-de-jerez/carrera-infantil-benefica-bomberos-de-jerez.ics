@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-infantil-benefica-bomberos-de-jerez-2026-12-13@runiverso.com
+DTSTAMP:20261105T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Carrera Infantil Benéfica Bomberos de Jerez
+LOCATION:Jerez de la Frontera\, Andalucía
+DESCRIPTION:Infantil · Jerez de la Frontera\nhttps://runiver
+ so.com/carreras/carrera-infantil-benefica-bomberos-de-jerez/
+END:VEVENT
+END:VCALENDAR
