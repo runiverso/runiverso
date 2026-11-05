@@ -732,3 +732,14 @@ html.scrolled .logo .lw { opacity: 0; }
 .sheet { transition: transform 420ms var(--ease-drawer); }
 .top .ttl { left: calc(max(16px, env(safe-area-inset-left, 0px)) + 41px); transform: translateY(4px); }
 html.scrolled .top .ttl { transform: translateY(0); }
+/* Eliminar cuenta y bienvenida */
+.link.danger { border: 0; background: none; padding: 0 4px; color: #B3261E; font-weight: 600; font-size: 14px; margin-left: auto; }
+.btn.danger { background: #B3261E; border-color: #B3261E; color: #FFFFFF; }
+.dellist { margin: 4px 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
+.acct .row { align-items: center; }
+.odots { display: flex; gap: 6px; margin: 4px 0 -4px; }
+.odots i { width: 22px; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, 0.22); }
+.odots i.on { background: #FFFFFF; }
+.auth.onb .alegal { text-align: center; }
+.fld label { text-transform: none !important; letter-spacing: 0 !important; font-size: 14px !important; font-weight: 600 !important; }
+.auth .f { gap: 12px; }

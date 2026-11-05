@@ -4,7 +4,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import build_seo as B
 
-B.REVISADO = "4 de noviembre de 2026"
+B.REVISADO = "5 de noviembre de 2026"
 FORM = B.FORM
 
 PRIV = f"""
@@ -16,9 +16,19 @@ PRIV = f"""
   </ul></section>
   <section class="box"><h2>Para qué los usamos</h2><p>Únicamente para darte el servicio: guardar tus datos en tu cuenta, que los veas en cualquier dispositivo, mandarte los correos de acceso y, si lo activas, mostrarte en el ranking. No vendemos ni cedemos tus datos y no los usamos para publicidad.</p><p>La base legal es tu consentimiento al crear la cuenta y la ejecución del servicio que pides.</p></section>
   <section class="box"><h2>Dónde se guardan</h2><p>Los datos de las cuentas se guardan en <b>Supabase</b>, en servidores de la Unión Europea. Los correos de acceso se envían con <b>Resend</b> (servidor en Irlanda). La web se sirve desde <b>Cloudflare</b>. Si entras con Google, el inicio de sesión lo gestiona <b>Google</b>.</p></section>
-  <section class="box"><h2>Cuánto tiempo</h2><p>Mientras tengas la cuenta. Si la borras, eliminamos tu perfil, tus marcas y tus carreras apuntadas.</p></section>
+  <section class="box"><h2>Cuánto tiempo</h2><p>Mientras tengas la cuenta. Puedes eliminarla tú mismo en la app, en Perfil → «Eliminar mi cuenta»: se borran al momento tu cuenta, tu correo, tu perfil, tus marcas, tus carreras apuntadas y tus avisos. También puedes pedirlo por correo (<a href="../borrar-cuenta/">cómo eliminar tu cuenta</a>).</p></section>
   <section class="box"><h2>Tus derechos</h2><p>Puedes acceder a tus datos, corregirlos, llevártelos o pedir que los borremos, y retirar tu consentimiento cuando quieras. Escríbenos a <a href="mailto:hola@runiverso.com">hola@runiverso.com</a> desde el correo de tu cuenta. Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p></section>
   <section class="box"><h2>Uso de los datos de Google</h2><p>El uso que hace Runiverso de la información recibida de las API de Google cumple la <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Política de Datos del Usuario de los Servicios de las API de Google</a>, incluidos los requisitos de uso limitado.</p></section>
+"""
+
+BORRAR = f"""
+  <section class="box"><h2>Desde la app (al momento)</h2><ol>
+    <li>Abre la app en <a href="../app/">runiverso.com/app</a> e inicia sesión.</li>
+    <li>Ve a la pestaña <b>Perfil</b>.</li>
+    <li>En la tarjeta de tu cuenta pulsa <b>Eliminar mi cuenta</b> y confirma.</li>
+  </ol><p>Se borran al momento y para siempre tu cuenta, tu correo, tu perfil, tus marcas y medallas, tus carreras apuntadas, tu puesto en el ranking y los avisos en el móvil.</p></section>
+  <section class="box"><h2>Por correo (si ya no tienes la app)</h2><p>Escríbenos a <a href="mailto:hola@runiverso.com?subject=Eliminar%20mi%20cuenta">hola@runiverso.com</a> desde el correo con el que creaste la cuenta, con el asunto «Eliminar mi cuenta». La eliminamos en un plazo máximo de 30 días y te confirmamos por correo.</p></section>
+  <section class="box"><h2>Qué se conserva</h2><p>Nada de tu cuenta. Si habías reclamado un resultado en una clasificación oficial, ese resultado sigue publicado tal y como lo publica la organización, pero ya no está unido a ti. Más detalles en la <a href="../privacidad/">política de privacidad</a>.</p></section>
 """
 
 COND = f"""
@@ -31,6 +41,7 @@ COND = f"""
 for path, title, h1, desc, body in [
     ("privacidad", "Política de privacidad · Runiverso", "Política de privacidad", "Qué datos guarda Runiverso, para qué y cómo ejercer tus derechos.", PRIV),
     ("condiciones", "Condiciones de uso · Runiverso", "Condiciones de uso", "Condiciones de uso de la web y la app de Runiverso.", COND),
+    ("borrar-cuenta", "Eliminar tu cuenta · Runiverso", "Eliminar tu cuenta", "Cómo eliminar tu cuenta de Runiverso y todos tus datos, desde la app o por correo.", BORRAR),
 ]:
     rel = "../"
     url = f"{B.SITE}/{path}/"

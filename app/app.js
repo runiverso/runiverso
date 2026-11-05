@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "22";
+  var APP_V = "23";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -29,7 +29,7 @@
   /* ---------- Datos guardados en el móvil ---------- */
   var KEY = "runiverso-app-v1";
   var S = { name: "", mine: {}, marks: [], prov: "", ccaa: "", pub: false, acct: "", q: [] };
-  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; S.prov = saved.prov || ""; S.ccaa = saved.ccaa || ""; S.pub = !!saved.pub; S.acct = saved.acct || ""; S.q = saved.q || []; S.push = !!saved.push; } } catch (e) {}
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; S.prov = saved.prov || ""; S.ccaa = saved.ccaa || ""; S.pub = !!saved.pub; S.acct = saved.acct || ""; S.q = saved.q || []; S.push = !!saved.push; S.onb = saved.onb || !!saved.prov; } } catch (e) {}
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { toast("No se ha podido guardar en este móvil"); } }
 
 
@@ -172,6 +172,56 @@
       toast("Sesión cerrada. Tus datos siguen guardados en tu cuenta"); render();
     });
   }
+  /* Eliminar la cuenta desde la app (lo exigen Google Play y App Store) */
+  function delSheet() {
+    openSheet('<h2>Eliminar tu cuenta</h2><p class="muted" style="margin:0">Se borran para siempre y no se pueden recuperar:</p>' +
+      '<ul class="dellist"><li>Tu cuenta y tu correo (' + esc(user && user.email || "") + ')</li><li>Tus marcas, medallas y carreras apuntadas</li><li>Tu puesto en el ranking y los avisos en el móvil</li></ul>' +
+      '<p class="muted" style="margin:0;font-size:14px">Si has reclamado un resultado de una clasificación, el resultado sigue en la clasificación oficial, pero ya no estará unido a ti.</p>' +
+      '<div class="f"><button class="btn wide danger" type="button" data-act="delacct-go">Eliminar mi cuenta para siempre</button><button class="btn alt wide" type="button" data-close="1">Cancelar</button></div>', "Eliminar tu cuenta");
+  }
+  function deleteAccount(btn) {
+    if (!sb || !user) return;
+    btn.disabled = true; btn.textContent = "Eliminando…";
+    sb.rpc("delete_my_account").then(function (r) {
+      if (r.error) throw r.error;
+      return sb.auth.signOut().catch(function () {});
+    }).then(function () {
+      user = null; S.acct = ""; S.q = []; S.marks = []; S.mine = {}; S.name = ""; S.pub = false; S.push = false; save();
+      closeSheet(); view.tab = "inicio"; if (location.hash !== "#inicio") location.hash = "#inicio"; else render();
+      toast("Tu cuenta y tus datos se han eliminado");
+    }).catch(function (e) {
+      console.warn("Runiverso eliminar cuenta", e); btn.disabled = false; btn.textContent = "Eliminar mi cuenta para siempre";
+      toast("No hemos podido eliminar la cuenta. Inténtalo de nuevo o escríbenos a hola@runiverso.com");
+    });
+  }
+  /* Bienvenida: tres pasos la primera vez */
+  var onbStep = 0;
+  function onboarding(step) {
+    onbStep = step || 0;
+    var cc = S.ccaa || "Andalucía", opts = Object.keys(ZONES).sort(function (a, b) { return a.localeCompare(b, "es"); });
+    var dots = '<div class="odots" aria-hidden="true">' + [0, 1, 2].map(function (i) { return '<i' + (i === onbStep ? ' class="on"' : '') + '></i>'; }).join("") + '</div>';
+    var h = '';
+    if (onbStep === 0) {
+      h = '<h1>Todas las carreras de España, en tu bolsillo</h1><p class="asub">Runiverso es el calendario de carreras de running: medias, maratones, 10K, trail, populares y San Silvestres.</p>' +
+        '<ul class="aperks"><li>Las carreras de tu provincia primero, con fecha, distancia y web oficial</li><li>Te avisamos en el móvil antes de cada carrera a la que te apuntes</li><li>Guarda tus marcas, gana medallas y sal en el ranking de tu provincia</li></ul>' +
+        '<div class="f"><button class="btn wide" type="button" data-onb="1">Empezar</button></div>';
+    } else if (onbStep === 1) {
+      h = '<h1>¿Dónde sueles correr?</h1><p class="asub">Te enseñamos primero las carreras de tu provincia y de tu comunidad. Puedes cambiarlo cuando quieras.</p>' +
+        '<form class="f" id="onbf"><div class="fld"><label for="zc">Comunidad autónoma</label><select id="zc">' + opts.map(function (k) { return '<option' + (k === cc ? " selected" : "") + '>' + esc(k) + '</option>'; }).join("") + '</select></div>' +
+        '<div class="fld"><label for="zp">Provincia</label><select id="zp">' + provOpts(cc, S.prov || "Cádiz") + '</select></div>' +
+        '<button class="btn wide" type="submit">Siguiente</button><button class="btn alt wide" type="button" data-onb="2">Ver toda España</button></form>';
+    } else {
+      h = '<h1>Que no se te pase ninguna</h1><p class="asub">Con una cuenta gratis te avisamos antes de cada carrera y tus marcas quedan guardadas aunque cambies de móvil.</p>' +
+        '<div class="f"><button class="btn wide" type="button" data-onb="signup">Crear cuenta gratis</button><button class="btn alt wide" type="button" data-onb="done">Ahora no, ver las carreras</button></div>';
+    }
+    lastFocus = lastFocus || document.activeElement;
+    $("layer").innerHTML = '<div class="auth onb" role="dialog" aria-modal="true" aria-label="Bienvenida"><div class="auth-in">' +
+      '<div class="abrand"><span class="amark">' + AUTH_ICO + '</span><span class="lw">Runiverso<small>el universo del running</small></span></div>' + dots + h +
+      '<p class="alegal">Paso ' + (onbStep + 1) + ' de 3</p></div></div>';
+    document.documentElement.classList.add("lock");
+    if (motion.screen) motion.screen($("layer").firstChild);
+  }
+  function onbDone() { S.onb = true; save(); closeSheet(); render(); }
   /* Pantalla de acceso: correo y contraseña, código por correo y (cuando se active) Google */
   var GOOGLE_ON = true;
   var AUTH_ICO = '<svg viewBox="12 12 96 96" aria-hidden="true"><path d="M44 30V90M44 30H64a17 17 0 0 1 0 34H44" fill="none" stroke="#F3F5FA" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 64L82 90" fill="none" stroke="#7FA6FF" stroke-width="11" stroke-linecap="round"/></svg>';
@@ -281,7 +331,7 @@
     var pend = S.q.length;
     return '<div class="card acct on"><div><h3>' + esc(user.email || "Tu cuenta") + '</h3><p>' + (pend ? "Sincronizando " + pend + (pend === 1 ? " cambio" : " cambios") + "…" : "Todo guardado en tu cuenta ✓") + '</p></div>' +
       '<label class="sw"><input type="checkbox" id="pubtog"' + (S.pub ? " checked" : "") + '><span>Aparecer en el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + ' con mi nombre</span></label>' +
-      pushRow() + '<button class="btn sm alt" type="button" data-act="logout">Cerrar sesión</button></div>';
+      pushRow() + '<div class="row"><button class="btn sm alt" type="button" data-act="logout">Cerrar sesión</button><button class="link danger" type="button" data-act="delacct">Eliminar mi cuenta</button></div></div>';
   }
   function rankingHtml() {
     if (!S.prov) return '<div class="card"><p style="margin:0">Elige tu zona para ver el ranking de tu provincia.</p><button class="btn sm alt" type="button" data-act="zone" style="margin-top:10px">Elegir zona</button></div>';
@@ -417,7 +467,8 @@
     var fn = { inicio: vInicio, carreras: vCarreras, perfil: vPerfil, clasificaciones: vResultados, comunidad: vComunidad }[view.tab];
     $("main").innerHTML = '<div class="view">' + fn() + '</div>';
     var vk = view.tab + "/" + view.sub; if (vk !== lastView) { lastView = vk; motion.view($("main").firstChild); }
-    if (!S.prov && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; zoneSheet(true); }
+    if (!S.onb && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; onboarding(0); }
+    else if (!S.prov && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; zoneSheet(true); }
   }
   var zoneAsked = false, lastView = "";
   function zoneChip() {
@@ -537,7 +588,7 @@
     }).join("") + '</div>';
     h += accountCard();
     h += { marcas: pMarcas, vitrina: pVitrina, mis: pMis }[view.sub]();
-    h += '<p class="foot">' + (user ? "Tus datos se guardan en tu cuenta Runiverso y en este móvil." : "Sin cuenta, tus datos se guardan solo en este móvil.") + ' · Versión ' + APP_V + '</p>';
+    h += '<p class="foot">' + (user ? "Tus datos se guardan en tu cuenta Runiverso y en este móvil." : "Sin cuenta, tus datos se guardan solo en este móvil.") + ' · Versión ' + APP_V + '<br><a href="../privacidad/">Privacidad</a> · <a href="../condiciones/">Condiciones</a> · <a href="../borrar-cuenta/">Eliminar cuenta</a></p>';
     return h;
   }
   function pMarcas() {
@@ -894,6 +945,8 @@
     var uc0 = t.closest("[data-unclaim]");
     if (uc0) { sb.rpc("unclaim_result", { rid: +uc0.getAttribute("data-unclaim") }).then(function () { toast("Hecho"); resScreen(resState.id, resState.q); }); return; }
     var pu = t.closest(".poster[data-url]"); if (pu) { window.open(pu.getAttribute("data-url"), "_blank", "noopener"); return; }
+    var ob = t.closest("[data-onb]");
+    if (ob) { var v = ob.getAttribute("data-onb"); if (v === "done") onbDone(); else if (v === "signup") { S.onb = true; save(); closeSheet(); render(); authScreen("signup"); } else onboarding(+v); return; }
     var wd = t.closest("[data-day]"); if (wd) { view.day = +wd.getAttribute("data-day"); var pool = S.prov ? upcoming().filter(inProv) : upcoming(), w = $("wkw"); w.innerHTML = weekStrip(pool); var nb = w.querySelector('[data-day="' + view.day + '"]'); if (nb && nb.scrollIntoView) nb.scrollIntoView({ block: "nearest", inline: "nearest" }); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
@@ -926,6 +979,8 @@
       else if (act === "addmark") markSheet(a.getAttribute("data-race") || "");
       else if (act === "login") authScreen("signup");
       else if (act === "logout") logout();
+      else if (act === "delacct") delSheet();
+      else if (act === "delacct-go") deleteAccount(a);
       else if (act === "pushon") enablePush();
       else if (act === "pushoff") disablePush();
       else if (act === "gopublic") { S.pub = true; save(); queue({ t: "prof" }); rankCache = {}; toast("¡Ya apareces en el ranking!"); setTimeout(function () { rankCache = {}; render(); }, 1500); render(); }
@@ -945,6 +1000,7 @@
   });
   document.addEventListener("submit", function (e) {
     e.preventDefault();
+    if (e.target.id === "onbf") { e.preventDefault(); S.ccaa = $("zc").value; S.prov = $("zp").value; save(); queue({ t: "prof" }); rankCache = {}; view.sc = "prov"; view.f = ""; view.day = null; onboarding(2); return; }
     if (e.target.id === "zonef") { S.ccaa = $("zc").value; S.prov = $("zp").value; save(); queue({ t: "prof" }); rankCache = {}; view.sc = "prov"; view.f = ""; closeSheet(); render(); toast("Tu zona: " + S.prov); return; }
     if (e.target.id === "namef") { S.name = $("nm").value.trim(); save(); queue({ t: "prof" }); closeSheet(); render(); toast(S.name ? "¡Hola, " + S.name.split(" ")[0] + "!" : "Nombre borrado"); return; }
     if (e.target.id === "resq") { resScreen(resState.id, $("rq").value.trim()); return; }
