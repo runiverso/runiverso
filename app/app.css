@@ -366,3 +366,126 @@ h1 .w > span { display: inline-block; }
 html.lock, html.lock body { overflow: hidden; }
 html.lock .tabbar { visibility: hidden; }
 html.gs .auth, html.gs .scrim, html.gs .sheet { animation: none !important; }
+
+/* ==========================================================================
+   Tema «Cal y cielo»: claro y vivo. Fondo de cal, tinta azul marino,
+   azul Atlántico como color principal y naranja dorsal como energía.
+   ========================================================================== */
+:root {
+  --bg: #F2F5FF;
+  --surface: #FFFFFF;
+  --surface-2: #E6ECFF;
+  --line: #D9E1F7;
+  --fg: #111842;
+  --muted: #5A6590;
+  --accent: #2557FF;
+  --sky: #2557FF;
+  --ok: #0FA968;
+  --warn: #E08A00;
+  --pro: #FF6A2B;
+  --sun: #FF6A2B;
+  --sea: #00B3A4;
+  --rose: #FF3D7F;
+  --lift: 0 10px 26px rgba(37, 87, 255, 0.10), 0 2px 6px rgba(17, 24, 66, 0.06);
+  color-scheme: light;
+}
+body { background: radial-gradient(120% 40% at 100% 0%, #DDE6FF 0%, var(--bg) 55%) fixed; }
+.top { background: color-mix(in srgb, #FFFFFF 82%, transparent); }
+.logo svg { background: #111842; box-shadow: 0 4px 12px rgba(17, 24, 66, 0.25); }
+.iconbtn { background: #FFFFFF; box-shadow: var(--lift); border-color: transparent; color: #128C4A; }
+.avatar { background: #FFFFFF; box-shadow: 0 0 0 2px var(--accent), var(--lift); color: var(--accent); }
+.logo .lw small { color: var(--accent); }
+
+/* Tarjetas: blancas, sin borde, sombra azulada suave */
+.card, .li, .pr, .stat, .pod, .rrow, .rank li, .seg { border-color: transparent; box-shadow: var(--lift); }
+.li .dt { background: var(--surface-2); color: var(--accent); }
+.btn.alt { background: #FFFFFF; border-color: var(--line); }
+.kick { color: var(--muted); }
+
+/* La pieza memorable: tu próximo dorsal */
+.dorsal { position: relative; background: #FFFFFF; color: var(--fg); border-radius: 18px; box-shadow: 0 22px 44px rgba(255, 106, 43, 0.28), 0 4px 10px rgba(17, 24, 66, 0.08); }
+.dorsal .band { background: linear-gradient(90deg, #FF6A2B, #FF3D7F); font-size: 11.5px; padding: 11px 18px; }
+.dorsal .band i { background: #FFFFFF; box-shadow: inset 0 0 0 2px rgba(17, 24, 66, 0.25); width: 11px; height: 11px; }
+.dorsal .bd::before, .dorsal .bd::after { content: ""; position: absolute; bottom: 14px; width: 11px; height: 11px; border-radius: 50%; background: var(--bg); box-shadow: inset 0 1px 2px rgba(17, 24, 66, 0.3); }
+.dorsal .bd::before { left: 14px; } .dorsal .bd::after { right: 14px; }
+.dorsal .num { color: var(--fg); font-size: 66px; }
+.dorsal .days b { color: var(--sun); font-size: 44px; }
+.dorsal .mt, .dorsal .est { color: var(--muted); }
+.dorsal .est b { color: var(--accent); }
+
+/* Temporada: cada cifra con su color */
+.stat { color: #FFFFFF; border: 0; }
+.stats .stat:nth-child(1) { background: linear-gradient(150deg, #3A6BFF, #2346E0); }
+.stats .stat:nth-child(2) { background: linear-gradient(150deg, #FF7A3D, #FF4F6E); }
+.stats .stat:nth-child(3) { background: linear-gradient(150deg, #14C9B5, #009C8E); }
+.stat span { color: rgba(255, 255, 255, 0.86); font-weight: 600; }
+
+/* Marcas y predicción */
+.pr .d { color: var(--accent); }
+.pr.pred { background: linear-gradient(150deg, #EEF2FF, #FFFFFF); border-color: transparent; }
+.pr.pred b { color: var(--accent); }
+.pr.none b { color: #B4BDD8; }
+
+/* Zona, instalación y zona España */
+.zone { background: #FFFFFF; border-color: transparent; box-shadow: var(--lift); color: var(--fg); }
+.zone svg { color: var(--rose); }
+.zone em { color: var(--accent); }
+.install { background: linear-gradient(120deg, #2557FF, #6A4DFF); border: 0; color: #FFFFFF; box-shadow: 0 14px 30px rgba(37, 87, 255, 0.3); }
+.install .btn { background: #FFFFFF; color: var(--accent); border-color: #FFFFFF; }
+.zic { background: linear-gradient(150deg, #FF6A2B, #FF3D7F); color: #FFFFFF; }
+
+/* Vitrina y retos */
+.vitrina { background: linear-gradient(160deg, #111842 0%, #1F2E7A 100%); border: 0; box-shadow: 0 18px 40px rgba(17, 24, 66, 0.25); color: #F3F5FA; }
+.vitrina .medal { color: #F3F5FA; }
+.bar { background: var(--surface-2); }
+.bar i { background: linear-gradient(90deg, var(--sun), var(--rose)); box-shadow: none; }
+
+/* Pestañas y selector */
+.seg { background: #FFFFFF; }
+.seg button[aria-selected="true"] { background: var(--fg); color: #FFFFFF; }
+.tabbar { background: color-mix(in srgb, #FFFFFF 92%, transparent); border-color: transparent; box-shadow: 0 14px 34px rgba(17, 24, 66, 0.16); }
+.tabbar a { color: var(--muted); }
+.tabbar a[aria-current="page"] { background: var(--accent); color: #FFFFFF; box-shadow: 0 8px 18px rgba(37, 87, 255, 0.35); }
+
+/* Canal de WhatsApp */
+.canal { background: linear-gradient(140deg, #E3FBEC, #FFFFFF); border-color: transparent; box-shadow: var(--lift); color: var(--fg); }
+.canal .ct span { color: #2F6B49; }
+
+/* Cuenta y avisos */
+.acct.on { box-shadow: 0 0 0 2px rgba(15, 169, 104, 0.35), var(--lift); }
+.pushrow { background: #EEF2FF; border-color: transparent; }
+.pushrow .pi { background: #FFFFFF; color: var(--accent); }
+.err { color: #D92D50; }
+
+/* Hojas que suben desde abajo */
+.sheet { background: #FFFFFF; border-color: transparent; box-shadow: 0 -14px 40px rgba(17, 24, 66, 0.18); }
+.sheet .fld input, .sheet .fld select, .fld input, .fld select { background: #F4F6FD; border-color: var(--line); color: var(--fg); }
+
+/* Ranking */
+.rank li.me { box-shadow: 0 0 0 2px var(--accent), var(--lift); }
+.rank li:nth-child(1) { background: linear-gradient(120deg, #FFF6DB, #FFFFFF); }
+
+/* Pantalla de clasificación: clara */
+.auth.res { background: radial-gradient(120% 50% at 100% 0%, #DDE6FF 0%, var(--bg) 60%); color: var(--fg); }
+.auth.res .aclose { background: #FFFFFF; border-color: transparent; color: var(--fg); box-shadow: var(--lift); }
+.auth.res .asub, .auth.res .kick { color: var(--muted); }
+.pp .pm { background: var(--surface-2); color: var(--fg); }
+.rsearch input { background: #FFFFFF; border-color: transparent; box-shadow: var(--lift); color: var(--fg); }
+.rrow.me { background: #EEF2FF; box-shadow: 0 0 0 2px var(--accent); }
+.rclaim { border-color: var(--accent); color: var(--accent); background: #FFFFFF; }
+.mineres { box-shadow: 0 0 0 2px var(--accent), var(--lift); }
+
+/* La pantalla de acceso se queda en azul noche: es el momento de marca */
+.auth:not(.res) { --fg: #F3F5FA; --muted: #A9B3CC; --line: #2B3656; --surface: #141A2B; --surface-2: #1C2438; --sky: #8FB0FF; color: var(--fg); }
+.auth:not(.res) .seg { background: rgba(20, 26, 43, .7); box-shadow: none; }
+.auth:not(.res) .seg button[aria-selected="true"] { background: var(--accent); }
+.auth:not(.res) .fld input { background: rgba(20, 26, 43, .85); color: #F3F5FA; border-color: #2B3656; }
+.auth:not(.res) .err { color: #FF8A8A; }
+.chip { background: #FFFFFF; color: var(--fg); border-color: transparent; box-shadow: var(--lift); }
+.chip[aria-pressed="true"] { background: var(--fg); color: #FFFFFF; }
+.zone span { color: var(--muted); }
+.dorsal .bd { padding-bottom: 34px; }
+.dorsal .bd::before, .dorsal .bd::after { bottom: 12px; }
+.note { color: #3D4670; }
+.install p { color: rgba(255, 255, 255, 0.92); }
+.facts dt { color: var(--muted); }
