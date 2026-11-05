@@ -21,7 +21,7 @@ from zoneinfo import ZoneInfo
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 from nav import nav  # noqa: E402
-from poster import poster_html, LABEL  # noqa: E402
+from poster import poster_html, LABEL, CARTELES  # noqa: E402
 import fix_events  # noqa: E402
 
 SITE = "https://runiverso.com"
@@ -360,6 +360,11 @@ def ficha(r, races, Z, photos):
     km = km_of(r)
     lab = LABEL.get(r["k"], "Carrera")
     fig, og, alt = photos[r["k"]]
+    if rid in CARTELES:
+        src = r.get("w") or ""
+        cred = f'<a href="{e(src)}" target="_blank" rel="noopener">{e(r["n"])}</a>' if src else e(r["n"])
+        fig = (f'<figure class="cartel"><img src="{rel}carteles/{e(CARTELES[rid])}" alt="Cartel oficial de la {e(r["n"])} {y}" '
+               f'width="900" height="1108" loading="eager"><figcaption>Cartel oficial · cedido por la organización ({cred})</figcaption></figure>')
     estado = "ya celebrada" if is_past(r) else ("fecha confirmada" if r["ok"] else "fecha por confirmar")
     title = f"{r['n']} {y}: fecha, distancia e inscripción · Runiverso"
     desc = (f"{r['n']} {y} en {r['c']} ({r['p']}): {fecha_larga(r)}, {r['dist']}. "
