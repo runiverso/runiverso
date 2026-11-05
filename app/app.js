@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "21";
+  var APP_V = "22";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -55,10 +55,8 @@
     }
     function view(el) {
       if (!on || !el) return;
-      var w = splitWords(el.querySelector("h1"));
-      if (w.length) G.from(w, { yPercent: 110, duration: 0.7, ease: "power4.out", stagger: 0.06, clearProps: "transform" });
-      G.from([].slice.call(el.children).slice(0, 12), { y: 18, opacity: 0, duration: D, ease: E, stagger: 0.05, clearProps: CLR });
-      count(el);
+      G.fromTo(el, { opacity: 0.4 }, { opacity: 1, duration: 0.16, ease: "power1.out", clearProps: "opacity" });
+      if (!view.counted) { view.counted = true; count(el); }
       var m = q(el, ".medal"); if (m.length) medals(m);
       var rk = q(el, ".rank li"); if (rk.length) G.from(rk, { x: -18, opacity: 0, duration: 0.45, ease: E, stagger: 0.05, delay: 0.2, clearProps: CLR });
     }
@@ -72,9 +70,10 @@
     function sheet(el) {
       if (!on || !el) return;
       G.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out", clearProps: "opacity" });
-      var sh = el.querySelector(".sheet"); if (sh) G.fromTo(sh, { yPercent: 100 }, { yPercent: 0, duration: 0.5, ease: "power4.out", clearProps: "transform" });
+      var sh = el.querySelector(".sheet"); if (sh) G.fromTo(sh, { yPercent: 100 }, { yPercent: 0, duration: 0.42, ease: "expo.out", clearProps: "transform" });
     }
     function tilt() {
+      return;
       if (!on || !(window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches)) return;
       var cur = null, rect = null;
       document.addEventListener("pointerover", function (e) { var p = e.target.closest && e.target.closest(".poster"); if (p && p !== cur) { cur = p; rect = p.getBoundingClientRect(); G.set(p, { transformPerspective: 700 }); } });
@@ -327,19 +326,44 @@
   var LABEL = { "21K": "Media", "42K": "Maratón", "10K": "10K", "TR": "Trail", "SS": "San Silvestre", "POP": "Popular" };
   var MARK = '<svg viewBox="12 12 96 96" aria-hidden="true"><path d="M44 30V90M44 30H64a17 17 0 0 1 0 34H44" fill="none" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 64L82 90" fill="none" stroke="#7FA6FF" stroke-width="11" stroke-linecap="round"/></svg>';
 
+  var DIAS_C = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+  function distTxt(r) { var d = String(r.dist || "").replace(/^Trail · /, ""); return /^(Trail|Popular|San Silvestre)$/.test(d) ? "" : d; }
+  /* Cada carrera es un dorsal: banda de color por prueba, imperdibles, el día en grande */
   function poster(r, tag, extra) {
     var C = window.CARTELES || {};
     var at = ' data-k="' + r.k + '" data-race="' + r.id + '" type="button" aria-label="' + esc(r.n) + ': ver ficha"';
     var t = tag || (S.mine[r.id] ? '<span class="tag mine">Apuntada</span>' : (r.ok ? '' : '<span class="tag">Por confirmar</span>'));
     if (C[r.id]) return '<button class="poster img"' + at + ' style="padding:0"><img src="../carteles/' + C[r.id] + '" alt="" style="width:100%;height:100%;object-fit:cover">' + t + '</button>';
-    var dist = String(r.dist || "").replace(/^Trail · /, "");
-    if (/^(Trail|Popular|San Silvestre)$/.test(dist)) dist = "";
-    return '<button class="poster"' + at + (extra || "") + '><span class="pt">' + MARK + LABEL[r.k] + (dist ? '<span class="pdist">' + esc(dist) + '</span>' : '') + '</span>' +
-      '<span class="pn">' + esc(r.n) + '</span><span class="pc">' + esc(r.c) + (r.p && r.c.indexOf(r.p) < 0 && r.p !== S.prov ? " · " + esc(r.p) : "") + '</span>' +
-      '<span class="pdate"><b>' + pad(r.date.getDate()) + '</b><span>' + MES_C[r.date.getMonth()] + '<small>' + r.date.getFullYear() + '</small></span></span>' + t + '</button>';
+    var dist = distTxt(r);
+    return '<button class="poster bib"' + at + (extra || "") + '><span class="bb">' + LABEL[r.k] + (dist ? '<span>' + esc(dist) + '</span>' : '') + '</span>' +
+      '<span class="bbody"><span class="bn">' + pad(r.date.getDate()) + '</span><span class="bm">' + MES_C[r.date.getMonth()] + ' · ' + DIAS_C[r.date.getDay()] + '</span>' +
+      '<span class="pn">' + esc(r.n) + '</span><span class="pc">' + esc(r.c) + '</span></span>' + t + '</button>';
   }
+  /* Fila tipo entrada para listas */
   function item(r) {
-    return '<div class="item">' + poster(r) + '<div><h3>' + esc(r.n) + '</h3><p>' + esc(r.c) + ' · ' + pad(r.date.getDate()) + '/' + pad(r.date.getMonth() + 1) + '</p></div></div>';
+    var C = window.CARTELES || {}, dist = distTxt(r), st = S.mine[r.id] ? '<span class="tks mine">Apuntada</span>' : (r.ok ? '' : '<span class="tks">Por confirmar</span>');
+    return '<button class="tk" type="button" data-k="' + r.k + '" data-race="' + r.id + '" aria-label="' + esc(r.n) + ': ver ficha">' +
+      '<span class="tkd"><b>' + r.date.getDate() + '</b><span>' + MES_C[r.date.getMonth()] + '</span></span>' +
+      '<span class="tkb"><b>' + esc(r.n) + '</b><span>' + esc(r.c) + (r.p && r.c.indexOf(r.p) < 0 ? ', ' + esc(r.p) : '') + '</span>' +
+      '<span class="tkm"><i></i>' + LABEL[r.k] + (dist ? ' · ' + esc(dist) : '') + (r.h ? ' · ' + esc(r.h) : '') + st + '</span></span>' +
+      (C[r.id] ? '<img class="tki" src="../carteles/' + C[r.id] + '" alt="">' : '') + '</button>';
+  }
+  /* Próximos 14 días: los días con carrera llevan punto; al tocar uno, sus carreras debajo */
+  function weekStrip(pool) {
+    var days = [], i, d, firstWith = -1;
+    for (i = 0; i < 14; i++) {
+      d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+      var rs = pool.filter(function (r) { return r.date.getTime() === d.getTime(); });
+      if (rs.length && firstWith < 0) firstWith = i;
+      days.push({ d: d, rs: rs });
+    }
+    if (view.day == null || view.day < 0) view.day = firstWith < 0 ? 0 : firstWith;
+    var sel = days[view.day];
+    var h = '<div class="wk" role="tablist" aria-label="Próximos 14 días">' + days.map(function (x, k) {
+      return '<button type="button" role="tab" class="wd" data-day="' + k + '" aria-selected="' + (k === view.day) + '"' + (x.rs.length ? '' : ' data-none="1"') + '><span>' + (k === 0 ? "hoy" : DIAS_C[x.d.getDay()]) + '</span><b>' + x.d.getDate() + '</b><i>' + (x.rs.length ? new Array(Math.min(3, x.rs.length) + 1).join("<em></em>") : "") + '</i></button>';
+    }).join("") + '</div>';
+    h += '<div class="tklist" id="wkl">' + (sel.rs.length ? sel.rs.slice(0, 5).map(item).join("") : '<p class="tkempty">' + (view.day === 0 ? "Hoy" : cap(DIAS_L[sel.d.getDay()]) + " " + sel.d.getDate()) + ' no hay carreras' + (S.prov ? ' en ' + esc(S.prov) : '') + '.</p>') + '</div>';
+    return h;
   }
 
   /* ---------- Marcas ---------- */
@@ -382,8 +406,14 @@
     var ini = (S.name || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
     $("topav").textContent = ini; $("topav").classList.toggle("on", !!user); $("topav").setAttribute("aria-label", user ? "Mi perfil (sesión iniciada)" : "Mi perfil");
   }
+  var TTL = { inicio: "Inicio", carreras: "Carreras", perfil: "Perfil", clasificaciones: "Resultados", comunidad: "Comunidad" };
+  (function () {
+    var on = false;
+    window.addEventListener("scroll", function () { var v = window.scrollY > 64; if (v !== on) { on = v; document.documentElement.classList.toggle("scrolled", v); } }, { passive: true });
+  })();
   function render() {
     renderTabs();
+    if ($("ttl")) $("ttl").textContent = TTL[view.tab] || "";
     var fn = { inicio: vInicio, carreras: vCarreras, perfil: vPerfil, clasificaciones: vResultados, comunidad: vComunidad }[view.tab];
     $("main").innerHTML = '<div class="view">' + fn() + '</div>';
     var vk = view.tab + "/" + view.sub; if (vk !== lastView) { lastView = vk; motion.view($("main").firstChild); }
@@ -420,6 +450,8 @@
     } else {
       h += '<div class="card empty"><h2>Apúntate a tu primera carrera</h2><p>Elige una carrera, pulsa «Apuntarme» y aquí verás la cuenta atrás.</p><a class="btn" href="#carreras">Ver carreras</a></div>';
     }
+    var pool = S.prov ? up.filter(inProv) : up;
+    h += '<div class="sec"><div class="sechd"><h2>' + (S.prov ? 'Próximos días en ' + esc(S.prov) : 'Próximos días') + '</h2><a href="#carreras' + (S.prov ? '?sc=prov' : '') + '">Calendario</a></div><div id="wkw">' + weekStrip(pool) + '</div></div>';
     var sm = seasonMarks(), km = sm.reduce(function (a, m) { return a + m.km; }, 0);
     h += '<div class="sec"><div class="sechd"><h2>Tu temporada ' + String(seasonStart().getFullYear()).slice(2) + '/' + String(seasonStart().getFullYear() + 1).slice(2) + '</h2><a href="#perfil">Mis marcas</a></div><div class="stats">' +
       '<div class="stat"><b>' + sm.length + '</b><span>Carreras</span></div><div class="stat"><b>' + Math.round(km) + '</b><span>Kilómetros</span></div><div class="stat"><b>' + S.marks.length + '</b><span>Medallas</span></div></div></div>';
@@ -428,7 +460,7 @@
       h += '<div class="sec"><div class="sechd"><h2>En ' + esc(S.prov) + '</h2><a href="#carreras?sc=prov">Ver ' + lp.length + '</a></div>' + (lp.length ? '<div class="hscroll">' + lp.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<div class="card empty"><p>Aún no tenemos carreras en ' + esc(S.prov) + '. ¿Conoces alguna? Avísanos en el canal y la añadimos.</p></div>') + '</div>';
       if (S.ccaa !== S.prov) h += '<div class="sec"><div class="sechd"><h2>Resto de ' + esc(S.ccaa) + '</h2><a href="#carreras?sc=ccaa">Ver ' + lc.length + '</a></div>' + (lc.length ? '<div class="hscroll">' + lc.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<p class="muted" style="margin:0">Sin más carreras en tu comunidad de momento.</p>') + '</div>';
       var rest = up.filter(function (r) { return !inCcaa(r); }).length;
-      h += '<a class="card" href="#carreras?sc=es" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span class="zic">ES</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px;letter-spacing:-.02em">Resto de España</b><br><span class="muted" style="font-size:13.5px">' + rest + ' carreras fuera de tu comunidad</span></span><span aria-hidden="true" style="color:var(--sky);font-weight:800">›</span></a>';
+      h += '<a class="card" href="#carreras?sc=es" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span class="zic">ES</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px;letter-spacing:-.02em">Resto de España</b><br><span class="muted" style="font-size:13.5px">' + rest + ' carreras fuera de tu comunidad</span></span></a>';
     } else {
       h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
     }
@@ -490,7 +522,7 @@
     groups.forEach(function (g) {
       if (left <= 0) return;
       var it = g.items.slice(0, left); left -= it.length;
-      out += '<section class="grp"><h2 class="gh">' + cap(esc(g.k)) + '<span>' + g.items.length + '</span></h2><div class="grid">' + it.map(item).join("") + '</div></section>';
+      out += '<section class="grp"><h2 class="gh">' + cap(esc(g.k)) + '<span>' + g.items.length + '</span></h2><div class="tklist">' + it.map(item).join("") + '</div></section>';
     });
     var shown = view.lim - Math.max(0, left);
     return out + (list.length > shown ? '<button class="btn alt wide" type="button" data-act="more" style="margin-top:16px">Ver más (' + (list.length - shown) + ')</button>' : '');
@@ -862,6 +894,7 @@
     var uc0 = t.closest("[data-unclaim]");
     if (uc0) { sb.rpc("unclaim_result", { rid: +uc0.getAttribute("data-unclaim") }).then(function () { toast("Hecho"); resScreen(resState.id, resState.q); }); return; }
     var pu = t.closest(".poster[data-url]"); if (pu) { window.open(pu.getAttribute("data-url"), "_blank", "noopener"); return; }
+    var wd = t.closest("[data-day]"); if (wd) { view.day = +wd.getAttribute("data-day"); var pool = S.prov ? upcoming().filter(inProv) : upcoming(), w = $("wkw"); w.innerHTML = weekStrip(pool); var nb = w.querySelector('[data-day="' + view.day + '"]'); if (nb && nb.scrollIntoView) nb.scrollIntoView({ block: "nearest", inline: "nearest" }); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
     if (mi) { var id = mi.getAttribute("data-mine"); if (S.mine[id]) { delete S.mine[id]; queue({ t: "mine-", id: id }); } else { S.mine[id] = true; queue({ t: "mine+", id: id }); } save(); toast(S.mine[id] ? (user && !pushOn() ? "¡Apuntada! Activa los avisos en tu perfil y te la recordamos" : "¡Apuntada! La verás en Inicio") : "Ya no estás apuntado"); render(); raceSheet(id); return; }
