@@ -344,3 +344,6 @@ footer a:hover, .fine a:hover, .src a:hover { text-decoration: underline; }
 .cartel img { display: block; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 14px 34px rgba(14, 22, 48, 0.22); }
 .cartel figcaption { margin-top: 8px; font-size: 0.82rem; text-align: center; opacity: 0.75; }
 .cartel figcaption a { color: inherit; }
+/* Cabecera con 3 redes: que quepa en móviles estrechos */
+@media (max-width: 400px) { .rv-soc { gap: 0; padding-left: 6px; margin-left: 2px; } .rv-soc a { width: 32px; } }
+@media (max-width: 359px) { .rv-bar .rv-word small { display: none; } }
