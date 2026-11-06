@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.runiverso.app",
+      "sha256_cert_fingerprints": [
+        "DC:8F:B9:E6:50:07:D0:00:78:60:7F:D8:95:23:E6:E6:48:71:B0:9C:FD:76:97:DC:07:00:BF:C5:21:FB:42:9C"
+      ]
+    }
+  }
+]
