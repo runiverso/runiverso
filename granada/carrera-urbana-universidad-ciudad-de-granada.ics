@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-urbana-universidad-ciudad-de-granada-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:Carrera Urbana Universidad Ciudad de Granada
+LOCATION:Granada\, Granada
+DESCRIPTION:12.ª edición\, organizada por la Universidad de Granada y el
+  Ayuntamiento. Fecha según el Centro de Actividades Deportivas de la UGR
+ . Más info: https://runiverso.com/granada/#carrera-urbana-universidad-ci
+ udad-de-granada
+URL:https://runiverso.com/granada/#carrera-urbana-universidad-ciudad-de-gr
+ anada
+END:VEVENT
+END:VCALENDAR

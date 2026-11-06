@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-sevilla-los-palacios-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
+SUMMARY:Media Maratón Sevilla-Los Palacios
+LOCATION:Los Palacios y Villafranca\, Sevilla
+DESCRIPTION:43.ª edición\, una de las medias más veteranas de Andalucí
+ a. Los calendarios no coinciden en el día (13 o 20 de diciembre). Fecha 
+ según los calendarios de carreras de la provincia. Confírmala en la web
+  oficial antes de inscribirte. Fecha por confirmar. Más info: https://ru
+ niverso.com/sevilla/#media-maraton-sevilla-los-palacios
+URL:https://runiverso.com/sevilla/#media-maraton-sevilla-los-palacios
+END:VEVENT
+END:VCALENDAR

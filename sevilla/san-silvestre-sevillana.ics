@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-sevillana-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20261227T100000
+DTEND;TZID=Europe/Madrid:20261227T130000
+SUMMARY:San Silvestre Sevillana
+LOCATION:Sevilla\, Sevilla
+DESCRIPTION:31.ª edición\, el domingo por la mañana. Inscripción de 10
+  € hasta el 31 de octubre\, 12 € en noviembre y 15 € del 1 al 21 de
+  diciembre. Límite de 4.500 corredores en la prueba principal. Más info
+ : https://runiverso.com/sevilla/#san-silvestre-sevillana
+URL:https://runiverso.com/sevilla/#san-silvestre-sevillana
+END:VEVENT
+END:VCALENDAR

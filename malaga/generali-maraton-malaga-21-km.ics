@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:generali-maraton-malaga-21-km-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:Generali Maratón Málaga (21 km)
+LOCATION:Málaga\, Málaga
+DESCRIPTION:La media se corre el mismo domingo 8 de noviembre de 2026 que 
+ el maratón. Más info: https://runiverso.com/malaga/#generali-maraton-ma
+ laga-21-km
+URL:https://runiverso.com/malaga/#generali-maraton-malaga-21-km
+END:VEVENT
+END:VCALENDAR

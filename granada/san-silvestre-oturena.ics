@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-oturena-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261225
+DTEND;VALUE=DATE:20261226
+SUMMARY:San Silvestre Otureña
+LOCATION:Otura\, Granada
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/granada/#san-silvestre-oturena
+URL:https://runiverso.com/granada/#san-silvestre-oturena
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-urbana-noche-de-san-anton-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270116
+DTEND;VALUE=DATE:20270117
+SUMMARY:Carrera Urbana Noche de San Antón
+LOCATION:Jaén\, Jaén
+DESCRIPTION:Calendario de HDsports. La fecha de 2027 no está confirmada\;
+  en 2026 fue el 17 de enero. Fecha por confirmar. Más info: https://runi
+ verso.com/jaen/#carrera-urbana-noche-de-san-anton
+URL:https://runiverso.com/jaen/#carrera-urbana-noche-de-san-anton
+END:VEVENT
+END:VCALENDAR

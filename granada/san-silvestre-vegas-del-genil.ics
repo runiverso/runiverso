@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-vegas-del-genil-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261230
+DTEND;VALUE=DATE:20261231
+SUMMARY:San Silvestre Vegas del Genil
+LOCATION:Belicena\, Granada
+DESCRIPTION:En Belicena (Vegas del Genil). Fecha según los calendarios de
+  carreras de la provincia. Confírmala en la web oficial antes de inscrib
+ irte. Fecha por confirmar. Más info: https://runiverso.com/granada/#san-
+ silvestre-vegas-del-genil
+URL:https://runiverso.com/granada/#san-silvestre-vegas-del-genil
+END:VEVENT
+END:VCALENDAR

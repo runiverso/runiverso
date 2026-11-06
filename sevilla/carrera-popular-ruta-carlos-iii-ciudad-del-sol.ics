@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-ruta-carlos-iii-ciudad-del-sol-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270117
+DTEND;VALUE=DATE:20270118
+SUMMARY:Carrera Popular Ruta Carlos III Ciudad del Sol
+LOCATION:Écija\, Sevilla
+DESCRIPTION:34.ª edición. Fecha según los calendarios de carreras de la
+  provincia. Confírmala en la web oficial antes de inscribirte. Fecha por
+  confirmar. Más info: https://runiverso.com/sevilla/#carrera-popular-rut
+ a-carlos-iii-ciudad-del-sol
+URL:https://runiverso.com/sevilla/#carrera-popular-ruta-carlos-iii-ciudad-
+ del-sol
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:subida-a-la-cruz-de-la-atalaya-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Subida a la Cruz de la Atalaya
+LOCATION:Padul\, Granada
+DESCRIPTION:13.ª edición. Fecha según los calendarios de carreras de la
+  provincia. Confírmala en la web oficial antes de inscribirte. Fecha por
+  confirmar. Más info: https://runiverso.com/granada/#subida-a-la-cruz-de
+ -la-atalaya
+URL:https://runiverso.com/granada/#subida-a-la-cruz-de-la-atalaya
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-alcala-pro-caritas-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+SUMMARY:San Silvestre Alcalá Pro Cáritas
+LOCATION:Alcalá la Real\, Jaén
+DESCRIPTION:Solidaria a favor de Cáritas. Fecha según los calendarios de
+  carreras de la provincia. Confírmala en la web oficial antes de inscrib
+ irte. Fecha por confirmar. Más info: https://runiverso.com/jaen/#san-sil
+ vestre-alcala-pro-caritas
+URL:https://runiverso.com/jaen/#san-silvestre-alcala-pro-caritas
+END:VEVENT
+END:VCALENDAR

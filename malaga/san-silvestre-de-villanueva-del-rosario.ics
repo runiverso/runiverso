@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-de-villanueva-del-rosario-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261227
+DTEND;VALUE=DATE:20261228
+SUMMARY:San Silvestre de Villanueva del Rosario
+LOCATION:Villanueva del Rosario\, Málaga
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/malaga/#san-silvestre-de-villanueva-del-rosa
+ rio
+URL:https://runiverso.com/malaga/#san-silvestre-de-villanueva-del-rosario
+END:VEVENT
+END:VCALENDAR

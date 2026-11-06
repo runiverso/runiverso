@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-de-granada-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270430
+DTEND;VALUE=DATE:20270501
+SUMMARY:Media Maratón de Granada
+LOCATION:Granada\, Granada
+DESCRIPTION:Fecha de un calendario de terceros\, con pocos detalles. Confi
+ rma la fecha y las distancias con la organización. Fecha por confirmar. 
+ Más info: https://runiverso.com/granada/#media-maraton-de-granada
+URL:https://runiverso.com/granada/#media-maraton-de-granada
+END:VEVENT
+END:VCALENDAR

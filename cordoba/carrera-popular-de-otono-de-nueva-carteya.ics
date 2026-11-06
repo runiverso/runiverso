@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-de-otono-de-nueva-carteya-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+SUMMARY:Carrera Popular de Otoño de Nueva Carteya
+LOCATION:Nueva Carteya\, Córdoba
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/cordoba/#carrera-popular-de-otono-de-nueva-c
+ arteya
+URL:https://runiverso.com/cordoba/#carrera-popular-de-otono-de-nueva-carte
+ ya
+END:VEVENT
+END:VCALENDAR

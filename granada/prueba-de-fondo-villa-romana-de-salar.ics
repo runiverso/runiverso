@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:prueba-de-fondo-villa-romana-de-salar-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Prueba de Fondo Villa Romana de Salar
+LOCATION:Salar\, Granada
+DESCRIPTION:15.ª edición. Fecha según los calendarios de carreras de la
+  provincia. Confírmala en la web oficial antes de inscribirte. Fecha por
+  confirmar. Más info: https://runiverso.com/granada/#prueba-de-fondo-vil
+ la-romana-de-salar
+URL:https://runiverso.com/granada/#prueba-de-fondo-villa-romana-de-salar
+END:VEVENT
+END:VCALENDAR

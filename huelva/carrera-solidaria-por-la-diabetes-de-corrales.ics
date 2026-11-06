@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-por-la-diabetes-de-corrales-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:Carrera Solidaria por la Diabetes de Corrales
+LOCATION:Corrales\, Huelva
+DESCRIPTION:En Corrales (Aljaraque). Fecha según los calendarios de carre
+ ras de la provincia. Confírmala en la web oficial antes de inscribirte. 
+ Fecha por confirmar. Más info: https://runiverso.com/huelva/#carrera-sol
+ idaria-por-la-diabetes-de-corrales
+URL:https://runiverso.com/huelva/#carrera-solidaria-por-la-diabetes-de-cor
+ rales
+END:VEVENT
+END:VCALENDAR

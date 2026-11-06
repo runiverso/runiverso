@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-guerreros-spatanos-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20261107T103000
+DTEND;TZID=Europe/Madrid:20261107T133000
+SUMMARY:Carrera Solidaria Guerreros Spatanos
+LOCATION:Sevilla\, Sevilla
+DESCRIPTION:Primera edición\, en el Parque del Alamillo. Fecha y hora seg
+ ún la agenda del Instituto Municipal de Deportes de Sevilla. Más info: 
+ https://runiverso.com/sevilla/#carrera-solidaria-guerreros-spatanos
+URL:https://runiverso.com/sevilla/#carrera-solidaria-guerreros-spatanos
+END:VEVENT
+END:VCALENDAR

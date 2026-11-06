@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-de-bonares-memorial-manolo-marquez-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Carrera de Bonares Memorial Manolo Márquez
+LOCATION:Bonares\, Huelva
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/huelva/#carrera-de-bonares-memorial-manolo-m
+ arquez
+URL:https://runiverso.com/huelva/#carrera-de-bonares-memorial-manolo-marqu
+ ez
+END:VEVENT
+END:VCALENDAR

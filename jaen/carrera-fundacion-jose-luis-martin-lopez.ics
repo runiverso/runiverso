@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-fundacion-jose-luis-martin-lopez-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera Fundación José Luis Martín López
+LOCATION:Linares\, Jaén
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/jaen/#carrera-fundacion-jose-luis-martin-lop
+ ez
+URL:https://runiverso.com/jaen/#carrera-fundacion-jose-luis-martin-lopez
+END:VEVENT
+END:VCALENDAR

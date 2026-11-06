@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-clasica-de-castilblanco-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261229
+DTEND;VALUE=DATE:20261230
+SUMMARY:Carrera Popular Clásica de Castilblanco
+LOCATION:Castilblanco de los Arroyos\, Sevilla
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/sevilla/#carrera-popular-clasica-de-castilbl
+ anco
+URL:https://runiverso.com/sevilla/#carrera-popular-clasica-de-castilblanco
+END:VEVENT
+END:VCALENDAR

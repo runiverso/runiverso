@@ -57,6 +57,9 @@ def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
 
 
+AND_SLUG = {"Almería": "almeria", "Cádiz": "cadiz", "Córdoba": "cordoba", "Granada": "granada", "Huelva": "huelva", "Jaén": "jaen", "Málaga": "malaga", "Sevilla": "sevilla"}
+
+
 def load():
     s = (ROOT / "app" / "data.js").read_text()
     races = json.loads(re.search(r"RV_RACES = (\[.*?\]);", s, re.S).group(1))
@@ -207,8 +210,8 @@ def zones(races):
     for (com, prov), items in by_p.items():
         if com in UNIPROV:
             continue
-        if prov == "Cádiz":
-            Z[("p", prov)] = {"name": prov, "path": "cadiz/", "races": items, "kind": "p", "com": com, "external": True}
+        if com == "Andalucía" and prov in AND_SLUG:
+            Z[("p", prov)] = {"name": prov, "path": f"{AND_SLUG[prov]}/", "races": items, "kind": "p", "com": com, "external": True}
         elif len(items) >= MIN_ZONE:
             Z[("p", prov)] = {"name": prov, "path": f"carreras-en/{slug(prov)}/", "races": items, "kind": "p", "com": com}
     return Z
@@ -631,13 +634,15 @@ def update_sitemap(races, pages):
     urls = [f"{SITE}/", f"{SITE}/app/", f"{SITE}/clasificaciones/"]
     urls += [f"{SITE}/{p['path']}" for p in pages]
     urls += [f"{SITE}/carreras/{r['id']}/" for r in races]
-    urls += [u for u in old if u not in urls]
+    urls += [f"{SITE}/{v}/" for v in AND_SLUG.values()]
+    gone = {f"{SITE}/carreras-en/{v}/" for v in AND_SLUG.values()}
+    urls += [u for u in old if u not in urls and u not in gone]
     seen, out = set(), []
     for u in urls:
         if u in seen:
             continue
         seen.add(u)
-        lm = today if (u.startswith(f"{SITE}/carreras") or u == f"{SITE}/" or any(u == f"{SITE}/{p['path']}" for p in pages)) else old.get(u, today)
+        lm = today if (u.startswith(f"{SITE}/carreras") or u == f"{SITE}/" or u in {f"{SITE}/{v}/" for v in AND_SLUG.values()} or any(u == f"{SITE}/{p['path']}" for p in pages)) else old.get(u, today)
         out.append(f"  <url><loc>{u}</loc><lastmod>{lm}</lastmod></url>")
     sm.write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(out) + "\n</urlset>\n")
     print(f"sitemap: {len(out)} URL")

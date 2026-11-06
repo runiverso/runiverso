@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-fuengirola-contra-la-violencia-machista-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera Fuengirola contra la Violencia Machista
+LOCATION:Fuengirola\, Málaga
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/malaga/#carrera-fuengirola-contra-la-violenc
+ ia-machista
+URL:https://runiverso.com/malaga/#carrera-fuengirola-contra-la-violencia-m
+ achista
+END:VEVENT
+END:VCALENDAR

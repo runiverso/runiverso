@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-universitaria-san-alberto-magno-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261113
+SUMMARY:Carrera Universitaria San Alberto Magno
+LOCATION:Granada\, Granada
+DESCRIPTION:22.ª edición\, entre semana. Fecha según los calendarios de
+  carreras de la provincia. Confírmala en la web oficial antes de inscrib
+ irte. Fecha por confirmar. Más info: https://runiverso.com/granada/#carr
+ era-universitaria-san-alberto-magno
+URL:https://runiverso.com/granada/#carrera-universitaria-san-alberto-magno
+END:VEVENT
+END:VCALENDAR

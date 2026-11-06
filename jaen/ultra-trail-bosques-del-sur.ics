@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:ultra-trail-bosques-del-sur-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270529
+DTEND;VALUE=DATE:20270530
+SUMMARY:Ultra Trail Bosques del Sur
+LOCATION:Cazorla\, Jaén
+DESCRIPTION:La fecha de 2027 no está confirmada. Fecha por confirmar. Má
+ s info: https://runiverso.com/jaen/#ultra-trail-bosques-del-sur
+URL:https://runiverso.com/jaen/#ultra-trail-bosques-del-sur
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-por-la-diabetes-de-sevilla-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:Carrera por la Diabetes de Sevilla
+LOCATION:Sevilla\, Sevilla
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/sevilla/#carrera-por-la-diabetes-de-sevilla
+URL:https://runiverso.com/sevilla/#carrera-por-la-diabetes-de-sevilla
+END:VEVENT
+END:VCALENDAR

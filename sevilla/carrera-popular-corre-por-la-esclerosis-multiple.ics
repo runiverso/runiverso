@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-corre-por-la-esclerosis-multiple-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20261108T103000
+DTEND;TZID=Europe/Madrid:20261108T133000
+SUMMARY:Carrera Popular Corre por la Esclerosis Múltiple
+LOCATION:Sevilla\, Sevilla
+DESCRIPTION:13.ª edición. Fecha y hora según la agenda del Instituto Mu
+ nicipal de Deportes de Sevilla. Más info: https://runiverso.com/sevilla/
+ #carrera-popular-corre-por-la-esclerosis-multiple
+URL:https://runiverso.com/sevilla/#carrera-popular-corre-por-la-esclerosis
+ -multiple
+END:VEVENT
+END:VCALENDAR

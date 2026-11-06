@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-de-la-mujer-de-sevilla-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20261115T100000
+DTEND;TZID=Europe/Madrid:20261115T130000
+SUMMARY:Carrera de la Mujer de Sevilla
+LOCATION:Sevilla\, Sevilla
+DESCRIPTION:Carrera de la Mujer Central Lechera Asturiana\, solo para muje
+ res. Fecha según la agenda del Instituto Municipal de Deportes de Sevill
+ a. Más info: https://runiverso.com/sevilla/#carrera-de-la-mujer-de-sevil
+ la
+URL:https://runiverso.com/sevilla/#carrera-de-la-mujer-de-sevilla
+END:VEVENT
+END:VCALENDAR

@@ -17,7 +17,7 @@ from poster import poster_html  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "cadiz"
-REVISADO = "5 de noviembre de 2026"
+REVISADO = "6 de noviembre de 2026"
 FORM = "https://docs.google.com/forms/d/e/1FAIpQLScWKG5bZNgG__DRS9tZC9J4-f8Osn2-LeMuAn11e-EZyFxO2A/viewform"
 
 # k: 21K (media), pop (popular, urbana o cross), trail, ss (San Silvestre)
@@ -135,7 +135,7 @@ RACES = [
          note="La edición de 2026 se corrió el 18 de octubre. La de 2027 suele ser a finales de octubre; la fecha aún no está publicada."),
 ]
 
-TYPES = {"21K": "Media maratón", "pop": "Popular", "trail": "Trail", "ss": "San Silvestre"}
+TYPES = {"21K": "Media maratón", "10K": "10K", "pop": "Popular", "trail": "Trail", "ss": "San Silvestre"}
 DIAS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
 DIAS_L = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
 MES_C = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
@@ -165,7 +165,7 @@ def sort_key(r):
     return r["m"] + "-28"
 
 
-def ics(r):
+def ics(r, slug="cadiz", prov="Cádiz"):
     d = dt.date.fromisoformat(r["d"])
     uid = f"{r['id']}-{d.year}@runiverso.com"
     if r.get("t"):
@@ -176,11 +176,11 @@ def ics(r):
     else:
         start = f"DTSTART;VALUE=DATE:{d:%Y%m%d}"
         end = f"DTEND;VALUE=DATE:{(d + dt.timedelta(days=1)):%Y%m%d}"
-    desc = (r["note"] + ("" if r["ok"] else " Fecha por confirmar.") + f" Más info: https://runiverso.com/cadiz/#{r['id']}").replace(",", "\\,").replace(";", "\\;")
+    desc = (r["note"] + ("" if r["ok"] else " Fecha por confirmar.") + f" Más info: https://runiverso.com/{slug}/#{r['id']}").replace(",", "\\,").replace(";", "\\;")
     lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Runiverso//Cadiz//ES", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
              f"UID:{uid}", "DTSTAMP:20261103T120000Z", start, end,
-             f"SUMMARY:{r['n']}".replace(",", "\\,"), f"LOCATION:{r['c']}\\, Cádiz", f"DESCRIPTION:{desc}",
-             f"URL:https://runiverso.com/cadiz/#{r['id']}", "END:VEVENT", "END:VCALENDAR"]
+             f"SUMMARY:{r['n']}".replace(",", "\\,"), f"LOCATION:{r['c']}\\, {prov}", f"DESCRIPTION:{desc}",
+             f"URL:https://runiverso.com/{slug}/#{r['id']}", "END:VEVENT", "END:VCALENDAR"]
     out = []
     for ln in lines:  # plegado de líneas largas (RFC 5545)
         b = ln.encode()
@@ -225,11 +225,11 @@ def ficha_id(r):
     return None
 
 
-PK = {"21K": "21K", "pop": "POP", "trail": "TR", "ss": "SS"}
+PK = {"21K": "21K", "10K": "10K", "pop": "POP", "trail": "TR", "ss": "SS"}
 
 
-def card(r):
-    share = urllib.parse.quote(f"{r['n']} · {when(r)} · {r['c']}\nhttps://runiverso.com/cadiz/#{r['id']}")
+def card(r, slug="cadiz"):
+    share = urllib.parse.quote(f"{r['n']} · {when(r)} · {r['c']}\nhttps://runiverso.com/{slug}/#{r['id']}")
     st = '<span class="st prov">Suspendida</span>' if r.get("s") else ('<span class="st ok">Confirmada</span>' if r["ok"] else '<span class="st prov">Por confirmar</span>')
     acts = []
     if r.get("web"):
@@ -261,9 +261,85 @@ def card(r):
             f'<details class="pmore" id="m-{r["id"]}"><summary>Ver más</summary><p>{e(r["note"])}</p><div class="acts">{"".join(acts)}</div></details></div></article>')
 
 
+PROVS = ["Almería", "Cádiz", "Córdoba", "Granada", "Huelva", "Jaén", "Málaga", "Sevilla"]
+SLUGS = {"Almería": "almeria", "Cádiz": "cadiz", "Córdoba": "cordoba", "Granada": "granada", "Huelva": "huelva", "Jaén": "jaen", "Málaga": "malaga", "Sevilla": "sevilla"}
+LEADS = {
+    "Cádiz": "Las carreras de la provincia en un solo sitio: de La Caleta a la Sierra de Grazalema, con medias, populares, trail y San Silvestres. Fecha, distancia y web oficial de cada una.",
+    "Sevilla": "De la Carrera de la Mujer al Medio Maratón y la San Silvestre Sevillana: medias, populares y San Silvestres de la capital y de los pueblos de toda la provincia.",
+    "Málaga": "De la Costa del Sol a la Axarquía y Antequera: medias, populares, carreras de Navidad y San Silvestres de toda la provincia.",
+    "Granada": "De la capital a la Vega, el Valle de Lecrín y la Alpujarra: carreras de fondo, populares y San Silvestres de toda la provincia.",
+    "Córdoba": "De la capital a la Campiña y la Subbética: medias, populares, millas y San Silvestres de toda la provincia.",
+    "Jaén": "De la Media Maratón de Jaén a Linares, Bailén y la Sierra Sur: medias, populares y San Silvestres de toda la provincia.",
+    "Huelva": "De la capital al Condado, el Andévalo y la raya del Guadiana: populares, millas y San Silvestres de toda la provincia.",
+    "Almería": "Del Poniente a Níjar y la capital: medias, populares y San Silvestres de toda la provincia.",
+}
+AND_K = {"21K": "21K", "10K": "10K", "POP": "pop", "SS": "ss", "TR": "trail"}
+
+
+def from_andalucia(lst):
+    import unicodedata
+    out = []
+    for r in lst:
+        rid = re.sub(r"[^a-z0-9]+", "-", "".join(c for c in unicodedata.normalize("NFD", r["n"].lower()) if unicodedata.category(c) != "Mn")).strip("-")
+        x = dict(id=rid, n=r["n"], c=r["c"], d=r["d"], k=AND_K[r["k"]], dist=r["dist"], ok=r["ok"], note=r["t"])
+        if r.get("w"):
+            x["web"] = r["w"]
+        if r.get("h"):
+            x["t"] = r["h"]
+        if r.get("s"):
+            x["s"] = r["s"]
+        out.append(x)
+    return out
+
+
+def tabs(cur, counts):
+    h = '<nav class="ptabs" aria-label="Provincias de Andalucía">'
+    for p in PROVS:
+        a = ' aria-current="page"' if p == cur else ""
+        h += f'<a href="../{SLUGS[p]}/"{a}>{p}<span>{counts.get(p, 0)}</span></a>'
+    return h + "</nav>"
+
+
+def all_provinces():
+    import andalucia
+    data = {"Cádiz": list(RACES)}
+    for p, lst in andalucia.PROVINCIAS.items():
+        data[p] = from_andalucia(lst)
+    # carreras andaluzas de la lista de la portada que no estén ya (p. ej. Medio Maratón de Sevilla)
+    try:
+        js = (ROOT / "app" / "data.js").read_text()
+        app = json.loads(re.search(r"RV_RACES = (\[.*?\]);", js, re.S).group(1))
+        have = {r["n"] for lst in data.values() for r in lst}
+        for a in app:
+            if a.get("r") == "Andalucía" and a.get("p") in SLUGS and a["n"] not in have and a["k"] in AND_K:
+                x = dict(id=a["id"], n=a["n"], c=a["c"], d=a["d"], k=AND_K[a["k"]], dist=a.get("dist") or "", ok=a["ok"], note=a.get("t") or "")
+                if a.get("w"):
+                    x["web"] = a["w"]
+                if a.get("h"):
+                    x["t"] = a["h"]
+                data.setdefault(a["p"], []).append(x)
+    except Exception as ex:  # noqa: BLE001
+        print("aviso: sin app/data.js", ex)
+    return data
+
+
 def build():
-    races = sorted(RACES, key=sort_key)
-    feat = next(r for r in races if r.get("feat"))
+    data = all_provinces()
+    today = dt.date.today().isoformat()
+    counts_all = {p: sum(1 for r in lst if sort_key(r) >= today) for p, lst in data.items()}
+    for p in PROVS:
+        if data.get(p):
+            build_province(p, data[p], counts_all)
+
+
+def build_province(prov, plist, counts_all):
+    slug = SLUGS[prov]
+    out_dir = ROOT / slug
+    races = sorted(plist, key=sort_key)
+    today = dt.date.today().isoformat()
+    up = [r for r in races if "d" in r and r["d"] >= today and not r.get("s")]
+    feat = (next((r for r in up if r.get("feat")), None) or next((r for r in up if r["k"] == "21K" and r["ok"]), None)
+            or next((r for r in up if r["k"] == "21K"), None) or (up[0] if up else races[0]))
     towns = {re.split(r" \(| →| ↔", r["c"])[0] for r in races}
     for r in races:
         for part in re.split(r" → | ↔ ", r["c"]):
@@ -282,47 +358,61 @@ def build():
         y, m = map(int, key.split("-"))
         list_html += (f'<section class="month" data-m="{key}"><h2>{MES_L[m-1].capitalize()} {y}'
                       f'<span class="mc">{len(items)} {"carrera" if len(items) == 1 else "carreras"}</span></h2>'
-                      f'<div class="pgrid">{"".join(card(r) for r in items)}</div></section>\n')
+                      f'<div class="pgrid">{"".join(card(r, slug) for r in items)}</div></section>\n')
 
     fd = dt.date.fromisoformat(feat["d"])
+    segs = [("", "Todas", len(races)), ("21K", "Medias", counts["21K"]), ("10K", "10K", counts["10K"]), ("pop", "Populares", counts["pop"]),
+            ("trail", "Trail", counts["trail"]), ("ss", "San Silvestre", counts["ss"])]
     seg = "".join(f'<button type="button" data-k="{k}" aria-pressed="{str(k == "").lower()}">{lab}<span class="n">{n}</span></button>'
-                  for k, lab, n in [("", "Todas", len(races)), ("21K", "Medias", counts["21K"]), ("pop", "Populares", counts["pop"]),
-                                    ("trail", "Trail", counts["trail"]), ("ss", "San Silvestre", counts["ss"])])
+                  for k, lab, n in segs if n or k == "")
     events = []
     for r in races:
         if "d" not in r:
             continue
         ev = {"@type": "SportsEvent", "name": r["n"], "startDate": r["d"] + (f"T{r['t']}:00+01:00" if r.get("t") else ""),
               "eventStatus": "https://schema.org/EventCancelled" if r.get("s") else "https://schema.org/EventScheduled", "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-              "location": {"@type": "Place", "name": r["c"], "address": {"@type": "PostalAddress", "addressLocality": re.split(r" \(| →", r["c"])[0], "addressRegion": "Cádiz", "addressCountry": "ES"}},
-              "url": f"https://runiverso.com/cadiz/#{r['id']}", "description": r["note"]}
+              "location": {"@type": "Place", "name": r["c"], "address": {"@type": "PostalAddress", "addressLocality": re.split(r" \(| →", r["c"])[0], "addressRegion": prov, "addressCountry": "ES"}},
+              "url": f"https://runiverso.com/{slug}/#{r['id']}", "description": r["note"]}
         if r.get("web"):
             ev["sameAs"] = r["web"]
         events.append(ev)
     ld = {"@context": "https://schema.org", "@graph": [
         {"@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Runiverso", "item": "https://runiverso.com/"},
-            {"@type": "ListItem", "position": 2, "name": "Carreras en Cádiz", "item": "https://runiverso.com/cadiz/"}]}] + events}
+            {"@type": "ListItem", "position": 2, "name": f"Carreras en {prov}", "item": f"https://runiverso.com/{slug}/"}]}] + events}
 
+    fdl = f"{DIAS_L[fd.weekday()].capitalize()} {fd.day} de {MES_L[fd.month-1]}" + (f" · {feat['t']}" if feat.get("t") else "")
+    lis = [fdl, feat["c"], feat["dist"] or TYPES[feat["k"]], "Fecha confirmada" if feat["ok"] else "Fecha por confirmar"]
+    ftext = feat["note"].split(". ")[0].rstrip(".") + "." if feat.get("note") else ""
+    fweb = f'<a class="btn alt" href="{e(feat["web"])}" target="_blank" rel="noopener">Web oficial</a>' if feat.get("web") else ""
+    lab3, n3 = ("Trails", counts["trail"]) if counts["trail"] else ("San Silvestres", counts["ss"])
+    desc = (f"Calendario de carreras de running en la provincia de {prov}: {counts['21K']} medias maratones, populares, 10K y "
+            f"{counts['ss']} San Silvestres en {len(towns)} localidades, con fecha, web oficial y aviso antes de cada carrera.")
     tpl = (ROOT / "tools" / "cadiz_template.html").read_text()
     page = (tpl.replace("{{HEAD_TAIL}}", (ROOT / "tools" / "head_tail.html").read_text())
-               .replace("{{BAR}}", (ROOT / "tools" / "bar.html").read_text().replace("{{NAV}}", nav("../", "cadiz")))
+               .replace("{{BAR}}", (ROOT / "tools" / "bar.html").read_text().replace("{{NAV}}", nav("../", "and")))
                .replace("{{LD}}", json.dumps(ld, ensure_ascii=False))
+               .replace("{{TITLE}}", f"Carreras en {prov} 2026/27: medias, populares y San Silvestres · Runiverso")
+               .replace("{{DESC}}", e(desc)).replace("{{SLUG}}", slug).replace("{{PROV}}", prov)
+               .replace("{{TABS}}", tabs(prov, counts_all)).replace("{{LEAD}}", e(LEADS.get(prov, "")))
                .replace("{{N}}", str(len(races))).replace("{{N21}}", str(counts["21K"]))
-               .replace("{{NTR}}", str(counts["trail"])).replace("{{NTOWN}}", str(len(towns)))
+               .replace("{{LAB3}}", lab3).replace("{{NTR}}", str(n3)).replace("{{NTOWN}}", str(len(towns)))
                .replace("{{SEG}}", seg).replace("{{LIST}}", list_html)
+               .replace("{{FEAT_NAME}}", e(feat["n"])).replace("{{FEAT_TEXT}}", e(ftext)).replace("{{FEAT_WEB}}", fweb)
+               .replace("{{FEAT_LIS}}", "".join(f"<li>{e(x)}</li>" for x in lis))
+               .replace("{{FEAT_MON}}", MES_C[fd.month - 1])
                .replace("{{FEAT_ID}}", feat["id"]).replace("{{FEAT_DATE}}", feat["d"])
                .replace("{{FEAT_DOW}}", DIAS_L[fd.weekday()]).replace("{{FEAT_DAY}}", str(fd.day))
                .replace("{{REVISADO}}", REVISADO).replace("{{FORM}}", FORM)
                .replace("{{SOURCES}}", "".join(f'<a href="{e(u)}" target="_blank" rel="noopener">{e(t)}</a>' for t, u in SOURCES)))
-    OUT.mkdir(exist_ok=True)
-    (OUT / "index.html").write_text(page)
+    out_dir.mkdir(exist_ok=True)
+    (out_dir / "index.html").write_text(page)
     for r in races:
         if "d" in r:
-            (OUT / f"{r['id']}.ics").write_bytes(ics(r).encode())
+            (out_dir / f"{r['id']}.ics").write_bytes(ics(r, slug, prov).encode())
     import fix_events
-    fix_events.fix_file(OUT / "index.html")
-    print(f"{len(races)} carreras · {counts} · {len(towns)} municipios: {', '.join(towns)}")
+    fix_events.fix_file(out_dir / "index.html")
+    print(f"{prov}: {len(races)} carreras · {counts} · {len(towns)} municipios")
 
 
 if __name__ == "__main__":

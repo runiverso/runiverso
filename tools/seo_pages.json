@@ -84,31 +84,31 @@
   "n": 50
  },
  {
-  "path": "carreras-en/malaga/",
+  "path": "malaga/",
   "name": "Málaga",
   "kind": "p",
   "n": 31
  },
  {
-  "path": "carreras-en/sevilla/",
+  "path": "sevilla/",
   "name": "Sevilla",
   "kind": "p",
   "n": 30
  },
  {
-  "path": "carreras-en/granada/",
+  "path": "granada/",
   "name": "Granada",
   "kind": "p",
   "n": 20
  },
  {
-  "path": "carreras-en/cordoba/",
+  "path": "cordoba/",
   "name": "Córdoba",
   "kind": "p",
   "n": 12
  },
  {
-  "path": "carreras-en/jaen/",
+  "path": "jaen/",
   "name": "Jaén",
   "kind": "p",
   "n": 12
@@ -120,7 +120,7 @@
   "n": 7
  },
  {
-  "path": "carreras-en/huelva/",
+  "path": "huelva/",
   "name": "Huelva",
   "kind": "p",
   "n": 7
@@ -138,7 +138,7 @@
   "n": 5
  },
  {
-  "path": "carreras-en/almeria/",
+  "path": "almeria/",
   "name": "Almería",
   "kind": "p",
   "n": 5

@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-dia-de-reyes-de-santaella-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270103
+DTEND;VALUE=DATE:20270104
+SUMMARY:Carrera Popular Día de Reyes de Santaella
+LOCATION:Santaella\, Córdoba
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/cordoba/#carrera-popular-dia-de-reyes-de-san
+ taella
+URL:https://runiverso.com/cordoba/#carrera-popular-dia-de-reyes-de-santael
+ la
+END:VEVENT
+END:VCALENDAR

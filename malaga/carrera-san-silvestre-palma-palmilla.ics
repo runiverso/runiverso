@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-san-silvestre-palma-palmilla-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20261231T090000
+DTEND;TZID=Europe/Madrid:20261231T120000
+SUMMARY:Carrera San Silvestre Palma-Palmilla
+LOCATION:Málaga\, Málaga
+DESCRIPTION:Carrera solidaria del distrito Palma-Palmilla\, con una prueba
+  de 2 km. En 2025 (XIV edición) el límite era de 1.000 corredores y la 
+ inscripción costaba 8 €. Hora de 2025. Fecha por confirmar. Más info:
+  https://runiverso.com/malaga/#carrera-san-silvestre-palma-palmilla
+URL:https://runiverso.com/malaga/#carrera-san-silvestre-palma-palmilla
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-por-la-no-violencia-de-genero-de-jaen-2026@runiverso.c
+ om
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera Popular por la No Violencia de Género de Jaén
+LOCATION:Jaén\, Jaén
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/jaen/#carrera-popular-por-la-no-violencia-de
+ -genero-de-jaen
+URL:https://runiverso.com/jaen/#carrera-popular-por-la-no-violencia-de-gen
+ ero-de-jaen
+END:VEVENT
+END:VCALENDAR

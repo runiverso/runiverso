@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:medio-maraton-de-sevilla-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Medio Maratón de Sevilla
+LOCATION:Sevilla\, Sevilla
+DESCRIPTION:Se movió del 29 de noviembre al 13 de diciembre de 2026 porqu
+ e coincidía con las elecciones generales. Tiene etiqueta World Athletics
+  y unos 22.000 corredores. Los dorsales ya comprados siguen valiendo. Má
+ s info: https://runiverso.com/sevilla/#medio-maraton-de-sevilla
+URL:https://runiverso.com/sevilla/#medio-maraton-de-sevilla
+END:VEVENT
+END:VCALENDAR

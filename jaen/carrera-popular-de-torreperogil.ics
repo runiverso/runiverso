@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-de-torreperogil-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+SUMMARY:Carrera Popular de Torreperogil
+LOCATION:Torreperogil\, Jaén
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/jaen/#carrera-popular-de-torreperogil
+URL:https://runiverso.com/jaen/#carrera-popular-de-torreperogil
+END:VEVENT
+END:VCALENDAR

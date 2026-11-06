@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-urbana-del-pavo-de-benalmadena-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Carrera Urbana del Pavo de Benalmádena
+LOCATION:Benalmádena\, Málaga
+DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
+ írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
+  info: https://runiverso.com/malaga/#carrera-urbana-del-pavo-de-benalmade
+ na
+URL:https://runiverso.com/malaga/#carrera-urbana-del-pavo-de-benalmadena
+END:VEVENT
+END:VCALENDAR

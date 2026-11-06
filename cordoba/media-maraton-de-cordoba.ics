@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-de-cordoba-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Media Maratón de Córdoba
+LOCATION:Córdoba\, Córdoba
+DESCRIPTION:Domingo 13 de diciembre de 2026 a las 10:00\, con salida en la
+  avenida Conde de Vallellano y meta en la Puerta del Puente. Se movió de
+ sde el 29 de noviembre porque coincidía con las elecciones generales. La
+  web oficial indica inscripciones agotadas y ofrece lista de espera. En 2
+ 026 se agotaron 4.000 dorsales a las pocas horas de abrir la inscripción
+ . Más info: https://runiverso.com/cordoba/#media-maraton-de-cordoba
+URL:https://runiverso.com/cordoba/#media-maraton-de-cordoba
+END:VEVENT
+END:VCALENDAR

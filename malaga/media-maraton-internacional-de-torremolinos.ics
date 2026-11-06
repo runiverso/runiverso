@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-internacional-de-torremolinos-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270207
+DTEND;VALUE=DATE:20270208
+SUMMARY:Media Maratón Internacional de Torremolinos
+LOCATION:Torremolinos\, Málaga
+DESCRIPTION:2.750 plazas en la media\, con salida a las 9:30 y meta en el 
+ Centro Cultural Pablo Ruiz Picasso\, y 750 en la 5 km del sábado 6 de fe
+ brero. La inscripción está abierta en rockthesport.com y worldsmarathon
+ s.com. Más info: https://runiverso.com/malaga/#media-maraton-internacion
+ al-de-torremolinos
+URL:https://runiverso.com/malaga/#media-maraton-internacional-de-torremoli
+ nos
+END:VEVENT
+END:VCALENDAR

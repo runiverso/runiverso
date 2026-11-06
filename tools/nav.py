@@ -3,7 +3,7 @@
 
 def nav(rel, cur=""):
     items = [("Calendario", f"{rel or './'}#calendario", "", ""), ("Clasificaciones", f"{rel}clasificaciones/", "", "clas"),
-             ("Cádiz", f"{rel}cadiz/", "", "cadiz"), ("San Silvestre", f"{rel}san-silvestre-2026/", "opt", "ss"), ("Ritmo", f"{rel or './'}#calc", "opt", "")]
+             ("Andalucía", f"{rel or './'}#andalucia", "", "and"), ("San Silvestre", f"{rel}san-silvestre-2026/", "opt", "ss"), ("Ritmo", f"{rel or './'}#calc", "opt", "")]
     h = '<nav class="rv-nav" aria-label="Secciones">'
     for lab, href, cls, key in items:
         c = ' class="opt"' if cls else ""

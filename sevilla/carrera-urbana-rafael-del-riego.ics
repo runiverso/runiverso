@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-urbana-rafael-del-riego-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Carrera Urbana Rafael del Riego
+LOCATION:Las Cabezas de San Juan\, Sevilla
+DESCRIPTION:38.ª edición. Fecha según los calendarios de carreras de la
+  provincia. Confírmala en la web oficial antes de inscribirte. Fecha por
+  confirmar. Más info: https://runiverso.com/sevilla/#carrera-urbana-rafa
+ el-del-riego
+URL:https://runiverso.com/sevilla/#carrera-urbana-rafael-del-riego
+END:VEVENT
+END:VCALENDAR

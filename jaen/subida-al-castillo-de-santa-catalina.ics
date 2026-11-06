@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:subida-al-castillo-de-santa-catalina-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:Subida al Castillo de Santa Catalina
+LOCATION:Jaén\, Jaén
+DESCRIPTION:Subida popular de fin de año al castillo. Fecha según los ca
+ lendarios de carreras de la provincia. Confírmala en la web oficial ante
+ s de inscribirte. Fecha por confirmar. Más info: https://runiverso.com/j
+ aen/#subida-al-castillo-de-santa-catalina
+URL:https://runiverso.com/jaen/#subida-al-castillo-de-santa-catalina
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-ciudad-de-jaen-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20261115T93000
+DTEND;TZID=Europe/Madrid:20261115T123000
+SUMMARY:Media Maratón Ciudad de Jaén
+LOCATION:Jaén\, Jaén
+DESCRIPTION:30.ª edición\, Memorial Paco Manzaneda. Domingo 15 de noviem
+ bre de 2026 a las 9:30\, con salida y meta en la calle Virgen de la Cabez
+ a y un recorrido de una vuelta que este año pasa por la plaza de San Ild
+ efonso por las obras de la plaza de la Constitución. 21 km y 10 km. Los 
+ dorsales se agotaron: el Ayuntamiento amplió el cupo a 2.800 y después 
+ hasta 3.500. Más info: https://runiverso.com/jaen/#media-maraton-ciudad-
+ de-jaen
+URL:https://runiverso.com/jaen/#media-maraton-ciudad-de-jaen
+END:VEVENT
+END:VCALENDAR

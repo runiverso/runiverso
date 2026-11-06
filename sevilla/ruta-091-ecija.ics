@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:ruta-091-ecija-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Ruta 091 Écija
+LOCATION:Écija\, Sevilla
+DESCRIPTION:Carrera solidaria de la Policía Nacional. Fecha según los ca
+ lendarios de carreras de la provincia. Confírmala en la web oficial ante
+ s de inscribirte. Fecha por confirmar. Más info: https://runiverso.com/s
+ evilla/#ruta-091-ecija
+URL:https://runiverso.com/sevilla/#ruta-091-ecija
+END:VEVENT
+END:VCALENDAR

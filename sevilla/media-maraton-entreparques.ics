@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-entreparques-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261129
+DTEND;VALUE=DATE:20261130
+SUMMARY:Media Maratón Entreparques
+LOCATION:La Rinconada\, Sevilla
+DESCRIPTION:Los calendarios no coinciden en el día (29 de noviembre o 1 d
+ e diciembre). Fecha según los calendarios de carreras de la provincia. C
+ onfírmala en la web oficial antes de inscribirte. El 29 de noviembre hay
+  elecciones generales y varias carreras de ese día se han aplazado: comp
+ rueba la fecha. Fecha por confirmar. Más info: https://runiverso.com/sev
+ illa/#media-maraton-entreparques
+URL:https://runiverso.com/sevilla/#media-maraton-entreparques
+END:VEVENT
+END:VCALENDAR

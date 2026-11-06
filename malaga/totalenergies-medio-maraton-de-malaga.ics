@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:totalenergies-medio-maraton-de-malaga-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270307
+DTEND;VALUE=DATE:20270308
+SUMMARY:TotalEnergies Medio Maratón de Málaga
+LOCATION:Málaga\, Málaga
+DESCRIPTION:Domingo 7 de marzo de 2027\, con salida a las 8:15 desde el Pa
+ seo del Parque y recorrido en un solo bucle. Hasta 14.000 dorsales (12.00
+ 0 participantes en 2026). El primer tramo promocional costó 23 € más 
+ licencia federativa. Edad mínima de 18 años. Más info: https://runiver
+ so.com/malaga/#totalenergies-medio-maraton-de-malaga
+URL:https://runiverso.com/malaga/#totalenergies-medio-maraton-de-malaga
+END:VEVENT
+END:VCALENDAR
