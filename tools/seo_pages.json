@@ -3,7 +3,7 @@
   "path": "carreras-en/andalucia/",
   "name": "Andalucía",
   "kind": "r",
-  "n": 63
+  "n": 64
  },
  {
   "path": "carreras-en/cataluna/",
@@ -144,6 +144,12 @@
   "n": 3
  },
  {
+  "path": "carreras-en/jaen/",
+  "name": "Jaén",
+  "kind": "p",
+  "n": 3
+ },
+ {
   "path": "carreras-en/sevilla/",
   "name": "Sevilla",
   "kind": "p",
@@ -177,7 +183,7 @@
   "path": "medias-maratones/",
   "name": "Medias maratones",
   "kind": "t",
-  "n": 28
+  "n": 29
  },
  {
   "path": "carreras-10k/",

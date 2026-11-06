@@ -363,10 +363,15 @@ def ficha(r, races, Z, photos):
     lab = LABEL.get(r["k"], "Carrera")
     fig, og, alt = photos[r["k"]]
     if rid in CARTELES:
+        try:
+            from PIL import Image
+            cw, chh = Image.open(ROOT / "carteles" / CARTELES[rid]).size
+        except Exception:
+            cw, chh = 900, 1125
         src = r.get("w") or ""
         cred = f'<a href="{e(src)}" target="_blank" rel="noopener">{e(r["n"])}</a>' if src else e(r["n"])
         fig = (f'<figure class="cartel"><img src="{rel}carteles/{e(CARTELES[rid])}" alt="Cartel oficial de la {e(r["n"])} {y}" '
-               f'width="900" height="1108" loading="eager"><figcaption>Cartel oficial · cedido por la organización ({cred})</figcaption></figure>')
+               f'width="{cw}" height="{chh}" loading="eager"><figcaption>Cartel oficial · cedido por la organización ({cred})</figcaption></figure>')
     estado = "ya celebrada" if is_past(r) else ("fecha confirmada" if r["ok"] else "fecha por confirmar")
     title = f"{r['n']} {y}: fecha, distancia e inscripción · Runiverso"
     desc = (f"{r['n']} {y} en {r['c']} ({r['p']}): {fecha_larga(r)}, {r['dist']}. "
