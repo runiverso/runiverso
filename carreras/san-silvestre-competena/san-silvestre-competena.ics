@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-competena-2026-12-28@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261228
+DTEND;VALUE=DATE:20261229
+SUMMARY:San Silvestre Competeña
+LOCATION:Cómpeta\, Andalucía
+DESCRIPTION:San Silvestre · Cómpeta\nhttps://runiverso.com/c
+ arreras/san-silvestre-competena/
+END:VEVENT
+END:VCALENDAR

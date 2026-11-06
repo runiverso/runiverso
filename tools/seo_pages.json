@@ -3,7 +3,7 @@
   "path": "carreras-en/andalucia/",
   "name": "Andalucía",
   "kind": "r",
-  "n": 64
+  "n": 114
  },
  {
   "path": "carreras-en/cataluna/",
@@ -84,6 +84,18 @@
   "n": 50
  },
  {
+  "path": "carreras-en/malaga/",
+  "name": "Málaga",
+  "kind": "p",
+  "n": 31
+ },
+ {
+  "path": "carreras-en/sevilla/",
+  "name": "Sevilla",
+  "kind": "p",
+  "n": 27
+ },
+ {
   "path": "carreras-en/barcelona/",
   "name": "Barcelona",
   "kind": "p",
@@ -98,12 +110,6 @@
  {
   "path": "carreras-en/castellon/",
   "name": "Castellón",
-  "kind": "p",
-  "n": 5
- },
- {
-  "path": "carreras-en/malaga/",
-  "name": "Málaga",
   "kind": "p",
   "n": 5
  },
@@ -150,12 +156,6 @@
   "n": 3
  },
  {
-  "path": "carreras-en/sevilla/",
-  "name": "Sevilla",
-  "kind": "p",
-  "n": 3
- },
- {
   "path": "carreras-en/alava/",
   "name": "Álava",
   "kind": "p",
@@ -183,13 +183,13 @@
   "path": "medias-maratones/",
   "name": "Medias maratones",
   "kind": "t",
-  "n": 29
+  "n": 33
  },
  {
   "path": "carreras-10k/",
   "name": "Carreras de 10 km",
   "kind": "t",
-  "n": 5
+  "n": 6
  },
  {
   "path": "trail/",
@@ -201,12 +201,12 @@
   "path": "carreras-populares/",
   "name": "Carreras populares",
   "kind": "t",
-  "n": 31
+  "n": 62
  },
  {
   "path": "san-silvestre-2026/",
   "name": "San Silvestres",
   "kind": "t",
-  "n": 36
+  "n": 50
  }
 ]

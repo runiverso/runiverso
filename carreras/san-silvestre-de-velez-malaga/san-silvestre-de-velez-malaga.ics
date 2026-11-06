@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-de-velez-malaga-2026-12-26@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+SUMMARY:San Silvestre de Vélez-Málaga
+LOCATION:Vélez-Málaga\, Andalucía
+DESCRIPTION:San Silvestre · Vélez-Málaga\nhttps://runiverso.
+ com/carreras/san-silvestre-de-velez-malaga/
+END:VEVENT
+END:VCALENDAR

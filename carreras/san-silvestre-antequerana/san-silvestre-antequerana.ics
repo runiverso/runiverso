@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-antequerana-2026-12-31@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:San Silvestre Antequerana
+LOCATION:Antequera\, Andalucía
+DESCRIPTION:San Silvestre · Antequera\nhttps://runiverso.com
+ /carreras/san-silvestre-antequerana/
+END:VEVENT
+END:VCALENDAR

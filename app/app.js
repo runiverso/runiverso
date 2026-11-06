@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "26";
+  var APP_V = "27";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -202,7 +202,7 @@
     var dots = '<div class="odots" aria-hidden="true">' + [0, 1, 2].map(function (i) { return '<i' + (i === onbStep ? ' class="on"' : '') + '></i>'; }).join("") + '</div>';
     var h = '';
     if (onbStep === 0) {
-      h = '<h1>Todas las carreras de España, en tu bolsillo</h1><p class="asub">Runiverso es el calendario de carreras de running: medias, maratones, 10K, trail, populares y San Silvestres.</p>' +
+      h = '<h1>Todas las carreras de Andalucía, en tu bolsillo</h1><p class="asub">Runiverso es el calendario de carreras de running de Andalucía: populares, 5K, 10K, medias y San Silvestres de las ocho provincias, y las grandes citas de España.</p>' +
         '<ul class="aperks"><li>Las carreras de tu provincia primero, con fecha, distancia y web oficial</li><li>Te avisamos en el móvil antes de cada carrera a la que te apuntes</li><li>Guarda tus marcas, gana medallas y sal en el ranking de tu provincia</li></ul>' +
         '<div class="f"><button class="btn wide" type="button" data-onb="1">Empezar</button></div>';
     } else if (onbStep === 1) {

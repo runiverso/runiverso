@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-de-rincon-de-la-victoria-2026-12-27@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261227
+DTEND;VALUE=DATE:20261228
+SUMMARY:San Silvestre de Rincón de la Victoria
+LOCATION:Rincón de la Victoria\, Andalucía
+DESCRIPTION:San Silvestre · Rincón de la Victoria\nhttps://r
+ universo.com/carreras/san-silvestre-de-rincon-de-la-victoria/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-clasica-de-castilblanco-2026-12-29@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261229
+DTEND;VALUE=DATE:20261230
+SUMMARY:Carrera Popular Clásica de Castilblanco
+LOCATION:Castilblanco de los Arroyos\, Andalucía
+DESCRIPTION:Popular · Castilblanco de los Arroyos\nhttps://r
+ universo.com/carreras/carrera-popular-clasica-de-castilblanco/
+END:VEVENT
+END:VCALENDAR

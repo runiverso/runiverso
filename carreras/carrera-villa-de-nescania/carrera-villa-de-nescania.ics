@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-villa-de-nescania-2026-12-19@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261219
+DTEND;VALUE=DATE:20261220
+SUMMARY:Carrera Villa de Nescania
+LOCATION:Valle de Abdalajís\, Andalucía
+DESCRIPTION:Popular · Valle de Abdalajís\nhttps://runiverso.
+ com/carreras/carrera-villa-de-nescania/
+END:VEVENT
+END:VCALENDAR

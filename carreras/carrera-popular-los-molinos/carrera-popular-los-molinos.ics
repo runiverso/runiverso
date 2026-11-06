@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-los-molinos-2026-11-15@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Carrera Popular Los Molinos
+LOCATION:Alcalá de Guadaíra\, Andalucía
+DESCRIPTION:Popular · Alcalá de Guadaíra\nhttps://runiverso.
+ com/carreras/carrera-popular-los-molinos/
+END:VEVENT
+END:VCALENDAR

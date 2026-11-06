@@ -14,6 +14,7 @@ import unicodedata
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import build_cadiz  # noqa: E402
+import andalucia  # noqa: E402
 import build_results  # noqa: E402
 
 JS = r"""
@@ -84,6 +85,13 @@ def main():
         races.append({"id": slug(r["n"]), "n": r["n"], "c": r["c"], "r": "Andalucía", "d": r["d"], "ok": r["ok"], "k": CADIZ_K[r["k"]],
                       "dist": r["dist"], "t": r["note"], "x": [], "w": r.get("web", ""), "h": r.get("t", ""), "cadiz": True, "p": "Cádiz", **({"s": r["s"]} if r.get("s") else {})})
         seen.add(slug(r["n"]))
+    for pv, lst in andalucia.PROVINCIAS.items():
+        for r in lst:
+            if slug(r["n"]) in seen:
+                continue
+            races.append({"id": slug(r["n"]), "n": r["n"], "c": r["c"], "r": "Andalucía", "d": r["d"], "ok": r["ok"], "k": r["k"],
+                          "dist": r["dist"], "t": r["t"], "x": [], "w": r.get("w", ""), "h": r.get("h", ""), "p": pv})
+            seen.add(slug(r["n"]))
     for r in races:
         r["p"] = r.get("p") or prov(r["c"])
         r.pop("cadiz", None)
@@ -111,7 +119,8 @@ def bust():
     vd, vc = h("app/data.js"), h("carteles/carteles.js")
     for f, pats in (("app/index.html", [(r'data\.js\?v=[\w]+', f"data.js?v={vd}"), (r'carteles\.js(\?v=[\w]+)?"', f'carteles.js?v={vc}"')]),
                     ("app/sw.js", [(r'data\.js\?v=[\w]+', f"data.js?v={vd}"), (r'carteles\.js(\?v=[\w]+)?"', f'carteles.js?v={vc}"')]),
-                    ("index.html", [(r'carteles/carteles\.js(\?v=[\w]+)?"', f'carteles/carteles.js?v={vc}"')])):
+                    ("index.html", [(r'carteles/carteles\.js(\?v=[\w]+)?"', f'carteles/carteles.js?v={vc}"'),
+                                    (r'app/data\.js\?v=[\w]+', f"app/data.js?v={vd}")])):
         t = (ROOT / f).read_text()
         for a, b in pats:
             t = re.sub(a, b, t)

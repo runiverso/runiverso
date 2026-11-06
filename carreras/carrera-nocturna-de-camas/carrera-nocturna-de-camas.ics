@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-nocturna-de-camas-2026-12-04@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261204
+DTEND;VALUE=DATE:20261205
+SUMMARY:Carrera Nocturna de Camas
+LOCATION:Camas\, Andalucía
+DESCRIPTION:Nocturna · Camas\nhttps://runiverso.com/carreras
+ /carrera-nocturna-de-camas/
+END:VEVENT
+END:VCALENDAR

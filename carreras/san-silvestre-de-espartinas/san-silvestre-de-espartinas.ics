@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-de-espartinas-2026-12-27@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261227
+DTEND;VALUE=DATE:20261228
+SUMMARY:San Silvestre de Espartinas
+LOCATION:Espartinas\, Andalucía
+DESCRIPTION:San Silvestre · Espartinas\nhttps://runiverso.co
+ m/carreras/san-silvestre-de-espartinas/
+END:VEVENT
+END:VCALENDAR

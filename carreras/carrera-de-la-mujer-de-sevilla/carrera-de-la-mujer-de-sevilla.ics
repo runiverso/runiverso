@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-de-la-mujer-de-sevilla-2026-11-15@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;TZID=Europe/Madrid:20261115T100000
+DTEND;TZID=Europe/Madrid:20261115T130000
+SUMMARY:Carrera de la Mujer de Sevilla
+LOCATION:Sevilla\, Andalucía
+DESCRIPTION:6\,4 km · Sevilla\nhttps://www.carreradelamujer.
+ com\nhttps://runiverso.com/carreras/carrera-de-la-mujer-de-sevilla/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-fuengirola-contra-la-violencia-machista-2026-11-
+ 22@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera Fuengirola contra la Violencia Machista
+LOCATION:Fuengirola\, Andalucía
+DESCRIPTION:Solidaria · Fuengirola\nhttps://runiverso.com/ca
+ rreras/carrera-fuengirola-contra-la-violencia-machista/
+END:VEVENT
+END:VCALENDAR

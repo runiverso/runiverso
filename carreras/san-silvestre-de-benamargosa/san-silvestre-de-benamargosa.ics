@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-de-benamargosa-2026-12-20@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
+SUMMARY:San Silvestre de Benamargosa
+LOCATION:Benamargosa\, Andalucía
+DESCRIPTION:San Silvestre · Benamargosa\nhttps://runiverso.c
+ om/carreras/san-silvestre-de-benamargosa/
+END:VEVENT
+END:VCALENDAR
