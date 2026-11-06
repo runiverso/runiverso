@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:x-millas-guadiana-2026-11-08@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261108
+DTEND;VALUE=DATE:20261109
+SUMMARY:X Millas Guadiana
+LOCATION:Ayamonte\, Andalucía
+DESCRIPTION:10 millas · Ayamonte\nhttps://runiverso.com/carr
+ eras/x-millas-guadiana/
+END:VEVENT
+END:VCALENDAR

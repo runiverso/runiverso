@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-nocturna-de-granada-2026-12-18@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261218
+DTEND;VALUE=DATE:20261219
+SUMMARY:Carrera Nocturna de Granada
+LOCATION:Granada\, Andalucía
+DESCRIPTION:Nocturna · Granada\nhttps://runiverso.com/carrer
+ as/carrera-nocturna-de-granada/
+END:VEVENT
+END:VCALENDAR

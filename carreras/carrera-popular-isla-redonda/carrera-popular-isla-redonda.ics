@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-isla-redonda-2026-12-06@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:Carrera Popular Isla Redonda
+LOCATION:Isla Redonda-La Aceñuela\, Andalucía
+DESCRIPTION:Popular · Isla Redonda-La Aceñuela\nhttps://runi
+ verso.com/carreras/carrera-popular-isla-redonda/
+END:VEVENT
+END:VCALENDAR

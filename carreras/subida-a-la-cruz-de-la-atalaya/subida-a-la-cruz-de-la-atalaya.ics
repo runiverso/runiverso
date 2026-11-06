@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:subida-a-la-cruz-de-la-atalaya-2026-11-22@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Subida a la Cruz de la Atalaya
+LOCATION:Padul\, Andalucía
+DESCRIPTION:Subida · Padul\nhttps://runiverso.com/carreras/s
+ ubida-a-la-cruz-de-la-atalaya/
+END:VEVENT
+END:VCALENDAR

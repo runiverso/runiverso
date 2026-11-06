@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:legua-urbana-nocturna-la-bellota-2027-01-09@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20270109
+DTEND;VALUE=DATE:20270110
+SUMMARY:Legua Urbana Nocturna La Bellota
+LOCATION:Baños de la Encina\, Andalucía
+DESCRIPTION:1 legua · Baños de la Encina\nhttps://runiverso.
+ com/carreras/legua-urbana-nocturna-la-bellota/
+END:VEVENT
+END:VCALENDAR

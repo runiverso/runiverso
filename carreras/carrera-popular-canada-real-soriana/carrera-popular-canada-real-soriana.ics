@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-canada-real-soriana-2026-11-22@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera Popular Cañada Real Soriana
+LOCATION:Villarrubia\, Andalucía
+DESCRIPTION:Popular · Villarrubia\nhttps://runiverso.com/car
+ reras/carrera-popular-canada-real-soriana/
+END:VEVENT
+END:VCALENDAR

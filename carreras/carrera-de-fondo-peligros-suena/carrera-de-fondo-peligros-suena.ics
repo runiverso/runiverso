@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-de-fondo-peligros-suena-2026-11-22@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera de Fondo Peligros Suena
+LOCATION:Peligros\, Andalucía
+DESCRIPTION:Fondo · Peligros\nhttps://runiverso.com/carreras
+ /carrera-de-fondo-peligros-suena/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-de-villanueva-de-los-castillejos-2026-12
+ -26@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+SUMMARY:Carrera Popular de Villanueva de los Castillejos
+LOCATION:Villanueva de los Castillejos\, Andalucía
+DESCRIPTION:Popular · Villanueva de los Castillejos\nhttps:/
+ /runiverso.com/carreras/carrera-popular-de-villanueva-de-los-castillejos/
+END:VEVENT
+END:VCALENDAR

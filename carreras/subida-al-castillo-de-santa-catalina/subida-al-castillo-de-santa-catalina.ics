@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:subida-al-castillo-de-santa-catalina-2026-12-31@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:Subida al Castillo de Santa Catalina
+LOCATION:Jaén\, Andalucía
+DESCRIPTION:Subida · Jaén\nhttps://runiverso.com/carreras/su
+ bida-al-castillo-de-santa-catalina/
+END:VEVENT
+END:VCALENDAR

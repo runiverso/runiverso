@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-de-bonares-memorial-manolo-marquez-2026-11-15@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Carrera de Bonares Memorial Manolo Márquez
+LOCATION:Bonares\, Andalucía
+DESCRIPTION:Popular · Bonares\nhttps://runiverso.com/carrera
+ s/carrera-de-bonares-memorial-manolo-marquez/
+END:VEVENT
+END:VCALENDAR

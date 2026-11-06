@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:prueba-de-fondo-villa-romana-de-salar-2026-11-15@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Prueba de Fondo Villa Romana de Salar
+LOCATION:Salar\, Andalucía
+DESCRIPTION:Fondo · Salar\nhttps://runiverso.com/carreras/pr
+ ueba-de-fondo-villa-romana-de-salar/
+END:VEVENT
+END:VCALENDAR

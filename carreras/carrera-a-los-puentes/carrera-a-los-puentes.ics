@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-a-los-puentes-2026-12-17@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261217
+DTEND;VALUE=DATE:20261218
+SUMMARY:Carrera a los Puentes
+LOCATION:Jaén\, Andalucía
+DESCRIPTION:Popular · Jaén\nhttps://runiverso.com/carreras/c
+ arrera-a-los-puentes/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-ruta-091-cordoba-2026-11-22@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Carrera Solidaria Ruta 091 Córdoba
+LOCATION:Córdoba\, Andalucía
+DESCRIPTION:6\,3 km · Córdoba\nhttps://runiverso.com/carrera
+ s/carrera-solidaria-ruta-091-cordoba/
+END:VEVENT
+END:VCALENDAR

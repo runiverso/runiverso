@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:media-maraton-ciudad-de-roquetas-2026-11-22@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261122
+DTEND;VALUE=DATE:20261123
+SUMMARY:Media Maratón Ciudad de Roquetas
+LOCATION:Roquetas de Mar\, Andalucía
+DESCRIPTION:21\,1 km · Roquetas de Mar\nhttps://runiverso.co
+ m/carreras/media-maraton-ciudad-de-roquetas/
+END:VEVENT
+END:VCALENDAR

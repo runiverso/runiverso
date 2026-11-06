@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-de-albolote-2026-12-19@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261219
+DTEND;VALUE=DATE:20261220
+SUMMARY:Carrera Solidaria de Albolote
+LOCATION:Albolote\, Andalucía
+DESCRIPTION:Solidaria · Albolote\nhttps://runiverso.com/carr
+ eras/carrera-solidaria-de-albolote/
+END:VEVENT
+END:VCALENDAR

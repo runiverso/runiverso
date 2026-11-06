@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-vegas-del-genil-2026-12-30@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261230
+DTEND;VALUE=DATE:20261231
+SUMMARY:San Silvestre Vegas del Genil
+LOCATION:Belicena\, Andalucía
+DESCRIPTION:San Silvestre · Belicena\nhttps://runiverso.com/
+ carreras/san-silvestre-vegas-del-genil/
+END:VEVENT
+END:VCALENDAR

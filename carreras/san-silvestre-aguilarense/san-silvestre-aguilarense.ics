@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-aguilarense-2026-12-31@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:San Silvestre Aguilarense
+LOCATION:Aguilar de la Frontera\, Andalucía
+DESCRIPTION:San Silvestre · Aguilar de la Frontera\nhttps://
+ runiverso.com/carreras/san-silvestre-aguilarense/
+END:VEVENT
+END:VCALENDAR

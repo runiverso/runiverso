@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-herrerena-2026-12-27@runiverso.com
+DTSTAMP:20261106T120000Z
+DTSTART;VALUE=DATE:20261227
+DTEND;VALUE=DATE:20261228
+SUMMARY:San Silvestre Herrereña
+LOCATION:Herrera\, Andalucía
+DESCRIPTION:San Silvestre · Herrera\nhttps://runiverso.com/c
+ arreras/san-silvestre-herrerena/
+END:VEVENT
+END:VCALENDAR
