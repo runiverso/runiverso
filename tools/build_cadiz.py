@@ -77,8 +77,8 @@ RACES = [
     dict(id="cerrocross-melkart-gadeiras", n="Cerrocross Melkart Gadeiras", c="San Fernando", d="2027-10-31", k="pop", dist="Cross", ok=False,
          note="Cross por el Cerro de los Mártires. Aparece en el calendario de GoTrail."),
     dict(id="media-maraton-ciudad-de-cadiz", n="Media Maratón Ciudad de Cádiz", c="Cádiz", d="2026-11-08", t="09:00", k="21K", dist="21,1 km", ok=True,
-         note="3.ª edición, con récord de participación: unos 3.000 inscritos. Salida en La Caleta y meta en la Catedral, a dos vueltas por el casco urbano. Recogida de dorsales del jueves 5 al sábado 7 de noviembre, de 12:00 a 20:00, en El Corte Inglés de Cádiz; el domingo no se entregan. Tiempo máximo: 2 h 30 min.",
-         web="https://mediamaratonciudaddecadiz.com", feat=True),
+         note="SUSPENDIDA. El Ayuntamiento de Cádiz suspendió la prueba el viernes 6 de noviembre, a dos días de la carrera, tras un informe desfavorable de la Policía Local: los agentes voluntarios para regular el tráfico retiraron su disponibilidad y no se podía garantizar la seguridad del recorrido. De momento no hay nueva fecha ni información sobre la devolución de inscripciones: consulta la web y las redes de la organización. Era la 3.ª edición, con unos 3.000 inscritos, y tenía fin solidario a favor de la Asociación Síndrome de Rett.",
+         web="https://mediamaratonciudaddecadiz.com", s="suspendida"),
     dict(id="trail-sierra-de-facinas", n="Trail Sierra de Facinas", c="Facinas (Tarifa)", d="2026-11-07", k="trail", dist="Trail", ok=False,
          note="4.ª edición, por la sierra de Facinas."),
     dict(id="carrera-urbana-ciudad-de-algeciras", n="Carrera Urbana Ciudad de Algeciras", c="Algeciras", d="2026-11-08", k="pop", dist="Urbana", ok=False,
@@ -116,7 +116,7 @@ RACES = [
          note="5.ª edición."),
     dict(id="san-silvestre-chipionera", n="San Silvestre Chipionera", c="Chipiona", d="2026-12-29", k="ss", dist="San Silvestre", ok=False,
          note="33.ª edición."),
-    dict(id="media-maraton-el-puerto", n="Media Maratón y 10K El Puerto", c="El Puerto de Santa María", d="2027-01-31", t="09:00", k="21K", dist="21,1 km y 10 km", ok=True,
+    dict(feat=True, id="media-maraton-el-puerto", n="Media Maratón y 10K El Puerto", c="El Puerto de Santa María", d="2027-01-31", t="09:00", k="21K", dist="21,1 km y 10 km", ok=True,
          note="Salida y meta en el Centro Comercial El Paseo. Hasta 4.500 dorsales entre media y 10K; la inscripción cierra el 17 de enero de 2027 o al agotarse. La media cuesta de 20 a 30 € y el 10K de 15 a 25 €, según el tramo."),
     dict(id="trail-guerrera-valentina", n="Trail Guerrera Valentina", c="Jerez de la Frontera", d="2027-02-13", k="trail", dist="Trail", ok=False,
          note="Trail solidario en Jerez."),
@@ -230,7 +230,7 @@ PK = {"21K": "21K", "pop": "POP", "trail": "TR", "ss": "SS"}
 
 def card(r):
     share = urllib.parse.quote(f"{r['n']} · {when(r)} · {r['c']}\nhttps://runiverso.com/cadiz/#{r['id']}")
-    st = '<span class="st ok">Confirmada</span>' if r["ok"] else '<span class="st prov">Por confirmar</span>'
+    st = '<span class="st prov">Suspendida</span>' if r.get("s") else ('<span class="st ok">Confirmada</span>' if r["ok"] else '<span class="st prov">Por confirmar</span>')
     acts = []
     if r.get("web"):
         acts.append(f'<a class="btn" href="{e(r["web"])}" target="_blank" rel="noopener">Web oficial</a>')
@@ -254,6 +254,8 @@ def card(r):
         dd = f"{MES_L[m-1].capitalize()} {y}"
     poster = poster_html(r["id"], r["n"], r["c"], PK[r["k"]], r["dist"], r.get("d"), r.get("m"), r["ok"], tag="button", root="../")
     poster = poster.replace('type="button"', f'type="button" data-tog="{r["id"]}"', 1)
+    if r.get("s"):
+        poster = poster.replace('</button>', '<span class="pprov">Suspendida</span></button>', 1) if 'class="pprov"' not in poster else poster.replace('Por confirmar', 'Suspendida')
     return (f'<article class="pcard" id="{r["id"]}" data-k="{r["k"]}" data-end="{end}">{poster}'
             f'<div class="pinfo"><h3>{(f'<a href="../carreras/{fid}/">{e(r["n"])}</a>') if fid else e(r["n"])}</h3><p class="pl">{e(r["c"])}</p><p class="pd">{dd}{st}</p>'
             f'<details class="pmore" id="m-{r["id"]}"><summary>Ver más</summary><p>{e(r["note"])}</p><div class="acts">{"".join(acts)}</div></details></div></article>')
@@ -291,7 +293,7 @@ def build():
         if "d" not in r:
             continue
         ev = {"@type": "SportsEvent", "name": r["n"], "startDate": r["d"] + (f"T{r['t']}:00+01:00" if r.get("t") else ""),
-              "eventStatus": "https://schema.org/EventScheduled", "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+              "eventStatus": "https://schema.org/EventCancelled" if r.get("s") else "https://schema.org/EventScheduled", "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
               "location": {"@type": "Place", "name": r["c"], "address": {"@type": "PostalAddress", "addressLocality": re.split(r" \(| →", r["c"])[0], "addressRegion": "Cádiz", "addressCountry": "ES"}},
               "url": f"https://runiverso.com/cadiz/#{r['id']}", "description": r["note"]}
         if r.get("web"):

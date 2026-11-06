@@ -82,7 +82,7 @@ def main():
         if "d" not in r or slug(r["n"]) in seen:
             continue
         races.append({"id": slug(r["n"]), "n": r["n"], "c": r["c"], "r": "Andalucía", "d": r["d"], "ok": r["ok"], "k": CADIZ_K[r["k"]],
-                      "dist": r["dist"], "t": r["note"], "x": [], "w": r.get("web", ""), "h": r.get("t", ""), "cadiz": True, "p": "Cádiz"})
+                      "dist": r["dist"], "t": r["note"], "x": [], "w": r.get("web", ""), "h": r.get("t", ""), "cadiz": True, "p": "Cádiz", **({"s": r["s"]} if r.get("s") else {})})
         seen.add(slug(r["n"]))
     for r in races:
         r["p"] = r.get("p") or prov(r["c"])
@@ -91,9 +91,13 @@ def main():
     results = sorted(build_results.RESULTS, key=lambda r: r["d"], reverse=True)
     for r in results:
         r["p"] = prov(r["c"])
+    # Las suspendidas van aparte: el aviso diario (Supabase) solo lee RV_RACES y no debe avisar de ellas
+    susp = [r for r in races if r.get("s")]
+    races = [r for r in races if not r.get("s")]
     out = ROOT / "app" / "data.js"
     out.write_text("/* Generado por tools/build_app_data.py: no editar a mano */\n"
                    "window.RV_RACES = " + json.dumps(races, ensure_ascii=False) + ";\n"
+                   "window.RV_SUSP = " + json.dumps(susp, ensure_ascii=False) + ";\n"
                    "window.RV_RESULTS = " + json.dumps(results, ensure_ascii=False) + ";\n"
                    "window.RV_ZONES = " + json.dumps(ZONES, ensure_ascii=False) + ";\n")
     print(f"{len(races)} carreras ({sum(1 for r in races if r['p'] == 'Cádiz')} de Cádiz) · {len(results)} clasificaciones")

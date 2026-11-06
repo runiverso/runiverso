@@ -541,3 +541,6 @@ h1 em, h2 em { color: inherit !important; font-style: normal !important; }
 .feat .cd b { font-variation-settings: "wdth" 70; font-weight: 800 !important; letter-spacing: 0 !important; }
 .feat li { background: var(--surface-2) !important; border-radius: 6px !important; }
 .hero .kicker, .zhero .kicker { text-transform: none !important; letter-spacing: 0 !important; }
+/* Carrera suspendida */
+.susp { margin: 0 0 16px; padding: 14px 18px; border-radius: 10px; border: 1px solid #F1C7C3; border-left: 4px solid #B3261E; background: #FDF2F1; color: #14171C; line-height: 1.5; max-width: 72ch; }
+.susp b { color: #B3261E; }

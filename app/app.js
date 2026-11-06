@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "24";
+  var APP_V = "25";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -360,7 +360,7 @@
   }
 
   /* ---------- Carreras ---------- */
-  var RACES = (window.RV_RACES || []).map(function (r) { r.date = pd(r.d); r.hay = norm([r.n, r.c, r.r, r.p, r.k].join(" ")); return r; });
+  var RACES = (window.RV_RACES || []).concat(window.RV_SUSP || []).sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : 0; }).map(function (r) { r.date = pd(r.d); r.hay = norm([r.n, r.c, r.r, r.p, r.k].join(" ")); return r; });
   var BY = {}; RACES.forEach(function (r) { BY[r.id] = r; });
   var RESULTS = window.RV_RESULTS || [];
   function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
@@ -382,7 +382,7 @@
   function poster(r, tag, extra) {
     var C = window.CARTELES || {};
     var at = ' data-k="' + r.k + '" data-race="' + r.id + '" type="button" aria-label="' + esc(r.n) + ': ver ficha"';
-    var t = tag || (S.mine[r.id] ? '<span class="tag mine">Apuntada</span>' : (r.ok ? '' : '<span class="tag">Por confirmar</span>'));
+    var t = tag || (r.s ? '<span class="tag">Suspendida</span>' : S.mine[r.id] ? '<span class="tag mine">Apuntada</span>' : (r.ok ? '' : '<span class="tag">Por confirmar</span>'));
     if (C[r.id]) return '<button class="poster img"' + at + ' style="padding:0"><img src="../carteles/' + C[r.id] + '" alt="" style="width:100%;height:100%;object-fit:cover">' + t + '</button>';
     var dist = distTxt(r);
     return '<button class="poster bib"' + at + (extra || "") + '><span class="bb">' + LABEL[r.k] + (dist ? '<span>' + esc(dist) + '</span>' : '') + '</span>' +
@@ -391,7 +391,7 @@
   }
   /* Fila tipo entrada para listas */
   function item(r) {
-    var C = window.CARTELES || {}, dist = distTxt(r), st = S.mine[r.id] ? '<span class="tks mine">Apuntada</span>' : (r.ok ? '' : '<span class="tks">Por confirmar</span>');
+    var C = window.CARTELES || {}, dist = distTxt(r), st = r.s ? '<span class="tks">Suspendida</span>' : S.mine[r.id] ? '<span class="tks mine">Apuntada</span>' : (r.ok ? '' : '<span class="tks">Por confirmar</span>');
     return '<button class="tk" type="button" data-k="' + r.k + '" data-race="' + r.id + '" aria-label="' + esc(r.n) + ': ver ficha">' +
       '<span class="tkd"><b>' + r.date.getDate() + '</b><span>' + MES_C[r.date.getMonth()] + '</span></span>' +
       '<span class="tkb"><b>' + esc(r.n) + '</b><span>' + esc(r.c) + (r.p && r.c.indexOf(r.p) < 0 ? ', ' + esc(r.p) : '') + '</span>' +
@@ -488,8 +488,11 @@
   }
   function vInicio() {
     var up = upcoming();
-    var mine = up.filter(function (r) { return S.mine[r.id]; });
+    var mine = up.filter(function (r) { return S.mine[r.id] && !r.s; });
     var h = installBanner();
+    up.filter(function (r) { return S.mine[r.id] && r.s; }).forEach(function (r) {
+      h += '<button class="susp" type="button" data-race="' + r.id + '"><b>' + esc(r.n) + ': suspendida</b><span>Toca para ver los detalles. Consulta la devolución de la inscripción con la organización.</span></button>';
+    });
     h += '<div><p class="kick">' + cap(fdate(today)) + '</p><h1>Hola' + (S.name ? ", " + esc(S.name.split(" ")[0]) : "") + '</h1>' +
       '<div class="row" style="margin-top:10px">' + zoneChip() + (S.name ? '' : '<button class="btn sm alt" type="button" data-act="name">Pon tu nombre</button>') + '</div></div>';
     if (mine.length) {
@@ -775,9 +778,10 @@
   function raceSheet(id) {
     var r = BY[id]; if (!r) return;
     var on = !!S.mine[id], d = daysTo(r.date);
-    var h = '<div class="shead">' + poster(r).replace('data-race="', 'data-x="') + '<div style="display:flex;flex-direction:column;gap:8px"><h2>' + esc(r.n) + '</h2><span class="st ' + (r.ok ? "ok" : "prov") + '">' + (r.ok ? "Fecha confirmada" : "Fecha por confirmar") + '</span><span class="muted" style="font-size:14px">' + (d === 0 ? "Es hoy" : d > 0 ? "Faltan " + d + (d === 1 ? " día" : " días") : "Ya celebrada") + '</span></div></div>';
+    var h = '<div class="shead">' + poster(r).replace('data-race="', 'data-x="') + '<div style="display:flex;flex-direction:column;gap:8px"><h2>' + esc(r.n) + '</h2><span class="st ' + (r.s ? "prov" : r.ok ? "ok" : "prov") + '">' + (r.s ? "Suspendida" : r.ok ? "Fecha confirmada" : "Fecha por confirmar") + '</span><span class="muted" style="font-size:14px">' + (d === 0 ? "Es hoy" : d > 0 ? "Faltan " + d + (d === 1 ? " día" : " días") : "Ya celebrada") + '</span></div></div>';
     h += '<dl class="facts"><div><dt>Fecha</dt><dd>' + cap(fdate(r.date)) + (r.h ? ", " + esc(r.h) : "") + '</dd></div><div><dt>Lugar</dt><dd>' + esc(r.c) + ', ' + esc(r.r) + '</dd></div><div><dt>Distancia</dt><dd>' + esc(r.dist || LABEL[r.k]) + '</dd></div>' + (r.x && r.x.length ? '<div><dt>También</dt><dd>' + r.x.map(esc).join(" · ") + '</dd></div>' : '') + '</dl>';
-    if (r.t) h += '<p class="note">' + esc(r.t) + '</p>';
+    if (r.s) h += '<p class="susp" role="status"><b>Carrera suspendida.</b> ' + esc(r.t.replace(/^SUSPENDIDA\. /, "")) + '</p>';
+    else if (r.t) h += '<p class="note">' + esc(r.t) + '</p>';
     if (KM[r.k] && S.marks.length) {
       var pe = predict(KM[r.k]);
       h += '<div class="marks"><span class="k">Tu tiempo estimado aquí</span><span class="r"><span>Según tu ' + dLabel(pe.from.km) + ' de ' + fmtT(pe.from.sec) + '</span><b>≈ ' + fmtT(pe.sec) + '</b></span><span class="muted" style="font-size:12.5px">Ritmo ' + pace(pe.sec, KM[r.k]) + '</span></div>';

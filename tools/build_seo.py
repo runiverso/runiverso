@@ -59,7 +59,9 @@ def slug(s):
 
 def load():
     s = (ROOT / "app" / "data.js").read_text()
-    return json.loads(re.search(r"RV_RACES = (\[.*?\]);", s, re.S).group(1))
+    races = json.loads(re.search(r"RV_RACES = (\[.*?\]);", s, re.S).group(1))
+    m = re.search(r"RV_SUSP = (\[.*?\]);", s, re.S)
+    return sorted(races + (json.loads(m.group(1)) if m else []), key=lambda r: (r["d"], r["n"]))
 
 
 def ddate(r):
@@ -223,7 +225,7 @@ def card(r, rel):
     d = ddate(r)
     poster = poster_html(r["id"], r["n"], r["c"], r["k"], r["dist"], r["d"], None, r["ok"], href=href, root=rel)
     st = ('<span class="st">Celebrada</span>' if is_past(r) else
-          '<span class="st ok">Confirmada</span>' if r["ok"] else '<span class="st prov">Por confirmar</span>')
+          '<span class="st prov">Suspendida</span>' if r.get("s") else ('<span class="st ok">Confirmada</span>' if r["ok"] else '<span class="st prov">Por confirmar</span>'))
     dd = f"{d.day:02d}/{d.month:02d}/{d.year}" + (f" · {r['h']}" if r.get("h") else "")
     return (f'<article class="pcard" data-end="{r["d"]}">{poster}<div class="pinfo"><h3><a href="{href}">{e(r["n"])}</a></h3>'
             f'<p class="pl">{e(r["c"])} · {e(r["p"])}</p><p class="pd">{dd}{st}</p></div></article>')
@@ -377,7 +379,7 @@ def ficha(r, races, Z, photos):
     trail.append((r["n"], None))
 
     ev = {"@type": "SportsEvent", "name": r["n"], "startDate": start_iso(r),
-          "description": desc, "eventStatus": "https://schema.org/EventScheduled",
+          "description": desc, "eventStatus": "https://schema.org/EventCancelled" if r.get("s") else "https://schema.org/EventScheduled",
           "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
           "location": {"@type": "Place", "name": r["c"], "address": {"@type": "PostalAddress", "addressLocality": r["c"].split(" (")[0],
                                                                     "addressRegion": r["p"], "addressCountry": "ES"}},
@@ -386,7 +388,9 @@ def ficha(r, races, Z, photos):
         ev["sameAs"] = r["w"]
     ld = {"@context": "https://schema.org", "@graph": [crumbs_ld([(n, p) for n, p in trail[:-1]] + [(r["n"], f"carreras/{rid}/")]), ev]}
 
-    if is_past(r):
+    if r.get("s"):
+        st = '<span class="st prov">Suspendida</span>'
+    elif is_past(r):
         st = '<span class="st">Ya celebrada</span>'
     elif r["ok"]:
         st = '<span class="st ok">Fecha confirmada</span>'
@@ -434,6 +438,7 @@ def ficha(r, races, Z, photos):
     <h1>{e(r["n"])} {y}</h1>
     <div class="lanes" aria-hidden="true"></div>
   </header>
+  {('<p class="susp" role="status"><b>Carrera suspendida.</b> ' + e(r["t"].split(". ", 1)[1] if r["t"].startswith("SUSPENDIDA") else r["t"]) + '</p>') if r.get("s") else ""}
   {fig}
   <section class="facts" aria-label="Datos principales">
     <div class="bib" aria-hidden="true"><span class="dow">{DIAS_C[d.weekday()]}</span><span class="day">{d.day}</span><span class="mon">{MES_C[d.month - 1]} {y}</span></div>
