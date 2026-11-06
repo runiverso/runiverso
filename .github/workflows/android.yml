@@ -3,6 +3,8 @@
 name: App Android
 on:
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,6 +32,26 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew bundleRelease assembleRelease --no-daemon --stacktrace
+      - name: Alinear el APK y preparar la herramienta de firma oficial
+        working-directory: android
+        run: |
+          BT=$(ls -d "$ANDROID_SDK_ROOT"/build-tools/* | sort -V | tail -1)
+          mkdir -p /tmp/out
+          cp app/build/outputs/bundle/release/*.aab /tmp/out/runiverso-sin-firmar.aab
+          "$BT/zipalign" -p -f 4 app/build/outputs/apk/release/app-release-unsigned.apk /tmp/out/runiverso-sin-firmar-alineado.apk
+          cp "$BT/lib/apksigner.jar" /tmp/out/apksigner.jar
+          echo "$BT" > /tmp/out/build-tools.txt
+          ls -la /tmp/out
+      - name: Publicar en la rama android-builds (sin firmar, no contiene claves)
+        run: |
+          cd /tmp/out
+          git init -q
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git checkout -q -b android-builds
+          git add .
+          git commit -qm "Compilación ${{ github.run_number }} (${{ github.sha }})"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" android-builds
       - uses: actions/upload-artifact@v4
         with:
           name: runiverso-android-sin-firmar
