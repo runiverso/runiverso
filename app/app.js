@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "27";
+  var APP_V = "28";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -367,6 +367,13 @@
   function upcoming() { return RACES.filter(function (r) { return daysTo(r.date) >= 0; }); }
   var ZONES = window.RV_ZONES || {};
   function ccaaOf(p) { for (var k in ZONES) if (ZONES[k].indexOf(p) >= 0) return k; return ""; }
+  var ANDP = ["Almería", "Cádiz", "Córdoba", "Granada", "Huelva", "Jaén", "Málaga", "Sevilla"];
+  function andMode() { return !S.ccaa || S.ccaa === "Andalucía"; }
+  function curZp() {
+    if (!view.zp) view.zp = view.sc === "es" ? "ES" : view.sc === "ccaa" ? "AND" : (ANDP.indexOf(S.prov) >= 0 ? S.prov : "AND");
+    return view.zp;
+  }
+  function inZp(r, zp) { return zp === "ES" ? true : zp === "AND" ? r.r === "Andalucía" : r.p === zp; }
   function inProv(r) { return !!S.prov && r.p === S.prov; }
   function inCcaa(r) { return !!S.ccaa && r.r === S.ccaa; }
   function scopeName(sc) { return sc === "prov" ? (S.prov || "Tu provincia") : sc === "ccaa" ? (S.ccaa || "Tu comunidad") : "España"; }
@@ -446,7 +453,7 @@
     var h = (location.hash || "#inicio").slice(1).split("?");
     var t = h[0]; if (!TABS.some(function (x) { return x[0] === t; })) t = "inicio";
     view.tab = t;
-    if (h[1]) { var m = /sc=(prov|ccaa|es)/.exec(h[1]); if (m) { view.sc = m[1]; view.f = ""; view.lim = 30; } }
+    if (h[1]) { var m = /sc=(prov|ccaa|es)/.exec(h[1]); if (m) { view.sc = m[1]; view.zp = ""; view.f = ""; view.lim = 30; } }
     render(); window.scrollTo(0, 0);
   }
   function renderTabs() {
@@ -456,6 +463,10 @@
     var ini = (S.name || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
     $("topav").textContent = ini; $("topav").classList.toggle("on", !!user); $("topav").setAttribute("aria-label", user ? "Mi perfil (sesión iniciada)" : "Mi perfil");
   }
+  document.addEventListener("keydown", function (e) {
+    var t = e.target; if (!t || !t.getAttribute || !t.getAttribute("data-zp") || (e.key !== "Enter" && e.key !== " ")) return;
+    e.preventDefault(); t.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
   var TTL = { inicio: "Inicio", carreras: "Carreras", perfil: "Perfil", clasificaciones: "Resultados", comunidad: "Comunidad" };
   (function () {
     var on = false;
@@ -533,8 +544,10 @@
   /* ---------- Carreras ---------- */
   var CHIPS = [["", "Todas"], ["21K", "Medias"], ["42K", "Maratones"], ["10K", "10K"], ["TR", "Trail"], ["SS", "San Silvestre"], ["POP", "Populares"], ["mine", "Apuntadas"]];
   function filtered() {
-    var q = norm(view.q.trim()).split(/\s+/).filter(Boolean), sc = S.prov ? view.sc : "es";
+    var q = norm(view.q.trim()).split(/\s+/).filter(Boolean), sc = S.prov ? view.sc : "es", zp = andMode() ? curZp() : "";
     return upcoming().filter(function (r) {
+      if (zp && !q.length && !inZp(r, zp)) return false;
+      if (zp) { if (view.f === "mine" && !S.mine[r.id]) return false; if (view.f && view.f !== "mine" && r.k !== view.f) return false; for (var j = 0; j < q.length; j++) if (r.hay.indexOf(q[j]) < 0) return false; return true; }
       if (!q.length && sc === "prov" && !inProv(r)) return false;
       if (!q.length && sc === "ccaa" && !inCcaa(r)) return false;
       if (view.f === "mine" && !S.mine[r.id]) return false;
@@ -546,7 +559,9 @@
   function vCarreras() {
     var list = filtered(), up = upcoming();
     var h = '<div><h1>Carreras</h1><div class="row" style="margin-top:8px">' + zoneChip() + '</div></div>';
-    if (S.prov) {
+    if (andMode()) {
+      h += zpMap(up) + zpTabs(up) + zpSummary(up);
+    } else if (S.prov) {
       var n = { prov: up.filter(inProv).length, ccaa: up.filter(inCcaa).length, es: up.length };
       h += '<div class="seg" role="tablist" aria-label="Zona">' + ["prov", "ccaa", "es"].filter(function (k) { return k !== "ccaa" || S.ccaa !== S.prov; }).map(function (k) {
         return '<button type="button" role="tab" data-sc="' + k + '" aria-selected="' + (view.sc === k) + '">' + esc(scopeName(k)) + '<span class="n">' + n[k] + '</span></button>';
@@ -558,11 +573,44 @@
     h += '<div id="rlist">' + raceGrid(list) + '</div>';
     return h;
   }
-  function countText(list) { return list.length + (list.length === 1 ? " carrera" : " carreras") + (view.q.trim() ? " en toda España" : S.prov ? " · " + scopeName(view.sc) : ""); }
+  function zpName(zp) { return zp === "AND" ? "Andalucía" : zp === "ES" ? "España" : zp; }
+  function countText(list) { return list.length + (list.length === 1 ? " carrera" : " carreras") + (view.q.trim() ? " en toda España" : andMode() ? " · " + zpName(curZp()) : S.prov ? " · " + scopeName(view.sc) : ""); }
+  /* Mapa de Andalucía: cada provincia con sus carreras; tocar para elegir */
+  function zpMap(up) {
+    var M = window.RV_MAP; if (!M) return "";
+    var zp = curZp(), cnt = {}, max = 1;
+    ANDP.forEach(function (p) { cnt[p] = up.filter(function (r) { return r.p === p; }).length; max = Math.max(max, cnt[p]); });
+    var paths = "", labels = "";
+    ANDP.forEach(function (p) {
+      var g = M.p[p]; if (!g) return;
+      var lv = cnt[p] ? Math.min(4, 1 + Math.floor(3 * cnt[p] / max)) : 0, on = zp === p;
+      paths += '<path class="mp l' + lv + (on ? ' on' : '') + '" d="' + g.d + '" data-zp="' + p + '" role="button" tabindex="0" aria-label="' + p + ': ' + cnt[p] + ' carreras" aria-pressed="' + on + '"></path>';
+      labels += '<g class="ml' + (on || lv >= 3 ? ' inv' : '') + '" transform="translate(' + g.x + ' ' + g.y + ')"><text y="-4">' + p + '</text><text class="mn" y="17">' + cnt[p] + '</text></g>';
+    });
+    return '<div class="mapc' + (zp === "AND" ? ' all' : '') + '"><svg viewBox="0 0 ' + M.w + ' ' + M.h + '" role="group" aria-label="Mapa de Andalucía: elige una provincia">' + paths + '<g aria-hidden="true">' + labels + '</g></svg></div>';
+  }
+  function zpTabs(up) {
+    var zp = curZp(), n = function (z) { return up.filter(function (r) { return inZp(r, z); }).length; };
+    return '<div class="ztabs" role="tablist" aria-label="Zona">' + ["AND"].concat(ANDP).concat(["ES"]).map(function (z) {
+      return '<button type="button" role="tab" data-zp="' + z + '" aria-selected="' + (zp === z) + '"' + (z === "ES" ? ' class="es"' : '') + '>' + zpName(z) + '<span>' + n(z) + '</span></button>';
+    }).join("") + '</div>';
+  }
+  function zpSummary(up) {
+    var zp = curZp(); if (zp === "ES") return "";
+    var rs = up.filter(function (r) { return inZp(r, zp) && !r.s; }); if (!rs.length) return "";
+    var big = rs.filter(function (r) { return r.k === "21K" || r.k === "42K"; }), nx = big.filter(function (r) { return r.ok; })[0] || big[0] || rs[0], d = daysTo(nx.date);
+    var dow = today.getDay(), sat = new Date(today.getFullYear(), today.getMonth(), today.getDate() + ((6 - dow + 7) % 7)), sun = new Date(sat.getFullYear(), sat.getMonth(), sat.getDate() + 1);
+    if (dow === 0) { sun = new Date(today); sat = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1); }
+    var fin = rs.filter(function (r) { return r.date.getTime() === sat.getTime() || r.date.getTime() === sun.getTime(); }).length;
+    var by = {}; rs.forEach(function (r) { by[r.k] = (by[r.k] || 0) + 1; });
+    var TY = [["21K", "Medias"], ["42K", "Maratones"], ["10K", "10K"], ["POP", "Populares"], ["SS", "San Silvestres"], ["TR", "Trail"]];
+    return '<div class="zsum"><button type="button" class="zsn" data-race="' + nx.id + '" data-k="' + nx.k + '"><span class="zcd"><b>' + (d === 0 ? "Hoy" : d) + '</b>' + (d === 0 ? "" : d === 1 ? "día" : "días") + '</span><span class="zt"><small>Próxima gran cita en ' + esc(zpName(zp)) + '</small><b>' + esc(nx.n) + '</b><span>' + cap(fdate(nx.date)) + ' · ' + esc(nx.c) + '</span></span></button>' +
+      '<div class="zst"><span><b>' + fin + '</b>' + (fin === 1 ? "carrera" : "carreras") + ' este finde</span>' + TY.filter(function (t) { return by[t[0]]; }).map(function (t) { return '<span><b>' + by[t[0]] + '</b>' + t[1] + '</span>'; }).join("") + '</div></div>';
+  }
   /* Agrupa: en tu provincia por meses; en tu comunidad por provincias (la tuya primero); en España por comunidades (la tuya primero) */
   function raceGrid(list) {
     if (!list.length) return '<div class="card empty"><p>' + (view.f === "mine" ? "Aún no te has apuntado a ninguna carrera." : "No hay carreras con ese filtro" + (S.prov && view.sc !== "es" ? " en " + esc(scopeName(view.sc)) + "." : ".")) + '</p>' + (S.prov && view.sc !== "es" ? '<button class="btn sm alt" type="button" data-sc="es">Ver toda España</button>' : '') + '</div>';
-    var sc = S.prov && !view.q.trim() ? view.sc : "month", key, groups = [], idx = {};
+    var sc = andMode() ? (curZp() === "ES" && !view.q.trim() ? "es" : "month") : S.prov && !view.q.trim() ? view.sc : "month", key, groups = [], idx = {};
     list.forEach(function (r) {
       key = sc === "ccaa" ? r.p : sc === "es" ? r.r : (MES_L[r.date.getMonth()] + " " + r.date.getFullYear());
       if (!(key in idx)) { idx[key] = groups.length; groups.push({ k: key, items: [] }); }
@@ -970,6 +1018,7 @@
     var ic = t.closest("[data-ics]"); if (ic) { ics(BY[ic.getAttribute("data-ics")]); return; }
     var sh = t.closest("[data-share]"); if (sh) { share(BY[sh.getAttribute("data-share")]); return; }
     var f = t.closest("[data-f]"); if (f) { view.f = f.getAttribute("data-f"); view.lim = 30; render(); return; }
+    var zpb = t.closest && t.closest("[data-zp]"); if (zpb) { view.zp = zpb.getAttribute("data-zp"); view.lim = 30; view.q = ""; render(); var tb = document.querySelector('.ztabs [aria-selected="true"]'); if (tb && tb.scrollIntoView) tb.scrollIntoView({ block: "nearest", inline: "center" }); return; }
     var sc = t.closest("[data-sc]"); if (sc) { view.sc = sc.getAttribute("data-sc"); view.lim = 30; view.q = ""; render(); return; }
     var sbt = t.closest("[data-sub]"); if (sbt) { view.sub = sbt.getAttribute("data-sub"); render(); return; }
     var dl = t.closest("[data-del]");
@@ -1004,8 +1053,8 @@
   });
   document.addEventListener("submit", function (e) {
     e.preventDefault();
-    if (e.target.id === "onbf") { e.preventDefault(); S.ccaa = $("zc").value; S.prov = $("zp").value; save(); queue({ t: "prof" }); rankCache = {}; view.sc = "prov"; view.f = ""; view.day = null; onboarding(2); return; }
-    if (e.target.id === "zonef") { S.ccaa = $("zc").value; S.prov = $("zp").value; save(); queue({ t: "prof" }); rankCache = {}; view.sc = "prov"; view.f = ""; closeSheet(); render(); toast("Tu zona: " + S.prov); return; }
+    if (e.target.id === "onbf") { e.preventDefault(); S.ccaa = $("zc").value; S.prov = $("zp").value; save(); queue({ t: "prof" }); rankCache = {}; view.zp = ""; view.sc = "prov"; view.f = ""; view.day = null; onboarding(2); return; }
+    if (e.target.id === "zonef") { S.ccaa = $("zc").value; S.prov = $("zp").value; save(); queue({ t: "prof" }); rankCache = {}; view.zp = ""; view.sc = "prov"; view.f = ""; closeSheet(); render(); toast("Tu zona: " + S.prov); return; }
     if (e.target.id === "namef") { S.name = $("nm").value.trim(); save(); queue({ t: "prof" }); closeSheet(); render(); toast(S.name ? "¡Hola, " + S.name.split(" ")[0] + "!" : "Nombre borrado"); return; }
     if (e.target.id === "resq") { resScreen(resState.id, $("rq").value.trim()); return; }
     if (e.target.id === "authf") {
