@@ -100,7 +100,22 @@ def main():
                    "window.RV_SUSP = " + json.dumps(susp, ensure_ascii=False) + ";\n"
                    "window.RV_RESULTS = " + json.dumps(results, ensure_ascii=False) + ";\n"
                    "window.RV_ZONES = " + json.dumps(ZONES, ensure_ascii=False) + ";\n")
+    bust()
     print(f"{len(races)} carreras ({sum(1 for r in races if r['p'] == 'Cádiz')} de Cádiz) · {len(results)} clasificaciones")
+
+
+def bust():
+    """Pone una versión (hash del contenido) a data.js y carteles.js para que móviles y navegadores no usen copias viejas."""
+    import hashlib
+    h = lambda f: hashlib.sha1((ROOT / f).read_bytes()).hexdigest()[:8]
+    vd, vc = h("app/data.js"), h("carteles/carteles.js")
+    for f, pats in (("app/index.html", [(r'data\.js\?v=[\w]+', f"data.js?v={vd}"), (r'carteles\.js(\?v=[\w]+)?"', f'carteles.js?v={vc}"')]),
+                    ("app/sw.js", [(r'data\.js\?v=[\w]+', f"data.js?v={vd}"), (r'carteles\.js(\?v=[\w]+)?"', f'carteles.js?v={vc}"')]),
+                    ("index.html", [(r'carteles/carteles\.js(\?v=[\w]+)?"', f'carteles/carteles.js?v={vc}"')])):
+        t = (ROOT / f).read_text()
+        for a, b in pats:
+            t = re.sub(a, b, t)
+        (ROOT / f).write_text(t)
 
 
 if __name__ == "__main__":
