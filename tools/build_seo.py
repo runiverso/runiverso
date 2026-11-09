@@ -373,7 +373,7 @@ def ficha(r, races, Z, photos):
             cw, chh = 900, 1125
         src = r.get("w") or ""
         cred = f'<a href="{e(src)}" target="_blank" rel="noopener">{e(r["n"])}</a>' if src else e(r["n"])
-        fig = (f'<figure class="cartel"><img src="{rel}carteles/{e(CARTELES[rid])}" alt="Cartel oficial de la {e(r["n"])} {y}" '
+        fig = (f'<figure class="cartel"><img src="{rel}carteles/{e(CARTELES[rid])}" alt="Cartel oficial {"del" if r["n"].split()[0] in ("Cross","Trail","Desafío","Maratón","Medio","Circuito","Gran") else "de la"} {e(r["n"])} {y}" '
                f'width="{cw}" height="{chh}" loading="eager"><figcaption>Cartel oficial · cedido por la organización ({cred})</figcaption></figure>')
     estado = "ya celebrada" if is_past(r) else ("fecha confirmada" if r["ok"] else "fecha por confirmar")
     title = f"{r['n']} {y}: fecha, distancia e inscripción · Runiverso"
