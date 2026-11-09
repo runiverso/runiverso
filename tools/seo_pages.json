@@ -3,19 +3,19 @@
   "path": "carreras-en/andalucia/",
   "name": "Andalucía",
   "kind": "r",
-  "n": 167
+  "n": 149
  },
  {
   "path": "carreras-en/cataluna/",
   "name": "Cataluña",
   "kind": "r",
-  "n": 14
+  "n": 13
  },
  {
   "path": "carreras-en/comunidad-valenciana/",
   "name": "Comunidad Valenciana",
   "kind": "r",
-  "n": 14
+  "n": 13
  },
  {
   "path": "carreras-en/canarias/",
@@ -81,31 +81,31 @@
   "path": "cadiz/",
   "name": "Cádiz",
   "kind": "p",
-  "n": 50
+  "n": 45
  },
  {
   "path": "malaga/",
   "name": "Málaga",
   "kind": "p",
-  "n": 31
+  "n": 26
  },
  {
   "path": "sevilla/",
   "name": "Sevilla",
   "kind": "p",
-  "n": 30
+  "n": 27
  },
  {
   "path": "granada/",
   "name": "Granada",
   "kind": "p",
-  "n": 20
+  "n": 18
  },
  {
   "path": "cordoba/",
   "name": "Córdoba",
   "kind": "p",
-  "n": 12
+  "n": 11
  },
  {
   "path": "jaen/",
@@ -117,13 +117,13 @@
   "path": "carreras-en/barcelona/",
   "name": "Barcelona",
   "kind": "p",
-  "n": 7
+  "n": 6
  },
  {
   "path": "huelva/",
   "name": "Huelva",
   "kind": "p",
-  "n": 7
+  "n": 5
  },
  {
   "path": "carreras-en/santa-cruz-de-tenerife/",
@@ -135,7 +135,7 @@
   "path": "carreras-en/castellon/",
   "name": "Castellón",
   "kind": "p",
-  "n": 5
+  "n": 4
  },
  {
   "path": "almeria/",
@@ -201,13 +201,13 @@
   "path": "maratones/",
   "name": "Maratones",
   "kind": "t",
-  "n": 13
+  "n": 12
  },
  {
   "path": "medias-maratones/",
   "name": "Medias maratones",
   "kind": "t",
-  "n": 35
+  "n": 32
  },
  {
   "path": "carreras-10k/",
@@ -219,13 +219,13 @@
   "path": "trail/",
   "name": "Trail y montaña",
   "kind": "t",
-  "n": 39
+  "n": 36
  },
  {
   "path": "carreras-populares/",
   "name": "Carreras populares",
   "kind": "t",
-  "n": 98
+  "n": 85
  },
  {
   "path": "san-silvestre-2026/",

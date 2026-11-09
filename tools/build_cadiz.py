@@ -91,6 +91,8 @@ RACES = [
          note="2.ª edición."),
     dict(id="carrera-popular-ciudad-de-jerez", n="Carrera Popular Ciudad de Jerez", c="Jerez de la Frontera", d="2026-11-15", k="pop", dist="8,5 km", ok=True,
          note="46.ª edición, con carreras de menores desde 150 m. La inscripción cierra el 11 de noviembre o al llegar a 2.000 inscritos, y no hay inscripción el mismo día. Vestuarios y duchas en el Estadio de Chapín."),
+    dict(id="cross-trail-el-cernicalo", n="Cross Trail El Cernícalo", c="Medina Sidonia", d="2026-11-15", k="trail", dist="12 km", ok=True,
+         note="2.ª edición, con el Ayuntamiento de Medina Sidonia y la Diputación de Cádiz. 12 km por la Ruta Hijuela de las Ratas, el Camino Nariga y el Padrón El Cernícalo. Cronometra Cronosesca."),
     dict(id="desafio-sierra-de-villaluenga", n="Desafío Sierra de Villaluenga", c="Villaluenga del Rosario", d="2026-11-15", k="trail", dist="Trail", ok=False,
          note="11.ª edición."),
     dict(id="cross-pinar-del-hierro", n="Cross Pinar del Hierro y la Espartosa", c="Chiclana de la Frontera", d="2026-11-15", k="pop", dist="Cross", ok=False,

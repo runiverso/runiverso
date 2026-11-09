@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:cross-trail-el-cernicalo-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Cross Trail El Cernícalo
+LOCATION:Medina Sidonia\, Cádiz
+DESCRIPTION:2.ª edición\, con el Ayuntamiento de Medina Sidonia y la Dip
+ utación de Cádiz. 12 km por la Ruta Hijuela de las Ratas\, el Camino Na
+ riga y el Padrón El Cernícalo. Cronometra Cronosesca. Más info: https:
+ //runiverso.com/cadiz/#cross-trail-el-cernicalo
+URL:https://runiverso.com/cadiz/#cross-trail-el-cernicalo
+END:VEVENT
+END:VCALENDAR
