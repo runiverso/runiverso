@@ -886,3 +886,55 @@ h1, h2, h3, .sechd h2 { font-family: var(--display); font-variation-settings: "S
 .install { background: linear-gradient(120deg, #5B3FD1, #E8622C); border: 0; border-radius: 22px; }
 .install p { color: rgba(255,255,255,.88); }
 .install b { color: #fff; }
+/* Carreras v29: mapa y pestañas con los colores de cada provincia */
+.mapc { background: #fff; border-radius: 26px; box-shadow: var(--lift); padding: 10px; }
+.mp { fill: color-mix(in srgb, var(--pc, #5B3FD1) 22%, #fff); stroke: #fff; stroke-width: 2.5; transition: fill 200ms ease; }
+.mp.l0 { fill: #F1ECE4; }
+.mp.l1 { fill: color-mix(in srgb, var(--pc, #5B3FD1) 22%, #fff); }
+.mp.l2 { fill: color-mix(in srgb, var(--pc, #5B3FD1) 38%, #fff); }
+.mp.l3 { fill: color-mix(in srgb, var(--pc, #5B3FD1) 55%, #fff); }
+.mp.l4 { fill: color-mix(in srgb, var(--pc, #5B3FD1) 72%, #fff); }
+.mp.on { fill: var(--pc, #1D2140); }
+@media (hover: hover) and (pointer: fine) { .mp:not(.on):hover { fill: color-mix(in srgb, var(--pc, #5B3FD1) 85%, #fff); } }
+.ml text { font-family: var(--body); font-weight: 800; fill: var(--fg); }
+.ml text.mn { font-family: var(--display); font-variation-settings: "SOFT" 100, "WONK" 1; font-size: 22px; font-weight: 800; }
+.ztabs button { border-radius: 999px; border: 2px solid transparent; background: #fff; box-shadow: 0 6px 14px -8px rgba(29,33,64,.3); font-weight: 800; gap: 8px; }
+.ztabs button i { width: 20px; height: 14px; border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); flex: none; }
+.ztabs button[aria-selected="true"] { background: #fff; color: var(--pc, var(--fg)); border-color: var(--pc, var(--fg)); }
+.ztabs button[aria-selected="true"] span { color: var(--pc, var(--muted)); }
+.ztabs button[data-zp="AND"][aria-selected="true"], .ztabs button[data-zp="ES"][aria-selected="true"] { background: var(--fg); color: #fff; border-color: var(--fg); }
+.ztabs button[data-zp="AND"][aria-selected="true"] span, .ztabs button[data-zp="ES"][aria-selected="true"] span { color: rgba(255,255,255,.7); }
+.ztabs button.es { border-style: dashed; border-color: #D9D2E6; }
+.zsum { border: 0; border-radius: 24px; box-shadow: var(--lift); }
+.zsum::before { content: ""; display: block; height: 7px; background: var(--sw, var(--grad)); }
+.zcd { border-top: 0; border-radius: 16px; background: color-mix(in srgb, var(--pc, #5B3FD1) 12%, #fff); color: var(--pc, var(--accent)); }
+.zcd b { font-family: var(--display); font-variation-settings: "SOFT" 100, "WONK" 1; color: var(--pc, var(--accent)); }
+.zt b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 17px; }
+.zst b { font-family: var(--display); font-variation-settings: "SOFT" 100; }
+.search { border-radius: 999px; border: 2px solid #EDE6DC; background: #fff; }
+.chip { border-radius: 999px; font-weight: 800; }
+.chip[aria-pressed="true"] { background: var(--fg); border-color: var(--fg); color: #fff; }
+.gh { font-family: var(--display); font-variation-settings: "SOFT" 100, "WONK" 1; }
+.tklist { background: #fff; border-radius: 22px; box-shadow: var(--lift); overflow: hidden; padding-left: 10px; }
+.tkd b { font-family: var(--display); font-variation-settings: "SOFT" 100; }
+.tkb > b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 700; }
+.tki { border-radius: 10px; }
+/* Fichas y perfil v29 */
+.sheet { background: var(--bg); border: 0; border-radius: 30px 30px 0 0; }
+.sstripe { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--pc, var(--accent)); }
+.sstripe i { width: 26px; height: 18px; border-radius: 5px; background: var(--sw, var(--grad)); box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.shead h2 { font-family: var(--display); font-variation-settings: "SOFT" 100, "WONK" 1; font-weight: 800; font-size: 25px; line-height: 1.05; }
+.facts { background: #fff; border-radius: 22px; box-shadow: var(--lift); border: 0; }
+.facts dt { font-weight: 900; letter-spacing: .08em; text-transform: uppercase; font-size: 11.5px; color: var(--muted); }
+.facts dd { font-weight: 700; }
+.note, .marks { border-radius: 20px; border: 0; background: #fff; box-shadow: var(--lift); }
+.btn.ok { background: #2F8F6B; }
+.prof .av { background: var(--grad); color: #fff; box-shadow: 0 10px 22px -10px rgba(232,98,44,.7); }
+.prof h1 { font-family: var(--display); font-variation-settings: "SOFT" 100, "WONK" 1; }
+.seg { border-radius: 999px; background: #EFE9FB; border: 0; box-shadow: none; padding: 4px; }
+.seg button { border-radius: 999px; font-weight: 800; }
+.seg button[aria-selected="true"] { background: #fff; color: var(--accent); box-shadow: 0 4px 10px rgba(29,33,64,.12); }
+.pr b, .stat b { font-family: var(--display); font-variation-settings: "SOFT" 100, "WONK" 1; color: var(--accent); }
+.stat, .pr { border-radius: 20px; }
+.sechd h2 { font-weight: 800; }
+.canal { border-radius: 24px; }

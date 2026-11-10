@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "29";
+  var APP_V = "30";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -634,15 +634,15 @@
     ANDP.forEach(function (p) {
       var g = M.p[p]; if (!g) return;
       var lv = cnt[p] ? Math.min(4, 1 + Math.floor(3 * cnt[p] / max)) : 0, on = zp === p;
-      paths += '<path class="mp l' + lv + (on ? ' on' : '') + '" d="' + g.d + '" data-zp="' + p + '" role="button" tabindex="0" aria-label="' + p + ': ' + cnt[p] + ' carreras" aria-pressed="' + on + '"></path>';
-      labels += '<g class="ml' + (on || lv >= 3 ? ' inv' : '') + '" transform="translate(' + g.x + ' ' + g.y + ')"><text y="-4">' + p + '</text><text class="mn" y="17">' + cnt[p] + '</text></g>';
+      paths += '<path class="mp l' + lv + (on ? ' on' : '') + '" style="' + pvars(p) + '" d="' + g.d + '" data-zp="' + p + '" role="button" tabindex="0" aria-label="' + p + ': ' + cnt[p] + ' carreras" aria-pressed="' + on + '"></path>';
+      labels += '<g class="ml' + (on ? ' inv' : '') + '" transform="translate(' + g.x + ' ' + g.y + ')"><text y="-4">' + p + '</text><text class="mn" y="17">' + cnt[p] + '</text></g>';
     });
     return '<div class="mapc' + (zp === "AND" ? ' all' : '') + '"><svg viewBox="0 0 ' + M.w + ' ' + M.h + '" role="group" aria-label="Mapa de Andalucía: elige una provincia">' + paths + '<g aria-hidden="true">' + labels + '</g></svg></div>';
   }
   function zpTabs(up) {
     var zp = curZp(), n = function (z) { return up.filter(function (r) { return inZp(r, z); }).length; };
     return '<div class="ztabs" role="tablist" aria-label="Zona">' + ["AND"].concat(ANDP).concat(["ES"]).map(function (z) {
-      return '<button type="button" role="tab" data-zp="' + z + '" aria-selected="' + (zp === z) + '"' + (z === "ES" ? ' class="es"' : '') + '>' + zpName(z) + '<span>' + n(z) + '</span></button>';
+      return '<button type="button" role="tab" data-zp="' + z + '" aria-selected="' + (zp === z) + '"' + (z === "ES" ? ' class="es"' : '') + (PCOL[z] ? ' style="' + pvars(z) + '"' : '') + '><i style="background:' + (z === "AND" ? ALL_SW : z === "ES" ? "linear-gradient(#C60B1E 0 25%,#FFC400 25% 75%,#C60B1E 75%)" : "var(--sw)") + '"></i>' + zpName(z) + '<span>' + n(z) + '</span></button>';
     }).join("") + '</div>';
   }
   function zpSummary(up) {
@@ -654,7 +654,7 @@
     var fin = rs.filter(function (r) { return r.date.getTime() === sat.getTime() || r.date.getTime() === sun.getTime(); }).length;
     var by = {}; rs.forEach(function (r) { by[r.k] = (by[r.k] || 0) + 1; });
     var TY = [["21K", "Medias"], ["42K", "Maratones"], ["10K", "10K"], ["POP", "Populares"], ["SS", "San Silvestres"], ["TR", "Trail"]];
-    return '<div class="zsum"><button type="button" class="zsn" data-race="' + nx.id + '" data-k="' + nx.k + '"><span class="zcd"><b>' + (d === 0 ? "Hoy" : d) + '</b>' + (d === 0 ? "" : d === 1 ? "día" : "días") + '</span><span class="zt"><small>Próxima gran cita en ' + esc(zpName(zp)) + '</small><b>' + esc(nx.n) + '</b><span>' + cap(fdate(nx.date)) + ' · ' + esc(nx.c) + '</span></span></button>' +
+    return '<div class="zsum"' + (PCOL[zp] ? ' style="' + pvars(zp) + '"' : '') + '><button type="button" class="zsn" data-race="' + nx.id + '" data-k="' + nx.k + '"><span class="zcd"><b>' + (d === 0 ? "Hoy" : d) + '</b>' + (d === 0 ? "" : d === 1 ? "día" : "días") + '</span><span class="zt"><small>Próxima gran cita en ' + esc(zpName(zp)) + '</small><b>' + esc(nx.n) + '</b><span>' + cap(fdate(nx.date)) + ' · ' + esc(nx.c) + '</span></span></button>' +
       '<div class="zst"><span><b>' + fin + '</b>' + (fin === 1 ? "carrera" : "carreras") + ' este finde</span>' + TY.filter(function (t) { return by[t[0]]; }).map(function (t) { return '<span><b>' + by[t[0]] + '</b>' + t[1] + '</span>'; }).join("") + '</div></div>';
   }
   /* Agrupa: en tu provincia por meses; en tu comunidad por provincias (la tuya primero); en España por comunidades (la tuya primero) */
@@ -876,7 +876,7 @@
   function raceSheet(id) {
     var r = BY[id]; if (!r) return;
     var on = !!S.mine[id], d = daysTo(r.date);
-    var h = '<div class="shead">' + poster(r).replace('data-race="', 'data-x="') + '<div style="display:flex;flex-direction:column;gap:8px"><h2>' + esc(r.n) + '</h2><span class="st ' + (r.s ? "prov" : r.ok ? "ok" : "prov") + '">' + (r.s ? "Suspendida" : r.ok ? "Fecha confirmada" : "Fecha por confirmar") + '</span><span class="muted" style="font-size:14px">' + (d === 0 ? "Es hoy" : d > 0 ? "Faltan " + d + (d === 1 ? " día" : " días") : "Ya celebrada") + '</span></div></div>';
+    var h = '<div class="sstripe" style="' + pvars(r.p) + '"><i></i>' + esc(r.p || r.r) + '</div><div class="shead">' + poster(r).replace('data-race="', 'data-x="') + '<div style="display:flex;flex-direction:column;gap:8px"><h2>' + esc(r.n) + '</h2><span class="st ' + (r.s ? "prov" : r.ok ? "ok" : "prov") + '">' + (r.s ? "Suspendida" : r.ok ? "Fecha confirmada" : "Fecha por confirmar") + '</span><span class="muted" style="font-size:14px">' + (d === 0 ? "Es hoy" : d > 0 ? "Faltan " + d + (d === 1 ? " día" : " días") : "Ya celebrada") + '</span></div></div>';
     h += '<dl class="facts"><div><dt>Fecha</dt><dd>' + cap(fdate(r.date)) + (r.h ? ", " + esc(r.h) : "") + '</dd></div><div><dt>Lugar</dt><dd>' + esc(r.c) + ', ' + esc(r.r) + '</dd></div><div><dt>Distancia</dt><dd>' + esc(r.dist || LABEL[r.k]) + '</dd></div>' + (r.x && r.x.length ? '<div><dt>También</dt><dd>' + r.x.map(esc).join(" · ") + '</dd></div>' : '') + '</dl>';
     if (r.s) h += '<p class="susp" role="status"><b>Carrera suspendida.</b> ' + esc(r.t.replace(/^SUSPENDIDA\. /, "")) + '</p>';
     else if (r.t) h += '<p class="note">' + esc(r.t) + '</p>';
