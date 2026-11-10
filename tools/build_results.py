@@ -96,7 +96,7 @@ def page(results):
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Fraunces:opsz,wght,SOFT,WONK@9..144,600..900,100,1&family=Nunito:wght@500..900&display=swap">
 <link rel="stylesheet" href="../assets/races.css">
 <style>
 .wrap {{ max-width: 1040px !important; }}

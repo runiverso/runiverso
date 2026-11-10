@@ -298,7 +298,7 @@ def tabs(cur, counts):
     h = '<nav class="ptabs" aria-label="Provincias de Andalucía">'
     for p in PROVS:
         a = ' aria-current="page"' if p == cur else ""
-        h += f'<a href="../{SLUGS[p]}/"{a}>{p}<span>{counts.get(p, 0)}</span></a>'
+        h += f'<a data-pv="{SLUGS[p]}" href="../{SLUGS[p]}/"{a}><i></i>{p}<span>{counts.get(p, 0)}</span></a>'
     return h + "</nav>"
 
 
