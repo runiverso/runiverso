@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "28";
+  var APP_V = "29";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -368,6 +368,27 @@
   var ZONES = window.RV_ZONES || {};
   function ccaaOf(p) { for (var k in ZONES) if (ZONES[k].indexOf(p) >= 0) return k; return ""; }
   var ANDP = ["Almería", "Cádiz", "Córdoba", "Granada", "Huelva", "Jaén", "Málaga", "Sevilla"];
+  /* Colores de cada provincia (los de sus equipos de fútbol, sin escudos ni nombres): franja, color, fondo y texto del contador */
+  var PCOL = {
+    "Almería": ["repeating-linear-gradient(90deg,#E30613 0 4px,#fff 4px 8px)", "#D10511", "#E30613", "#fff"],
+    "Cádiz": ["linear-gradient(#FFD200 0 55%,#0045A0 55%)", "#0045A0", "#FFD200", "#0045A0"],
+    "Córdoba": ["repeating-linear-gradient(90deg,#00843D 0 4px,#fff 4px 8px)", "#00843D", "#00843D", "#fff"],
+    "Granada": ["repeating-linear-gradient(#D2001F 0 3px,#fff 3px 6px)", "#C8001D", "#D2001F", "#fff"],
+    "Huelva": ["repeating-linear-gradient(90deg,#1B3F94 0 4px,#fff 4px 8px)", "#1B3F94", "#1B3F94", "#fff"],
+    "Jaén": ["linear-gradient(90deg,#fff 0 60%,#5E2A84 60%)", "#5E2A84", "#5E2A84", "#fff"],
+    "Málaga": ["repeating-linear-gradient(90deg,#0099D8 0 4px,#fff 4px 8px)", "#0083BE", "#0099D8", "#fff"],
+    "Sevilla": ["linear-gradient(90deg,#D50032 0 50%,#00954C 50%)", "#B8002B", "linear-gradient(90deg,#D50032,#00954C)", "#fff"]
+  };
+  var ALL_SW = "linear-gradient(#007A33 0 33%,#fff 0 66%,#007A33 0)";
+  function pvars(p) { var c = PCOL[p]; return c ? "--sw:" + c[0] + ";--pc:" + c[1] + ";--bb:" + c[2] + ";--bf:" + c[3] : ""; }
+  /* Racha: semanas seguidas abriendo la app */
+  var STREAK = (function () {
+    var K2 = "runiverso-racha", wk = function (d) { var t = new Date(d.getFullYear(), d.getMonth(), d.getDate()); t.setDate(t.getDate() - (t.getDay() + 6) % 7); return Math.round(t / 6048e5); };
+    var now = wk(new Date()), o = { n: 1, w: now };
+    try { var v = JSON.parse(localStorage.getItem(K2) || "null"); if (v) o = v.w === now ? v : v.w === now - 1 ? { n: v.n + 1, w: now } : { n: 1, w: now }; localStorage.setItem(K2, JSON.stringify(o)); } catch (e) {}
+    return o.n;
+  })();
+  function hello() { var h = new Date().getHours(); return h < 6 ? "Buenas noches" : h < 13 ? "Buenos días" : h < 21 ? "Buenas tardes" : "Buenas noches"; }
   function andMode() { return !S.ccaa || S.ccaa === "Andalucía"; }
   function curZp() {
     if (!view.zp) view.zp = view.sc === "es" ? "ES" : view.sc === "ccaa" ? "AND" : (ANDP.indexOf(S.prov) >= 0 ? S.prov : "AND");
@@ -453,7 +474,7 @@
     var h = (location.hash || "#inicio").slice(1).split("?");
     var t = h[0]; if (!TABS.some(function (x) { return x[0] === t; })) t = "inicio";
     view.tab = t;
-    if (h[1]) { var m = /sc=(prov|ccaa|es)/.exec(h[1]); if (m) { view.sc = m[1]; view.zp = ""; view.f = ""; view.lim = 30; } }
+    if (h[1]) { var m = /sc=(prov|ccaa|es)/.exec(h[1]); if (m) { view.sc = m[1]; view.zp = ""; view.f = ""; view.lim = 30; } var fm = /f=(\w+)/.exec(h[1]); if (fm) { view.f = fm[1]; view.lim = 30; } }
     render(); window.scrollTo(0, 0);
   }
   function renderTabs() {
@@ -504,28 +525,57 @@
     up.filter(function (r) { return S.mine[r.id] && r.s; }).forEach(function (r) {
       h += '<button class="susp" type="button" data-race="' + r.id + '"><b>' + esc(r.n) + ': suspendida</b><span>Toca para ver los detalles. Consulta la devolución de la inscripción con la organización.</span></button>';
     });
-    h += '<div><p class="kick">' + cap(fdate(today)) + '</p><h1>Hola' + (S.name ? ", " + esc(S.name.split(" ")[0]) : "") + '</h1>' +
-      '<div class="row" style="margin-top:10px">' + zoneChip() + (S.name ? '' : '<button class="btn sm alt" type="button" data-act="name">Pon tu nombre</button>') + '</div></div>';
+    var C = window.CARTELES || {}, nm = S.name ? ", " + esc(S.name.split(" ")[0]) : "";
+    h += '<div class="hey"><div><p class="hi">' + hello() + nm + ' 👋</p><h1 class="ht">¿Dónde corremos?</h1></div>' +
+      '<div class="stk" title="Semanas seguidas en Runiverso"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="fg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2A541"/><stop offset="1" stop-color="#E8622C"/></linearGradient></defs><path fill="url(#fg)" d="M12 2c1 4 5 5.5 5 11a5 5 0 0 1-10 0c0-2.5 1.2-4 2.5-5 .2 1.6 1 2.6 2 3-.6-3.3.5-6.5.5-9z"/></svg><b>' + STREAK + '</b><span>' + (STREAK === 1 ? "semana" : "semanas") + '</span></div></div>';
+    h += '<div class="row" style="margin-top:-4px">' + zoneChip() + (S.name ? '' : '<button class="btn sm alt" type="button" data-act="name">Pon tu nombre</button>') + '</div>';
     if (mine.length) {
-      var r = mine[0], d = daysTo(r.date);
-      h += '<button class="dorsal" type="button" data-race="' + r.id + '"><span class="band"><i></i>Tu próximo dorsal<i></i></span><span class="bd">' +
-        '<span class="nums"><span class="num">' + pad(r.date.getDate()) + ' ' + MES_C[r.date.getMonth()].toUpperCase() + '</span><span class="days"><b>' + (d === 0 ? "HOY" : d) + '</b><span>' + (d === 0 ? "a correr" : d === 1 ? "día" : "días") + '</span></span></span>' +
-        '<span class="nm">' + esc(r.n) + '</span><span class="mt">' + esc(r.c) + ' · ' + esc(r.dist) + (r.h ? ' · salida ' + esc(r.h) : '') + '</span>' +
-        (KM[r.k] && S.marks.length ? '<span class="est">Tu tiempo estimado: <b>≈ ' + fmtT(predict(KM[r.k]).sec) + '</b> · ' + pace(predict(KM[r.k]).sec, KM[r.k]) + '</span>' : '') + '</span></button>';
+      var r = mine[0], d = daysTo(r.date), pct = Math.max(6, Math.min(100, Math.round((1 - d / 30) * 100)));
+      h += '<button class="nx" type="button" data-race="' + r.id + '" style="' + pvars(r.p) + '">' + (C[r.id] ? '<img class="nxp" src="../carteles/' + C[r.id] + '" alt="">' : '<span class="nxp nxb"><b>' + pad(r.date.getDate()) + '</b>' + MES_C[r.date.getMonth()] + '</span>') +
+        '<span class="nxt"><span class="nxk">Tu próxima carrera</span><span class="nxn">' + esc(r.n) + '</span><span class="nxm">' + esc(r.c) + ' · ' + esc(distTxt(r) || LABEL[r.k]) + (r.h ? ' · ' + esc(r.h) : '') + '</span></span>' +
+        '<span class="nxbar"><i style="width:' + pct + '%"></i></span><span class="nxf"><span class="nxd"><b>' + (d === 0 ? "¡Hoy!" : d) + '</b>' + (d === 0 ? "a correr" : d === 1 ? "día para la salida" : "días para la salida") + '</span><span class="nxgo">Ver ficha</span></span>' +
+        (KM[r.k] && S.marks.length ? '<span class="est">Tu tiempo estimado: <b>≈ ' + fmtT(predict(KM[r.k]).sec) + '</b></span>' : '') + '</button>';
     } else {
-      h += '<div class="card empty"><h2>Apúntate a tu primera carrera</h2><p>Elige una carrera, pulsa «Apuntarme» y aquí verás la cuenta atrás.</p><a class="btn" href="#carreras">Ver carreras</a></div>';
+      h += '<div class="nx empty"><span class="nxk">Tu próxima carrera</span><span class="nxn">Elige tu próximo dorsal</span><span class="nxm">Pulsa «Apuntarme» en cualquier carrera y aquí verás la cuenta atrás.</span><a class="nxgo" href="#carreras">Ver carreras</a></div>';
+    }
+    var past = RACES.filter(function (x) { return S.mine[x.id] && daysTo(x.date) < 0; }), lastM = S.marks.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; })[0];
+    var last = past.length ? past[past.length - 1] : (lastM && BY[lastM.raceId]) || null, goal = mine[1] || null;
+    var cell = function (lab, cls, r2, empty) {
+      return '<div class="tc"><small class="' + cls + '">' + lab + '</small>' + (r2 ? '<button class="tcp" type="button" data-race="' + r2.id + '" style="' + pvars(r2.p) + '">' + (C[r2.id] ? '<img src="../carteles/' + C[r2.id] + '" alt="">' : '<span class="tcb"><b>' + r2.date.getDate() + '</b>' + MES_C[r2.date.getMonth()] + '</span>') + (r2.s ? '<em>SUSPENDIDA</em>' : '') + '</button><span class="tcn">' + esc(r2.n) + '</span>' : empty) + '</div>';
+    };
+    h += '<div class="tmp"><p class="tml">⇆ Tu temporada</p><div class="tri">' +
+      cell("Última", "c1", last, '<a class="tce" href="#perfil">¿Ya corriste alguna?<b>Añade tu marca</b></a>') +
+      cell("Próxima", "c2", mine[0], '<a class="tce" href="#carreras">Sin dorsal todavía<b>Elige una</b></a>') +
+      cell("Objetivo", "c3", goal, '<a class="tce" href="#carreras?f=SS"><b class="pl">+</b>Elige tu San Silvestre</a>') + '</div></div>';
+    if (andMode()) {
+      var ex = view.ex || "", sat = new Date(today); sat.setDate(today.getDate() + ((6 - today.getDay() + 7) % 7)); var sun = new Date(sat); sun.setDate(sat.getDate() + 1);
+      var finde = up.filter(function (x) { return x.r === "Andalucía" && x.date >= today && x.date <= sun; });
+      h += '<div class="sec"><div class="sechd"><h2>Explora</h2><a href="#carreras">Calendario</a></div><p class="muted" style="margin:-6px 0 0">Carreras de este finde en Andalucía</p>' +
+        '<div class="pchips" role="group" aria-label="Provincia"><button type="button" data-ex=""' + (ex ? '' : ' aria-pressed="true"') + '><i style="background:' + ALL_SW + '"></i>Todas</button>' +
+        ANDP.map(function (p) { return '<button type="button" data-ex="' + p + '"' + (ex === p ? ' aria-pressed="true"' : '') + ' style="' + pvars(p) + '"><i></i>' + p + '</button>'; }).join("") + '</div>';
+      var provs = ex ? [ex] : ANDP.filter(function (p) { return finde.some(function (x) { return x.p === p; }); });
+      if (!provs.length) h += '<div class="card empty"><p>Este finde no hay carreras en Andalucía. Mira el calendario para las próximas.</p></div>';
+      provs.forEach(function (p) {
+        var rs = finde.filter(function (x) { return x.p === p; });
+        if (!rs.length) rs = up.filter(function (x) { return x.p === p; }).slice(0, 3);
+        h += '<div class="pcard" style="' + pvars(p) + '"><div class="pch"><i></i>' + p + '<span>' + (finde.some(function (x) { return x.p === p; }) ? rs.length + ' este finde' : 'próximas') + '</span></div>' +
+          rs.slice(0, 4).map(function (x) { return '<button class="pr2" type="button" data-race="' + x.id + '">' + (C[x.id] ? '<img src="../carteles/' + C[x.id] + '" alt="">' : '<span class="ph">' + (LABEL[x.k] || "").slice(0, 7) + '</span>') + '<span><b>' + esc(x.n) + '</b><span>' + esc(x.c) + (distTxt(x) ? ' · ' + esc(distTxt(x)) : '') + ' · ' + DIAS_C[x.date.getDay()] + ' ' + x.date.getDate() + (x.h ? ', ' + esc(x.h) : '') + (x.s ? ' · suspendida' : '') + '</span></span></button>'; }).join("") + '</div>';
+      });
+      h += '</div>';
     }
     var pool = S.prov ? up.filter(inProv) : up;
     h += '<div class="sec"><div class="sechd"><h2>' + (S.prov ? 'Próximos días en ' + esc(S.prov) : 'Próximos días') + '</h2><a href="#carreras' + (S.prov ? '?sc=prov' : '') + '">Calendario</a></div><div id="wkw">' + weekStrip(pool) + '</div></div>';
     var sm = seasonMarks(), km = sm.reduce(function (a, m) { return a + m.km; }, 0);
-    h += '<div class="sec"><div class="sechd"><h2>Tu temporada ' + String(seasonStart().getFullYear()).slice(2) + '/' + String(seasonStart().getFullYear() + 1).slice(2) + '</h2><a href="#perfil">Mis marcas</a></div><div class="stats">' +
+    h += '<div class="sec"><div class="sechd"><h2>Tus números ' + String(seasonStart().getFullYear()).slice(2) + '/' + String(seasonStart().getFullYear() + 1).slice(2) + '</h2><a href="#perfil">Mis marcas</a></div><div class="stats">' +
       '<div class="stat"><b>' + sm.length + '</b><span>Carreras</span></div><div class="stat"><b>' + Math.round(km) + '</b><span>Kilómetros</span></div><div class="stat"><b>' + S.marks.length + '</b><span>Medallas</span></div></div></div>';
-    if (S.prov) {
+    if (S.prov && !andMode()) {
       var lp = up.filter(inProv), lc = up.filter(function (r) { return inCcaa(r) && !inProv(r); });
       h += '<div class="sec"><div class="sechd"><h2>En ' + esc(S.prov) + '</h2><a href="#carreras?sc=prov">Ver ' + lp.length + '</a></div>' + (lp.length ? '<div class="hscroll">' + lp.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<div class="card empty"><p>Aún no tenemos carreras en ' + esc(S.prov) + '. ¿Conoces alguna? Avísanos en el canal y la añadimos.</p></div>') + '</div>';
       if (S.ccaa !== S.prov) h += '<div class="sec"><div class="sechd"><h2>Resto de ' + esc(S.ccaa) + '</h2><a href="#carreras?sc=ccaa">Ver ' + lc.length + '</a></div>' + (lc.length ? '<div class="hscroll">' + lc.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<p class="muted" style="margin:0">Sin más carreras en tu comunidad de momento.</p>') + '</div>';
       var rest = up.filter(function (r) { return !inCcaa(r); }).length;
       h += '<a class="card" href="#carreras?sc=es" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span class="zic">ES</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px;letter-spacing:-.02em">Resto de España</b><br><span class="muted" style="font-size:13.5px">' + rest + ' carreras fuera de tu comunidad</span></span></a>';
+    } else if (andMode()) {
+      h += '<a class="card" href="#carreras?sc=es" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span class="zic">ES</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px">Resto de España</b><br><span class="muted" style="font-size:13.5px">' + up.filter(function (r) { return r.r !== "Andalucía"; }).length + ' carreras fuera de Andalucía</span></span></a>';
     } else {
       h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
     }
@@ -1000,6 +1050,7 @@
     var ob = t.closest("[data-onb]");
     if (ob) { var v = ob.getAttribute("data-onb"); if (v === "done") onbDone(); else if (v === "signup") { S.onb = true; save(); closeSheet(); render(); authScreen("signup"); } else onboarding(+v); return; }
     var wd = t.closest("[data-day]"); if (wd) { view.day = +wd.getAttribute("data-day"); var pool = S.prov ? upcoming().filter(inProv) : upcoming(), w = $("wkw"); w.innerHTML = weekStrip(pool); var nb = w.querySelector('[data-day="' + view.day + '"]'); if (nb && nb.scrollIntoView) nb.scrollIntoView({ block: "nearest", inline: "nearest" }); return; }
+    var exb = t.closest("[data-ex]"); if (exb) { view.ex = exb.getAttribute("data-ex"); render(); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
     if (mi) { var id = mi.getAttribute("data-mine"); if (S.mine[id]) { delete S.mine[id]; queue({ t: "mine-", id: id }); } else { S.mine[id] = true; queue({ t: "mine+", id: id }); } save(); toast(S.mine[id] ? (user && !pushOn() ? "¡Apuntada! Activa los avisos en tu perfil y te la recordamos" : "¡Apuntada! La verás en Inicio") : "Ya no estás apuntado"); render(); raceSheet(id); return; }
