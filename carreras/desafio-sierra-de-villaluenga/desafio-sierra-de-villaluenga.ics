@@ -5,8 +5,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:desafio-sierra-de-villaluenga-2026-11-15@runiverso.com
 DTSTAMP:20261110T120000Z
-DTSTART;VALUE=DATE:20261115
-DTEND;VALUE=DATE:20261116
+DTSTART;TZID=Europe/Madrid:20261115T90000
+DTEND;TZID=Europe/Madrid:20261115T120000
 SUMMARY:Desafío Sierra de Villaluenga
 LOCATION:Villaluenga del Rosario\, Andalucía
 DESCRIPTION:Trail · Villaluenga del Rosario\nhttps://runiver

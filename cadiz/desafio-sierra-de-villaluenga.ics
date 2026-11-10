@@ -5,12 +5,13 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:desafio-sierra-de-villaluenga-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261115
-DTEND;VALUE=DATE:20261116
+DTSTART;TZID=Europe/Madrid:20261115T90000
+DTEND;TZID=Europe/Madrid:20261115T120000
 SUMMARY:Desafío Sierra de Villaluenga
 LOCATION:Villaluenga del Rosario\, Cádiz
-DESCRIPTION:11.ª edición. Fecha por confirmar. Más info: https://runive
- rso.com/cadiz/#desafio-sierra-de-villaluenga
+DESCRIPTION:12.ª edición\, con salida a las 9:00 en Villaluenga del Rosa
+ rio. «La montaña vuelve a ponernos a prueba». Más info: https://runiv
+ erso.com/cadiz/#desafio-sierra-de-villaluenga
 URL:https://runiverso.com/cadiz/#desafio-sierra-de-villaluenga
 END:VEVENT
 END:VCALENDAR

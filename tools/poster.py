@@ -6,7 +6,7 @@ import datetime as dt
 import html
 
 # Carteles oficiales autorizados: identificador de la carrera -> archivo en /carteles/
-CARTELES = {"media-maraton-ciudad-de-cadiz": "media-maraton-ciudad-de-cadiz.jpg", "media-maraton-ciudad-de-jaen": "media-maraton-ciudad-de-jaen.jpg", "cross-trail-el-cernicalo": "cross-trail-el-cernicalo.jpg"}
+CARTELES = {"media-maraton-ciudad-de-cadiz": "media-maraton-ciudad-de-cadiz.jpg", "media-maraton-ciudad-de-jaen": "media-maraton-ciudad-de-jaen.jpg", "cross-trail-el-cernicalo": "cross-trail-el-cernicalo.jpg", "desafio-sierra-de-villaluenga": "desafio-sierra-de-villaluenga.jpg"}
 
 MES_C = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 LABEL = {"21K": "Media", "42K": "Maratón", "10K": "10K", "TR": "Trail", "SS": "San Silvestre", "POP": "Popular"}

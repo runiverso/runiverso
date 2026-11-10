@@ -1,1 +1,1 @@
-window.CARTELES = {"media-maraton-ciudad-de-cadiz": "media-maraton-ciudad-de-cadiz.jpg", "media-maraton-ciudad-de-jaen": "media-maraton-ciudad-de-jaen.jpg", "cross-trail-el-cernicalo": "cross-trail-el-cernicalo.jpg"};
+window.CARTELES = {"media-maraton-ciudad-de-cadiz": "media-maraton-ciudad-de-cadiz.jpg", "media-maraton-ciudad-de-jaen": "media-maraton-ciudad-de-jaen.jpg", "cross-trail-el-cernicalo": "cross-trail-el-cernicalo.jpg", "desafio-sierra-de-villaluenga": "desafio-sierra-de-villaluenga.jpg"};
