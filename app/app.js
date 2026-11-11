@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "31";
+  var APP_V = "32";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -758,14 +758,14 @@
     var ms = S.marks.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; });
     var medals = ms.map(function (m) {
       var l = dLabel(m.km), rb = RIB[l] || ["#3DD68C", "#0A0E1A"];
-      return '<div class="medal' + (prIds[m.id] ? " gold" : "") + '" style="--r1:' + rb[0] + ';--r2:' + rb[1] + '"><span class="rib"><i></i><i></i></span><span class="disc"><b>' + (l.length <= 3 ? l : "★") + '</b><small>' + m.date.slice(0, 4) + '</small></span><span>' + esc(m.name) + '</span></div>';
+      return '<div class="medal' + (prIds[m.id] ? " gold" : "") + '" role="button" tabindex="0" data-medal="' + m.id + '" aria-label="Ver la medalla de ' + esc(m.name) + ' en 3D" style="--r1:' + rb[0] + ';--r2:' + rb[1] + '"><span class="rib"><i></i><i></i></span><span class="disc"><b>' + (l.length <= 3 ? l : "★") + '</b><small>' + m.date.slice(0, 4) + '</small></span><span>' + esc(m.name) + '</span></div>';
     });
     upcoming().filter(function (r) { return S.mine[r.id]; }).slice(0, 3).forEach(function (r) {
       medals.push('<div class="medal lock"><span class="rib"><i></i><i></i></span><span class="disc"><b>' + (r.k === "TR" || r.k === "POP" ? "?" : r.k) + '</b><small>' + r.date.getFullYear() + '</small></span><span>' + esc(r.n) + '</span></div>');
     });
     if (!b["42K"]) medals.push('<div class="medal lock"><span class="rib"><i></i><i></i></span><span class="disc"><b>42K</b><small>?</small></span><span>Tu primera maratón</span></div>');
     while (medals.length < 6) medals.push('<div class="medal lock"><span class="rib"><i></i><i></i></span><span class="disc"><b>?</b></span><span>Próxima medalla</span></div>');
-    var h = '<div class="sechd"><h2>Mi vitrina</h2><span class="muted" style="font-size:13px">' + S.marks.length + (S.marks.length === 1 ? ' medalla' : ' medallas') + ' · en oro, tus récords</span></div><div class="vitrina">' + medals.join("") + '</div>';
+    var h = '<div class="sechd"><h2>Mi vitrina</h2><span class="muted" style="font-size:13px">' + S.marks.length + (S.marks.length === 1 ? ' medalla' : ' medallas') + ' · tócalas para verlas en 3D</span></div><div class="vitrina">' + medals.join("") + '</div>';
     var sm = seasonMarks().length, regs = {};
     S.marks.forEach(function (m) { var r = BY[m.raceId]; if (r) regs[r.p] = 1; });
     var goals = [["5 carreras esta temporada", sm, 5], ["Tu primera media maratón", b["21K"] ? 1 : 0, 1], ["Correr en 3 provincias", Object.keys(regs).length, 3]];
@@ -1060,12 +1060,80 @@
     var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([txt], { type: "text/calendar" })); a.download = r.id + ".ics";
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
   }
-  function share(r) {
+  function shareText(r) {
     var text = r.n + " · " + sdate(r.date) + " · " + r.c + "\nAvisos de dorsales: " + CANAL, url = "https://runiverso.com/app/";
     if (navigator.share) { navigator.share({ title: r.n, text: text, url: url }).catch(function () {}); return; }
     var full = text + "\n" + url;
     if (navigator.clipboard) navigator.clipboard.writeText(full).then(function () { toast("Enlace copiado"); }, function () { window.open("https://wa.me/?text=" + encodeURIComponent(full), "_blank"); });
     else window.open("https://wa.me/?text=" + encodeURIComponent(full), "_blank");
+  }
+  /* Imagen vertical (1080×1920) de una carrera para WhatsApp e historias: cartel oficial si lo hay, fecha, lugar y cuenta atrás */
+  function raceImage(r, cb) {
+    var W = 1080, H = 1920, cv = document.createElement("canvas"); cv.width = W; cv.height = H; var x = cv.getContext("2d");
+    var g = x.createLinearGradient(0, 0, W * .6, H); g.addColorStop(0, "#2B1C6E"); g.addColorStop(.4, "#5B3FD1"); g.addColorStop(.85, "#E8622C"); g.addColorStop(1, "#F2A541");
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    var F = function (w, px) { return w + " " + px + "px Fraunces, Georgia, serif"; }, N = function (w, px) { return w + " " + px + "px Nunito, system-ui, sans-serif"; };
+    var rr = function (px, py, w, h, rad) { x.beginPath(); x.moveTo(px + rad, py); x.arcTo(px + w, py, px + w, py + h, rad); x.arcTo(px + w, py + h, px, py + h, rad); x.arcTo(px, py + h, px, py, rad); x.arcTo(px, py, px + w, py, rad); x.closePath(); };
+    var wrap = function (t, maxW, maxL) { var ws = t.split(" "), ls = [], c = ""; ws.forEach(function (w) { var n = c ? c + " " + w : w; if (x.measureText(n).width > maxW && c) { ls.push(c); c = w; } else c = n; }); ls.push(c); if (ls.length > maxL) { ls = ls.slice(0, maxL); ls[maxL - 1] = ls[maxL - 1].replace(/.{2}$/, "…"); } return ls; };
+    var finish = function (img) {
+      x.textAlign = "center"; x.fillStyle = "#fff"; x.font = F(800, 54); x.fillText("Runiverso", W / 2, 190);
+      x.font = N(900, 40); x.fillStyle = "#FFE1C2"; x.fillText((r.p || r.r).toUpperCase() + " · " + sdate(r.date).toUpperCase(), W / 2, 262);
+      var top = 330, bh = 860;
+      x.save(); x.translate(W / 2, top + bh / 2); x.rotate(-0.035); x.shadowColor = "rgba(0,0,0,.45)"; x.shadowBlur = 70; x.shadowOffsetY = 34;
+      if (img) {
+        var k = Math.min(700 / img.width, bh / img.height), iw = img.width * k, ih = img.height * k;
+        rr(-iw / 2, -ih / 2, iw, ih, 28); x.fillStyle = "#fff"; x.fill(); x.shadowColor = "transparent"; x.save(); x.clip(); x.drawImage(img, -iw / 2, -ih / 2, iw, ih); x.restore();
+      } else {
+        rr(-330, -330, 660, 660, 56); x.fillStyle = "#fff"; x.fill(); x.shadowColor = "transparent";
+        x.fillStyle = "#5B3FD1"; x.font = F(900, 330); x.fillText(String(r.date.getDate()), 0, 90); x.font = N(900, 76); x.fillStyle = "#E8622C"; x.fillText(MES_C[r.date.getMonth()].toUpperCase() + " " + r.date.getFullYear(), 0, 220);
+        x.font = N(900, 44); x.fillStyle = "#6B6878"; x.fillText((LABEL[r.k] || "").toUpperCase(), 0, -230);
+      }
+      x.restore();
+      x.fillStyle = "#fff"; x.font = F(800, 82); var ls = wrap(r.n, 940, 2), y = 1330;
+      ls.forEach(function (l) { x.fillText(l, W / 2, y); y += 92; });
+      x.font = N(800, 44); x.fillStyle = "#FFF3E6"; x.fillText(r.c + (distTxt(r) ? " · " + distTxt(r) : "") + (r.h ? " · " + r.h : ""), W / 2, y + 6);
+      var d = daysTo(r.date), pill = r.s ? "Suspendida" : d === 0 ? "¡Es hoy!" : d === 1 ? "¡Es mañana!" : d > 1 ? "Faltan " + d + " días" : "Ya se corrió";
+      x.font = F(800, 62); var pw = x.measureText(pill).width + 110; rr(W / 2 - pw / 2, y + 60, pw, 116, 58); x.fillStyle = "#1D2140"; x.fill(); x.fillStyle = "#fff"; x.fillText(pill, W / 2, y + 140);
+      x.font = N(900, 40); x.fillStyle = "#fff"; x.fillText("Todas las carreras de Andalucía · runiverso.com", W / 2, H - 150);
+      cv.toBlob(function (bl) { cb(bl); }, "image/jpeg", 0.9);
+    };
+    var C = window.CARTELES || {};
+    if (C[r.id]) { var im = new Image(); im.onload = function () { finish(im); }; im.onerror = function () { finish(null); }; im.src = "../carteles/" + C[r.id]; } else finish(null);
+  }
+  function share(r) {
+    if (!navigator.canShare || typeof File === "undefined") { shareText(r); return; }
+    toast("Preparando la imagen…");
+    raceImage(r, function (bl) {
+      if (!bl) { shareText(r); return; }
+      var file = new File([bl], "runiverso-" + r.id + ".jpg", { type: "image/jpeg" }), d = daysTo(r.date);
+      var txt = (S.mine[r.id] && d >= 0 ? "Yo corro la " : "") + r.n + " · " + sdate(r.date) + " · " + r.c + "\nTodas las carreras en https://runiverso.com/app/";
+      if (navigator.canShare({ files: [file] })) navigator.share({ files: [file], text: txt }).catch(function (e) { if (e && e.name !== "AbortError") shareText(r); });
+      else shareText(r);
+    });
+  }
+  /* Medalla en 3D: gira sola y se puede girar con el dedo; por detrás lleva el tiempo */
+  function medalSheet(id, isNew) {
+    var m = S.marks.filter(function (z) { return z.id === id; })[0]; if (!m) return;
+    var l = dLabel(m.km), b = prs()[l], gold = !!(b && b.id === m.id), edge = "";
+    for (var i = -5; i <= 5; i++) edge += '<i class="mdE" style="transform:translateZ(' + i + 'px)"></i>';
+    var h = '<h2 style="text-align:center">' + (isNew ? (gold ? "¡Nuevo récord personal!" : "¡Medalla conseguida!") : esc(m.name)) + '</h2>' +
+      '<div class="md3' + (gold ? " gold" : "") + '" id="md3"><span class="mdR"></span><div class="mdC" id="mdc">' + edge +
+      '<div class="mdF"><small>RUNIVERSO</small><b>' + (l.length <= 3 ? l : "★") + '</b><span>' + m.date.slice(0, 4) + '</span></div>' +
+      '<div class="mdB"><small>' + esc(m.name) + '</small><b>' + fmtT(m.sec) + '</b><span>' + pace(m.sec, m.km) + '</span><span>' + sdate(pd(m.date)) + '</span></div></div></div>' +
+      '<p class="muted" style="text-align:center;margin:0">' + (gold ? "Tu mejor " + l + ". " : "") + 'Gírala con el dedo: detrás está tu tiempo.</p>' +
+      '<button class="btn wide" type="button" data-card="' + m.id + '">Compartir mi marca</button><button class="btn alt wide" type="button" data-close="1">Cerrar</button>';
+    openSheet(h, "Medalla de " + m.name);
+    var c = $("mdc"), box = $("md3"), ang = isNew ? -200 : 20, vel = isNew ? 14 : 1, drag = false, lx = 0;
+    if (!c) return;
+    box.addEventListener("pointerdown", function (e) { drag = true; lx = e.clientX; vel = 0; if (box.setPointerCapture) box.setPointerCapture(e.pointerId); });
+    box.addEventListener("pointermove", function (e) { if (!drag) return; var dx = e.clientX - lx; lx = e.clientX; ang += dx * 0.9; vel = dx * 0.9; });
+    var up2 = function () { drag = false; }; box.addEventListener("pointerup", up2); box.addEventListener("pointercancel", up2);
+    (function loop() {
+      if (!document.body.contains(c)) return;
+      if (!drag) { ang += vel; vel += ((RM ? 0 : 0.7) - vel) * 0.035; }
+      c.style.transform = "rotateX(-10deg) rotateY(" + ang.toFixed(1) + "deg)";
+      requestAnimationFrame(loop);
+    })();
   }
 
   document.addEventListener("click", function (e) {
@@ -1105,6 +1173,7 @@
       });
       return;
     }
+    var md0 = t.closest("[data-medal]"); if (md0) { medalSheet(md0.getAttribute("data-medal")); return; }
     var ic = t.closest("[data-ics]"); if (ic) { ics(BY[ic.getAttribute("data-ics")]); return; }
     var sh = t.closest("[data-share]"); if (sh) { share(BY[sh.getAttribute("data-share")]); return; }
     var f = t.closest("[data-f]"); if (f) { view.f = f.getAttribute("data-f"); view.lim = 30; render(); return; }
@@ -1210,7 +1279,7 @@
       if (v.rid && S.mine[v.rid]) { delete S.mine[v.rid]; queue({ t: "mine-", id: v.rid }); }
       save(); closeSheet(); view.tab = "perfil"; view.sub = isPr ? "vitrina" : "marcas";
       if (location.hash !== "#perfil") location.hash = "#perfil"; else render();
-      cardSheet(nid, true);
+      medalSheet(nid, true);
     }
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("layer").innerHTML) closeSheet(); });

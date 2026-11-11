@@ -965,3 +965,22 @@ h1, h2, h3, .sechd h2 { font-family: var(--display); font-variation-settings: "S
 .nx:not(.empty)::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(60% 50% at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, .55), transparent 70%); mix-blend-mode: soft-light; }
 .nx .nxp { transform: translateZ(40px) rotate(-3deg); }
 @media (prefers-reduced-motion: reduce) { .m3d svg, .nx:not(.empty) { transform: none; } .cfc { transition: none; } }
+
+/* Medalla 3D (v32) */
+.medal[data-medal] { cursor: pointer; transition: transform 160ms var(--ease-out); }
+.medal[data-medal]:active { transform: scale(.95); }
+.md3 { --m1: #F7F9FC; --m2: #AEB7C4; --me: #8691A1; --mt: #3A4352; height: 320px; display: grid; place-items: center; perspective: 900px; touch-action: none; position: relative; cursor: grab; user-select: none; -webkit-user-select: none; }
+.md3.gold { --m1: #FFF1B0; --m2: #E2A622; --me: #A97410; --mt: #6B4700; }
+.mdR { position: absolute; top: 0; left: 50%; width: 120px; height: 120px; transform: translateX(-50%); background: linear-gradient(90deg, #5B3FD1 0 33%, #E8622C 33% 66%, #F2A541 66%); clip-path: polygon(0 0, 100% 0, 62% 100%, 38% 100%); opacity: .95; }
+.mdC { width: 200px; height: 200px; position: relative; transform-style: preserve-3d; margin-top: 70px; will-change: transform; }
+.mdC > * { position: absolute; inset: 0; border-radius: 50%; }
+.mdE { background: var(--me); }
+.mdF, .mdB { -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; color: var(--mt); padding: 22px; background: radial-gradient(circle at 32% 26%, #fff 0%, var(--m1) 22%, var(--m2) 78%, var(--me) 100%); box-shadow: inset 0 0 0 7px rgba(255,255,255,.35), inset 0 0 0 11px var(--me), inset 0 -10px 22px rgba(0,0,0,.18); }
+.mdF { transform: translateZ(6px); }
+.mdB { transform: rotateY(180deg) translateZ(6px); }
+.mdF small { font-size: 11px; font-weight: 900; letter-spacing: .2em; }
+.mdF b { font-family: var(--display); font-variation-settings: "SOFT" 100, "WONK" 1; font-size: 64px; line-height: .95; font-weight: 900; }
+.mdF span { font-size: 17px; font-weight: 900; letter-spacing: .08em; }
+.mdB small { font-size: 11.5px; font-weight: 800; line-height: 1.15; max-height: 2.4em; overflow: hidden; }
+.mdB b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 36px; font-weight: 900; line-height: 1.05; }
+.mdB span { font-size: 12.5px; font-weight: 800; }
