@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:gran-vuelta-del-valle-del-genal-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:Gran Vuelta del Valle del Genal
+LOCATION:Parauta\, Málaga
+DESCRIPTION:13.ª edición. La ultra y los relevos se corren el 14 y 15 de
+  noviembre con salida en Parauta\, por los pueblos del Valle del Genal. E
+ l Trail Genal ya se corrió el 7 de noviembre en Benalauría. Con la Dipu
+ tación de Málaga (Málaga Compite). Más info: https://runiverso.com/ma
+ laga/#gran-vuelta-del-valle-del-genal
+URL:https://runiverso.com/malaga/#gran-vuelta-del-valle-del-genal
+END:VEVENT
+END:VCALENDAR

@@ -46,6 +46,7 @@ SEVILLA = [
 ]
 
 MALAGA = [
+    dict(n="Gran Vuelta del Valle del Genal", c="Parauta", d="2026-11-14", k="TR", dist="Ultra · Relevos", ok=True, t="13.ª edición. La ultra y los relevos se corren el 14 y 15 de noviembre con salida en Parauta, por los pueblos del Valle del Genal. El Trail Genal ya se corrió el 7 de noviembre en Benalauría. Con la Diputación de Málaga (Málaga Compite)."),
     dict(n="Carrera Popular Villa de Árchez", c="Árchez", d="2026-11-08", k="POP", dist="Popular", ok=False, t=CAL),
     dict(n="Carrera Solidaria Ruta 091 Estepona", c="Estepona", d="2026-11-08", k="POP", dist="Solidaria", ok=False, t="Carrera solidaria de la Policía Nacional. " + CAL),
     dict(n="Media Maratón Ciudad de Fuengirola", c="Fuengirola", d="2026-11-08", k="21K", dist="21,1 km", ok=False, t="9.ª edición. " + CAL),
