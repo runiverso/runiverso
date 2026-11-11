@@ -114,7 +114,7 @@ CORDOBA = [
 ]
 
 HUELVA = [
-    dict(n="Carrera Solidaria por la Diabetes de Corrales", c="Corrales", d="2026-11-08", k="POP", dist="Solidaria", ok=False, t="En Corrales (Aljaraque). " + CAL),
+    dict(n="Carrera Solidaria por la Diabetes de Corrales", c="Corrales", d="2026-11-15", k="POP", dist="Running, caminata, marcha nórdica y mascotas", ok=True, h="11:00", w="https://www.croniussport.es", t="5.ª edición, en la plaza Rutherford de Corrales (Aljaraque). Organiza Dulces Unidos con el Ayuntamiento de Aljaraque, a beneficio de la Fundación DiabetesCERO. Dorsal con camiseta 8 €, pañuelo para mascotas 5 € y dorsal 0. Inscripción en Cronius Sport o en la tienda Ibhola Trail Running de Corrales."),
     dict(n="X Millas Guadiana", c="Ayamonte", d="2026-11-08", k="POP", dist="10 millas", ok=False, t=CAL),
     dict(n="Carrera de Bonares Memorial Manolo Márquez", c="Bonares", d="2026-11-15", k="POP", dist="Popular", ok=False, t=CAL),
     dict(n="Carrera Popular del Pavo de Ayamonte", c="Ayamonte", d="2026-12-13", k="POP", dist="Navideña", ok=False, t=CAL),

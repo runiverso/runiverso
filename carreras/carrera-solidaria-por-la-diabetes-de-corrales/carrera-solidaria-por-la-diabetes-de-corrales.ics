@@ -3,13 +3,14 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:carrera-solidaria-por-la-diabetes-de-corrales-2026-11-08@runiverso.com
+UID:carrera-solidaria-por-la-diabetes-de-corrales-2026-11-15@runiverso.com
 DTSTAMP:20261111T120000Z
-DTSTART;VALUE=DATE:20261108
-DTEND;VALUE=DATE:20261109
+DTSTART;TZID=Europe/Madrid:20261115T110000
+DTEND;TZID=Europe/Madrid:20261115T140000
 SUMMARY:Carrera Solidaria por la Diabetes de Corrales
 LOCATION:Corrales\, Andalucía
-DESCRIPTION:Solidaria · Corrales\nhttps://runiverso.com/carr
- eras/carrera-solidaria-por-la-diabetes-de-corrales/
+DESCRIPTION:Running\, caminata\, marcha nórdica y mascotas ·
+  Corrales\nhttps://www.croniussport.es\nhttps://runiverso.c
+ om/carreras/carrera-solidaria-por-la-diabetes-de-corrales/
 END:VEVENT
 END:VCALENDAR
