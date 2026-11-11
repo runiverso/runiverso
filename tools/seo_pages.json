@@ -3,7 +3,7 @@
   "path": "carreras-en/andalucia/",
   "name": "Andalucía",
   "kind": "r",
-  "n": 149
+  "n": 151
  },
  {
   "path": "carreras-en/cataluna/",
@@ -99,13 +99,13 @@
   "path": "granada/",
   "name": "Granada",
   "kind": "p",
-  "n": 18
+  "n": 19
  },
  {
   "path": "cordoba/",
   "name": "Córdoba",
   "kind": "p",
-  "n": 11
+  "n": 12
  },
  {
   "path": "jaen/",
@@ -219,7 +219,7 @@
   "path": "trail/",
   "name": "Trail y montaña",
   "kind": "t",
-  "n": 36
+  "n": 38
  },
  {
   "path": "carreras-populares/",

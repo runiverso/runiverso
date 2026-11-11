@@ -76,6 +76,7 @@ MALAGA = [
 ]
 
 GRANADA = [
+    dict(n="Castillo Trail La Calahorra", c="La Calahorra", d="2026-11-15", k="TR", dist="24 km · 15 km · 12 km", ok=True, w="https://nortedelsur.es/trail-lacalahorra", t="8.ª edición de esta carrera por montaña junto al castillo de La Calahorra. Trail de 24 km (+850 m), minitrail de 15 km (+350 m), ruta de senderismo de 12 km y trail infantil. Organizan el Ayuntamiento de La Calahorra, Norte del Sur y el Club de Atletismo La Calahorra."),
     dict(n="Carrera Urbana Universidad Ciudad de Granada", c="Granada", d="2026-11-08", k="POP", dist="Urbana", ok=True,
          t="12.ª edición, organizada por la Universidad de Granada y el Ayuntamiento. Fecha según el Centro de Actividades Deportivas de la UGR.",
          w="https://deportes.ugr.es"),
@@ -100,6 +101,7 @@ GRANADA = [
 ]
 
 CORDOBA = [
+    dict(n="Epora Trail Montoro", c="Montoro", d="2026-11-15", k="TR", dist="23 km · 14 km · 13 km", ok=True, w="https://www.eporatrail.com", t="6.ª edición de esta carrera por montaña en Montoro. Trail largo de 23 km (+1.000 m), trail corto de 14 km (+400 m) y ruta de senderismo de 13 km."),
     dict(n="Carrera Popular de Otoño de Nueva Carteya", c="Nueva Carteya", d="2026-11-07", k="POP", dist="Popular", ok=False, t=CAL),
     dict(n="Carrera Solidaria Ruta 091 Córdoba", c="Córdoba", d="2026-11-22", k="POP", dist="6,3 km", ok=False,
          t="Carrera solidaria de la Policía Nacional. Los calendarios no coinciden en el día (21 o 22 de noviembre). " + CAL),

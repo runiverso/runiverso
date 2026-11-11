@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:epora-trail-montoro-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Epora Trail Montoro
+LOCATION:Montoro\, Córdoba
+DESCRIPTION:6.ª edición de esta carrera por montaña en Montoro. Trail l
+ argo de 23 km (+1.000 m)\, trail corto de 14 km (+400 m) y ruta de sender
+ ismo de 13 km. Más info: https://runiverso.com/cordoba/#epora-trail-mont
+ oro
+URL:https://runiverso.com/cordoba/#epora-trail-montoro
+END:VEVENT
+END:VCALENDAR

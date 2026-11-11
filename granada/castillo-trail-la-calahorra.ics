@@ -1,0 +1,19 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:castillo-trail-la-calahorra-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Castillo Trail La Calahorra
+LOCATION:La Calahorra\, Granada
+DESCRIPTION:8.ª edición de esta carrera por montaña junto al castillo d
+ e La Calahorra. Trail de 24 km (+850 m)\, minitrail de 15 km (+350 m)\, r
+ uta de senderismo de 12 km y trail infantil. Organizan el Ayuntamiento de
+  La Calahorra\, Norte del Sur y el Club de Atletismo La Calahorra. Más i
+ nfo: https://runiverso.com/granada/#castillo-trail-la-calahorra
+URL:https://runiverso.com/granada/#castillo-trail-la-calahorra
+END:VEVENT
+END:VCALENDAR
