@@ -20,7 +20,7 @@ SEVILLA = [
          t="Carrera de la Mujer Central Lechera Asturiana, solo para mujeres. Fecha según la agenda del Instituto Municipal de Deportes de Sevilla.",
          w="https://www.carreradelamujer.com"),
     dict(n="Carrera Urbana Rafael del Riego", c="Las Cabezas de San Juan", d="2026-11-15", k="POP", dist="Urbana", ok=False, t="38.ª edición. " + CAL),
-    dict(n="Carrera Popular Los Chamuscaos", c="Fuentes de Andalucía", d="2026-11-15", k="POP", dist="Popular", ok=False, t="30.ª edición. " + CAL),
+    dict(n="Carrera Popular Los Chamuscaos", c="Fuentes de Andalucía", d="2026-11-15", k="POP", dist="16 km", ok=True, h="10:00", t="30.ª edición. Une dos pueblos: sale de Fuentes de Andalucía y llega a La Campana, 16 km en total."),
     dict(n="Carrera Popular Los Molinos", c="Alcalá de Guadaíra", d="2026-11-15", k="POP", dist="Popular", ok=False, t=CAL),
     dict(n="Carrera Fran Castillo", c="Villanueva del Ariscal", d="2026-11-15", k="POP", dist="Popular", ok=False, t=CAL),
     dict(n="Memorial Miguel Ángel Gómez Campuzano", c="Mairena del Alcor", d="2026-11-15", k="POP", dist="Popular", ok=False, t=CAL),

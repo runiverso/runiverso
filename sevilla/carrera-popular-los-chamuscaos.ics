@@ -5,14 +5,13 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:carrera-popular-los-chamuscaos-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261115
-DTEND;VALUE=DATE:20261116
+DTSTART;TZID=Europe/Madrid:20261115T100000
+DTEND;TZID=Europe/Madrid:20261115T130000
 SUMMARY:Carrera Popular Los Chamuscaos
 LOCATION:Fuentes de Andalucía\, Sevilla
-DESCRIPTION:30.ª edición. Fecha según los calendarios de carreras de la
-  provincia. Confírmala en la web oficial antes de inscribirte. Fecha por
-  confirmar. Más info: https://runiverso.com/sevilla/#carrera-popular-los
- -chamuscaos
+DESCRIPTION:30.ª edición. Une dos pueblos: sale de Fuentes de Andalucía
+  y llega a La Campana\, 16 km en total. Más info: https://runiverso.com/
+ sevilla/#carrera-popular-los-chamuscaos
 URL:https://runiverso.com/sevilla/#carrera-popular-los-chamuscaos
 END:VEVENT
 END:VCALENDAR
