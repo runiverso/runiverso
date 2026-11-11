@@ -938,3 +938,30 @@ h1, h2, h3, .sechd h2 { font-family: var(--display); font-variation-settings: "S
 .stat, .pr { border-radius: 20px; }
 .sechd h2 { font-weight: 800; }
 .canal { border-radius: 24px; }
+
+/* ==========================================================================
+   3D (v31): carrusel de carteles, mapa con relieve y tarjetas que se inclinan
+   ========================================================================== */
+.cf { display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0 -16px; padding: 14px calc(50% - 86px) 6px; perspective: 900px; perspective-origin: 50% 45%; }
+.cf::-webkit-scrollbar { display: none; }
+.cfi { flex: none; width: 172px; scroll-snap-align: center; border: 0; background: none; padding: 0 6px; font: inherit; color: var(--fg); text-align: center; position: relative; }
+.cfc { display: block; position: relative; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; box-shadow: 0 22px 34px -16px rgba(29, 33, 64, .6); transform-style: preserve-3d; transition: transform 120ms linear; will-change: transform; background: #fff; }
+.cfc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cfc i { position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 68%, rgba(255,255,255,.18) 100%); pointer-events: none; }
+.cfc::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 7px; background: var(--sw, transparent); }
+.cfi b, .cfi small { display: block; opacity: 0; transition: opacity 180ms ease; }
+.cfi b { margin-top: 12px; font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 15.5px; line-height: 1.15; font-weight: 700; }
+.cfi small { margin-top: 2px; font-size: 12.5px; font-weight: 800; color: var(--pc, var(--muted)); }
+.cfi.mid b, .cfi.mid small { opacity: 1; }
+.m3d { perspective: 900px; padding-bottom: 6px; }
+.m3d svg { transform: rotateX(calc(26deg + var(--rx, 0deg))) rotateY(var(--ry, 0deg)); transform-origin: 50% 62%; transition: transform 260ms var(--ease-out); overflow: visible; }
+.m3d .mb { filter: brightness(.62) saturate(.9); pointer-events: none; }
+.m3d .mp { transition: transform 260ms var(--ease-out), fill 200ms ease; }
+.m3d .mp.on { transform: translateY(-9px); filter: drop-shadow(0 10px 6px rgba(29, 33, 64, .35)); }
+.m3d .ml { transition: transform 260ms var(--ease-out); }
+.m3d .ml.up text { transform: translateY(-9px); }
+.nx:not(.empty) { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transform-style: preserve-3d; transition: transform 200ms var(--ease-out); }
+.nx:not(.empty):active { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(.98); }
+.nx:not(.empty)::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(60% 50% at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, .55), transparent 70%); mix-blend-mode: soft-light; }
+.nx .nxp { transform: translateZ(40px) rotate(-3deg); }
+@media (prefers-reduced-motion: reduce) { .m3d svg, .nx:not(.empty) { transform: none; } .cfc { transition: none; } }

@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "30";
+  var APP_V = "31";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -498,9 +498,44 @@
     if ($("ttl")) $("ttl").textContent = TTL[view.tab] || "";
     var fn = { inicio: vInicio, carreras: vCarreras, perfil: vPerfil, clasificaciones: vResultados, comunidad: vComunidad }[view.tab];
     $("main").innerHTML = '<div class="view">' + fn() + '</div>';
+    fx3d();
     var vk = view.tab + "/" + view.sub; if (vk !== lastView) { lastView = vk; motion.view($("main").firstChild); }
     if (!S.onb && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; onboarding(0); }
     else if (!S.prov && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; zoneSheet(true); }
+  }
+  /* ---------- Efectos 3D: carrusel de carteles, relieve del mapa e inclinación de tarjetas ---------- */
+  var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches, tiltG = { x: 0, y: 0 };
+  function cfUpdate(el) {
+    var mid = el.scrollLeft + el.clientWidth / 2, its = el.children;
+    for (var i = 0; i < its.length; i++) {
+      var it = its[i], d = (it.offsetLeft + it.offsetWidth / 2 - mid) / it.offsetWidth, a = Math.max(-1.6, Math.min(1.6, d)), c = it.firstChild;
+      c.style.transform = "rotateY(" + (-a * 38).toFixed(1) + "deg) translateZ(" + (-Math.abs(a) * 70).toFixed(0) + "px) scale(" + (1 - Math.min(.22, Math.abs(a) * .14)).toFixed(3) + ")";
+      it.style.zIndex = String(100 - Math.round(Math.abs(a) * 10));
+      it.classList.toggle("mid", Math.abs(a) < .5);
+    }
+  }
+  function tiltApply(el, x, y) { el.style.setProperty("--ry", (x * 9).toFixed(2) + "deg"); el.style.setProperty("--rx", (-y * 7).toFixed(2) + "deg"); el.style.setProperty("--gx", (50 + x * 50).toFixed(0) + "%"); el.style.setProperty("--gy", (50 + y * 50).toFixed(0) + "%"); }
+  function fx3d() {
+    if (RM) return;
+    var cf = document.querySelector("[data-cf]");
+    if (cf) {
+      var tick = false; cf.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; cfUpdate(cf); }); } }, { passive: true });
+      requestAnimationFrame(function () { if (cf.children[1]) cf.scrollLeft = cf.children[1].offsetLeft - (cf.clientWidth - cf.children[1].offsetWidth) / 2; cfUpdate(cf); });
+    }
+    [].forEach.call(document.querySelectorAll(".nx:not(.empty), [data-tilt]"), function (el) {
+      el.addEventListener("pointermove", function (e) { var r = el.getBoundingClientRect(); tiltApply(el, ((e.clientX - r.left) / r.width - .5) * 2, ((e.clientY - r.top) / r.height - .5) * 2); });
+      el.addEventListener("pointerleave", function () { tiltApply(el, tiltG.x, tiltG.y); });
+      tiltApply(el, tiltG.x, tiltG.y);
+    });
+  }
+  /* En Android el móvil inclina las tarjetas al moverlo (iOS pide permiso: ahí se usa el dedo) */
+  if (!RM && window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission !== "function") {
+    var b0 = null;
+    window.addEventListener("deviceorientation", function (e) {
+      if (e.gamma == null) return; if (b0 == null) b0 = e.beta;
+      tiltG.x = Math.max(-1, Math.min(1, e.gamma / 25)); tiltG.y = Math.max(-1, Math.min(1, (e.beta - b0) / 25));
+      [].forEach.call(document.querySelectorAll(".nx:not(.empty), [data-tilt]"), function (el) { tiltApply(el, tiltG.x, tiltG.y); });
+    }, { passive: true });
   }
   var zoneAsked = false, lastView = "";
   function zoneChip() {
@@ -550,6 +585,9 @@
     if (andMode()) {
       var ex = view.ex || "", sat = new Date(today); sat.setDate(today.getDate() + ((6 - today.getDay() + 7) % 7)); var sun = new Date(sat); sun.setDate(sat.getDate() + 1);
       var finde = up.filter(function (x) { return x.r === "Andalucía" && x.date >= today && x.date <= sun; });
+      var cfs = finde.filter(function (x) { return C[x.id] && !x.s; });
+      if (cfs.length >= 3) h += '<div class="sec"><div class="sechd"><h2>Carteles del finde</h2><span class="muted" style="font-size:13px;font-weight:700">' + cfs.length + ' oficiales</span></div><div class="cf" data-cf>' +
+        cfs.map(function (x) { return '<button class="cfi" type="button" data-race="' + x.id + '" style="' + pvars(x.p) + '" aria-label="' + esc(x.n) + '"><span class="cfc"><img src="../carteles/' + C[x.id] + '" alt="" loading="lazy"><i></i></span><b>' + esc(x.n) + '</b><small>' + esc(x.p) + ' · ' + DIAS_C[x.date.getDay()] + ' ' + x.date.getDate() + '</small></button>'; }).join("") + '</div></div>';
       h += '<div class="sec"><div class="sechd"><h2>Explora</h2><a href="#carreras">Calendario</a></div><p class="muted" style="margin:-6px 0 0">Carreras de este finde en Andalucía</p>' +
         '<div class="pchips" role="group" aria-label="Provincia"><button type="button" data-ex=""' + (ex ? '' : ' aria-pressed="true"') + '><i style="background:' + ALL_SW + '"></i>Todas</button>' +
         ANDP.map(function (p) { return '<button type="button" data-ex="' + p + '"' + (ex === p ? ' aria-pressed="true"' : '') + ' style="' + pvars(p) + '"><i></i>' + p + '</button>'; }).join("") + '</div>';
@@ -635,9 +673,10 @@
       var g = M.p[p]; if (!g) return;
       var lv = cnt[p] ? Math.min(4, 1 + Math.floor(3 * cnt[p] / max)) : 0, on = zp === p;
       paths += '<path class="mp l' + lv + (on ? ' on' : '') + '" style="' + pvars(p) + '" d="' + g.d + '" data-zp="' + p + '" role="button" tabindex="0" aria-label="' + p + ': ' + cnt[p] + ' carreras" aria-pressed="' + on + '"></path>';
-      labels += '<g class="ml' + (on ? ' inv' : '') + '" transform="translate(' + g.x + ' ' + g.y + ')"><text y="-4">' + p + '</text><text class="mn" y="17">' + cnt[p] + '</text></g>';
+      labels += '<g class="ml' + (on ? ' inv up' : '') + '" transform="translate(' + g.x + ' ' + g.y + ')"><text y="-4">' + p + '</text><text class="mn" y="17">' + cnt[p] + '</text></g>';
     });
-    return '<div class="mapc' + (zp === "AND" ? ' all' : '') + '"><svg viewBox="0 0 ' + M.w + ' ' + M.h + '" role="group" aria-label="Mapa de Andalucía: elige una provincia">' + paths + '<g aria-hidden="true">' + labels + '</g></svg></div>';
+    var base = ""; for (var bi = 12; bi >= 2; bi -= 2) base += '<use href="#mapg" class="mb" transform="translate(0 ' + bi + ')"></use>';
+    return '<div class="mapc m3d' + (zp === "AND" ? ' all' : '') + '" data-tilt="map"><svg viewBox="0 -14 ' + M.w + ' ' + (M.h + 30) + '" role="group" aria-label="Mapa de Andalucía: elige una provincia"><g aria-hidden="true">' + base + '</g><g id="mapg">' + paths + '</g><g aria-hidden="true">' + labels + '</g></svg></div>';
   }
   function zpTabs(up) {
     var zp = curZp(), n = function (z) { return up.filter(function (r) { return inZp(r, z); }).length; };
