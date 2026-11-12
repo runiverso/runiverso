@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "38";
+  var APP_V = "39";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -1237,10 +1237,26 @@
       '<div class="fld"><label for="ca">Descripción (opcional)</label><textarea id="ca" rows="3" maxlength="300" placeholder="Dónde y cuándo quedáis, qué carreras hacéis…"></textarea></div>' +
       '<button class="btn wide" type="submit">Crear club</button><button class="btn alt wide" type="button" data-close="1">Cancelar</button></form>', "Crear un club");
   }
+  /* Arco hinchable de meta en 3D (cabecera de Comunidad): capas del mismo dibujo separadas en profundidad */
+  function arcoHtml() {
+    var D = "M62 236V108Q62 52 118 52H282Q338 52 338 108V236", back = "";
+    for (var i = 6; i >= 1; i--) back += '<svg class="arl" viewBox="0 0 400 250" style="--z:' + (-i * 5) + 'px" aria-hidden="true"><path d="' + D + '" fill="none" stroke="' + (i > 3 ? "#3B2A8F" : "#4A34B3") + '" stroke-width="50" stroke-linecap="round"/></svg>';
+    var chk = ""; for (var c = 0; c < 20; c++) chk += '<rect x="' + (120 + c * 8) + '" y="' + (c % 2 ? 120 : 112) + '" width="8" height="8"/>';
+    return '<div class="arco" data-tilt="arco" role="img" aria-label="Arco de meta de Runiverso"><div class="arsc"><div class="arsw">' +
+      '<div class="arrd"></div><div class="arsh"></div><div class="arb">' + back +
+      '<svg class="arl arf" viewBox="0 0 400 250" style="--z:0px" aria-hidden="true"><defs><linearGradient id="arg" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#5B3FD1"/><stop offset=".7" stop-color="#E8622C"/><stop offset="1" stop-color="#F2A541"/></linearGradient></defs>' +
+      '<ellipse cx="62" cy="240" rx="30" ry="7" fill="#2A1E66"/><ellipse cx="338" cy="240" rx="30" ry="7" fill="#8A3A16"/>' +
+      '<path d="' + D + '" fill="none" stroke="url(#arg)" stroke-width="50" stroke-linecap="round"/>' +
+      '<path d="' + D + '" fill="none" stroke="rgba(29,33,64,.16)" stroke-width="50" stroke-dasharray="2 44"/>' +
+      '<path d="M48 228V108Q48 38 118 38H282" fill="none" stroke="#fff" stroke-opacity=".34" stroke-width="7" stroke-linecap="round"/>' +
+      '<text x="200" y="63" text-anchor="middle" class="art">Runiverso</text>' +
+      '<g class="arbn"><path d="M132 78v8M268 78v8" stroke="#1D2140" stroke-width="2"/><rect x="118" y="84" width="164" height="46" rx="5" fill="#fff"/><text x="200" y="107" text-anchor="middle" class="arm">META</text><g fill="#1D2140">' + chk + '</g></g>' +
+      '</svg></div></div></div></div>';
+  }
   /* Vista Comunidad */
   function vComunidad() {
     var cv = view.com || "muro";
-    var h = '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
+    var h = arcoHtml() + '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
     h += '<div class="seg" role="tablist" aria-label="Comunidad">' + [["muro", "Muro"], ["clubes", "Clubes"], ["ranking", "Ranking"]].concat(isAdmin ? [["mod", "Moderar"]] : []).map(function (s) { return '<button type="button" role="tab" data-so="com" data-v="' + s[0] + '" aria-selected="' + (cv === s[0]) + '">' + s[1] + '</button>'; }).join("") + '</div>';
     if (cv === "ranking") return h + '<div class="sec">' + rankingHtml() + '</div>';
     if (!user) return h + needLogin(cv === "muro" ? "ver el muro y publicar tus carreras" : "ver los clubes y crear el tuyo");
