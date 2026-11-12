@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "37";
+  var APP_V = "38";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -414,7 +414,7 @@
   function poster(r, tag, extra) {
     var C = window.CARTELES || {};
     var at = ' data-k="' + r.k + '" data-race="' + r.id + '" type="button" aria-label="' + esc(r.n) + ': ver ficha"';
-    var t = tag || (r.s ? '<span class="tag">Suspendida</span>' : S.mine[r.id] ? '<span class="tag mine">Apuntada</span>' : (r.ok ? '' : '<span class="tag">Por confirmar</span>'));
+    var t = tag || (r.s ? '<span class="tag">Suspendida</span>' : S.mine[r.id] ? '<span class="tag mine">Guardada</span>' : (r.ok ? '' : '<span class="tag">Por confirmar</span>'));
     if (C[r.id]) return '<button class="poster img"' + at + ' style="padding:0"><img src="../carteles/' + C[r.id] + '" alt="" style="width:100%;height:100%;object-fit:cover">' + t + '</button>';
     var dist = distTxt(r);
     return '<button class="poster bib"' + at + (extra || "") + '><span class="bb">' + LABEL[r.k] + (dist ? '<span>' + esc(dist) + '</span>' : '') + '</span>' +
@@ -423,7 +423,7 @@
   }
   /* Fila tipo entrada para listas */
   function item(r) {
-    var C = window.CARTELES || {}, dist = distTxt(r), st = r.s ? '<span class="tks">Suspendida</span>' : S.mine[r.id] ? '<span class="tks mine">Apuntada</span>' : (r.ok ? '' : '<span class="tks">Por confirmar</span>');
+    var C = window.CARTELES || {}, dist = distTxt(r), st = r.s ? '<span class="tks">Suspendida</span>' : S.mine[r.id] ? '<span class="tks mine">Guardada</span>' : (r.ok ? '' : '<span class="tks">Por confirmar</span>');
     return '<button class="tk" type="button" data-k="' + r.k + '" data-race="' + r.id + '" aria-label="' + esc(r.n) + ': ver ficha">' +
       '<span class="tkd"><b>' + r.date.getDate() + '</b><span>' + MES_C[r.date.getMonth()] + '</span></span>' +
       '<span class="tkb"><b>' + esc(r.n) + '</b><span>' + esc(r.c) + (r.p && r.c.indexOf(r.p) < 0 ? ', ' + esc(r.p) : '') + '</span>' +
@@ -518,7 +518,7 @@
     }
     h += '<div class="card set pro"><h3>Runiverso Pro <span class="pill pro">Muy pronto</span></h3><p class="prop"><b>0,99 €</b> al mes · precio de lanzamiento</p><ul class="aperks"><li>Aviso en el móvil cuando abran las inscripciones de tus carreras favoritas</li><li>Plan de entrenamiento hasta tu próxima carrera</li><li>Ranking por edad y estadísticas de tu temporada</li><li>Insignia Pro en tu perfil y en el muro</li></ul>' +
       (proAsked() ? '<p class="ok" role="status">Apuntado: te avisaremos el primero cuando esté disponible.</p>' : '<button class="btn wide" type="button" data-act="prowant">Avísame cuando salga</button>') + '<p class="muted">Todavía no se puede contratar ni se cobra nada. Runiverso seguirá siendo gratis.</p></div>';
-    h += '<div class="card set"><h3>Contacta con nosotros</h3><p class="muted">¿Falta una carrera, hay un dato mal o tienes una idea? Escríbenos.</p><div class="row"><a class="btn sm" href="mailto:hola@runiverso.com?subject=Runiverso%20app">hola@runiverso.com</a><a class="btn sm alt" href="' + CANAL + '" target="_blank" rel="noopener">Canal de WhatsApp</a><a class="btn sm alt" href="https://www.instagram.com/runivers0/" target="_blank" rel="noopener">Instagram</a></div></div>';
+    h += '<div class="card set"><h3>Contacta con nosotros</h3><p class="muted">¿Falta una carrera, hay un dato mal o tienes una idea? Escríbenos.</p><a class="btn" href="mailto:runniverso@gmail.com?subject=Runiverso%20app">runniverso@gmail.com</a></div>';
     h += '<div class="card set"><h3>Cuenta</h3>' + (user ? '<div class="row"><button class="btn sm alt" type="button" data-act="logout">Cerrar sesión</button><button class="btn sm alt" type="button" data-act="zone">Cambiar mi zona</button></div><button class="link danger" type="button" data-act="delacct">Eliminar mi cuenta y mis datos</button>' : '<button class="btn" type="button" data-act="login">Crear cuenta o entrar</button>') + '</div>';
     h += '<p class="foot">Versión ' + APP_V + ' · <a href="../privacidad/">Privacidad</a> · <a href="../condiciones/">Condiciones</a></p>';
     return h;
@@ -633,8 +633,9 @@
         '<span class="nxbar"><i style="width:' + pct + '%"></i></span><span class="nxf"><span class="nxd"><b>' + (d === 0 ? "¡Hoy!" : d) + '</b>' + (d === 0 ? "a correr" : d === 1 ? "día para la salida" : "días para la salida") + '</span><span class="nxgo">Ver ficha</span></span>' +
         (KM[r.k] && S.marks.length ? '<span class="est">Tu tiempo estimado: <b>≈ ' + fmtT(predict(KM[r.k]).sec) + '</b></span>' : '') + '</button>';
     } else {
-      h += '<div class="nx empty"><span class="nxk">Tu próxima carrera</span><span class="nxn">Elige tu próximo dorsal</span><span class="nxm">Pulsa «Apuntarme» en cualquier carrera y aquí verás la cuenta atrás.</span><a class="nxgo" href="#carreras">Ver carreras</a></div>';
+      h += '<div class="nx empty"><span class="nxk">Tu próxima carrera</span><span class="nxn">Elige tu próximo dorsal</span><span class="nxm">Pulsa «Guardar en mi perfil» en cualquier carrera y aquí verás la cuenta atrás.</span><a class="nxgo" href="#carreras">Ver carreras</a></div>';
     }
+    h += pMis();
     if (andMode()) {
       var ex = view.ex || "", sat = new Date(today); sat.setDate(today.getDate() + ((6 - today.getDay() + 7) % 7)); var sun = new Date(sat); sun.setDate(sat.getDate() + 1);
       var finde = up.filter(function (x) { return x.r === "Andalucía" && x.date >= today && x.date <= sun; });
@@ -667,7 +668,7 @@
   }
 
   /* ---------- Carreras ---------- */
-  var CHIPS = [["", "Todas"], ["21K", "Medias"], ["42K", "Maratones"], ["10K", "10K"], ["TR", "Trail"], ["SS", "San Silvestre"], ["POP", "Populares"], ["mine", "Apuntadas"]];
+  var CHIPS = [["", "Todas"], ["21K", "Medias"], ["42K", "Maratones"], ["10K", "10K"], ["TR", "Trail"], ["SS", "San Silvestre"], ["POP", "Populares"], ["mine", "Guardadas"]];
   function filtered() {
     var q = norm(view.q.trim()).split(/\s+/).filter(Boolean), sc = S.prov ? view.sc : "es", zp = andMode() ? curZp() : "";
     return upcoming().filter(function (r) {
@@ -720,11 +721,11 @@
     var M = window.RV_MAP_ES; if (!M) return zpMap(up);
     var cnt = {}, max = 1, names = Object.keys(M.p);
     names.forEach(function (c) { cnt[c] = up.filter(function (r) { return r.r === c; }).length; if (c !== "Andalucía") max = Math.max(max, cnt[c]); });
-    var paths = "", labels = "";
-    names.forEach(function (c) {
+    var paths = "", labels = "", PAS = ["#F9C9C4", "#FBD9A8", "#FAEDA6", "#CDE8B5", "#B7E3D9", "#BCD9F6", "#D5C9F4", "#F6C8E1", "#F5D5B8", "#C9E6EF"];
+    names.forEach(function (c, ci) {
       var g = M.p[c], on = view.es === c, lv = cnt[c] ? Math.min(4, 1 + Math.floor(3 * Math.min(cnt[c], max) / max)) : 0;
-      paths += '<path class="mp es l' + lv + (on ? ' on' : '') + '" d="' + g.d + '" data-es="' + esc(c) + '" role="button" tabindex="0" aria-label="' + esc(c) + ': ' + cnt[c] + ' carreras" aria-pressed="' + on + '"></path>';
-      if (cnt[c]) labels += '<g class="ml' + (on || lv >= 3 ? ' inv' : '') + (on ? ' up' : '') + '" transform="translate(' + g.x + ' ' + g.y + ')"><text class="mn" y="7">' + cnt[c] + '</text></g>';
+      paths += '<path class="mp es l' + lv + (on ? ' on' : '') + '" style="--pf:' + PAS[ci % PAS.length] + '" d="' + g.d + '" data-es="' + esc(c) + '" role="button" tabindex="0" aria-label="' + esc(c) + ': ' + cnt[c] + ' carreras" aria-pressed="' + on + '"></path>';
+      if (cnt[c]) labels += '<g class="ml es' + (on ? ' inv up' : '') + '" transform="translate(' + g.x + ' ' + g.y + ')"><text class="mn" y="7">' + cnt[c] + '</text></g>';
     });
     var base = ""; for (var bi = 12; bi >= 2; bi -= 2) base += '<use href="#mapes" class="mb" transform="translate(0 ' + bi + ')"></use>';
     return '<div class="mapc m3d all" data-tilt="map"><svg viewBox="0 -14 ' + M.w + ' ' + (M.h + 30) + '" role="group" aria-label="Mapa de España: elige una comunidad"><g aria-hidden="true">' + base + '</g><g id="mapes">' + paths + '</g><g aria-hidden="true">' + labels + '</g></svg>' +
@@ -775,11 +776,11 @@
   function vPerfil() {
     var ini = (S.name || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
     var h = '<div class="prof">' + (user ? '<label class="av avb" aria-label="Cambiar tu foto de perfil">' + (S.avatar ? '<img src="' + esc(imgUrl(S.avatar)) + '" alt="">' : esc(ini)) + '<i aria-hidden="true">+</i><input id="avf" type="file" accept="image/*" hidden></label>' : '<span class="av">' + esc(ini) + '</span>') + '<span class="nm"><h1 style="font-size:26px">' + (S.name ? esc(S.name) : "Tu perfil") + '</h1><button type="button" data-act="name">' + (S.name ? "Cambiar nombre" : "Pon tu nombre") + '</button></span><a class="gear" href="#ajustes" aria-label="Ajustes">' + GEAR + '</a></div>';
-    h += '<div class="seg four" role="tablist" aria-label="Perfil">' + [["marcas", "Marcas"], ["vitrina", "Vitrina"], ["mis", "Carreras"], ["seg", "Seguidores"]].map(function (s) {
+    h += '<div class="seg" role="tablist" aria-label="Perfil">' + [["marcas", "Marcas"], ["vitrina", "Vitrina"], ["seg", "Seguidores"]].map(function (s) {
       return '<button type="button" role="tab" data-sub="' + s[0] + '" aria-selected="' + (view.sub === s[0]) + '">' + s[1] + '</button>';
     }).join("") + '</div>';
     if (!user && view.sub !== "seg") h += accountCard();
-    h += ({ marcas: pMarcas, vitrina: pVitrina, mis: pMis, seg: pSeg }[view.sub] || pMarcas)();
+    h += ({ marcas: pMarcas, vitrina: pVitrina, seg: pSeg }[view.sub] || pMarcas)();
     h += '<p class="foot">' + (user ? "Tus datos se guardan en tu cuenta Runiverso y en este móvil." : "Sin cuenta, tus datos se guardan solo en este móvil.") + ' · Versión ' + APP_V + '<br><a href="../privacidad/">Privacidad</a> · <a href="../condiciones/">Condiciones</a> · <a href="../borrar-cuenta/">Eliminar cuenta</a></p>';
     return h;
   }
@@ -828,15 +829,16 @@
     }).join("") + '</div>';
     return h;
   }
+  /* Inicio: tus carreras guardadas (las pasadas piden la marca; las próximas, en lista) */
   function pMis() {
     var mine = RACES.filter(function (r) { return S.mine[r.id]; });
-    var fut = mine.filter(function (r) { return daysTo(r.date) >= 0; });
-    var past = mine.filter(function (r) { return daysTo(r.date) < 0 && !S.marks.some(function (m) { return m.raceId === r.id; }); });
+    var fut = mine.filter(function (r) { return daysTo(r.date) >= 0; }).sort(function (a, b) { return a.date - b.date; });
+    var past = mine.filter(function (r) { return daysTo(r.date) < 0 && !S.marks.some(function (m) { return m.raceId === r.id; }); }).sort(function (a, b) { return b.date - a.date; });
     var h = "";
-    if (past.length) h += '<div class="sec"><h2>¿Cómo te fue?</h2><div class="list">' + past.map(function (r) {
-      return '<div class="li"><span class="dt"><b>' + r.date.getDate() + '</b><span>' + MES_C[r.date.getMonth()] + '</span></span><span class="tx"><b>' + esc(r.n) + '</b><span>Añade tu tiempo y gana la medalla</span></span><button class="btn sm" type="button" data-act="addmark" data-race="' + r.id + '" data-noopen="1">Añadir</button></div>';
+    if (past.length) h += '<div class="sec"><div class="sechd"><h2>¿Cómo te fue?</h2><span class="muted" style="font-size:13px">apunta tu marca</span></div><div class="list">' + past.map(function (r) {
+      return '<div class="li"><span class="dt"><b>' + r.date.getDate() + '</b><span>' + MES_C[r.date.getMonth()] + '</span></span><span class="tx"><b>' + esc(r.n) + '</b><span>' + (KM[r.k] ? "Añade tu tiempo y gana la medalla" : "¿La corriste? Guarda tu tiempo") + '</span></span><button class="btn sm" type="button" data-act="addmark" data-race="' + r.id + '" data-noopen="1">Mi marca</button></div>';
     }).join("") + '</div></div>';
-    h += '<div class="sec"><h2>Próximas</h2>' + (fut.length ? '<div class="grid">' + fut.map(item).join("") + '</div>' : '<div class="card empty"><p>No estás apuntado a ninguna carrera.</p><a class="btn" href="#carreras">Buscar carreras</a></div>') + '</div>';
+    if (fut.length > 1) h += '<div class="sec"><div class="sechd"><h2>Tus carreras guardadas</h2><span class="muted" style="font-size:13px">' + fut.length + '</span></div><div class="grid">' + fut.map(item).join("") + '</div></div>';
     return h;
   }
 
@@ -1366,9 +1368,9 @@
     if (r.m && (r.m.h || r.m.f)) {
       h += '<div class="marks"><span class="k">Ganadores · ' + esc(r.m.ed) + '</span>' + [["Hombres", r.m.h], ["Mujeres", r.m.f]].filter(function (x) { return x[1]; }).map(function (x) { return '<span class="r"><span>' + x[0] + ': ' + esc(x[1][0]) + '</span><b>' + esc(x[1][2]) + '</b></span>'; }).join("") + '</div>';
     }
-    h += '<button class="btn wide ' + (on ? "ok" : "") + '" type="button" data-mine="' + id + '">' + (on ? "✓ Apuntada · quitar" : "Apuntarme") + '</button>';
+    h += (r.w ? '<a class="btn wide" href="' + esc(r.w) + '" target="_blank" rel="noopener">Inscripción y web oficial</a>' : '<a class="btn wide" href="https://www.google.com/search?q=' + encodeURIComponent(r.n + " " + r.date.getFullYear() + " inscripción") + '" target="_blank" rel="noopener">Buscar inscripción</a>');
     if (on && d >= 0) h += canalCard("¿Te avisamos de esta carrera?", "Recogida de dorsales, horarios y cambios de última hora en nuestro canal.");
-    h += '<div class="row">' + (r.w ? '<a class="btn sm alt" href="' + esc(r.w) + '" target="_blank" rel="noopener">Web oficial</a>' : '<a class="btn sm alt" href="https://www.google.com/search?q=' + encodeURIComponent(r.n + " " + r.date.getFullYear() + " inscripción") + '" target="_blank" rel="noopener">Buscar inscripción</a>') +
+    h += '<div class="row"><button class="btn sm ' + (on ? "ok" : "alt") + '" type="button" data-mine="' + id + '">' + (on ? "✓ Guardada · quitar" : "Guardar en mi perfil") + '</button>' +
       '<button class="btn sm alt" type="button" data-ics="' + id + '">Añadir al calendario</button><button class="btn sm alt" type="button" data-share="' + id + '">Compartir</button>' +
       (KM[r.k] && d < 0 ? '<button class="btn sm alt" type="button" data-act="addmark" data-race="' + id + '">Añadir mi marca</button>' : '') + '</div>';
     h += '<div id="goers"></div><button class="btn alt wide" type="button" data-close="1">Cerrar</button>';
@@ -1600,7 +1602,7 @@
     var exb = t.closest("[data-ex]"); if (exb) { view.ex = exb.getAttribute("data-ex"); render(); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
-    if (mi) { var id = mi.getAttribute("data-mine"); if (!user && !S.mine[id]) { authScreen("signup", "", "Crea tu cuenta gratis para apuntarte y que te avisemos antes de la carrera."); if ($("layer").querySelector(".auth")) return; } if (S.mine[id]) { delete S.mine[id]; queue({ t: "mine-", id: id }); } else { S.mine[id] = true; queue({ t: "mine+", id: id }); } save(); toast(S.mine[id] ? (user && !pushOn() ? "¡Apuntada! Activa los avisos en tu perfil y te la recordamos" : "¡Apuntada! La verás en Inicio") : "Ya no estás apuntado"); render(); raceSheet(id); return; }
+    if (mi) { var id = mi.getAttribute("data-mine"); if (!user && !S.mine[id]) { authScreen("signup", "", "Crea tu cuenta gratis para guardar carreras en tu perfil y que te avisemos antes de cada una."); if ($("layer").querySelector(".auth")) return; } if (S.mine[id]) { delete S.mine[id]; queue({ t: "mine-", id: id }); } else { S.mine[id] = true; queue({ t: "mine+", id: id }); } save(); toast(S.mine[id] ? (user && !pushOn() ? "¡Guardada! Activa los avisos en Ajustes y te la recordamos" : "¡Guardada! La verás en Inicio") : "Quitada de tu perfil"); render(); raceSheet(id); return; }
     var cd = t.closest("[data-card]"); if (cd) { cardSheet(cd.getAttribute("data-card")); return; }
     var dc = t.closest("[data-dlcard]");
     if (dc) { cardBlob(dc.getAttribute("data-dlcard"), function (bl, m) { var a = document.createElement("a"); a.href = URL.createObjectURL(bl); a.download = "runiverso-" + dLabel(m.km).replace(/[^a-z0-9]+/gi, "") + "-" + m.date + ".png"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500); toast("Imagen descargada"); }); return; }
