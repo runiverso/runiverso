@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "40";
+  var APP_V = "41";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -944,7 +944,7 @@
   /* ---------- Comunidad: muro, seguidores y clubes ---------- */
   var REACTS = ["👏", "🔥", "💪", "❤️"];
   var SO = { scope: "all", club: null, feed: null, fol: null, clubs: null, found: null, img: null };
-  function soReset() { SO.act = null; SO.mod = null; SO.scope = "all"; SO.club = null; SO.feed = null; SO.fol = null; SO.clubs = null; SO.found = null; SO.img = null; }
+  function soReset() { SO.act = null; SO.mod = null; SO.usr = null; SO.scope = "all"; SO.club = null; SO.feed = null; SO.fol = null; SO.clubs = null; SO.found = null; SO.img = null; }
   function soOn() { return view.tab === "comunidad" || (view.tab === "perfil" && view.sub === "seg"); }
   function soDraw() { if (soOn() && !$("layer").innerHTML) render(); }
   function imgUrl(p) { return SUPA_URL + "/storage/v1/object/public/muro/" + p; }
@@ -1166,6 +1166,27 @@
       sb.from("wall").select("*").in("id", ids).order("created_at", { ascending: false }).then(function (q) { SO.mod = { rows: q.data || [] }; soDraw(); });
     });
   }
+  /* Panel de usuarios (solo administradores): altas, último acceso y actividad de cada cuenta */
+  function loadUsers(force) {
+    if (!isAdmin || (SO.usr && !force)) return;
+    SO.usr = SO.usr || { loading: true };
+    sb.rpc("admin_users").then(function (r) { SO.usr = r.error || !r.data ? { err: true, miss: !!(r.error && /admin_users|PGRST202|42883/.test((r.error.code || "") + " " + (r.error.message || ""))) } : r.data; soDraw(); }, function () { SO.usr = { err: true }; soDraw(); });
+  }
+  function dShort(iso) { if (!iso) return "nunca"; var d = new Date(iso); return d.getDate() + " " + MES_C[d.getMonth()] + (d.getFullYear() !== today.getFullYear() ? " " + d.getFullYear() : ""); }
+  function usersHtml() {
+    loadUsers(); var A = SO.usr || { loading: true };
+    if (A.loading) return '<p class="muted">Cargando usuarios…</p>';
+    if (A.err) return '<div class="card empty"><p>' + (A.miss ? "Falta activar el panel en Supabase: ejecuta el archivo <b>supabase/admin.sql</b> en SQL Editor y vuelve a entrar." : "No hemos podido cargar los usuarios ahora mismo.") + '</p><button class="btn sm alt" type="button" data-so="usrre" style="margin-top:10px">Reintentar</button></div>';
+    var st = function (n, l) { return '<div class="stat"><b>' + (n || 0) + '</b><span>' + l + '</span></div>'; };
+    var h = '<div class="stats">' + st(A.total, "Registrados") + st(A.today, "Altas hoy") + st(A.week, "Altas 7 días") + '</div><div class="stats">' + st(A.active7, "Activos 7 días") + st(A.posts, "Publicaciones") + st(A.pro, "Interés en Pro") + '</div>';
+    h += '<div class="srch"><input id="usrq" type="search" placeholder="Filtra por nombre, correo o provincia" aria-label="Filtrar usuarios" autocomplete="off"><button class="btn sm alt" type="button" data-so="usrre">Actualizar</button></div>';
+    h += '<p class="muted" style="margin:0;font-size:12.5px">Los más recientes primero. «Último acceso» es la última vez que inició sesión, no cada vez que abre la app.</p>';
+    h += '<div class="list" id="usrl">' + (A.users || []).map(function (u) {
+      var nm = u.name || "Sin nombre", bits = [u.races ? u.races + (u.races === 1 ? " carrera" : " carreras") : "", u.marks ? u.marks + (u.marks === 1 ? " marca" : " marcas") : "", u.posts ? u.posts + " publ." : ""].filter(Boolean).join(" · ");
+      return '<div class="li per usr" data-q="' + esc((nm + " " + (u.email || "") + " " + (u.prov || "")).toLowerCase()) + '"><button class="pav" type="button" data-so="user" data-id="' + u.id + '" aria-label="Ver el perfil de ' + esc(nm) + '">' + av(nm, u.avatar) + '</button><button class="tx" type="button" data-so="user" data-id="' + u.id + '"><b>' + esc(nm) + (u.pro ? ' <span class="pill pro">Pro</span>' : '') + '</b><span>' + esc(u.email || "") + '</span><span>' + esc(u.prov || "Sin provincia") + ' · alta ' + dShort(u.created_at) + ' · último acceso ' + dShort(u.last_sign_in_at) + '</span>' + (bits ? '<span>' + bits + '</span>' : '') + '</button></div>';
+    }).join("") + '</div>';
+    return h;
+  }
   /* Subir una imagen cuadrada (foto de perfil o escudo) */
   function square(file, cb) {
     var url = URL.createObjectURL(file), im = new Image();
@@ -1319,10 +1340,11 @@
   /* Vista Comunidad */
   function vComunidad() {
     var cv = view.com || "muro";
-    var h = (cv === "clubes" ? clubsHtml() : cv === "ranking" ? arcoHtml() : cv === "mod" && isAdmin ? refHtml() : selfieHtml()) + '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
-    h += '<div class="seg" role="tablist" aria-label="Comunidad">' + [["muro", "Muro"], ["clubes", "Clubes"], ["ranking", "Ranking"]].concat(isAdmin ? [["mod", "Moderar"]] : []).map(function (s) { return '<button type="button" role="tab" data-so="com" data-v="' + s[0] + '" aria-selected="' + (cv === s[0]) + '">' + s[1] + '</button>'; }).join("") + '</div>';
+    var h = (cv === "clubes" ? clubsHtml() : cv === "ranking" ? arcoHtml() : (cv === "mod" || cv === "usr") && isAdmin ? refHtml() : selfieHtml()) + '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
+    h += '<div class="seg' + (isAdmin ? ' five' : '') + '" role="tablist" aria-label="Comunidad">' + [["muro", "Muro"], ["clubes", "Clubes"], ["ranking", "Ranking"]].concat(isAdmin ? [["mod", "Moderar"], ["usr", "Usuarios"]] : []).map(function (s) { return '<button type="button" role="tab" data-so="com" data-v="' + s[0] + '" aria-selected="' + (cv === s[0]) + '">' + s[1] + '</button>'; }).join("") + '</div>';
     if (cv === "ranking") return h + '<div class="sec">' + rankingHtml() + '</div>';
     if (!user) return h + needLogin(cv === "muro" ? "ver el muro y publicar tus carreras" : "ver los clubes y crear el tuyo");
+    if (cv === "usr" && isAdmin) return h + usersHtml();
     if (cv === "mod" && isAdmin) {
       loadMod(); var M = SO.mod || { loading: true, rows: [] };
       if (M.loading) return h + '<p class="muted">Cargando denuncias…</p>';
@@ -1371,6 +1393,7 @@
     else if (k === "pmenu") postMenu(id);
     else if (k === "comments") commentsSheet(id);
     else if (k === "act") actSheet();
+    else if (k === "usrre") { SO.usr = null; render(); }
     else if (k === "sharemark") shareMark(id, a);
     else if (k === "delcom") { var pid = a.getAttribute("data-post"); sb.from("comments").delete().eq("id", id).then(function () { loadComments(pid); }); }
     else if (k === "hide") { sb.from("posts").update({ hidden: v === "1" }).eq("id", id).then(function (r) { toast(r.error ? "No se ha podido cambiar" : v === "1" ? "Publicación oculta" : "Publicación restaurada"); loadMod(true); }); }
@@ -1391,6 +1414,11 @@
       if (!a.getAttribute("data-sure")) { a.setAttribute("data-sure", "1"); a.textContent = "Pulsa otra vez: se borra el club para todos"; return; }
       sb.from("clubs").delete().eq("id", id).then(function (r) { if (r.error) { toast("No se ha podido borrar"); return; } closeSheet(); toast("Club borrado"); loadClubs(true); });
     }
+  });
+  document.addEventListener("input", function (e) {
+    if (e.target.id !== "usrq") return;
+    var q = e.target.value.trim().toLowerCase();
+    [].forEach.call(document.querySelectorAll("#usrl .usr"), function (el) { el.hidden = !!q && el.getAttribute("data-q").indexOf(q) < 0; });
   });
   document.addEventListener("change", function (e) {
     if (e.target.id === "avf" && e.target.files[0]) { upSquare(e.target.files[0], function (path) { S.avatar = path; save(); queue({ t: "prof" }); render(); toast("Foto de perfil actualizada"); }); }
