@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "33";
+  var APP_V = "34";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -28,8 +28,8 @@
 
   /* ---------- Datos guardados en el móvil ---------- */
   var KEY = "runiverso-app-v1";
-  var S = { name: "", mine: {}, marks: [], prov: "", ccaa: "", pub: false, acct: "", q: [] };
-  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; S.prov = saved.prov || ""; S.ccaa = saved.ccaa || ""; S.pub = !!saved.pub; S.acct = saved.acct || ""; S.q = saved.q || []; S.push = !!saved.push; S.onb = saved.onb || !!saved.prov; } } catch (e) {}
+  var S = { name: "", mine: {}, marks: [], prov: "", ccaa: "", pub: false, acct: "", q: [], avatar: "" };
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) { S.name = saved.name || ""; S.mine = saved.mine || {}; S.marks = saved.marks || []; S.prov = saved.prov || ""; S.ccaa = saved.ccaa || ""; S.pub = !!saved.pub; S.acct = saved.acct || ""; S.q = saved.q || []; S.push = !!saved.push; S.onb = saved.onb || !!saved.prov; S.avatar = saved.avatar || ""; } } catch (e) {}
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { toast("No se ha podido guardar en este móvil"); } }
 
 
@@ -100,7 +100,7 @@
   }
   function isUuid(v) { return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v || ""); }
   function queue(op) { if (!user) return; S.q.push(op); save(); flush(); }
-  function profRow() { return { name: S.name || null, prov: S.prov || null, ccaa: S.ccaa || null, public: !!S.pub, updated_at: new Date().toISOString() }; }
+  function profRow() { return { name: S.name || null, prov: S.prov || null, ccaa: S.ccaa || null, public: !!S.pub, avatar: S.avatar || null, updated_at: new Date().toISOString() }; }
   function runOp(op) {
     if (op.t === "mark+") { var m = op.m; return sb.from("marks").upsert({ id: m.id, user_id: user.id, race_id: m.raceId || null, race_name: m.name, km: m.km, sec: m.sec, date: m.date }); }
     if (op.t === "mark-") return sb.from("marks").delete().eq("id", op.id);
@@ -123,13 +123,13 @@
   function pull() {
     if (!user) return;
     Promise.all([
-      sb.from("profiles").select("name,prov,ccaa,public").eq("id", user.id).maybeSingle(),
+      sb.from("profiles").select("name,prov,ccaa,public,avatar").eq("id", user.id).maybeSingle(),
       sb.from("marks").select("id,race_id,race_name,km,sec,date").eq("user_id", user.id),
       sb.from("signups").select("race_id").eq("user_id", user.id)
     ]).then(function (r) {
       if (r[0].error || r[1].error || r[2].error || S.q.length) return;
       var pf = r[0].data || {};
-      if (pf.name) S.name = pf.name; if (pf.prov) S.prov = pf.prov; if (pf.ccaa) S.ccaa = pf.ccaa; S.pub = !!pf.public;
+      if (pf.name) S.name = pf.name; if (pf.prov) S.prov = pf.prov; if (pf.ccaa) S.ccaa = pf.ccaa; S.pub = !!pf.public; S.avatar = pf.avatar || "";
       S.marks = r[1].data.map(function (m) { return { id: m.id, raceId: m.race_id || "", name: m.race_name, km: +m.km, sec: m.sec, date: m.date }; });
       S.mine = {}; r[2].data.forEach(function (x) { if (BY[x.race_id] && daysTo(BY[x.race_id].date) >= -60) S.mine[x.race_id] = true; });
       save(); if (!$("layer").innerHTML) render();
@@ -170,7 +170,7 @@
   function logout() {
     if (!sb) return;
     sb.auth.signOut().finally(function () {
-      user = null; S.acct = ""; S.q = []; S.marks = []; S.mine = {}; S.name = ""; S.pub = false; save();
+      user = null; S.acct = ""; S.q = []; S.marks = []; S.mine = {}; S.name = ""; S.pub = false; S.avatar = ""; save();
       toast("Sesión cerrada. Tus datos siguen guardados en tu cuenta"); render();
     });
   }
@@ -497,7 +497,7 @@
     window.addEventListener("scroll", function () { var v = window.scrollY > 64; if (v !== on) { on = v; document.documentElement.classList.toggle("scrolled", v); } }, { passive: true });
   })();
   /* Acceso obligatorio: para usar la app hay que tener cuenta (poner REQUIRE_LOGIN = false para volver al modo libre) */
-  var REQUIRE_LOGIN = true;
+  var REQUIRE_LOGIN = false;
   function gated() { return REQUIRE_LOGIN && !user && !S.acct; }
   function gate(n) {
     if (!gated()) return;
@@ -713,7 +713,7 @@
   /* ---------- Perfil ---------- */
   function vPerfil() {
     var ini = (S.name || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
-    var h = '<div class="prof"><span class="av">' + esc(ini) + '</span><span class="nm"><h1 style="font-size:26px">' + (S.name ? esc(S.name) : "Tu perfil") + '</h1><button type="button" data-act="name">' + (S.name ? "Cambiar nombre" : "Pon tu nombre") + '</button></span></div>';
+    var h = '<div class="prof">' + (user ? '<label class="av avb" aria-label="Cambiar tu foto de perfil">' + (S.avatar ? '<img src="' + esc(imgUrl(S.avatar)) + '" alt="">' : esc(ini)) + '<i aria-hidden="true">+</i><input id="avf" type="file" accept="image/*" hidden></label>' : '<span class="av">' + esc(ini) + '</span>') + '<span class="nm"><h1 style="font-size:26px">' + (S.name ? esc(S.name) : "Tu perfil") + '</h1><button type="button" data-act="name">' + (S.name ? "Cambiar nombre" : "Pon tu nombre") + '</button></span></div>';
     h += '<div class="seg four" role="tablist" aria-label="Perfil">' + [["marcas", "Marcas"], ["vitrina", "Vitrina"], ["mis", "Carreras"], ["seg", "Seguidores"]].map(function (s) {
       return '<button type="button" role="tab" data-sub="' + s[0] + '" aria-selected="' + (view.sub === s[0]) + '">' + s[1] + '</button>';
     }).join("") + '</div>';
@@ -881,11 +881,12 @@
   /* ---------- Comunidad: muro, seguidores y clubes ---------- */
   var REACTS = ["👏", "🔥", "💪", "❤️"];
   var SO = { scope: "all", club: null, feed: null, fol: null, clubs: null, found: null, img: null };
-  function soReset() { SO.scope = "all"; SO.club = null; SO.feed = null; SO.fol = null; SO.clubs = null; SO.found = null; SO.img = null; }
+  function soReset() { SO.act = null; SO.mod = null; SO.scope = "all"; SO.club = null; SO.feed = null; SO.fol = null; SO.clubs = null; SO.found = null; SO.img = null; }
   function soOn() { return view.tab === "comunidad" || (view.tab === "perfil" && view.sub === "seg"); }
   function soDraw() { if (soOn() && !$("layer").innerHTML) render(); }
   function imgUrl(p) { return SUPA_URL + "/storage/v1/object/public/muro/" + p; }
   function ini2(n) { return (n || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase(); }
+  function av(name, path) { return path ? '<img src="' + esc(imgUrl(path)) + '" alt="" loading="lazy">' : esc(ini2(name)); }
   function ago(iso) {
     var s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
     if (s < 60) return "ahora"; if (s < 3600) return Math.floor(s / 60) + " min"; if (s < 86400) return Math.floor(s / 3600) + " h";
@@ -906,7 +907,7 @@
         SO.fol = { ing: a.map(row), ers: b.map(row), set: set };
         if (SO.scope === "fol") loadFeed(true); else soDraw();
       };
-      if (!ids.length) fin([]); else sb.from("people").select("id,name,prov").in("id", ids).then(function (q) { fin(q.data); }, function () { fin([]); });
+      if (!ids.length) fin([]); else sb.from("people").select("id,name,prov,avatar").in("id", ids).then(function (q) { fin(q.data); }, function () { fin([]); });
     }, function () { SO.fol = { err: true, ing: [], ers: [], set: {} }; soDraw(); });
   }
   function loadFeed(force) {
@@ -927,14 +928,16 @@
   }
   function postHtml(p) {
     var rc = p.reacs || {}, nm = p.author || "Corredor";
-    return '<article class="post" data-post="' + p.id + '"><header><button class="pav" type="button" data-so="user" data-id="' + p.user_id + '" aria-label="Ver el perfil de ' + esc(nm) + '">' + esc(ini2(nm)) + '</button>' +
+    return '<article class="post" data-post="' + p.id + '"><header><button class="pav" type="button" data-so="user" data-id="' + p.user_id + '" aria-label="Ver el perfil de ' + esc(nm) + '">' + av(nm, p.author_avatar) + '</button>' +
       '<span class="pwho"><button class="pname" type="button" data-so="user" data-id="' + p.user_id + '">' + esc(nm) + '</button><small>' + (p.club ? esc(p.club) + ' · ' : p.author_prov ? esc(p.author_prov) + ' · ' : '') + ago(p.created_at) + '</small></span>' +
       '<button class="pmore" type="button" data-so="pmenu" data-id="' + p.id + '" aria-label="Más opciones">⋯</button></header>' +
       (p.body ? '<p class="pbody">' + esc(p.body).replace(/\n/g, "<br>") + '</p>' : '') +
       (p.img ? '<img class="pimg" loading="lazy" src="' + esc(imgUrl(p.img)) + '" alt="Foto de ' + esc(nm) + '">' : '') +
-      '<div class="preac" role="group" aria-label="Reacciones">' + REACTS.map(function (k) { return '<button type="button" data-so="react" data-id="' + p.id + '" data-k="' + k + '" aria-pressed="' + (p.mine === k) + '">' + k + '<b>' + (rc[k] || "") + '</b></button>'; }).join("") + '</div></article>';
+      '<div class="preac" role="group" aria-label="Reacciones">' + REACTS.map(function (k) { return '<button type="button" data-so="react" data-id="' + p.id + '" data-k="' + k + '" aria-pressed="' + (p.mine === k) + '">' + k + '<b>' + (rc[k] || "") + '</b></button>'; }).join("") +
+      '<button type="button" class="pcom" data-so="comments" data-id="' + p.id + '" aria-label="Comentarios">💬<b>' + (p.n_comments || "") + '</b></button></div>' +
+      (p.hidden ? '<p class="phid">Oculta por denuncias: solo la ves tú' + (isAdmin ? " y los administradores" : "") + '.</p>' : '') + '</article>';
   }
-  function findPost(id) { var rows = ((SO.feed && SO.feed.rows) || []).concat(SO.urows || []); for (var i = 0; i < rows.length; i++) if (rows[i].id === id) return rows[i]; return null; }
+  function findPost(id) { var rows = ((SO.feed && SO.feed.rows) || []).concat(SO.urows || [], (SO.mod && SO.mod.rows) || []); for (var i = 0; i < rows.length; i++) if (rows[i].id === id) return rows[i]; return null; }
   function react(id, k) {
     var p = findPost(id); if (!p || !user) return;
     var rc = p.reacs = p.reacs || {}, old = p.mine, done = function (r) { if (r && r.error) toast("No se ha guardado tu reacción"); };
@@ -945,7 +948,7 @@
   }
   function personRow(p) {
     var me = user && p.id === user.id, f = SO.fol && SO.fol.set[p.id];
-    return '<div class="li per"><button class="pav" type="button" data-so="user" data-id="' + p.id + '" aria-label="Ver el perfil de ' + esc(p.name || "Corredor") + '">' + esc(ini2(p.name)) + '</button><button class="tx" type="button" data-so="user" data-id="' + p.id + '"><b>' + esc(p.name || "Corredor") + '</b><span>' + esc(p.prov || "Runiverso") + '</span></button>' +
+    return '<div class="li per"><button class="pav" type="button" data-so="user" data-id="' + p.id + '" aria-label="Ver el perfil de ' + esc(p.name || "Corredor") + '">' + av(p.name, p.avatar) + '</button><button class="tx" type="button" data-so="user" data-id="' + p.id + '"><b>' + esc(p.name || "Corredor") + '</b><span>' + esc(p.prov || "Runiverso") + '</span></button>' +
       (me ? '<span class="pill">Tú</span>' : '<button class="btn sm' + (f ? ' alt' : '') + '" type="button" data-so="follow" data-id="' + p.id + '">' + (f ? "Siguiendo" : "Seguir") + '</button>') + '</div>';
   }
   function follow(id, btn) {
@@ -972,17 +975,17 @@
   function searchPeople(q) {
     view.pq = q; if (!q || q.length < 2) { SO.found = null; soDraw(); return; }
     SO.found = { loading: true, rows: [] }; soDraw();
-    sb.from("people").select("id,name,prov").ilike("name", "%" + q.replace(/[%_,()]/g, " ") + "%").limit(30).then(function (r) { SO.found = { rows: (r.data || []).filter(function (p) { return p.name; }) }; soDraw(); }, function () { SO.found = { rows: [] }; soDraw(); });
+    sb.from("people").select("id,name,prov,avatar").ilike("name", "%" + q.replace(/[%_,()]/g, " ") + "%").limit(30).then(function (r) { SO.found = { rows: (r.data || []).filter(function (p) { return p.name; }) }; soDraw(); }, function () { SO.found = { rows: [] }; soDraw(); });
   }
   /* Ficha de otro corredor */
   function userSheet(id) {
     if (!user || !sb) return;
     loadFol();
     openSheet('<div id="ush"><p class="muted" style="text-align:center;margin:30px 0">Cargando…</p></div><button class="btn alt wide" type="button" data-close="1">Cerrar</button>', "Perfil de corredor");
-    Promise.all([sb.from("people").select("id,name,prov").eq("id", id).maybeSingle(), sb.from("follows").select("follower", { count: "exact", head: true }).eq("followed", id), sb.from("follows").select("followed", { count: "exact", head: true }).eq("follower", id), sb.from("wall").select("*").eq("user_id", id).order("created_at", { ascending: false }).limit(8)]).then(function (r) {
+    Promise.all([sb.from("people").select("id,name,prov,avatar").eq("id", id).maybeSingle(), sb.from("follows").select("follower", { count: "exact", head: true }).eq("followed", id), sb.from("follows").select("followed", { count: "exact", head: true }).eq("follower", id), sb.from("wall").select("*").eq("user_id", id).order("created_at", { ascending: false }).limit(8)]).then(function (r) {
       var box = $("ush"); if (!box) return;
       var p = r[0].data || { id: id, name: "Corredor" }, me = id === user.id, f = SO.fol && SO.fol.set[id]; SO.urows = r[3].data || [];
-      box.innerHTML = '<div class="prof"><span class="av">' + esc(ini2(p.name)) + '</span><span class="nm"><h2 style="margin:0">' + esc(p.name || "Corredor") + '</h2><span class="muted" style="font-size:14px">' + esc(p.prov || "Runiverso") + '</span></span></div>' +
+      box.innerHTML = '<div class="prof"><span class="av">' + av(p.name, p.avatar) + '</span><span class="nm"><h2 style="margin:0">' + esc(p.name || "Corredor") + '</h2><span class="muted" style="font-size:14px">' + esc(p.prov || "Runiverso") + '</span></span></div>' +
         '<div class="stats"><div class="stat"><b>' + (r[1].count || 0) + '</b><span>Seguidores</span></div><div class="stat"><b>' + (r[2].count || 0) + '</b><span>Siguiendo</span></div><div class="stat"><b>' + SO.urows.length + (SO.urows.length === 8 ? "+" : "") + '</b><span>Publicaciones</span></div></div>' +
         (me ? '' : '<button class="btn wide' + (f ? ' alt' : '') + '" type="button" data-so="follow" data-id="' + id + '">' + (f ? "Siguiendo" : "Seguir") + '</button>') +
         (SO.urows.length ? SO.urows.map(postHtml).join("") : '<p class="muted" style="text-align:center">Aún no ha publicado nada.</p>');
@@ -1032,11 +1035,115 @@
       (mine ? '' : '<button class="btn alt wide" type="button" data-so="report" data-id="' + id + '">Denunciar publicación</button><button class="btn alt wide" type="button" data-so="user" data-id="' + p.user_id + '">Ver su perfil</button>') +
       '<button class="btn alt wide" type="button" data-close="1">Cerrar</button></div>', "Opciones de la publicación");
   }
+  /* Comentarios de una publicación */
+  function commentsSheet(id) {
+    var p = findPost(id); if (!p || !user) return;
+    openSheet('<h2>Comentarios</h2><div id="cml" class="cml"><p class="muted">Cargando…</p></div><form class="srch" id="comf" data-id="' + id + '"><input id="comi" type="text" maxlength="300" placeholder="Escribe un comentario" aria-label="Tu comentario" autocomplete="off"><button class="btn sm" type="submit">Enviar</button></form><button class="btn alt wide" type="button" data-close="1">Cerrar</button>', "Comentarios");
+    loadComments(id);
+  }
+  function loadComments(id) {
+    var p = findPost(id);
+    sb.from("comments").select("id,user_id,body,created_at").eq("post_id", id).order("created_at", { ascending: true }).limit(100).then(function (r) {
+      var rows = r.data || [], box = $("cml"); if (!box) return;
+      if (p) { p.n_comments = rows.length; [].forEach.call(document.querySelectorAll('[data-post="' + id + '"] .pcom b'), function (b) { b.textContent = rows.length || ""; }); }
+      if (r.error) { box.innerHTML = '<p class="muted">No hemos podido cargar los comentarios.</p>'; return; }
+      if (!rows.length) { box.innerHTML = '<p class="muted">Sé el primero en comentar.</p>'; return; }
+      var ids = []; rows.forEach(function (c) { if (ids.indexOf(c.user_id) < 0) ids.push(c.user_id); });
+      sb.from("people").select("id,name,prov,avatar").in("id", ids).then(function (q) {
+        var by = {}; (q.data || []).forEach(function (x) { by[x.id] = x; }); var b2 = $("cml"); if (!b2) return;
+        b2.innerHTML = rows.map(function (c) {
+          var u = by[c.user_id] || { name: "Corredor" }, can = c.user_id === user.id || isAdmin || (p && p.user_id === user.id);
+          return '<div class="cm"><button class="pav sm" type="button" data-so="user" data-id="' + c.user_id + '" aria-label="Ver el perfil de ' + esc(u.name || "Corredor") + '">' + av(u.name, u.avatar) + '</button><div><b>' + esc(u.name || "Corredor") + '</b> <small>' + ago(c.created_at) + '</small><p>' + esc(c.body) + '</p></div>' + (can ? '<button class="cmx" type="button" data-so="delcom" data-id="' + c.id + '" data-post="' + id + '" aria-label="Borrar comentario">×</button>' : '') + '</div>';
+        }).join(""); b2.scrollTop = b2.scrollHeight;
+      });
+    });
+  }
+  /* Actividad: quién te sigue, reacciona o comenta */
+  var ACT_K = "runiverso-act";
+  function actSeen() { try { return localStorage.getItem(ACT_K) || ""; } catch (e) { return ""; } }
+  function loadAct(force) {
+    if (!user || !sb || (SO.act && !force)) return;
+    SO.act = SO.act || { loading: true, rows: [] };
+    sb.from("posts").select("id,body").eq("user_id", user.id).order("created_at", { ascending: false }).limit(40).then(function (r0) {
+      var mine = r0.data || [], pid = mine.map(function (x) { return x.id; }), txt = {}; mine.forEach(function (x) { txt[x.id] = x.body || "tu foto"; });
+      var none = Promise.resolve({ data: [] });
+      return Promise.all([sb.from("follows").select("follower,created_at").eq("followed", user.id).order("created_at", { ascending: false }).limit(30),
+        pid.length ? sb.from("reactions").select("post_id,user_id,kind,created_at").in("post_id", pid).order("created_at", { ascending: false }).limit(40) : none,
+        pid.length ? sb.from("comments").select("post_id,user_id,body,created_at").in("post_id", pid).order("created_at", { ascending: false }).limit(40) : none]).then(function (r) {
+        var rows = [];
+        (r[0].data || []).forEach(function (x) { rows.push({ u: x.follower, at: x.created_at, t: "ha empezado a seguirte" }); });
+        (r[1].data || []).forEach(function (x) { if (x.user_id !== user.id) rows.push({ u: x.user_id, at: x.created_at, t: "ha reaccionado " + x.kind + " a «" + txt[x.post_id].slice(0, 40) + "»", post: x.post_id }); });
+        (r[2].data || []).forEach(function (x) { if (x.user_id !== user.id) rows.push({ u: x.user_id, at: x.created_at, t: "ha comentado: «" + x.body.slice(0, 60) + "»", post: x.post_id }); });
+        rows.sort(function (a, b) { return a.at < b.at ? 1 : -1; }); rows = rows.slice(0, 40);
+        var ids = []; rows.forEach(function (x) { if (ids.indexOf(x.u) < 0) ids.push(x.u); });
+        var fin = function (pp) { var by = {}; (pp || []).forEach(function (p) { by[p.id] = p; }); rows.forEach(function (x) { x.p = by[x.u] || { name: "Un corredor" }; }); var seen = actSeen(); SO.act = { rows: rows, fresh: rows.filter(function (x) { return x.at > seen; }).length }; soDraw(); var bx = $("actl"); if (bx) bx.innerHTML = actHtml(); };
+        if (!ids.length) fin([]); else sb.from("people").select("id,name,prov,avatar").in("id", ids).then(function (q) { fin(q.data); }, function () { fin([]); });
+      });
+    }).then(null, function () { SO.act = { rows: [], fresh: 0 }; });
+  }
+  function actHtml() {
+    var A = SO.act || { loading: true, rows: [] };
+    if (A.loading) return '<p class="muted">Cargando…</p>';
+    if (!A.rows.length) return '<p class="muted">Aquí verás cuando alguien te siga, reaccione o comente lo que publicas.</p>';
+    return A.rows.map(function (x) { return '<div class="cm"><button class="pav sm" type="button" data-so="user" data-id="' + x.u + '" aria-label="Ver el perfil de ' + esc(x.p.name || "Corredor") + '">' + av(x.p.name, x.p.avatar) + '</button><div><b>' + esc(x.p.name || "Un corredor") + '</b> <small>' + ago(x.at) + '</small><p>' + esc(x.t) + '</p></div></div>'; }).join("");
+  }
+  function actSheet() {
+    openSheet('<h2>Actividad</h2><div id="actl" class="cml">' + actHtml() + '</div><button class="btn alt wide" type="button" data-close="1">Cerrar</button>', "Actividad");
+    try { localStorage.setItem(ACT_K, new Date().toISOString()); } catch (e) {}
+    if (SO.act) SO.act.fresh = 0;
+    loadAct(true);
+  }
+  /* Moderación (solo administradores) */
+  function loadMod(force) {
+    if (!isAdmin || (SO.mod && !force)) return;
+    SO.mod = SO.mod || { loading: true, rows: [] };
+    sb.from("reports").select("post_id").limit(300).then(function (r) {
+      var ids = []; (r.data || []).forEach(function (x) { if (ids.indexOf(x.post_id) < 0) ids.push(x.post_id); });
+      if (!ids.length) { SO.mod = { rows: [] }; soDraw(); return; }
+      sb.from("wall").select("*").in("id", ids).order("created_at", { ascending: false }).then(function (q) { SO.mod = { rows: q.data || [] }; soDraw(); });
+    });
+  }
+  /* Subir una imagen cuadrada (foto de perfil o escudo) */
+  function square(file, cb) {
+    var url = URL.createObjectURL(file), im = new Image();
+    im.onload = function () { var s0 = Math.min(im.width, im.height), c = document.createElement("canvas"); c.width = c.height = 400; c.getContext("2d").drawImage(im, (im.width - s0) / 2, (im.height - s0) / 2, s0, s0, 0, 0, 400, 400); URL.revokeObjectURL(url); c.toBlob(function (b) { cb(b); }, "image/jpeg", 0.85); };
+    im.onerror = function () { URL.revokeObjectURL(url); cb(null); }; im.src = url;
+  }
+  function upSquare(file, done) {
+    if (!user) return;
+    square(file, function (b) {
+      if (!b) { toast("No hemos podido leer esa imagen"); return; }
+      var path = user.id + "/" + uuid() + ".jpg";
+      sb.storage.from("muro").upload(path, b, { contentType: "image/jpeg", cacheControl: "31536000" }).then(function (r) { if (r.error) toast("No se ha podido subir la imagen"); else done(path); }, function () { toast("No se ha podido subir la imagen"); });
+    });
+  }
+  /* ¿Quién va? en la ficha de una carrera */
+  function goers(id) {
+    var box = $("goers"); if (!box || !user || !sb) return;
+    sb.rpc("race_goers", { rid: id }).then(function (r) {
+      var b = $("goers"), d = r && r.data; if (!b || !d || !d.n) return;
+      var pp = d.people || [];
+      b.innerHTML = '<div class="marks"><span class="k">¿Quién va? · ' + d.n + (d.n === 1 ? " corredor apuntado" : " corredores apuntados") + '</span>' + (pp.length ? '<div class="gov">' + pp.map(function (p) { return '<button class="pav sm" type="button" data-so="user" data-id="' + p.id + '" title="' + esc(p.name) + '" aria-label="' + esc(p.name) + '">' + av(p.name, p.avatar) + '</button>'; }).join("") + '</div><span class="muted" style="font-size:12.5px">' + esc(pp.slice(0, 3).map(function (p) { return p.name.split(" ")[0]; }).join(", ")) + (d.n > 3 ? " y " + (d.n - Math.min(3, pp.length)) + " más" : "") + '</span>' : '<span class="muted" style="font-size:12.5px">Activa «Aparecer en el ranking» en tu perfil para salir aquí con tu nombre.</span>') + '</div>';
+    }, function () {});
+  }
+  /* Publicar una marca en el muro con su tarjeta */
+  function shareMark(id, btn) {
+    if (!user) { authScreen("signup"); return; }
+    var m = S.marks.filter(function (z) { return z.id === id; })[0]; if (!m) return;
+    btn.disabled = true; btn.textContent = "Publicando…";
+    var fail = function () { btn.disabled = false; btn.textContent = "Publicar en el muro"; toast("No se ha podido publicar. Inténtalo de nuevo"); };
+    cardBlob(id, function (bl) {
+      var path = user.id + "/" + uuid() + ".png", body = "🏅 " + m.name + ": " + fmtT(m.sec) + " (" + pace(m.sec, m.km) + ")";
+      sb.storage.from("muro").upload(path, bl, { contentType: "image/png", cacheControl: "31536000" }).then(function (r) {
+        return sb.from("posts").insert({ user_id: user.id, body: body, img: r.error ? null : path });
+      }).then(function (r) { if (r.error) { fail(); return; } SO.feed = null; closeSheet(); toast("¡Publicada en el muro!"); view.com = "muro"; if (location.hash !== "#comunidad") location.hash = "#comunidad"; else render(); }, fail);
+    });
+  }
   function dropPost(id) { if (SO.feed) SO.feed.rows = SO.feed.rows.filter(function (x) { return x.id !== id; }); }
   /* Clubes */
   function clubRow(c) {
     var mine = SO.clubs && SO.clubs.mine[c.id];
-    return '<button class="li club" type="button" data-so="club" data-id="' + c.id + '" style="' + pvars(c.prov) + '"><span class="cav" aria-hidden="true">' + esc(ini2(c.name)) + '</span><span class="tx"><b>' + esc(c.name) + '</b><span>' + esc([c.city, c.prov].filter(Boolean).join(", ") || "Club de corredores") + ' · ' + c.members + (c.members === 1 ? " miembro" : " miembros") + '</span></span>' + (mine ? '<span class="pill">Tu club</span>' : '') + '</button>';
+    return '<button class="li club" type="button" data-so="club" data-id="' + c.id + '" style="' + pvars(c.prov) + '"><span class="cav" aria-hidden="true">' + av(c.name, c.logo) + '</span><span class="tx"><b>' + esc(c.name) + '</b><span>' + esc([c.city, c.prov].filter(Boolean).join(", ") || "Club de corredores") + ' · ' + c.members + (c.members === 1 ? " miembro" : " miembros") + '</span></span>' + (mine ? '<span class="pill">Tu club</span>' : '') + '</button>';
   }
   function clubSheet(id) {
     var c = SO.clubs && SO.clubs.rows.filter(function (x) { return x.id === id; })[0]; if (!c) return;
@@ -1046,13 +1153,14 @@
       '<button class="btn wide' + (mine ? ' alt' : '') + '" type="button" data-so="' + (mine ? "leave" : "join") + '" data-id="' + id + '">' + (mine ? (own ? "Eres quien creó el club · salir" : "Salir del club") : "Unirme al club") + '</button>' +
       '<button class="btn alt wide" type="button" data-so="clubwall" data-id="' + id + '">Ver el muro del club</button>' +
       '<h3 style="margin:6px 0 0">Miembros</h3><div id="cmem" class="list"><p class="muted">Cargando…</p></div>' +
+      (own ? '<label class="btn sm alt" style="align-self:flex-start">' + (c.logo ? "Cambiar el escudo" : "Subir el escudo del club") + '<input id="clogo" data-id="' + id + '" type="file" accept="image/*" hidden></label>' : '') +
       (own || isAdmin ? '<button class="link danger" type="button" data-so="delclub" data-id="' + id + '">Borrar el club</button>' : '') +
       '<button class="btn alt wide" type="button" data-close="1">Cerrar</button>', c.name);
     loadFol();
     sb.from("club_members").select("user_id").eq("club_id", id).limit(100).then(function (r) {
       var ids = (r.data || []).map(function (x) { return x.user_id; }), box = $("cmem"); if (!box) return;
       if (!ids.length) { box.innerHTML = '<p class="muted">Aún no hay miembros.</p>'; return; }
-      sb.from("people").select("id,name,prov").in("id", ids).then(function (q) { var b2 = $("cmem"); if (b2) b2.innerHTML = (q.data || []).map(personRow).join(""); });
+      sb.from("people").select("id,name,prov,avatar").in("id", ids).then(function (q) { var b2 = $("cmem"); if (b2) b2.innerHTML = (q.data || []).map(personRow).join(""); });
     });
   }
   function clubForm() {
@@ -1070,14 +1178,23 @@
   function vComunidad() {
     var cv = view.com || "muro";
     var h = '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
-    h += '<div class="seg" role="tablist" aria-label="Comunidad">' + [["muro", "Muro"], ["clubes", "Clubes"], ["ranking", "Ranking"]].map(function (s) { return '<button type="button" role="tab" data-so="com" data-v="' + s[0] + '" aria-selected="' + (cv === s[0]) + '">' + s[1] + '</button>'; }).join("") + '</div>';
+    h += '<div class="seg" role="tablist" aria-label="Comunidad">' + [["muro", "Muro"], ["clubes", "Clubes"], ["ranking", "Ranking"]].concat(isAdmin ? [["mod", "Moderar"]] : []).map(function (s) { return '<button type="button" role="tab" data-so="com" data-v="' + s[0] + '" aria-selected="' + (cv === s[0]) + '">' + s[1] + '</button>'; }).join("") + '</div>';
     if (cv === "ranking") return h + '<div class="sec">' + rankingHtml() + '</div>';
     if (!user) return h + needLogin(cv === "muro" ? "ver el muro y publicar tus carreras" : "ver los clubes y crear el tuyo");
+    if (cv === "mod" && isAdmin) {
+      loadMod(); var M = SO.mod || { loading: true, rows: [] };
+      if (M.loading) return h + '<p class="muted">Cargando denuncias…</p>';
+      if (!M.rows.length) return h + '<div class="card empty"><p>No hay publicaciones denunciadas. 🎉</p></div>';
+      return h + '<p class="muted" style="margin:0">Publicaciones denunciadas. Las que llegan a 3 denuncias se ocultan solas.</p><div class="feed">' + M.rows.map(function (p) {
+        return '<div class="modi">' + postHtml(p) + '<div class="row"><span class="pill">' + p.n_reports + (p.n_reports === 1 ? " denuncia" : " denuncias") + '</span><button class="btn sm alt" type="button" data-so="hide" data-id="' + p.id + '" data-v="' + (p.hidden ? "0" : "1") + '">' + (p.hidden ? "Restaurar" : "Ocultar") + '</button><button class="btn sm alt" type="button" data-so="okpost" data-id="' + p.id + '">Está bien</button><button class="link danger" type="button" data-so="delpost" data-id="' + p.id + '">Borrar</button></div></div>';
+      }).join("") + '</div>';
+    }
     if (cv === "muro") {
-      loadFeed(); loadFol(); loadClubs();
+      loadFeed(); loadFol(); loadClubs(); loadAct();
       var F = SO.feed || { loading: true, rows: [] };
-      h += '<button class="compose" type="button" data-so="compose"><span class="pav" aria-hidden="true">' + esc(ini2(S.name)) + '</span><span>¿Qué tal tu carrera o tu entreno?</span><b>Publicar</b></button>';
-      h += '<div class="pchips" role="group" aria-label="Qué ver"><button type="button" data-so="scope" data-v="all" aria-pressed="' + (SO.scope === "all") + '">Todos</button><button type="button" data-so="scope" data-v="fol" aria-pressed="' + (SO.scope === "fol") + '">Siguiendo</button>' + (SO.scope === "club" && SO.club ? '<button type="button" data-so="scope" data-v="club" aria-pressed="true">' + esc(SO.club.name) + '</button>' : '') + '</div>';
+      h += '<button class="compose" type="button" data-so="compose"><span class="pav" aria-hidden="true">' + av(S.name, S.avatar) + '</span><span>¿Qué tal tu carrera o tu entreno?</span><b>Publicar</b></button>';
+      h += '<div class="pchips" role="group" aria-label="Qué ver"><button type="button" data-so="scope" data-v="all" aria-pressed="' + (SO.scope === "all") + '">Todos</button><button type="button" data-so="scope" data-v="fol" aria-pressed="' + (SO.scope === "fol") + '">Siguiendo</button>' + (SO.scope === "club" && SO.club ? '<button type="button" data-so="scope" data-v="club" aria-pressed="true">' + esc(SO.club.name) + '</button>' : '') +
+        '<button type="button" class="actb" data-so="act" aria-label="Actividad' + (SO.act && SO.act.fresh ? ": " + SO.act.fresh + " novedades" : "") + '">🔔 Actividad' + (SO.act && SO.act.fresh ? '<em>' + SO.act.fresh + '</em>' : '') + '</button></div>';
       if (F.loading) h += '<p class="muted">Cargando el muro…</p>'; else if (F.err) h += soErr();
       else if (!F.rows.length) h += '<div class="card empty"><p>' + (SO.scope === "fol" ? "Aquí verás lo que publiquen los corredores a los que sigues. Búscalos en Perfil → Seguidores." : SO.scope === "club" ? "Este club aún no ha publicado nada. ¡Estrena su muro!" : "El muro está por estrenar. Sube la foto de tu última carrera y sé el primero.") + '</p></div>';
       else h += '<div class="feed">' + F.rows.map(postHtml).join("") + '</div>';
@@ -1107,9 +1224,15 @@
     else if (k === "segv") { view.segv = v; render(); }
     else if (k === "clearq") { view.pq = ""; SO.found = null; render(); }
     else if (k === "pmenu") postMenu(id);
+    else if (k === "comments") commentsSheet(id);
+    else if (k === "act") actSheet();
+    else if (k === "sharemark") shareMark(id, a);
+    else if (k === "delcom") { var pid = a.getAttribute("data-post"); sb.from("comments").delete().eq("id", id).then(function () { loadComments(pid); }); }
+    else if (k === "hide") { sb.from("posts").update({ hidden: v === "1" }).eq("id", id).then(function (r) { toast(r.error ? "No se ha podido cambiar" : v === "1" ? "Publicación oculta" : "Publicación restaurada"); loadMod(true); }); }
+    else if (k === "okpost") { sb.from("reports").delete().eq("post_id", id).then(function () { sb.from("posts").update({ hidden: false }).eq("id", id).then(function () { toast("Denuncias descartadas"); loadMod(true); }); }); }
     else if (k === "delpost") {
       if (!a.getAttribute("data-sure")) { a.setAttribute("data-sure", "1"); a.textContent = "Pulsa otra vez para borrarla"; return; }
-      var p = findPost(id); sb.from("posts").delete().eq("id", id).then(function (r) { if (r.error) { toast("No se ha podido borrar"); return; } if (p && p.img && p.user_id === user.id) sb.storage.from("muro").remove([p.img]).then(function () {}, function () {}); dropPost(id); closeSheet(); render(); toast("Publicación borrada"); });
+      var p = findPost(id); sb.from("posts").delete().eq("id", id).then(function (r) { if (r.error) { toast("No se ha podido borrar"); return; } if (p && p.img && p.user_id === user.id) sb.storage.from("muro").remove([p.img]).then(function () {}, function () {}); dropPost(id); if (SO.mod) SO.mod.rows = SO.mod.rows.filter(function (x) { return x.id !== id; }); closeSheet(); render(); toast("Publicación borrada"); });
     }
     else if (k === "report") { sb.from("reports").insert({ post_id: id, user_id: user.id }).then(function () { dropPost(id); closeSheet(); render(); toast("Gracias. La revisaremos y ya no la verás"); }); }
     else if (k === "newclub") clubForm();
@@ -1125,6 +1248,8 @@
     }
   });
   document.addEventListener("change", function (e) {
+    if (e.target.id === "avf" && e.target.files[0]) { upSquare(e.target.files[0], function (path) { S.avatar = path; save(); queue({ t: "prof" }); render(); toast("Foto de perfil actualizada"); }); }
+    if (e.target.id === "clogo" && e.target.files[0]) { var cid = e.target.getAttribute("data-id"); upSquare(e.target.files[0], function (path) { sb.from("clubs").update({ logo: path }).eq("id", cid).then(function (r) { if (r.error) { toast("No se ha podido guardar el escudo"); return; } closeSheet(); toast("Escudo actualizado"); loadClubs(true); }); }); }
     if (e.target.id === "pushtog") { if (e.target.checked) enablePush(); else disablePush(); }
     if (e.target.id === "pf" && e.target.files[0]) {
       shrink(e.target.files[0], function (b) {
@@ -1137,6 +1262,10 @@
   document.addEventListener("click", function (e) { if (e.target.id === "pfx") { SO.img = null; $("pprev").innerHTML = ""; $("pf").value = ""; } });
   document.addEventListener("submit", function (e) {
     if (e.target.id === "postf") { e.preventDefault(); publish(e.target); }
+    if (e.target.id === "comf") {
+      e.preventDefault(); var pid2 = e.target.getAttribute("data-id"), inp = $("comi"), tx = inp.value.trim(); if (!tx) return;
+      inp.value = ""; sb.from("comments").insert({ post_id: pid2, user_id: user.id, body: tx }).then(function (r) { if (r.error) { toast("No se ha podido enviar el comentario"); inp.value = tx; return; } loadComments(pid2); });
+    }
     if (e.target.id === "pplf") { e.preventDefault(); searchPeople($("pplq").value.trim()); }
     if (e.target.id === "clubf") {
       e.preventDefault(); var fm = e.target, nm = $("cn").value.trim();
@@ -1178,8 +1307,8 @@
     h += '<div class="row">' + (r.w ? '<a class="btn sm alt" href="' + esc(r.w) + '" target="_blank" rel="noopener">Web oficial</a>' : '<a class="btn sm alt" href="https://www.google.com/search?q=' + encodeURIComponent(r.n + " " + r.date.getFullYear() + " inscripción") + '" target="_blank" rel="noopener">Buscar inscripción</a>') +
       '<button class="btn sm alt" type="button" data-ics="' + id + '">Añadir al calendario</button><button class="btn sm alt" type="button" data-share="' + id + '">Compartir</button>' +
       (KM[r.k] && d < 0 ? '<button class="btn sm alt" type="button" data-act="addmark" data-race="' + id + '">Añadir mi marca</button>' : '') + '</div>';
-    h += '<button class="btn alt wide" type="button" data-close="1">Cerrar</button>';
-    openSheet(h, r.n);
+    h += '<div id="goers"></div><button class="btn alt wide" type="button" data-close="1">Cerrar</button>';
+    openSheet(h, r.n); goers(id);
   }
 
   function markSheet(raceId, err, vals) {
@@ -1368,7 +1497,7 @@
       '<div class="mdF"><small>RUNIVERSO</small><b>' + (l.length <= 3 ? l : "★") + '</b><span>' + m.date.slice(0, 4) + '</span></div>' +
       '<div class="mdB"><small>' + esc(m.name) + '</small><b>' + fmtT(m.sec) + '</b><span>' + pace(m.sec, m.km) + '</span><span>' + sdate(pd(m.date)) + '</span></div></div></div>' +
       '<p class="muted" style="text-align:center;margin:0">' + (gold ? "Tu mejor " + l + ". " : "") + 'Gírala con el dedo: detrás está tu tiempo.</p>' +
-      '<button class="btn wide" type="button" data-card="' + m.id + '">Compartir mi marca</button><button class="btn alt wide" type="button" data-close="1">Cerrar</button>';
+      (user ? '<button class="btn wide" type="button" data-so="sharemark" data-id="' + m.id + '">Publicar en el muro</button>' : '') + '<button class="btn ' + (user ? 'alt ' : '') + 'wide" type="button" data-card="' + m.id + '">Compartir mi marca</button><button class="btn alt wide" type="button" data-close="1">Cerrar</button>';
     openSheet(h, "Medalla de " + m.name);
     var c = $("mdc"), box = $("md3"), ang = isNew ? -200 : 20, vel = isNew ? 14 : 1, drag = false, lx = 0;
     if (!c) return;
@@ -1407,7 +1536,7 @@
     var exb = t.closest("[data-ex]"); if (exb) { view.ex = exb.getAttribute("data-ex"); render(); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }
     var mi = t.closest("[data-mine]");
-    if (mi) { var id = mi.getAttribute("data-mine"); if (S.mine[id]) { delete S.mine[id]; queue({ t: "mine-", id: id }); } else { S.mine[id] = true; queue({ t: "mine+", id: id }); } save(); toast(S.mine[id] ? (user && !pushOn() ? "¡Apuntada! Activa los avisos en tu perfil y te la recordamos" : "¡Apuntada! La verás en Inicio") : "Ya no estás apuntado"); render(); raceSheet(id); return; }
+    if (mi) { var id = mi.getAttribute("data-mine"); if (!user && !S.mine[id]) { authScreen("signup", "", "Crea tu cuenta gratis para apuntarte y que te avisemos antes de la carrera."); if ($("layer").querySelector(".auth")) return; } if (S.mine[id]) { delete S.mine[id]; queue({ t: "mine-", id: id }); } else { S.mine[id] = true; queue({ t: "mine+", id: id }); } save(); toast(S.mine[id] ? (user && !pushOn() ? "¡Apuntada! Activa los avisos en tu perfil y te la recordamos" : "¡Apuntada! La verás en Inicio") : "Ya no estás apuntado"); render(); raceSheet(id); return; }
     var cd = t.closest("[data-card]"); if (cd) { cardSheet(cd.getAttribute("data-card")); return; }
     var dc = t.closest("[data-dlcard]");
     if (dc) { cardBlob(dc.getAttribute("data-dlcard"), function (bl, m) { var a = document.createElement("a"); a.href = URL.createObjectURL(bl); a.download = "runiverso-" + dLabel(m.km).replace(/[^a-z0-9]+/gi, "") + "-" + m.date + ".png"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500); toast("Imagen descargada"); }); return; }

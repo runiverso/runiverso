@@ -1026,3 +1026,26 @@ h1, h2, h3, .sechd h2 { font-family: var(--display); font-variation-settings: "S
 @media (prefers-reduced-motion: reduce) { .preac button, .compose, .li.club { transition: none; } .preac button:active, .compose:active, .li.club:active { transform: none; } }
 .auth:not(.res) .seg button[aria-selected="true"] { background: var(--accent); color: #fff; box-shadow: none; }
 .seg.four button { font-size: 13px; padding: 0 2px; }
+
+/* ---------- v34 · comentarios, actividad, fotos de perfil y moderación ---------- */
+.pav img, .cav img, .prof .av img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
+.pav, .cav { overflow: hidden; padding: 0; }
+.pav.sm { width: 36px; height: 36px; font-size: 13px; }
+.prof .av { overflow: hidden; }
+.prof .avb { position: relative; cursor: pointer; overflow: visible; }
+.prof .avb img { border-radius: 50%; }
+.prof .avb i { position: absolute; right: -4px; bottom: -4px; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-style: normal; font-family: var(--body, inherit); font-size: 17px; font-weight: 800; line-height: 1; display: grid; place-items: center; border: 2px solid var(--bg); }
+.preac { flex-wrap: wrap; }
+.preac .pcom { margin-left: auto; }
+.phid { margin: 0; font-size: 12.5px; color: #B4232C; font-weight: 700; }
+.cml { display: flex; flex-direction: column; gap: 12px; max-height: 46vh; overflow-y: auto; overscroll-behavior: contain; }
+.cm { display: flex; gap: 10px; align-items: flex-start; }
+.cm > div { flex: 1; min-width: 0; font-size: 14.5px; line-height: 1.35; }
+.cm small { color: var(--muted); font-size: 12px; }
+.cm p { margin: 2px 0 0; overflow-wrap: anywhere; }
+.cmx { width: 36px; height: 36px; flex: none; border: 0; background: none; color: var(--muted); font-size: 20px; border-radius: 50%; }
+.pchips .actb { margin-left: auto; }
+.pchips .actb em { font-style: normal; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #E8622C; color: #fff; font-size: 12px; font-weight: 800; display: inline-grid; place-items: center; }
+.gov { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+.modi { display: flex; flex-direction: column; gap: 8px; }
+.modi .row { align-items: center; }
