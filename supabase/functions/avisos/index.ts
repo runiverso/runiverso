@@ -1,6 +1,8 @@
 // Runiverso · avisos de carreras en el móvil (Web Push)
 // - Cada mañana (pg_cron): avisa a los corredores apuntados 7 días antes, el día antes y el mismo día.
 // - POST {"test":true} con la sesión del usuario: le manda un aviso de prueba.
+// - POST {"notify":{"type":"follow","to":uid}} o {"type":"react"|"comment","post":id} con la sesión del usuario:
+//   avisa a la otra persona de que la siguen, reaccionan o comentan (se comprueba en la base de datos que es verdad).
 // - POST {"key":true}: devuelve la clave pública de envío (la app la usa para suscribirse).
 // Las claves de envío las genera la función la primera vez y las guarda en push_config (solo accesible con service role).
 import webpush from "npm:web-push@3.6.7";
@@ -66,6 +68,44 @@ async function testFor(req: Request) {
   return json({ sent: ok, devices: subs.length });
 }
 
+type Notify = { type?: string; to?: string; post?: string };
+async function notify(req: Request, n: Notify) {
+  const token = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+  const { data } = await db.auth.getUser(token);
+  const me = data?.user;
+  if (!me) return json({ error: "Inicia sesión" }, 401);
+  const { data: prof } = await db.from("profiles").select("name").eq("id", me.id).maybeSingle();
+  const who = (prof?.name || "Un corredor").slice(0, 40);
+  let target = "", title = "", text = "", key = "";
+  if (n.type === "follow" && n.to) {
+    const { data: f } = await db.from("follows").select("followed").eq("follower", me.id).eq("followed", n.to).maybeSingle();
+    if (!f) return json({ sent: 0 });
+    target = n.to; title = who + " ha empezado a seguirte"; text = "Entra para ver su perfil y seguirle tú también."; key = "so:f:" + me.id;
+  } else if ((n.type === "react" || n.type === "comment") && n.post) {
+    const { data: post } = await db.from("posts").select("user_id,body").eq("id", n.post).maybeSingle();
+    if (!post) return json({ sent: 0 });
+    target = post.user_id;
+    const about = post.body ? "«" + String(post.body).slice(0, 60) + "»" : "tu foto";
+    if (n.type === "react") {
+      const { data: r } = await db.from("reactions").select("kind").eq("post_id", n.post).eq("user_id", me.id).maybeSingle();
+      if (!r) return json({ sent: 0 });
+      title = who + " ha reaccionado " + r.kind; text = "A " + about; key = "so:r:" + me.id + ":" + n.post;
+    } else {
+      const { data: c } = await db.from("comments").select("body").eq("post_id", n.post).eq("user_id", me.id).order("created_at", { ascending: false }).limit(1).maybeSingle();
+      if (!c) return json({ sent: 0 });
+      title = who + " ha comentado tu publicación"; text = String(c.body).slice(0, 120);
+      key = "so:c:" + me.id + ":" + n.post + ":" + new Date().toISOString().slice(0, 13); // como mucho un aviso por persona, publicación y hora
+    }
+  } else return json({ error: "petición no válida" }, 400);
+  if (!target || target === me.id) return json({ sent: 0 });
+  const { error } = await db.from("push_log").insert({ user_id: target, race_id: key, kind: n.type });
+  if (error) return json({ sent: 0, dup: true }); // ya avisado
+  const subs = await subsOf([target]);
+  let sent = 0;
+  for (const s of subs) if (await send(s, { title, body: text, url: APP_URL + "#comunidad", tag: "rv-" + key })) sent++;
+  return json({ sent });
+}
+
 async function daily() {
   const src = await (await fetch(DATA_URL + "?t=" + Date.now())).text();
   const m = src.match(/RV_RACES = (\[[\s\S]*?\]);/);
@@ -96,9 +136,10 @@ async function daily() {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
-  let body: { test?: boolean; key?: boolean } = {};
+  let body: { test?: boolean; key?: boolean; notify?: Notify } = {};
   try { body = await req.json(); } catch { /* sin cuerpo */ }
   const k = await vapid();
   if (body.key) return json({ publicKey: k.public_key });
+  if (body.notify) return notify(req, body.notify);
   return body.test ? testFor(req) : daily();
 });

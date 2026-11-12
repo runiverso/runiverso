@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "34";
+  var APP_V = "35";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -292,6 +292,7 @@
       return fetch(SUPA_URL + "/functions/v1/avisos", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + tk, apikey: SUPA_KEY }, body: JSON.stringify(body) }).then(function (res) { return res.json(); });
     });
   }
+  function soPush(n) { if (user && sb) fnCall({ notify: n }).catch(function () {}); }
   function testPush() {
     fnCall({ test: true }).catch(function () {});
   }
@@ -326,7 +327,7 @@
     var on = pushOn();
     if (on) return '<label class="sw tog"><input type="checkbox" id="pushtog" checked><span>Avisos de mis carreras</span></label>';
     return '<div class="pushrow"><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span><span class="pt"><b>Avisos de mis carreras</b><span>' +
-      (on ? "Activados en este móvil: una semana antes, el día antes y el mismo día." : "Te recordamos cada carrera a la que te apuntes: una semana antes, el día antes y el mismo día.") +
+      (on ? "Activados en este móvil: una semana antes, el día antes y el mismo día." : IOS && !STANDALONE ? "En iPhone, primero añade Runiverso a la pantalla de inicio. Luego te avisamos de tus carreras y de quién te sigue o reacciona." : "Te recordamos cada carrera a la que te apuntes y te avisamos cuando alguien te siga, reaccione o comente.") +
       '</span></span><button class="btn sm' + (on ? ' alt' : '') + '" type="button" data-act="' + (on ? "pushoff" : "pushon") + '">' + (on ? "Desactivar" : "Activar") + '</button></div>';
   }
   function accountCard() {
@@ -568,8 +569,18 @@
     if (standalone) return "";
     var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
     if (deferredInstall) return '<div class="install"><p><b>Instala Runiverso</b> en tu pantalla de inicio y ábrela como una app.</p><button class="btn sm" type="button" data-act="install">Instalar</button></div>';
-    if (ios) return '<div class="install"><p><b>Instálala en tu iPhone:</b> pulsa Compartir y luego «Añadir a pantalla de inicio».</p></div>';
+    if (ios) return '<div class="install ios"><p><b>Ponla en tu iPhone como una app</b>Ánclala a la pantalla de inicio: se abre a pantalla completa y es la única forma de recibir avisos en iPhone.</p><button class="btn sm" type="button" data-act="ioshelp">Ver cómo</button></div>';
     return "";
+  }
+  var IOS_SHARE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+  function iosSheet() {
+    var safari = !/crios|fxios|edgios|instagram|fban|fbav|tiktok|musical_ly/i.test(navigator.userAgent);
+    openSheet('<h2>Runiverso en tu pantalla de inicio</h2><p class="muted" style="margin:0">Tarda 10 segundos y no ocupa espacio. En iPhone es además la única forma de que te lleguen los avisos de tus carreras.</p>' +
+      (safari ? '' : '<p class="note"><b>Ábrela primero en Safari.</b> Desde TikTok, Instagram o Chrome no aparece la opción: copia runiverso.com/app y pégala en Safari.</p>') +
+      '<ol class="iosst"><li><span class="n">1</span><div><b>Pulsa Compartir ' + IOS_SHARE + '</b><span>El cuadrado con la flecha hacia arriba, en la barra de Safari.</span></div></li>' +
+      '<li><span class="n">2</span><div><b>«Añadir a pantalla de inicio»</b><span>Baja en la lista hasta encontrarlo. Si no sale, pulsa «Editar acciones».</span></div></li>' +
+      '<li><span class="n">3</span><div><b>Pulsa «Añadir»</b><span>Abre Runiverso desde el icono nuevo y activa los avisos en Perfil.</span></div></li></ol>' +
+      '<button class="btn alt wide" type="button" data-close="1">Entendido</button>', "Cómo añadir Runiverso a la pantalla de inicio");
   }
   function vInicio() {
     var up = upcoming();
@@ -943,7 +954,7 @@
     var rc = p.reacs = p.reacs || {}, old = p.mine, done = function (r) { if (r && r.error) toast("No se ha guardado tu reacción"); };
     if (old) rc[old] = Math.max(0, (rc[old] || 1) - 1);
     if (old === k) { p.mine = null; sb.from("reactions").delete().eq("post_id", id).eq("user_id", user.id).then(done, done); }
-    else { p.mine = k; rc[k] = (rc[k] || 0) + 1; sb.from("reactions").upsert({ post_id: id, user_id: user.id, kind: k }).then(done, done); }
+    else { p.mine = k; rc[k] = (rc[k] || 0) + 1; sb.from("reactions").upsert({ post_id: id, user_id: user.id, kind: k }).then(function (r) { done(r); if (!r.error) soPush({ type: "react", post: id }); }, done); }
     [].forEach.call(document.querySelectorAll('[data-post="' + id + '"]'), function (el) { el.outerHTML = postHtml(p); });
   }
   function personRow(p) {
@@ -955,7 +966,7 @@
     if (!user || !SO.fol || id === user.id) return;
     var on = !!SO.fol.set[id], fail = function () { toast("No se ha podido guardar. Inténtalo de nuevo"); loadFol(true); };
     if (on) { delete SO.fol.set[id]; SO.fol.ing = SO.fol.ing.filter(function (p) { return p.id !== id; }); sb.from("follows").delete().eq("follower", user.id).eq("followed", id).then(function (r) { if (r.error) fail(); }, fail); }
-    else { SO.fol.set[id] = 1; sb.from("follows").insert({ follower: user.id, followed: id }).then(function (r) { if (r.error && r.error.code !== "23505") fail(); else loadFol(true); }, fail); }
+    else { SO.fol.set[id] = 1; sb.from("follows").insert({ follower: user.id, followed: id }).then(function (r) { if (r.error && r.error.code !== "23505") fail(); else { loadFol(true); soPush({ type: "follow", to: id }); } }, fail); }
     [].forEach.call(document.querySelectorAll('[data-so="follow"][data-id="' + id + '"]'), function (b) { b.textContent = on ? "Seguir" : "Siguiendo"; b.classList.toggle("alt", !on); });
     if (SO.scope === "fol") SO.feed = null;
   }
@@ -1264,7 +1275,7 @@
     if (e.target.id === "postf") { e.preventDefault(); publish(e.target); }
     if (e.target.id === "comf") {
       e.preventDefault(); var pid2 = e.target.getAttribute("data-id"), inp = $("comi"), tx = inp.value.trim(); if (!tx) return;
-      inp.value = ""; sb.from("comments").insert({ post_id: pid2, user_id: user.id, body: tx }).then(function (r) { if (r.error) { toast("No se ha podido enviar el comentario"); inp.value = tx; return; } loadComments(pid2); });
+      inp.value = ""; sb.from("comments").insert({ post_id: pid2, user_id: user.id, body: tx }).then(function (r) { if (r.error) { toast("No se ha podido enviar el comentario"); inp.value = tx; return; } loadComments(pid2); soPush({ type: "comment", post: pid2 }); });
     }
     if (e.target.id === "pplf") { e.preventDefault(); searchPeople($("pplq").value.trim()); }
     if (e.target.id === "clubf") {
@@ -1569,7 +1580,8 @@
       else if (act === "logout") logout();
       else if (act === "delacct") delSheet();
       else if (act === "delacct-go") deleteAccount(a);
-      else if (act === "pushon") enablePush();
+      else if (act === "pushon") { if (IOS && !STANDALONE) iosSheet(); else enablePush(); }
+      else if (act === "ioshelp") iosSheet();
       else if (act === "pushoff") disablePush();
       else if (act === "gopublic") { S.pub = true; save(); queue({ t: "prof" }); rankCache = {}; toast("¡Ya apareces en el ranking!"); setTimeout(function () { rankCache = {}; render(); }, 1500); render(); }
       else if (act === "install" && deferredInstall) { deferredInstall.prompt(); deferredInstall.userChoice.finally(function () { deferredInstall = null; render(); }); }
