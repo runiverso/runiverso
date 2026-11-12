@@ -1114,3 +1114,5 @@ html[data-theme="dark"] .gear { color: var(--fg); }
 html[data-theme="dark"] .phid { color: #FF8A8F; }
 .esk .link { border: 0; background: none; padding: 0 4px; font: inherit; font-weight: 800; color: var(--accent); }
 html[data-theme="dark"] .mp.es.on { fill: #E8622C; }
+html[data-theme="dark"] .ztabs button[aria-selected="true"] span { color: inherit; opacity: .75; }
+html[data-theme="dark"] .vit, html[data-theme="dark"] .shelf { border-color: var(--line); }
