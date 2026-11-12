@@ -1130,14 +1130,28 @@ html[data-theme="dark"] .ml.es text { fill: #1D2140; stroke: none; }
 html[data-theme="dark"] .ml.es.inv text { fill: #14162B; }
 .btn.sm.ok { background: #E7F4EC; color: #17663A; border-color: #BFE3CC; }
 
-/* ---------- v39 · arco hinchable de meta en 3D (Comunidad) ---------- */
-.arco { height: 196px; margin: -6px 0 18px; perspective: 760px; perspective-origin: 50% 38%; display: grid; place-items: end center; overflow: visible; touch-action: pan-y; }
-.arsc { position: relative; width: 300px; height: 188px; transform-style: preserve-3d; transform: rotateX(calc(-9deg + var(--rx, 0deg) * .6)) rotateY(calc(var(--ry, 0deg) * 1.6)); transition: transform 300ms var(--ease-out, ease-out); }
+/* ---------- v40 · animaciones 3D de Comunidad ---------- */
+.fx3, .arco { height: 196px; margin: -6px 0 18px; perspective: 760px; perspective-origin: 50% 40%; display: grid; place-items: center; overflow: visible; touch-action: pan-y; }
+.fxt { position: relative; width: 320px; height: 184px; transform-style: preserve-3d; transform: rotateX(calc(var(--rx, 0deg) * .6)) rotateY(calc(var(--ry, 0deg) * 1.6)); transition: transform 300ms var(--ease-out, ease-out); }
+.fxs { position: absolute; inset: 0; transform-style: preserve-3d; animation: fxsway 7s ease-in-out infinite alternate; }
+.fxl { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform: translateZ(var(--z, 0)); backface-visibility: hidden; }
+.fxm { transform-box: fill-box; transform-origin: 50% -30px; animation: fxswing 2.6s ease-in-out infinite alternate; }
+.fxb { animation: fxbob 3.2s ease-in-out infinite alternate; }
+.fxc { transform-box: fill-box; animation: fxbob 2.4s ease-in-out infinite alternate; }
+.fxfl { transform-box: fill-box; transform-origin: 50% 50%; opacity: 0; animation: fxflash 3.6s ease-out infinite; }
+.fxw { opacity: 0; animation: fxwave 1.3s ease-out infinite; }
+@keyframes fxsway { from { transform: rotateY(-13deg) rotateX(3deg); } to { transform: rotateY(13deg) rotateX(-2deg); } }
+@keyframes fxswing { from { transform: rotate(-9deg); } to { transform: rotate(9deg); } }
+@keyframes fxbob { from { transform: translateY(-5px); } to { transform: translateY(5px); } }
+@keyframes fxflash { 0%, 70% { opacity: 0; transform: scale(.3); } 76% { opacity: 1; transform: scale(1.25); } 100% { opacity: 0; transform: scale(1.7); } }
+@keyframes fxwave { 0% { opacity: 0; transform: translateX(-8px); } 35% { opacity: 1; } 100% { opacity: 0; transform: translateX(12px); } }
+/* Arco de meta (Ranking): suelo y arco en planos 3D separados */
+.arco { place-items: end center; }
+.arsc { grid-area: 1 / 1; position: relative; width: 300px; height: 188px; transform-style: preserve-3d; transform: rotateX(calc(-9deg + var(--rx, 0deg) * .6)) rotateY(calc(var(--ry, 0deg) * 1.6)); transition: transform 300ms var(--ease-out, ease-out); }
 .arsw, .arb { position: absolute; inset: 0; transform-style: preserve-3d; }
 .arsw { animation: arsway 7s ease-in-out infinite alternate; }
 .arb { transform-origin: 50% 100%; animation: arpuff 2.8s ease-in-out infinite alternate; }
-.arl { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform: translateZ(var(--z, 0)); }
-.arf { filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .25)); }
+.arl { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform: translateZ(var(--z, 0)); backface-visibility: hidden; }
 .art { font-family: var(--display); font-variation-settings: "SOFT" 100, "WONK" 1; font-weight: 800; font-size: 31px; fill: #fff; letter-spacing: -.5px; paint-order: stroke; stroke: rgba(29, 33, 64, .28); stroke-width: 2px; }
 .arm { font-family: var(--display); font-weight: 800; font-size: 22px; fill: #5B3FD1; letter-spacing: 6px; }
 .arbn { transform-box: fill-box; transform-origin: 50% 0; animation: arswing 3.4s ease-in-out infinite alternate; }
@@ -1150,4 +1164,4 @@ html[data-theme="dark"] .ml.es.inv text { fill: #14162B; }
 @keyframes arswing { from { transform: rotate(-2.4deg); } to { transform: rotate(2.4deg); } }
 @keyframes arroad { from { background-position: 50% 0, 0 0, 0 0; } to { background-position: 50% 48px, 0 0, 0 0; } }
 html[data-theme="dark"] .arrd { background-color: #2A2E52; }
-@media (prefers-reduced-motion: reduce) { .arsw, .arb, .arbn, .arrd { animation: none; } .arsc { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .arsw, .arb, .arbn, .arrd, .fxs, .fxm, .fxb, .fxc, .fxw { animation: none; } .fxfl { animation: none; opacity: 0; } .fxw { opacity: 1; } .arsc, .fxt { transition: none; } }

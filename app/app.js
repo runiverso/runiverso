@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "39";
+  var APP_V = "40";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -1237,13 +1237,76 @@
       '<div class="fld"><label for="ca">Descripción (opcional)</label><textarea id="ca" rows="3" maxlength="300" placeholder="Dónde y cuándo quedáis, qué carreras hacéis…"></textarea></div>' +
       '<button class="btn wide" type="submit">Crear club</button><button class="btn alt wide" type="button" data-close="1">Cancelar</button></form>', "Crear un club");
   }
-  /* Arco hinchable de meta en 3D (cabecera de Comunidad): capas del mismo dibujo separadas en profundidad */
+  /* Animaciones 3D de Comunidad: capas planas separadas en profundidad (no se cruzan, así no parpadean) */
+  function fx3(layers, label, cls) {
+    return '<div class="fx3 ' + (cls || "") + '" data-tilt="fx" role="img" aria-label="' + label + '"><div class="fxt"><div class="fxs">' + layers.map(function (l) { return '<svg class="fxl" viewBox="0 0 400 230" style="--z:' + l[0] + 'px" aria-hidden="true">' + l[1] + '</svg>'; }).join("") + '</div></div></div>';
+  }
+  function fxCard(id, c1, c2) { return '<defs><linearGradient id="' + id + '" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs><rect x="24" y="34" width="352" height="196" rx="38" fill="url(#' + id + ')"/>'; }
+  function fxDots(list) { return list.map(function (d, i) { return '<rect class="fxc" style="animation-delay:' + (-i * .45) + 's" x="' + d[0] + '" y="' + d[1] + '" width="9" height="9" rx="2" fill="' + d[2] + '" transform="rotate(' + (i * 37) + ' ' + d[0] + ' ' + d[1] + ')"/>'; }).join(""); }
+  /* Un corredor de busto: cabeza en (0,0). o = { hair, extra (por detrás), front (por delante), medal } */
+  function fxPer(x, y, sc, skin, shirt, hair, o) {
+    o = o || {};
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + sc + ')">' + (o.extra || "") +
+      '<rect x="-38" y="36" width="76" height="170" rx="28" fill="' + shirt + '"/><rect x="-9" y="20" width="18" height="24" rx="6" fill="' + skin + '"/><path d="M-9 36h18v4q-9 7 -18 0z" fill="rgba(29,33,64,.14)"/>' +
+      (o.pony ? '<circle cx="' + o.pony + '" cy="-14" r="13" fill="' + hair + '"/>' : '') +
+      '<circle r="28" fill="' + skin + '"/><path d="M-28 -2a28 28 0 0 1 56 0q-6 -15 -28 -13q-22 -2 -28 13z" fill="' + hair + '"/>' +
+      (o.band ? '<path d="M-27 -9q27 -9 54 0" fill="none" stroke="' + o.band + '" stroke-width="6" stroke-linecap="round"/>' : '') +
+      '<circle cx="-10" cy="1" r="3.2" fill="#1D2140"/><circle cx="10" cy="1" r="3.2" fill="#1D2140"/><circle cx="-17" cy="10" r="5" fill="#F26D5B" opacity=".28"/><circle cx="17" cy="10" r="5" fill="#F26D5B" opacity=".28"/>' +
+      (o.mouth || '<path d="M-10 10q10 12 20 0z" fill="#fff" stroke="#1D2140" stroke-width="2.4" stroke-linejoin="round"/>') +
+      (o.medal === false ? '' : '<path d="M-19 40L0 80L19 40" fill="none" stroke="' + (o.rib || "#E8622C") + '" stroke-width="7" stroke-linejoin="round"/><g class="fxm"><circle cy="88" r="12" fill="#F2A541" stroke="#C97F1A" stroke-width="2.5"/><path d="M0 81l2.2 4.6 5 .6-3.7 3.4 1 5-4.5-2.5-4.5 2.5 1-5-3.7-3.4 5-.6z" fill="#fff" opacity=".9"/></g>') +
+      (o.front || "") + '</g>';
+  }
+  function selfieHtml() {
+    var conf = [[52, 60, "#E8622C"], [338, 54, "#5B3FD1"], [80, 30, "#F2A541"], [300, 24, "#2FA36B"], [360, 110, "#F26D9B"], [36, 130, "#0099D8"]];
+    return fx3([
+      [-44, fxCard("sfg", "#E9E1FB", "#FCE3CF") + '<circle cx="92" cy="78" r="30" fill="#F2A541" opacity=".45"/><path d="M24 190q90 -40 176 -8t176 -14v62H24z" fill="#fff" opacity=".45"/>'],
+      [-14, '<clipPath id="sfc1"><rect x="24" y="0" width="352" height="230"/></clipPath><g clip-path="url(#sfc1)">' +
+        fxPer(98, 104, .92, "#F2C5A0", "#2FA36B", "#5A3A22", { pony: -30, rib: "#5B3FD1", extra: '<path d="M-34 60Q-62 30 -56 -6" fill="none" stroke="#F2C5A0" stroke-width="15" stroke-linecap="round"/><path d="M-60 -10l-3 -16M-54 -10l5 -15" stroke="#F2C5A0" stroke-width="6" stroke-linecap="round"/>' }) +
+        fxPer(180, 106, .92, "#8A5A3C", "#F2A541", "#1D2140", { band: "#fff", rib: "#0099D8" }) + '</g>'],
+      [10, '<clipPath id="sfc2"><rect x="24" y="0" width="352" height="230"/></clipPath><g clip-path="url(#sfc2)">' +
+        fxPer(264, 114, 1.06, "#E8B48C", "#5B3FD1", "#7A4A1E", { band: "#E8622C", extra: '<path d="M32 62Q76 54 72 -30" fill="none" stroke="#E8B48C" stroke-width="16" stroke-linecap="round"/>' }) + '</g>'],
+      [36, '<g transform="rotate(8 340 60)"><rect x="320" y="26" width="40" height="66" rx="8" fill="#1D2140"/><rect x="324" y="31" width="32" height="54" rx="4" fill="#3A3F6B"/><circle cx="340" cy="37" r="2.6" fill="#8E93C7"/></g><g class="fxfl"><circle cx="340" cy="38" r="20" fill="#fff" opacity=".9"/><path d="M340 4v68M306 38h68M316 14l48 48M364 14l-48 48" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>'],
+      [56, fxDots(conf)]
+    ], "Corredores con su medalla haciéndose un selfie", "selfie");
+  }
+  function fxShield(x, y, sc, c1, c2, emblem, delay) {
+    var P = "M-40 -48H40V2Q40 36 0 54Q-40 36 -40 2Z";
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + sc + ')"><g class="fxb" style="animation-delay:' + delay + 's"><path d="' + P + '" fill="rgba(29,33,64,.28)" transform="translate(5 7)"/><path d="' + P + '" fill="' + c2 + '" transform="translate(2.5 3.5)"/><path d="' + P + '" fill="' + c1 + '" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"/><path d="M-40 -48H40V-30H-40Z" fill="' + c2 + '"/><path d="M-30 -39h60" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" opacity=".9"/>' + emblem + '<path d="M-32 -24V2Q-32 26 -8 40" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/></g></g>';
+  }
+  function clubsHtml() {
+    var star = '<path d="M0 -16l5.6 11.6 12.6 1.6-9.2 8.8 2.4 12.6L0 12l-11.4 6.6 2.4-12.6-9.2-8.8 12.6-1.6z" fill="#fff"/>',
+      mount = '<path d="M-26 22L-8 -10L2 6L10 -4L26 22Z" fill="#fff"/><path d="M-8 -10l5 9h-10z" fill="rgba(29,33,64,.25)"/>',
+      wave = '<path d="M-26 -4q7 -9 13 0t13 0 13 0 13 0M-26 10q7 -9 13 0t13 0 13 0 13 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>',
+      bolt = '<path d="M6 -18L-14 6H0L-6 26L16 -2H2Z" fill="#fff"/>',
+      shoe = '<path d="M-24 14v-10q8 2 12 -8l10 8q8 6 20 6q8 1 8 8v2H-24z" fill="#fff"/><path d="M-24 18h48" stroke="rgba(29,33,64,.3)" stroke-width="3"/>';
+    return fx3([
+      [-44, fxCard("clg", "#DDF0E6", "#E6E0FA") + '<circle cx="86" cy="80" r="30" fill="#fff" opacity=".5"/><circle cx="330" cy="150" r="44" fill="#fff" opacity=".4"/>'],
+      [-20, fxShield(86, 112, .86, "#2FA36B", "#1E7A4E", mount, 0) + fxShield(318, 108, .86, "#0099D8", "#0A6FA3", wave, -1.2)],
+      [8, fxShield(146, 138, 1.0, "#E8622C", "#B8461A", bolt, -.6) + fxShield(258, 140, 1.0, "#F2A541", "#C97F1A", shoe, -1.8)],
+      [38, fxShield(200, 104, 1.28, "#5B3FD1", "#3B2A8F", star, -.9)],
+      [58, fxDots([[60, 40, "#F2A541"], [344, 44, "#E8622C"], [200, 20, "#5B3FD1"], [36, 170, "#2FA36B"], [366, 190, "#0099D8"]])]
+    ], "Escudos de clubes de corredores", "clubs");
+  }
+  function refHtml() {
+    return fx3([
+      [-44, fxCard("rfg", "#FDEBC8", "#E3DCFA") + '<path d="M24 176q176 -38 352 0v54H24z" fill="#2FA36B" opacity=".28"/>'],
+      [0, '<defs><pattern id="rfs" width="18" height="10" patternUnits="userSpaceOnUse"><rect width="9" height="10" fill="#1D2140"/><rect x="9" width="9" height="10" fill="#fff"/></pattern><clipPath id="rfc"><rect x="24" y="0" width="352" height="230"/></clipPath></defs><g clip-path="url(#rfc)">' +
+        fxPer(190, 104, 1.12, "#E8B48C", "url(#rfs)", "#1D2140", { medal: false, mouth: '<ellipse cx="2" cy="13" rx="5" ry="4" fill="#1D2140"/>',
+          extra: '<path d="M-34 62Q-70 70 -78 112" fill="none" stroke="#E8B48C" stroke-width="15" stroke-linecap="round"/>',
+          front: '<path d="M-28 -8a28 28 0 0 1 56 0z" fill="#1D2140"/><path d="M-30 -8h64q10 0 10 6h-74z" fill="#1D2140"/><path d="M-8 40L0 52L8 40" fill="none" stroke="#1D2140" stroke-width="4"/>' }) + '</g>'],
+      [26, '<g class="fxm" style="transform-origin:262px 70px"><path d="M228 168Q262 150 262 86" fill="none" stroke="#E8B48C" stroke-width="16" stroke-linecap="round"/><rect x="244" y="26" width="36" height="52" rx="5" fill="#FFD21F" stroke="#C99A00" stroke-width="2.5" transform="rotate(8 262 52)"/></g>' +
+        '<g><path d="M196 120h26a9 9 0 1 1 -9 9v-3h-17z" fill="#C7CBDD" stroke="#1D2140" stroke-width="2.5" stroke-linejoin="round"/><circle cx="222" cy="129" r="3" fill="#1D2140"/></g>'],
+      [50, '<g fill="none" stroke="#E8622C" stroke-width="5" stroke-linecap="round"><path class="fxw" d="M246 112q12 14 4 32"/><path class="fxw" style="animation-delay:.18s" d="M262 100q20 26 6 56"/><path class="fxw" style="animation-delay:.36s" d="M280 90q26 36 8 76"/></g>' + fxDots([[70, 50, "#5B3FD1"], [340, 60, "#F2A541"], [58, 150, "#E8622C"]])]
+    ], "Árbitro tocando el silbato", "ref");
+  }
+  /* Arco hinchable de meta (Ranking). El suelo va en su propio plano 3D para que no se cruce con el arco. */
   function arcoHtml() {
     var D = "M62 236V108Q62 52 118 52H282Q338 52 338 108V236", back = "";
-    for (var i = 6; i >= 1; i--) back += '<svg class="arl" viewBox="0 0 400 250" style="--z:' + (-i * 5) + 'px" aria-hidden="true"><path d="' + D + '" fill="none" stroke="' + (i > 3 ? "#3B2A8F" : "#4A34B3") + '" stroke-width="50" stroke-linecap="round"/></svg>';
+    for (var i = 5; i >= 1; i--) back += '<svg class="arl" viewBox="0 0 400 250" style="--z:' + (-i * 6) + 'px" aria-hidden="true"><path d="' + D + '" fill="none" stroke="' + (i > 2 ? "#3B2A8F" : "#4A34B3") + '" stroke-width="50" stroke-linecap="round"/></svg>';
     var chk = ""; for (var c = 0; c < 20; c++) chk += '<rect x="' + (120 + c * 8) + '" y="' + (c % 2 ? 120 : 112) + '" width="8" height="8"/>';
-    return '<div class="arco" data-tilt="arco" role="img" aria-label="Arco de meta de Runiverso"><div class="arsc"><div class="arsw">' +
-      '<div class="arrd"></div><div class="arsh"></div><div class="arb">' + back +
+    return '<div class="arco" data-tilt="arco" role="img" aria-label="Arco de meta de Runiverso">' +
+      '<div class="arsc gnd"><div class="arsw"><div class="arrd"></div><div class="arsh"></div></div></div>' +
+      '<div class="arsc"><div class="arsw"><div class="arb">' + back +
       '<svg class="arl arf" viewBox="0 0 400 250" style="--z:0px" aria-hidden="true"><defs><linearGradient id="arg" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#5B3FD1"/><stop offset=".7" stop-color="#E8622C"/><stop offset="1" stop-color="#F2A541"/></linearGradient></defs>' +
       '<ellipse cx="62" cy="240" rx="30" ry="7" fill="#2A1E66"/><ellipse cx="338" cy="240" rx="30" ry="7" fill="#8A3A16"/>' +
       '<path d="' + D + '" fill="none" stroke="url(#arg)" stroke-width="50" stroke-linecap="round"/>' +
@@ -1256,7 +1319,7 @@
   /* Vista Comunidad */
   function vComunidad() {
     var cv = view.com || "muro";
-    var h = arcoHtml() + '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
+    var h = (cv === "clubes" ? clubsHtml() : cv === "ranking" ? arcoHtml() : cv === "mod" && isAdmin ? refHtml() : selfieHtml()) + '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
     h += '<div class="seg" role="tablist" aria-label="Comunidad">' + [["muro", "Muro"], ["clubes", "Clubes"], ["ranking", "Ranking"]].concat(isAdmin ? [["mod", "Moderar"]] : []).map(function (s) { return '<button type="button" role="tab" data-so="com" data-v="' + s[0] + '" aria-selected="' + (cv === s[0]) + '">' + s[1] + '</button>'; }).join("") + '</div>';
     if (cv === "ranking") return h + '<div class="sec">' + rankingHtml() + '</div>';
     if (!user) return h + needLogin(cv === "muro" ? "ver el muro y publicar tus carreras" : "ver los clubes y crear el tuyo");
