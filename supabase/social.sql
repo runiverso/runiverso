@@ -226,3 +226,6 @@ revoke all on function public.race_goers(text) from public, anon;
 grant execute on function public.race_goers(text) to authenticated;
 
 -- Las denuncias que cuenta la vista del muro solo las ven los administradores (y cada uno la suya)
+
+-- ---------- 9. Interés en Runiverso Pro (botón «Avísame cuando salga» de Ajustes) ----------
+alter table public.profiles add column if not exists pro_interest timestamptz;

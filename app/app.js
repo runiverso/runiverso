@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "35";
+  var APP_V = "36";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -476,7 +476,7 @@
   function route() {
     if ($("layer").innerHTML) closeSheet();
     var h = (location.hash || "#inicio").slice(1).split("?");
-    var t = h[0]; if (!TABS.some(function (x) { return x[0] === t; })) t = "inicio";
+    var t = h[0]; if (t !== "ajustes" && !TABS.some(function (x) { return x[0] === t; })) t = "inicio";
     view.tab = t;
     if (h[1]) { var m = /sc=(prov|ccaa|es)/.exec(h[1]); if (m) { view.sc = m[1]; view.zp = ""; view.f = ""; view.lim = 30; } var fm = /f=(\w+)/.exec(h[1]); if (fm) { view.f = fm[1]; view.lim = 30; } }
     render(); window.scrollTo(0, 0);
@@ -486,17 +486,50 @@
       return '<a href="#' + t[0] + '"' + (view.tab === t[0] ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + t[2] + '"/></svg>' + t[1] + '</a>';
     }).join("");
     var ini = (S.name || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
-    $("topav").textContent = ini; $("topav").classList.toggle("on", !!user); $("topav").setAttribute("aria-label", user ? "Mi perfil (sesión iniciada)" : "Mi perfil");
+    if (S.avatar && user) $("topav").innerHTML = '<img src="' + esc(imgUrl(S.avatar)) + '" alt="">'; else $("topav").textContent = ini; $("topav").classList.toggle("on", !!user); $("topav").setAttribute("aria-label", user ? "Mi perfil (sesión iniciada)" : "Mi perfil");
   }
   document.addEventListener("keydown", function (e) {
-    var t = e.target; if (!t || !t.getAttribute || !t.getAttribute("data-zp") || (e.key !== "Enter" && e.key !== " ")) return;
+    var t = e.target; if (!t || !t.getAttribute || !(t.getAttribute("data-zp") || t.getAttribute("data-es")) || (e.key !== "Enter" && e.key !== " ")) return;
     e.preventDefault(); t.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
-  var TTL = { inicio: "Inicio", carreras: "Carreras", perfil: "Perfil", clasificaciones: "Resultados", comunidad: "Comunidad" };
+  var TTL = { ajustes: "Ajustes", inicio: "Inicio", carreras: "Carreras", perfil: "Perfil", clasificaciones: "Resultados", comunidad: "Comunidad" };
   (function () {
     var on = false;
     window.addEventListener("scroll", function () { var v = window.scrollY > 64; if (v !== on) { on = v; document.documentElement.classList.toggle("scrolled", v); } }, { passive: true });
   })();
+  /* ---------- Ajustes: apariencia, avisos, privacidad, Pro, contacto y cuenta ---------- */
+  var GEAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
+  var THEME_K = "runiverso-theme", PRO_K = "runiverso-pro";
+  function themePref() { try { return localStorage.getItem(THEME_K) || "auto"; } catch (e) { return "auto"; } }
+  function applyTheme() {
+    var p = themePref(), dark = p === "dark" || (p === "auto" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", dark ? "#14162B" : "#FBF6EF");
+  }
+  if (window.matchMedia) { var mq = matchMedia("(prefers-color-scheme: dark)"); if (mq.addEventListener) mq.addEventListener("change", applyTheme); }
+  function proAsked() { try { return !!localStorage.getItem(PRO_K); } catch (e) { return false; } }
+  function vAjustes() {
+    var tp = themePref(), h = '<div><h1>Ajustes</h1><p class="kick">' + (user ? esc(user.email || "Tu cuenta") : "Sin sesión iniciada") + '</p></div>';
+    h += '<div class="card set"><h3>Apariencia</h3><div class="seg" role="tablist" aria-label="Modo de color">' + [["light", "Claro"], ["dark", "Oscuro"], ["auto", "Automático"]].map(function (o) { return '<button type="button" role="tab" data-theme-set="' + o[0] + '" aria-selected="' + (tp === o[0]) + '">' + o[1] + '</button>'; }).join("") + '</div><p class="muted">Automático sigue el modo de tu móvil.</p></div>';
+    if (user) {
+      h += '<div class="card set"><h3>Avisos</h3>' + pushRow() + '</div>';
+      h += '<div class="card set"><h3>Privacidad</h3><label class="sw"><input type="checkbox" id="pubtog"' + (S.pub ? " checked" : "") + '><span><b>Aparecer con mi nombre</b>En el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + ' y en «¿Quién va?» de mis carreras. Si lo quitas, tus marcas solo las ves tú.</span></label>' +
+        '<p class="muted">Tu nombre, tu foto y lo que publicas en el muro lo ven los corredores con cuenta. <a href="../privacidad/">Política de privacidad</a></p></div>';
+    }
+    h += '<div class="card set pro"><h3>Runiverso Pro <span class="pill pro">Muy pronto</span></h3><p class="prop"><b>0,99 €</b> al mes · precio de lanzamiento</p><ul class="aperks"><li>Aviso en el móvil cuando abran las inscripciones de tus carreras favoritas</li><li>Plan de entrenamiento hasta tu próxima carrera</li><li>Ranking por edad y estadísticas de tu temporada</li><li>Insignia Pro en tu perfil y en el muro</li></ul>' +
+      (proAsked() ? '<p class="ok" role="status">Apuntado: te avisaremos el primero cuando esté disponible.</p>' : '<button class="btn wide" type="button" data-act="prowant">Avísame cuando salga</button>') + '<p class="muted">Todavía no se puede contratar ni se cobra nada. Runiverso seguirá siendo gratis.</p></div>';
+    h += '<div class="card set"><h3>Contacta con nosotros</h3><p class="muted">¿Falta una carrera, hay un dato mal o tienes una idea? Escríbenos.</p><div class="row"><a class="btn sm" href="mailto:hola@runiverso.com?subject=Runiverso%20app">hola@runiverso.com</a><a class="btn sm alt" href="' + CANAL + '" target="_blank" rel="noopener">Canal de WhatsApp</a><a class="btn sm alt" href="https://www.instagram.com/runivers0/" target="_blank" rel="noopener">Instagram</a></div></div>';
+    h += '<div class="card set"><h3>Cuenta</h3>' + (user ? '<div class="row"><button class="btn sm alt" type="button" data-act="logout">Cerrar sesión</button><button class="btn sm alt" type="button" data-act="zone">Cambiar mi zona</button></div><button class="link danger" type="button" data-act="delacct">Eliminar mi cuenta y mis datos</button>' : '<button class="btn" type="button" data-act="login">Crear cuenta o entrar</button>') + '</div>';
+    h += '<p class="foot">Versión ' + APP_V + ' · <a href="../privacidad/">Privacidad</a> · <a href="../condiciones/">Condiciones</a></p>';
+    return h;
+  }
+  function accountMenu() {
+    var ini = ini2(S.name);
+    openSheet('<div class="prof"><span class="av">' + (user && S.avatar ? '<img src="' + esc(imgUrl(S.avatar)) + '" alt="">' : esc(ini)) + '</span><span class="nm"><h2 style="margin:0">' + (S.name ? esc(S.name) : "Tu perfil") + '</h2><span class="muted" style="font-size:14px">' + (user ? esc(user.email || "") : "Sin sesión iniciada") + '</span></span></div><div class="f">' +
+      '<a class="btn alt wide" href="#perfil" data-close="1">Mi perfil</a><a class="btn alt wide" href="#ajustes" data-close="1">Ajustes</a>' +
+      (user ? '<button class="btn alt wide" type="button" data-act="logout">Cerrar sesión</button>' : '<button class="btn wide" type="button" data-act="login">Crear cuenta o entrar</button>') +
+      '<button class="btn alt wide" type="button" data-close="1">Cerrar</button></div>', "Tu cuenta");
+  }
   /* Acceso obligatorio: para usar la app hay que tener cuenta (poner REQUIRE_LOGIN = false para volver al modo libre) */
   var REQUIRE_LOGIN = false;
   function gated() { return REQUIRE_LOGIN && !user && !S.acct; }
@@ -514,7 +547,7 @@
   function render() {
     renderTabs();
     if ($("ttl")) $("ttl").textContent = TTL[view.tab] || "";
-    var fn = { inicio: vInicio, carreras: vCarreras, perfil: vPerfil, clasificaciones: vResultados, comunidad: vComunidad }[view.tab];
+    var fn = { inicio: vInicio, carreras: vCarreras, perfil: vPerfil, clasificaciones: vResultados, comunidad: vComunidad, ajustes: vAjustes }[view.tab];
     $("main").innerHTML = '<div class="view">' + fn() + '</div>';
     fx3d();
     var vk = view.tab + "/" + view.sub; if (vk !== lastView) { lastView = vk; motion.view($("main").firstChild); }
@@ -622,7 +655,9 @@
       h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
     }
     h += canalCard("Avisos de dorsales en WhatsApp", "Cuándo abren y suben las inscripciones" + (S.prov ? " en " + esc(S.prov) : "") + ", horarios y novedades. Gratis.");
-    h += '<a class="card golink" href="#comunidad"><span class="gi" aria-hidden="true">📸</span><span><b>Muro de corredores</b><span>Fotos y marcas de la gente de ' + (S.prov ? esc(S.prov) : "tu zona") + '. Sube la tuya.</span></span><em>Ver</em></a>';
+    if (RESULTS.length) {
+      h += '<div class="sec"><div class="sechd"><h2>Últimos resultados</h2><a href="#clasificaciones">Ver todos</a></div><div class="list">' + RESULTS.slice().sort(function (a, b) { return near({ p: a.p, r: ccaaOf(a.p), date: -pd(a.d) }, { p: b.p, r: ccaaOf(b.p), date: -pd(b.d) }); }).slice(0, 3).map(resLi).join("") + '</div></div>';
+    }
     h += '<p class="foot">Calendario completo y mapa en <a href="../">runiverso.com</a></p>';
     return h;
   }
@@ -637,6 +672,7 @@
     var q = norm(view.q.trim()).split(/\s+/).filter(Boolean), sc = S.prov ? view.sc : "es", zp = andMode() ? curZp() : "";
     return upcoming().filter(function (r) {
       if (zp && !q.length && !inZp(r, zp)) return false;
+      if (zp === "ES" && view.es && !q.length && r.r !== view.es) return false;
       if (zp) { if (view.f === "mine" && !S.mine[r.id]) return false; if (view.f && view.f !== "mine" && r.k !== view.f) return false; for (var j = 0; j < q.length; j++) if (r.hay.indexOf(q[j]) < 0) return false; return true; }
       if (!q.length && sc === "prov" && !inProv(r)) return false;
       if (!q.length && sc === "ccaa" && !inCcaa(r)) return false;
@@ -650,7 +686,7 @@
     var list = filtered(), up = upcoming();
     var h = '<div><h1>Carreras</h1><div class="row" style="margin-top:8px">' + zoneChip() + '</div></div>';
     if (andMode()) {
-      h += zpMap(up) + zpTabs(up) + zpSummary(up);
+      h += (curZp() === "ES" ? esMap(up) : zpMap(up)) + zpTabs(up) + zpSummary(up);
     } else if (S.prov) {
       var n = { prov: up.filter(inProv).length, ccaa: up.filter(inCcaa).length, es: up.length };
       h += '<div class="seg" role="tablist" aria-label="Zona">' + ["prov", "ccaa", "es"].filter(function (k) { return k !== "ccaa" || S.ccaa !== S.prov; }).map(function (k) {
@@ -679,6 +715,20 @@
     });
     var base = ""; for (var bi = 12; bi >= 2; bi -= 2) base += '<use href="#mapg" class="mb" transform="translate(0 ' + bi + ')"></use>';
     return '<div class="mapc m3d' + (zp === "AND" ? ' all' : '') + '" data-tilt="map"><svg viewBox="0 -14 ' + M.w + ' ' + (M.h + 30) + '" role="group" aria-label="Mapa de Andalucía: elige una provincia"><g aria-hidden="true">' + base + '</g><g id="mapg">' + paths + '</g><g aria-hidden="true">' + labels + '</g></svg></div>';
+  }
+  function esMap(up) {
+    var M = window.RV_MAP_ES; if (!M) return zpMap(up);
+    var cnt = {}, max = 1, names = Object.keys(M.p);
+    names.forEach(function (c) { cnt[c] = up.filter(function (r) { return r.r === c; }).length; if (c !== "Andalucía") max = Math.max(max, cnt[c]); });
+    var paths = "", labels = "";
+    names.forEach(function (c) {
+      var g = M.p[c], on = view.es === c, lv = cnt[c] ? Math.min(4, 1 + Math.floor(3 * Math.min(cnt[c], max) / max)) : 0;
+      paths += '<path class="mp es l' + lv + (on ? ' on' : '') + '" d="' + g.d + '" data-es="' + esc(c) + '" role="button" tabindex="0" aria-label="' + esc(c) + ': ' + cnt[c] + ' carreras" aria-pressed="' + on + '"></path>';
+      if (cnt[c]) labels += '<g class="ml' + (on || lv >= 3 ? ' inv' : '') + (on ? ' up' : '') + '" transform="translate(' + g.x + ' ' + g.y + ')"><text class="mn" y="7">' + cnt[c] + '</text></g>';
+    });
+    var base = ""; for (var bi = 12; bi >= 2; bi -= 2) base += '<use href="#mapes" class="mb" transform="translate(0 ' + bi + ')"></use>';
+    return '<div class="mapc m3d all" data-tilt="map"><svg viewBox="0 -14 ' + M.w + ' ' + (M.h + 30) + '" role="group" aria-label="Mapa de España: elige una comunidad"><g aria-hidden="true">' + base + '</g><g id="mapes">' + paths + '</g><g aria-hidden="true">' + labels + '</g></svg>' +
+      '<p class="esk">' + (view.es ? '<b>' + esc(view.es) + '</b> · ' + cnt[view.es] + (cnt[view.es] === 1 ? " carrera" : " carreras") + ' <button class="link" type="button" data-es="">Ver toda España</button>' : 'Toca una comunidad para ver sus carreras') + '</p></div>';
   }
   function zpTabs(up) {
     var zp = curZp(), n = function (z) { return up.filter(function (r) { return inZp(r, z); }).length; };
@@ -724,11 +774,11 @@
   /* ---------- Perfil ---------- */
   function vPerfil() {
     var ini = (S.name || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
-    var h = '<div class="prof">' + (user ? '<label class="av avb" aria-label="Cambiar tu foto de perfil">' + (S.avatar ? '<img src="' + esc(imgUrl(S.avatar)) + '" alt="">' : esc(ini)) + '<i aria-hidden="true">+</i><input id="avf" type="file" accept="image/*" hidden></label>' : '<span class="av">' + esc(ini) + '</span>') + '<span class="nm"><h1 style="font-size:26px">' + (S.name ? esc(S.name) : "Tu perfil") + '</h1><button type="button" data-act="name">' + (S.name ? "Cambiar nombre" : "Pon tu nombre") + '</button></span></div>';
+    var h = '<div class="prof">' + (user ? '<label class="av avb" aria-label="Cambiar tu foto de perfil">' + (S.avatar ? '<img src="' + esc(imgUrl(S.avatar)) + '" alt="">' : esc(ini)) + '<i aria-hidden="true">+</i><input id="avf" type="file" accept="image/*" hidden></label>' : '<span class="av">' + esc(ini) + '</span>') + '<span class="nm"><h1 style="font-size:26px">' + (S.name ? esc(S.name) : "Tu perfil") + '</h1><button type="button" data-act="name">' + (S.name ? "Cambiar nombre" : "Pon tu nombre") + '</button></span><a class="gear" href="#ajustes" aria-label="Ajustes">' + GEAR + '</a></div>';
     h += '<div class="seg four" role="tablist" aria-label="Perfil">' + [["marcas", "Marcas"], ["vitrina", "Vitrina"], ["mis", "Carreras"], ["seg", "Seguidores"]].map(function (s) {
       return '<button type="button" role="tab" data-sub="' + s[0] + '" aria-selected="' + (view.sub === s[0]) + '">' + s[1] + '</button>';
     }).join("") + '</div>';
-    if (view.sub !== "seg") h += accountCard();
+    if (!user && view.sub !== "seg") h += accountCard();
     h += ({ marcas: pMarcas, vitrina: pVitrina, mis: pMis, seg: pSeg }[view.sub] || pMarcas)();
     h += '<p class="foot">' + (user ? "Tus datos se guardan en tu cuenta Runiverso y en este móvil." : "Sin cuenta, tus datos se guardan solo en este móvil.") + ' · Versión ' + APP_V + '<br><a href="../privacidad/">Privacidad</a> · <a href="../condiciones/">Condiciones</a> · <a href="../borrar-cuenta/">Eliminar cuenta</a></p>';
     return h;
@@ -1223,6 +1273,9 @@
     return h;
   }
   document.addEventListener("click", function (e) {
+    var tv = e.target.closest && e.target.closest("#topav"); if (tv) { e.preventDefault(); accountMenu(); return; }
+    var ts = e.target.closest && e.target.closest("[data-theme-set]"); if (ts) { try { localStorage.setItem(THEME_K, ts.getAttribute("data-theme-set")); } catch (e3) {} applyTheme(); render(); return; }
+    var lk = e.target.closest && e.target.closest("a[data-close]"); if (lk) { closeSheet(); return; }
     var a = e.target.closest && e.target.closest("[data-so]"); if (!a) return;
     var k = a.getAttribute("data-so"), id = a.getAttribute("data-id"), v = a.getAttribute("data-v");
     if (k === "com") { view.com = v; render(); }
@@ -1564,7 +1617,8 @@
     var ic = t.closest("[data-ics]"); if (ic) { ics(BY[ic.getAttribute("data-ics")]); return; }
     var sh = t.closest("[data-share]"); if (sh) { share(BY[sh.getAttribute("data-share")]); return; }
     var f = t.closest("[data-f]"); if (f) { view.f = f.getAttribute("data-f"); view.lim = 30; render(); return; }
-    var zpb = t.closest && t.closest("[data-zp]"); if (zpb) { view.zp = zpb.getAttribute("data-zp"); view.lim = 30; view.q = ""; render(); var tb = document.querySelector('.ztabs [aria-selected="true"]'); if (tb && tb.scrollIntoView) tb.scrollIntoView({ block: "nearest", inline: "center" }); return; }
+    var esb = t.closest && t.closest("[data-es]"); if (esb) { var ev = esb.getAttribute("data-es"); if (ev === "Andalucía") { view.zp = "AND"; view.es = ""; } else view.es = view.es === ev ? "" : ev; view.lim = 30; view.q = ""; render(); return; }
+    var zpb = t.closest && t.closest("[data-zp]"); if (zpb) { view.es = ""; view.zp = zpb.getAttribute("data-zp"); view.lim = 30; view.q = ""; render(); var tb = document.querySelector('.ztabs [aria-selected="true"]'); if (tb && tb.scrollIntoView) tb.scrollIntoView({ block: "nearest", inline: "center" }); return; }
     var sc = t.closest("[data-sc]"); if (sc) { view.sc = sc.getAttribute("data-sc"); view.lim = 30; view.q = ""; render(); return; }
     var sbt = t.closest("[data-sub]"); if (sbt) { view.sub = sbt.getAttribute("data-sub"); render(); return; }
     var dl = t.closest("[data-del]");
@@ -1577,7 +1631,8 @@
       else if (act === "zone") zoneSheet(false);
       else if (act === "addmark") markSheet(a.getAttribute("data-race") || "");
       else if (act === "login") authScreen("signup");
-      else if (act === "logout") logout();
+      else if (act === "logout") { closeSheet(); logout(); }
+      else if (act === "prowant") { try { localStorage.setItem(PRO_K, new Date().toISOString()); } catch (e2) {} if (user && sb) sb.from("profiles").update({ pro_interest: new Date().toISOString() }).eq("id", user.id).then(function () {}, function () {}); toast("¡Apuntado! Te avisaremos el primero"); render(); }
       else if (act === "delacct") delSheet();
       else if (act === "delacct-go") deleteAccount(a);
       else if (act === "pushon") { if (IOS && !STANDALONE) iosSheet(); else enablePush(); }
@@ -1686,6 +1741,7 @@
       reloaded = true; location.reload();
     });
   }
+  applyTheme();
   route();
   initCloud();
   motion.tilt();
