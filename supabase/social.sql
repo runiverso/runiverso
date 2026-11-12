@@ -6,8 +6,9 @@
 
 -- ---------- 1. Gente: nombre y provincia visibles para quien ha iniciado sesión ----------
 -- (Las marcas y el ranking siguen dependiendo de "Aparecer en el ranking".)
+alter table public.profiles add column if not exists avatar text;   -- ruta de la foto de perfil en el bucket "muro"
 create or replace view public.people as
-  select id, name, prov, ccaa from public.profiles;
+  select id, name, prov, ccaa, avatar from public.profiles;
 revoke all on public.people from anon, public;
 grant select on public.people to authenticated;
 
@@ -31,6 +32,7 @@ create table if not exists public.clubs (
   owner       uuid references auth.users (id) on delete set null default auth.uid(),
   created_at  timestamptz not null default now()
 );
+alter table public.clubs add column if not exists logo text;        -- ruta del escudo en el bucket "muro"
 create unique index if not exists clubs_name_idx on public.clubs (lower(name));
 create table if not exists public.club_members (
   club_id     uuid not null references public.clubs (id) on delete cascade,
@@ -75,6 +77,15 @@ create table if not exists public.reactions (
   primary key (post_id, user_id)
 );
 
+create table if not exists public.comments (
+  id          uuid primary key default gen_random_uuid(),
+  post_id     uuid not null references public.posts (id) on delete cascade,
+  user_id     uuid not null references auth.users (id) on delete cascade default auth.uid(),
+  body        text not null check (char_length(body) between 1 and 300),
+  created_at  timestamptz not null default now()
+);
+create index if not exists comments_post_idx on public.comments (post_id, created_at);
+
 create table if not exists public.reports (
   post_id     uuid not null references public.posts (id) on delete cascade,
   user_id     uuid not null references auth.users (id) on delete cascade default auth.uid(),
@@ -109,6 +120,16 @@ alter table public.club_members enable row level security;
 alter table public.posts        enable row level security;
 alter table public.reactions    enable row level security;
 alter table public.reports      enable row level security;
+alter table public.comments     enable row level security;
+
+drop policy if exists "comentarios: ver" on public.comments;
+create policy "comentarios: ver" on public.comments for select to authenticated using (true);
+drop policy if exists "comentarios: comentar" on public.comments;
+create policy "comentarios: comentar" on public.comments for insert to authenticated
+  with check (user_id = auth.uid() and (select count(*) from public.comments c where c.user_id = auth.uid() and c.created_at > now() - interval '1 day') < 100);
+drop policy if exists "comentarios: borrar" on public.comments;
+create policy "comentarios: borrar" on public.comments for delete to authenticated
+  using (user_id = auth.uid() or public.is_admin() or exists (select 1 from public.posts p where p.id = comments.post_id and p.user_id = auth.uid()));
 
 drop policy if exists "seguir: ver" on public.follows;
 create policy "seguir: ver" on public.follows for select to authenticated using (true);
@@ -162,7 +183,11 @@ select p.id, p.user_id, p.body, p.img, p.club_id, p.created_at,
        c.name as club,
        (select coalesce(jsonb_object_agg(x.kind, x.n), '{}'::jsonb)
           from (select r.kind, count(*) as n from public.reactions r where r.post_id = p.id group by r.kind) x) as reacs,
-       (select r.kind from public.reactions r where r.post_id = p.id and r.user_id = auth.uid()) as mine
+       (select r.kind from public.reactions r where r.post_id = p.id and r.user_id = auth.uid()) as mine,
+       pe.avatar as author_avatar,
+       (select count(*) from public.comments cm where cm.post_id = p.id)::int as n_comments,
+       p.hidden,
+       (select count(*) from public.reports rp where rp.post_id = p.id)::int as n_reports
 from public.posts p
 left join public.people pe on pe.id = p.user_id
 left join public.clubs c on c.id = p.club_id;
@@ -170,7 +195,8 @@ grant select on public.wall to authenticated;
 
 create or replace view public.club_list with (security_invoker = on) as
 select c.id, c.name, c.prov, c.city, c.about, c.owner, c.created_at,
-       (select count(*) from public.club_members m where m.club_id = c.id)::int as members
+       (select count(*) from public.club_members m where m.club_id = c.id)::int as members,
+       c.logo
 from public.clubs c;
 grant select on public.club_list to authenticated;
 
@@ -185,3 +211,18 @@ create policy "muro fotos: subir a mi carpeta" on storage.objects for insert to 
 drop policy if exists "muro fotos: borrar las mías" on storage.objects;
 create policy "muro fotos: borrar las mías" on storage.objects for delete to authenticated
   using (bucket_id = 'muro' and ((storage.foldername(name))[1] = auth.uid()::text or public.is_admin()));
+
+-- ---------- 8. ¿Quién va? Corredores apuntados a una carrera ----------
+-- Devuelve cuántos hay en total y, con nombre, solo los que tienen activado "Aparecer en el ranking".
+create or replace function public.race_goers(rid text) returns json
+language sql stable security definer set search_path = public as $$
+  select json_build_object(
+    'n', (select count(*) from public.signups where race_id = rid),
+    'people', (select coalesce(json_agg(json_build_object('id', x.id, 'name', x.name, 'prov', x.prov, 'avatar', x.avatar)), '[]'::json)
+                 from (select p.id, p.name, p.prov, p.avatar from public.signups s join public.profiles p on p.id = s.user_id
+                        where s.race_id = rid and p.public and p.name is not null order by s.created_at limit 30) x));
+$$;
+revoke all on function public.race_goers(text) from public, anon;
+grant execute on function public.race_goers(text) to authenticated;
+
+-- Las denuncias que cuenta la vista del muro solo las ven los administradores (y cada uno la suya)
