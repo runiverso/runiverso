@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "32";
+  var APP_V = "33";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -151,6 +151,8 @@
     var was = user; user = session ? session.user : null;
     if (user && S.acct !== user.id) link(); else if (user) flush();
     checkAdmin();
+    if ((was && was.id) !== (user && user.id)) soReset();
+    if (!was && user && $("layer").querySelector(".auth") && !$("layer").querySelector("#newpf")) { closeSheet(); render(); return; }
     if (!!was !== !!user && !$("layer").innerHTML) render();
   }
   function initCloud() {
@@ -212,7 +214,7 @@
         '<button class="btn wide" type="submit">Siguiente</button><button class="btn alt wide" type="button" data-onb="2">Ver toda España</button></form>';
     } else {
       h = '<h1>Que no se te pase ninguna</h1><p class="asub">Con una cuenta gratis te avisamos antes de cada carrera y tus marcas quedan guardadas aunque cambies de móvil.</p>' +
-        '<div class="f"><button class="btn wide" type="button" data-onb="signup">Crear cuenta gratis</button><button class="btn alt wide" type="button" data-onb="done">Ahora no, ver las carreras</button></div>';
+        '<div class="f"><button class="btn wide" type="button" data-onb="signup">Crear cuenta gratis</button><button class="btn alt wide" type="button" data-onb="' + (REQUIRE_LOGIN ? 'login">Ya tengo cuenta' : 'done">Ahora no, ver las carreras') + '</button></div>';
     }
     lastFocus = lastFocus || document.activeElement;
     $("layer").innerHTML = '<div class="auth onb" role="dialog" aria-modal="true" aria-label="Bienvenida"><div class="auth-in">' +
@@ -258,7 +260,7 @@
     }
     lastFocus = lastFocus || document.activeElement;
     $("layer").innerHTML = '<div class="auth" role="dialog" aria-modal="true" aria-label="' + esc(title) + '"><div class="auth-in">' +
-      '<button class="aclose" type="button" data-close="1" aria-label="Cerrar">×</button>' +
+      (gated() ? '' : '<button class="aclose" type="button" data-close="1" aria-label="Cerrar">×</button>') +
       '<div class="abrand"><span class="amark">' + AUTH_ICO + '</span><span class="lw">Runiverso<small>el universo del running</small></span></div>' +
       '<h1>' + title + '</h1><p class="asub">' + sub + '</p>' +
       (mode === "signup" ? '<ul class="aperks"><li>Tus marcas y medallas, a salvo aunque cambies de móvil</li><li>Ranking de corredores de ' + (S.prov ? esc(S.prov) : "tu provincia") + '</li><li>Tus carreras apuntadas en todos tus dispositivos</li></ul>' : '') +
@@ -322,6 +324,7 @@
   }
   function pushRow() {
     var on = pushOn();
+    if (on) return '<label class="sw tog"><input type="checkbox" id="pushtog" checked><span>Avisos de mis carreras</span></label>';
     return '<div class="pushrow"><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span><span class="pt"><b>Avisos de mis carreras</b><span>' +
       (on ? "Activados en este móvil: una semana antes, el día antes y el mismo día." : "Te recordamos cada carrera a la que te apuntes: una semana antes, el día antes y el mismo día.") +
       '</span></span><button class="btn sm' + (on ? ' alt' : '') + '" type="button" data-act="' + (on ? "pushoff" : "pushon") + '">' + (on ? "Desactivar" : "Activar") + '</button></div>';
@@ -493,6 +496,20 @@
     var on = false;
     window.addEventListener("scroll", function () { var v = window.scrollY > 64; if (v !== on) { on = v; document.documentElement.classList.toggle("scrolled", v); } }, { passive: true });
   })();
+  /* Acceso obligatorio: para usar la app hay que tener cuenta (poner REQUIRE_LOGIN = false para volver al modo libre) */
+  var REQUIRE_LOGIN = true;
+  function gated() { return REQUIRE_LOGIN && !user && !S.acct; }
+  function gate(n) {
+    if (!gated()) return;
+    var L = $("layer"), w = L.querySelector("#gatew");
+    if (L.innerHTML && !w) return;
+    if (!S.onb) { onboarding(0); return; }
+    if (cloudReady) { authScreen("signup"); return; }
+    n = n || 0;
+    L.innerHTML = '<div class="auth" role="dialog" aria-modal="true" aria-label="Conectando"><div class="auth-in" id="gatew"><div class="abrand"><span class="amark">' + AUTH_ICO + '</span><span class="lw">Runiverso<small>el universo del running</small></span></div><h1>' + (n > 20 ? "Sin conexión" : "Conectando…") + '</h1><p class="asub">' + (n > 20 ? "Para entrar por primera vez hace falta conexión a internet. Lo seguimos intentando." : "Un momento, preparamos tu acceso.") + '</p></div></div>';
+    document.documentElement.classList.add("lock");
+    setTimeout(function () { gate(n + 1); }, 500);
+  }
   function render() {
     renderTabs();
     if ($("ttl")) $("ttl").textContent = TTL[view.tab] || "";
@@ -500,7 +517,8 @@
     $("main").innerHTML = '<div class="view">' + fn() + '</div>';
     fx3d();
     var vk = view.tab + "/" + view.sub; if (vk !== lastView) { lastView = vk; motion.view($("main").firstChild); }
-    if (!S.onb && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; onboarding(0); }
+    if (gated()) gate();
+    else if (!S.onb && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; onboarding(0); }
     else if (!S.prov && !zoneAsked && !$("layer").innerHTML) { zoneAsked = true; zoneSheet(true); }
   }
   /* ---------- Efectos 3D: carrusel de carteles, relieve del mapa e inclinación de tarjetas ---------- */
@@ -573,39 +591,15 @@
     } else {
       h += '<div class="nx empty"><span class="nxk">Tu próxima carrera</span><span class="nxn">Elige tu próximo dorsal</span><span class="nxm">Pulsa «Apuntarme» en cualquier carrera y aquí verás la cuenta atrás.</span><a class="nxgo" href="#carreras">Ver carreras</a></div>';
     }
-    var past = RACES.filter(function (x) { return S.mine[x.id] && daysTo(x.date) < 0; }), lastM = S.marks.slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; })[0];
-    var last = past.length ? past[past.length - 1] : (lastM && BY[lastM.raceId]) || null, goal = mine[1] || null;
-    var cell = function (lab, cls, r2, empty) {
-      return '<div class="tc"><small class="' + cls + '">' + lab + '</small>' + (r2 ? '<button class="tcp" type="button" data-race="' + r2.id + '" style="' + pvars(r2.p) + '">' + (C[r2.id] ? '<img src="../carteles/' + C[r2.id] + '" alt="">' : '<span class="tcb"><b>' + r2.date.getDate() + '</b>' + MES_C[r2.date.getMonth()] + '</span>') + (r2.s ? '<em>SUSPENDIDA</em>' : '') + '</button><span class="tcn">' + esc(r2.n) + '</span>' : empty) + '</div>';
-    };
-    h += '<div class="tmp"><p class="tml">⇆ Tu temporada</p><div class="tri">' +
-      cell("Última", "c1", last, '<a class="tce" href="#perfil">¿Ya corriste alguna?<b>Añade tu marca</b></a>') +
-      cell("Próxima", "c2", mine[0], '<a class="tce" href="#carreras">Sin dorsal todavía<b>Elige una</b></a>') +
-      cell("Objetivo", "c3", goal, '<a class="tce" href="#carreras?f=SS"><b class="pl">+</b>Elige tu San Silvestre</a>') + '</div></div>';
     if (andMode()) {
       var ex = view.ex || "", sat = new Date(today); sat.setDate(today.getDate() + ((6 - today.getDay() + 7) % 7)); var sun = new Date(sat); sun.setDate(sat.getDate() + 1);
       var finde = up.filter(function (x) { return x.r === "Andalucía" && x.date >= today && x.date <= sun; });
       var cfs = finde.filter(function (x) { return C[x.id] && !x.s; });
       if (cfs.length >= 3) h += '<div class="sec"><div class="sechd"><h2>Carteles del finde</h2><span class="muted" style="font-size:13px;font-weight:700">' + cfs.length + ' oficiales</span></div><div class="cf" data-cf>' +
         cfs.map(function (x) { return '<button class="cfi" type="button" data-race="' + x.id + '" style="' + pvars(x.p) + '" aria-label="' + esc(x.n) + '"><span class="cfc"><img src="../carteles/' + C[x.id] + '" alt="" loading="lazy"><i></i></span><b>' + esc(x.n) + '</b><small>' + esc(x.p) + ' · ' + DIAS_C[x.date.getDay()] + ' ' + x.date.getDate() + '</small></button>'; }).join("") + '</div></div>';
-      h += '<div class="sec"><div class="sechd"><h2>Explora</h2><a href="#carreras">Calendario</a></div><p class="muted" style="margin:-6px 0 0">Carreras de este finde en Andalucía</p>' +
-        '<div class="pchips" role="group" aria-label="Provincia"><button type="button" data-ex=""' + (ex ? '' : ' aria-pressed="true"') + '><i style="background:' + ALL_SW + '"></i>Todas</button>' +
-        ANDP.map(function (p) { return '<button type="button" data-ex="' + p + '"' + (ex === p ? ' aria-pressed="true"' : '') + ' style="' + pvars(p) + '"><i></i>' + p + '</button>'; }).join("") + '</div>';
-      var provs = ex ? [ex] : ANDP.filter(function (p) { return finde.some(function (x) { return x.p === p; }); });
-      if (!provs.length) h += '<div class="card empty"><p>Este finde no hay carreras en Andalucía. Mira el calendario para las próximas.</p></div>';
-      provs.forEach(function (p) {
-        var rs = finde.filter(function (x) { return x.p === p; });
-        if (!rs.length) rs = up.filter(function (x) { return x.p === p; }).slice(0, 3);
-        h += '<div class="pcard" style="' + pvars(p) + '"><div class="pch"><i></i>' + p + '<span>' + (finde.some(function (x) { return x.p === p; }) ? rs.length + ' este finde' : 'próximas') + '</span></div>' +
-          rs.slice(0, 4).map(function (x) { return '<button class="pr2" type="button" data-race="' + x.id + '">' + (C[x.id] ? '<img src="../carteles/' + C[x.id] + '" alt="">' : '<span class="ph">' + (LABEL[x.k] || "").slice(0, 7) + '</span>') + '<span><b>' + esc(x.n) + '</b><span>' + esc(x.c) + (distTxt(x) ? ' · ' + esc(distTxt(x)) : '') + ' · ' + DIAS_C[x.date.getDay()] + ' ' + x.date.getDate() + (x.h ? ', ' + esc(x.h) : '') + (x.s ? ' · suspendida' : '') + '</span></span></button>'; }).join("") + '</div>';
-      });
-      h += '</div>';
     }
     var pool = S.prov ? up.filter(inProv) : up;
     h += '<div class="sec"><div class="sechd"><h2>' + (S.prov ? 'Próximos días en ' + esc(S.prov) : 'Próximos días') + '</h2><a href="#carreras' + (S.prov ? '?sc=prov' : '') + '">Calendario</a></div><div id="wkw">' + weekStrip(pool) + '</div></div>';
-    var sm = seasonMarks(), km = sm.reduce(function (a, m) { return a + m.km; }, 0);
-    h += '<div class="sec"><div class="sechd"><h2>Tus números ' + String(seasonStart().getFullYear()).slice(2) + '/' + String(seasonStart().getFullYear() + 1).slice(2) + '</h2><a href="#perfil">Mis marcas</a></div><div class="stats">' +
-      '<div class="stat"><b>' + sm.length + '</b><span>Carreras</span></div><div class="stat"><b>' + Math.round(km) + '</b><span>Kilómetros</span></div><div class="stat"><b>' + S.marks.length + '</b><span>Medallas</span></div></div></div>';
     if (S.prov && !andMode()) {
       var lp = up.filter(inProv), lc = up.filter(function (r) { return inCcaa(r) && !inProv(r); });
       h += '<div class="sec"><div class="sechd"><h2>En ' + esc(S.prov) + '</h2><a href="#carreras?sc=prov">Ver ' + lp.length + '</a></div>' + (lp.length ? '<div class="hscroll">' + lp.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div>' : '<div class="card empty"><p>Aún no tenemos carreras en ' + esc(S.prov) + '. ¿Conoces alguna? Avísanos en el canal y la añadimos.</p></div>') + '</div>';
@@ -613,14 +607,11 @@
       var rest = up.filter(function (r) { return !inCcaa(r); }).length;
       h += '<a class="card" href="#carreras?sc=es" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span class="zic">ES</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px;letter-spacing:-.02em">Resto de España</b><br><span class="muted" style="font-size:13.5px">' + rest + ' carreras fuera de tu comunidad</span></span></a>';
     } else if (andMode()) {
-      h += '<a class="card" href="#carreras?sc=es" style="text-decoration:none;display:flex;gap:14px;align-items:center"><span class="zic">ES</span><span style="flex:1;min-width:0"><b style="font-family:var(--display);font-size:17px">Resto de España</b><br><span class="muted" style="font-size:13.5px">' + up.filter(function (r) { return r.r !== "Andalucía"; }).length + ' carreras fuera de Andalucía</span></span></a>';
     } else {
       h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
     }
     h += canalCard("Avisos de dorsales en WhatsApp", "Cuándo abren y suben las inscripciones" + (S.prov ? " en " + esc(S.prov) : "") + ", horarios y novedades. Gratis.");
-    if (RESULTS.length) {
-      h += '<div class="sec"><div class="sechd"><h2>Últimos resultados</h2><a href="#clasificaciones">Ver todos</a></div><div class="list">' + RESULTS.slice().sort(function (a, b) { return near({ p: a.p, r: ccaaOf(a.p), date: -pd(a.d) }, { p: b.p, r: ccaaOf(b.p), date: -pd(b.d) }); }).slice(0, 3).map(resLi).join("") + '</div></div>';
-    }
+    h += '<a class="card golink" href="#comunidad"><span class="gi" aria-hidden="true">📸</span><span><b>Muro de corredores</b><span>Fotos y marcas de la gente de ' + (S.prov ? esc(S.prov) : "tu zona") + '. Sube la tuya.</span></span><em>Ver</em></a>';
     h += '<p class="foot">Calendario completo y mapa en <a href="../">runiverso.com</a></p>';
     return h;
   }
@@ -723,11 +714,11 @@
   function vPerfil() {
     var ini = (S.name || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
     var h = '<div class="prof"><span class="av">' + esc(ini) + '</span><span class="nm"><h1 style="font-size:26px">' + (S.name ? esc(S.name) : "Tu perfil") + '</h1><button type="button" data-act="name">' + (S.name ? "Cambiar nombre" : "Pon tu nombre") + '</button></span></div>';
-    h += '<div class="seg" role="tablist" aria-label="Perfil">' + [["marcas", "Mis marcas"], ["vitrina", "Vitrina"], ["mis", "Mis carreras"]].map(function (s) {
+    h += '<div class="seg four" role="tablist" aria-label="Perfil">' + [["marcas", "Marcas"], ["vitrina", "Vitrina"], ["mis", "Carreras"], ["seg", "Seguidores"]].map(function (s) {
       return '<button type="button" role="tab" data-sub="' + s[0] + '" aria-selected="' + (view.sub === s[0]) + '">' + s[1] + '</button>';
     }).join("") + '</div>';
-    h += accountCard();
-    h += { marcas: pMarcas, vitrina: pVitrina, mis: pMis }[view.sub]();
+    if (view.sub !== "seg") h += accountCard();
+    h += ({ marcas: pMarcas, vitrina: pVitrina, mis: pMis, seg: pSeg }[view.sub] || pMarcas)();
     h += '<p class="foot">' + (user ? "Tus datos se guardan en tu cuenta Runiverso y en este móvil." : "Sin cuenta, tus datos se guardan solo en este móvil.") + ' · Versión ' + APP_V + '<br><a href="../privacidad/">Privacidad</a> · <a href="../condiciones/">Condiciones</a> · <a href="../borrar-cuenta/">Eliminar cuenta</a></p>';
     return h;
   }
@@ -887,20 +878,276 @@
   }
 
   /* ---------- Comunidad (próximamente) ---------- */
-  function vComunidad() {
-    var C = [
-      ["Clubes", "Los clubes de tu provincia con su espacio: sus corredores, sus carreras y su propio ranking.", "M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M17 11.5a2.5 2.5 0 1 0 0-5M15 14.5c3 0 6 2 6 5.5", ""],
-      ["Muro", "Fotos y marcas de los corredores de tu zona después de cada carrera.", "M4 5h16v15H4zM9 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM20 17l-5-5-9 8", ""],
-      ["Runiverso Pro", "Alertas antes de que suban los dorsales, plan hacia tu carrera, predicción de tiempos y ranking por edad.", "M13 2L4 14h7l-1 8 9-12h-7z", "pro"]
-    ];
-    var h = '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
-    h += '<div class="sec">' + rankingHtml() + '</div><h2 style="margin:8px 0 0">Muy pronto</h2>';
-    h += C.map(function (c) {
-      return '<div class="card soon"><span class="ic"' + (c[3] ? ' style="color:var(--pro)"' : '') + '><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + c[2] + '"/></svg></span><div><h3>' + c[0] + (c[3] ? ' <span class="pill pro">Pro</span>' : ' <span class="pill">Próximamente</span>') + '</h3><p>' + c[1] + '</p></div></div>';
-    }).join("");
-    h += '<div class="card" style="display:flex;flex-direction:column;gap:12px"><p style="margin:0">Te avisaremos en cuanto lleguen los clubes y el muro. Síguenos para enterarte el primero:</p><div class="row"><a class="btn" href="https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L" target="_blank" rel="noopener">Canal de WhatsApp</a><a class="btn alt" href="https://www.tiktok.com/@runiverso_" target="_blank" rel="noopener">TikTok</a><a class="btn alt" href="https://www.instagram.com/runivers0/" target="_blank" rel="noopener">Instagram</a></div></div>';
+  /* ---------- Comunidad: muro, seguidores y clubes ---------- */
+  var REACTS = ["👏", "🔥", "💪", "❤️"];
+  var SO = { scope: "all", club: null, feed: null, fol: null, clubs: null, found: null, img: null };
+  function soReset() { SO.scope = "all"; SO.club = null; SO.feed = null; SO.fol = null; SO.clubs = null; SO.found = null; SO.img = null; }
+  function soOn() { return view.tab === "comunidad" || (view.tab === "perfil" && view.sub === "seg"); }
+  function soDraw() { if (soOn() && !$("layer").innerHTML) render(); }
+  function imgUrl(p) { return SUPA_URL + "/storage/v1/object/public/muro/" + p; }
+  function ini2(n) { return (n || "?").split(/\s+/).map(function (w) { return w.charAt(0); }).join("").slice(0, 2).toUpperCase(); }
+  function ago(iso) {
+    var s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+    if (s < 60) return "ahora"; if (s < 3600) return Math.floor(s / 60) + " min"; if (s < 86400) return Math.floor(s / 3600) + " h";
+    if (s < 604800) return Math.floor(s / 86400) + " d"; var d = new Date(iso); return d.getDate() + " " + MES_C[d.getMonth()];
+  }
+  function needLogin(what) { return '<div class="card acct"><div><h3>Inicia sesión</h3><p>Entra con tu cuenta para ' + what + '.</p></div><button class="btn" type="button" data-act="login">Entrar</button></div>'; }
+  function soErr() { return '<div class="card empty"><p>No hemos podido cargarlo ahora mismo. Comprueba la conexión y vuelve a intentarlo.</p><button class="btn sm alt" type="button" data-so="reload" style="margin-top:10px">Reintentar</button></div>'; }
+  function loadFol(force) {
+    if (!user || !sb || (SO.fol && !force)) return;
+    if (!SO.fol) SO.fol = { loading: true, ing: [], ers: [], set: {} };
+    Promise.all([sb.from("follows").select("followed").eq("follower", user.id), sb.from("follows").select("follower").eq("followed", user.id)]).then(function (r) {
+      if (r[0].error || r[1].error) { SO.fol = { err: true, ing: [], ers: [], set: {} }; soDraw(); return; }
+      var a = r[0].data.map(function (x) { return x.followed; }), b = r[1].data.map(function (x) { return x.follower; }), seen = {}, ids = [];
+      a.concat(b).forEach(function (id) { if (!seen[id]) { seen[id] = 1; ids.push(id); } });
+      var fin = function (pp) {
+        var by = {}, set = {}; (pp || []).forEach(function (p) { by[p.id] = p; }); a.forEach(function (id) { set[id] = 1; });
+        var row = function (id) { return by[id] || { id: id, name: "Corredor" }; };
+        SO.fol = { ing: a.map(row), ers: b.map(row), set: set };
+        if (SO.scope === "fol") loadFeed(true); else soDraw();
+      };
+      if (!ids.length) fin([]); else sb.from("people").select("id,name,prov").in("id", ids).then(function (q) { fin(q.data); }, function () { fin([]); });
+    }, function () { SO.fol = { err: true, ing: [], ers: [], set: {} }; soDraw(); });
+  }
+  function loadFeed(force) {
+    if (!user || !sb || (SO.feed && !force)) return;
+    if (!SO.feed) SO.feed = { loading: true, rows: [] };
+    var q = sb.from("wall").select("*");
+    if (SO.scope === "fol") { var ids = Object.keys((SO.fol && SO.fol.set) || {}); ids.push(user.id); q = q.in("user_id", ids); }
+    else if (SO.scope === "club" && SO.club) q = q.eq("club_id", SO.club.id);
+    q.order("created_at", { ascending: false }).limit(40).then(function (r) { SO.feed = { rows: r.error ? [] : (r.data || []), err: !!r.error }; soDraw(); }, function () { SO.feed = { rows: [], err: true }; soDraw(); });
+  }
+  function loadClubs(force) {
+    if (!user || !sb || (SO.clubs && !force)) return;
+    if (!SO.clubs) SO.clubs = { loading: true, rows: [], mine: {} };
+    Promise.all([sb.from("club_list").select("*").order("members", { ascending: false }).limit(200), sb.from("club_members").select("club_id").eq("user_id", user.id)]).then(function (r) {
+      var mine = {}; (r[1].data || []).forEach(function (x) { mine[x.club_id] = 1; });
+      SO.clubs = { rows: r[0].error ? [] : (r[0].data || []), mine: mine, err: !!r[0].error }; soDraw();
+    }, function () { SO.clubs = { rows: [], mine: {}, err: true }; soDraw(); });
+  }
+  function postHtml(p) {
+    var rc = p.reacs || {}, nm = p.author || "Corredor";
+    return '<article class="post" data-post="' + p.id + '"><header><button class="pav" type="button" data-so="user" data-id="' + p.user_id + '" aria-label="Ver el perfil de ' + esc(nm) + '">' + esc(ini2(nm)) + '</button>' +
+      '<span class="pwho"><button class="pname" type="button" data-so="user" data-id="' + p.user_id + '">' + esc(nm) + '</button><small>' + (p.club ? esc(p.club) + ' · ' : p.author_prov ? esc(p.author_prov) + ' · ' : '') + ago(p.created_at) + '</small></span>' +
+      '<button class="pmore" type="button" data-so="pmenu" data-id="' + p.id + '" aria-label="Más opciones">⋯</button></header>' +
+      (p.body ? '<p class="pbody">' + esc(p.body).replace(/\n/g, "<br>") + '</p>' : '') +
+      (p.img ? '<img class="pimg" loading="lazy" src="' + esc(imgUrl(p.img)) + '" alt="Foto de ' + esc(nm) + '">' : '') +
+      '<div class="preac" role="group" aria-label="Reacciones">' + REACTS.map(function (k) { return '<button type="button" data-so="react" data-id="' + p.id + '" data-k="' + k + '" aria-pressed="' + (p.mine === k) + '">' + k + '<b>' + (rc[k] || "") + '</b></button>'; }).join("") + '</div></article>';
+  }
+  function findPost(id) { var rows = ((SO.feed && SO.feed.rows) || []).concat(SO.urows || []); for (var i = 0; i < rows.length; i++) if (rows[i].id === id) return rows[i]; return null; }
+  function react(id, k) {
+    var p = findPost(id); if (!p || !user) return;
+    var rc = p.reacs = p.reacs || {}, old = p.mine, done = function (r) { if (r && r.error) toast("No se ha guardado tu reacción"); };
+    if (old) rc[old] = Math.max(0, (rc[old] || 1) - 1);
+    if (old === k) { p.mine = null; sb.from("reactions").delete().eq("post_id", id).eq("user_id", user.id).then(done, done); }
+    else { p.mine = k; rc[k] = (rc[k] || 0) + 1; sb.from("reactions").upsert({ post_id: id, user_id: user.id, kind: k }).then(done, done); }
+    [].forEach.call(document.querySelectorAll('[data-post="' + id + '"]'), function (el) { el.outerHTML = postHtml(p); });
+  }
+  function personRow(p) {
+    var me = user && p.id === user.id, f = SO.fol && SO.fol.set[p.id];
+    return '<div class="li per"><button class="pav" type="button" data-so="user" data-id="' + p.id + '" aria-label="Ver el perfil de ' + esc(p.name || "Corredor") + '">' + esc(ini2(p.name)) + '</button><button class="tx" type="button" data-so="user" data-id="' + p.id + '"><b>' + esc(p.name || "Corredor") + '</b><span>' + esc(p.prov || "Runiverso") + '</span></button>' +
+      (me ? '<span class="pill">Tú</span>' : '<button class="btn sm' + (f ? ' alt' : '') + '" type="button" data-so="follow" data-id="' + p.id + '">' + (f ? "Siguiendo" : "Seguir") + '</button>') + '</div>';
+  }
+  function follow(id, btn) {
+    if (!user || !SO.fol || id === user.id) return;
+    var on = !!SO.fol.set[id], fail = function () { toast("No se ha podido guardar. Inténtalo de nuevo"); loadFol(true); };
+    if (on) { delete SO.fol.set[id]; SO.fol.ing = SO.fol.ing.filter(function (p) { return p.id !== id; }); sb.from("follows").delete().eq("follower", user.id).eq("followed", id).then(function (r) { if (r.error) fail(); }, fail); }
+    else { SO.fol.set[id] = 1; sb.from("follows").insert({ follower: user.id, followed: id }).then(function (r) { if (r.error && r.error.code !== "23505") fail(); else loadFol(true); }, fail); }
+    [].forEach.call(document.querySelectorAll('[data-so="follow"][data-id="' + id + '"]'), function (b) { b.textContent = on ? "Seguir" : "Siguiendo"; b.classList.toggle("alt", !on); });
+    if (SO.scope === "fol") SO.feed = null;
+  }
+  /* Perfil → Seguidores */
+  function pSeg() {
+    if (!user) return needLogin("seguir a otros corredores y ver quién te sigue");
+    loadFol();
+    var F = SO.fol || { loading: true, ing: [], ers: [] }, sv = view.segv || "ing", list = sv === "ing" ? F.ing : F.ers;
+    var h = '<form class="srch" id="pplf" role="search"><input id="pplq" type="search" maxlength="40" placeholder="Busca corredores por su nombre" aria-label="Buscar corredores" value="' + esc(view.pq || "") + '"><button class="btn sm" type="submit">Buscar</button></form>';
+    if (SO.found) h += '<div class="sec"><div class="sechd"><h2>Resultados</h2><button class="link" type="button" data-so="clearq">Quitar</button></div>' + (SO.found.loading ? '<p class="muted">Buscando…</p>' : SO.found.rows.length ? '<div class="list">' + SO.found.rows.map(personRow).join("") + '</div>' : '<div class="card empty"><p>No hay corredores con ese nombre. Prueba con otro o invítale a Runiverso.</p></div>') + '</div>';
+    h += '<div class="seg two" role="tablist" aria-label="Seguidores"><button type="button" role="tab" data-so="segv" data-v="ing" aria-selected="' + (sv === "ing") + '">Siguiendo<span class="n">' + F.ing.length + '</span></button><button type="button" role="tab" data-so="segv" data-v="ers" aria-selected="' + (sv === "ers") + '">Seguidores<span class="n">' + F.ers.length + '</span></button></div>';
+    if (F.loading) h += '<p class="muted">Cargando…</p>'; else if (F.err) h += soErr();
+    else if (!list.length) h += '<div class="card empty"><p>' + (sv === "ing" ? "Todavía no sigues a nadie. Busca a tus compañeros de club o de entrenos por su nombre." : "Aún no te sigue nadie. Publica en el muro para que te encuentren.") + '</p></div>';
+    else h += '<div class="list">' + list.map(personRow).join("") + '</div>';
     return h;
   }
+  function searchPeople(q) {
+    view.pq = q; if (!q || q.length < 2) { SO.found = null; soDraw(); return; }
+    SO.found = { loading: true, rows: [] }; soDraw();
+    sb.from("people").select("id,name,prov").ilike("name", "%" + q.replace(/[%_,()]/g, " ") + "%").limit(30).then(function (r) { SO.found = { rows: (r.data || []).filter(function (p) { return p.name; }) }; soDraw(); }, function () { SO.found = { rows: [] }; soDraw(); });
+  }
+  /* Ficha de otro corredor */
+  function userSheet(id) {
+    if (!user || !sb) return;
+    loadFol();
+    openSheet('<div id="ush"><p class="muted" style="text-align:center;margin:30px 0">Cargando…</p></div><button class="btn alt wide" type="button" data-close="1">Cerrar</button>', "Perfil de corredor");
+    Promise.all([sb.from("people").select("id,name,prov").eq("id", id).maybeSingle(), sb.from("follows").select("follower", { count: "exact", head: true }).eq("followed", id), sb.from("follows").select("followed", { count: "exact", head: true }).eq("follower", id), sb.from("wall").select("*").eq("user_id", id).order("created_at", { ascending: false }).limit(8)]).then(function (r) {
+      var box = $("ush"); if (!box) return;
+      var p = r[0].data || { id: id, name: "Corredor" }, me = id === user.id, f = SO.fol && SO.fol.set[id]; SO.urows = r[3].data || [];
+      box.innerHTML = '<div class="prof"><span class="av">' + esc(ini2(p.name)) + '</span><span class="nm"><h2 style="margin:0">' + esc(p.name || "Corredor") + '</h2><span class="muted" style="font-size:14px">' + esc(p.prov || "Runiverso") + '</span></span></div>' +
+        '<div class="stats"><div class="stat"><b>' + (r[1].count || 0) + '</b><span>Seguidores</span></div><div class="stat"><b>' + (r[2].count || 0) + '</b><span>Siguiendo</span></div><div class="stat"><b>' + SO.urows.length + (SO.urows.length === 8 ? "+" : "") + '</b><span>Publicaciones</span></div></div>' +
+        (me ? '' : '<button class="btn wide' + (f ? ' alt' : '') + '" type="button" data-so="follow" data-id="' + id + '">' + (f ? "Siguiendo" : "Seguir") + '</button>') +
+        (SO.urows.length ? SO.urows.map(postHtml).join("") : '<p class="muted" style="text-align:center">Aún no ha publicado nada.</p>');
+    }, function () { var box = $("ush"); if (box) box.innerHTML = '<p class="muted" style="text-align:center">No hemos podido cargar este perfil.</p>'; });
+  }
+  /* Publicar en el muro */
+  function composeSheet() {
+    if (!user) { authScreen("login"); return; }
+    SO.img = null;
+    var my = SO.clubs ? SO.clubs.rows.filter(function (c) { return SO.clubs.mine[c.id]; }) : [];
+    openSheet('<h2>Publicar en el muro</h2><form class="f" id="postf"><div class="fld"><label for="pb">¿Qué tal ha ido?</label><textarea id="pb" rows="4" maxlength="500" placeholder="Tu carrera de hoy, el entreno, una foto del dorsal…"></textarea></div>' +
+      '<div class="fld"><label for="pf" class="btn sm alt" style="align-self:flex-start">Añadir foto</label><input id="pf" type="file" accept="image/*" hidden><div id="pprev"></div></div>' +
+      (my.length ? '<div class="fld"><label for="pc">Publicar en</label><select id="pc"><option value="">Muro general</option>' + my.map(function (c) { return '<option value="' + c.id + '"' + (SO.scope === "club" && SO.club && SO.club.id === c.id ? " selected" : "") + '>' + esc(c.name) + '</option>'; }).join("") + '</select></div>' : '') +
+      '<p class="muted" style="margin:0;font-size:12.5px">Lo ven los corredores con cuenta en Runiverso. Sube solo fotos tuyas o con permiso, y sé respetuoso.</p>' +
+      '<button class="btn wide" type="submit">Publicar</button><button class="btn alt wide" type="button" data-close="1">Cancelar</button></form>', "Publicar en el muro");
+  }
+  function shrink(file, cb) {
+    var url = URL.createObjectURL(file), im = new Image();
+    im.onload = function () {
+      var k = Math.min(1, 1280 / Math.max(im.width, im.height)), c = document.createElement("canvas"); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+      c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      c.toBlob(function (b) { cb(b); }, "image/jpeg", 0.82);
+    };
+    im.onerror = function () { URL.revokeObjectURL(url); cb(null); };
+    im.src = url;
+  }
+  function publish(form) {
+    var body = $("pb").value.trim(), club = $("pc") ? $("pc").value : "";
+    if (!body && !SO.img) { toast("Escribe algo o añade una foto"); return; }
+    busyBtn(form, "Publicando…");
+    var fail = function (e) { console.warn("Runiverso muro", e); var b = form.querySelector("button[type=submit]"); if (b) { b.disabled = false; b.textContent = "Publicar"; } toast(e && /row-level|policy/i.test(e.message || "") ? "Has llegado al tope de publicaciones de hoy" : "No se ha podido publicar. Inténtalo de nuevo"); };
+    var ins = function (path) {
+      sb.from("posts").insert({ user_id: user.id, body: body || null, img: path || null, club_id: club || null }).then(function (r) {
+        if (r.error) { fail(r.error); return; }
+        SO.img = null; closeSheet(); toast("¡Publicado!"); loadFeed(true);
+      }, fail);
+    };
+    if (!SO.img) { ins(null); return; }
+    var path = user.id + "/" + uuid() + ".jpg";
+    sb.storage.from("muro").upload(path, SO.img, { contentType: "image/jpeg", cacheControl: "31536000" }).then(function (r) { if (r.error) fail(r.error); else ins(path); }, fail);
+  }
+  function postMenu(id) {
+    var p = findPost(id); if (!p) return;
+    var mine = user && p.user_id === user.id;
+    openSheet('<h2>Publicación de ' + esc(p.author || "Corredor") + '</h2><div class="f">' +
+      (mine || isAdmin ? '<button class="btn wide danger" type="button" data-so="delpost" data-id="' + id + '">Borrar publicación</button>' : '') +
+      (mine ? '' : '<button class="btn alt wide" type="button" data-so="report" data-id="' + id + '">Denunciar publicación</button><button class="btn alt wide" type="button" data-so="user" data-id="' + p.user_id + '">Ver su perfil</button>') +
+      '<button class="btn alt wide" type="button" data-close="1">Cerrar</button></div>', "Opciones de la publicación");
+  }
+  function dropPost(id) { if (SO.feed) SO.feed.rows = SO.feed.rows.filter(function (x) { return x.id !== id; }); }
+  /* Clubes */
+  function clubRow(c) {
+    var mine = SO.clubs && SO.clubs.mine[c.id];
+    return '<button class="li club" type="button" data-so="club" data-id="' + c.id + '" style="' + pvars(c.prov) + '"><span class="cav" aria-hidden="true">' + esc(ini2(c.name)) + '</span><span class="tx"><b>' + esc(c.name) + '</b><span>' + esc([c.city, c.prov].filter(Boolean).join(", ") || "Club de corredores") + ' · ' + c.members + (c.members === 1 ? " miembro" : " miembros") + '</span></span>' + (mine ? '<span class="pill">Tu club</span>' : '') + '</button>';
+  }
+  function clubSheet(id) {
+    var c = SO.clubs && SO.clubs.rows.filter(function (x) { return x.id === id; })[0]; if (!c) return;
+    var mine = SO.clubs.mine[id], own = user && c.owner === user.id;
+    openSheet('<div class="sstripe" style="' + pvars(c.prov) + '"><i></i>' + esc(c.prov || "Club") + '</div><h2>' + esc(c.name) + '</h2><p class="muted" style="margin:0">' + esc([c.city, c.prov].filter(Boolean).join(", ")) + ' · ' + c.members + (c.members === 1 ? " miembro" : " miembros") + '</p>' +
+      (c.about ? '<p class="note">' + esc(c.about) + '</p>' : '') +
+      '<button class="btn wide' + (mine ? ' alt' : '') + '" type="button" data-so="' + (mine ? "leave" : "join") + '" data-id="' + id + '">' + (mine ? (own ? "Eres quien creó el club · salir" : "Salir del club") : "Unirme al club") + '</button>' +
+      '<button class="btn alt wide" type="button" data-so="clubwall" data-id="' + id + '">Ver el muro del club</button>' +
+      '<h3 style="margin:6px 0 0">Miembros</h3><div id="cmem" class="list"><p class="muted">Cargando…</p></div>' +
+      (own || isAdmin ? '<button class="link danger" type="button" data-so="delclub" data-id="' + id + '">Borrar el club</button>' : '') +
+      '<button class="btn alt wide" type="button" data-close="1">Cerrar</button>', c.name);
+    loadFol();
+    sb.from("club_members").select("user_id").eq("club_id", id).limit(100).then(function (r) {
+      var ids = (r.data || []).map(function (x) { return x.user_id; }), box = $("cmem"); if (!box) return;
+      if (!ids.length) { box.innerHTML = '<p class="muted">Aún no hay miembros.</p>'; return; }
+      sb.from("people").select("id,name,prov").in("id", ids).then(function (q) { var b2 = $("cmem"); if (b2) b2.innerHTML = (q.data || []).map(personRow).join(""); });
+    });
+  }
+  function clubForm() {
+    if (!user) { authScreen("login"); return; }
+    var cc = S.ccaa || "Andalucía";
+    openSheet('<h2>Crear un club</h2><p class="muted" style="margin:0">Para clubes y grupos de entrenamiento reales. Quien lo crea es su responsable.</p><form class="f" id="clubf">' +
+      '<div class="fld"><label for="cn">Nombre del club</label><input id="cn" type="text" minlength="3" maxlength="60" required placeholder="Club de Atletismo…"></div>' +
+      '<div class="fld"><label for="zc">Comunidad autónoma</label><select id="zc">' + Object.keys(ZONES).sort(function (a, b) { return a.localeCompare(b, "es"); }).map(function (k) { return '<option' + (k === cc ? " selected" : "") + '>' + esc(k) + '</option>'; }).join("") + '</select></div>' +
+      '<div class="fld"><label for="zp">Provincia</label><select id="zp">' + provOpts(cc, S.prov || "Cádiz") + '</select></div>' +
+      '<div class="fld"><label for="cci">Localidad</label><input id="cci" type="text" maxlength="60" placeholder="Jerez de la Frontera"></div>' +
+      '<div class="fld"><label for="ca">Descripción (opcional)</label><textarea id="ca" rows="3" maxlength="300" placeholder="Dónde y cuándo quedáis, qué carreras hacéis…"></textarea></div>' +
+      '<button class="btn wide" type="submit">Crear club</button><button class="btn alt wide" type="button" data-close="1">Cancelar</button></form>', "Crear un club");
+  }
+  /* Vista Comunidad */
+  function vComunidad() {
+    var cv = view.com || "muro";
+    var h = '<div><h1>Comunidad</h1><p class="kick">' + (S.prov ? "Los corredores de " + esc(S.prov) + " y " + esc(S.ccaa) : "Los corredores de tu zona") + '</p></div>';
+    h += '<div class="seg" role="tablist" aria-label="Comunidad">' + [["muro", "Muro"], ["clubes", "Clubes"], ["ranking", "Ranking"]].map(function (s) { return '<button type="button" role="tab" data-so="com" data-v="' + s[0] + '" aria-selected="' + (cv === s[0]) + '">' + s[1] + '</button>'; }).join("") + '</div>';
+    if (cv === "ranking") return h + '<div class="sec">' + rankingHtml() + '</div>';
+    if (!user) return h + needLogin(cv === "muro" ? "ver el muro y publicar tus carreras" : "ver los clubes y crear el tuyo");
+    if (cv === "muro") {
+      loadFeed(); loadFol(); loadClubs();
+      var F = SO.feed || { loading: true, rows: [] };
+      h += '<button class="compose" type="button" data-so="compose"><span class="pav" aria-hidden="true">' + esc(ini2(S.name)) + '</span><span>¿Qué tal tu carrera o tu entreno?</span><b>Publicar</b></button>';
+      h += '<div class="pchips" role="group" aria-label="Qué ver"><button type="button" data-so="scope" data-v="all" aria-pressed="' + (SO.scope === "all") + '">Todos</button><button type="button" data-so="scope" data-v="fol" aria-pressed="' + (SO.scope === "fol") + '">Siguiendo</button>' + (SO.scope === "club" && SO.club ? '<button type="button" data-so="scope" data-v="club" aria-pressed="true">' + esc(SO.club.name) + '</button>' : '') + '</div>';
+      if (F.loading) h += '<p class="muted">Cargando el muro…</p>'; else if (F.err) h += soErr();
+      else if (!F.rows.length) h += '<div class="card empty"><p>' + (SO.scope === "fol" ? "Aquí verás lo que publiquen los corredores a los que sigues. Búscalos en Perfil → Seguidores." : SO.scope === "club" ? "Este club aún no ha publicado nada. ¡Estrena su muro!" : "El muro está por estrenar. Sube la foto de tu última carrera y sé el primero.") + '</p></div>';
+      else h += '<div class="feed">' + F.rows.map(postHtml).join("") + '</div>';
+      return h;
+    }
+    loadClubs();
+    var K = SO.clubs || { loading: true, rows: [], mine: {} };
+    h += '<button class="btn wide" type="button" data-so="newclub">Crear un club</button>';
+    if (K.loading) return h + '<p class="muted">Cargando clubes…</p>'; if (K.err) return h + soErr();
+    var my = K.rows.filter(function (c) { return K.mine[c.id]; }), here = K.rows.filter(function (c) { return !K.mine[c.id] && S.prov && c.prov === S.prov; }), rest = K.rows.filter(function (c) { return !K.mine[c.id] && !(S.prov && c.prov === S.prov); });
+    if (my.length) h += '<div class="sec"><div class="sechd"><h2>Tus clubes</h2></div><div class="list">' + my.map(clubRow).join("") + '</div></div>';
+    if (here.length) h += '<div class="sec"><div class="sechd"><h2>Clubes de ' + esc(S.prov) + '</h2></div><div class="list">' + here.map(clubRow).join("") + '</div></div>';
+    if (rest.length) h += '<div class="sec"><div class="sechd"><h2>' + (here.length || my.length ? "Más clubes" : "Clubes") + '</h2></div><div class="list">' + rest.map(clubRow).join("") + '</div></div>';
+    if (!K.rows.length) h += '<div class="card empty"><p>Todavía no hay ningún club. Crea el tuyo y pasa el enlace de Runiverso a tus compañeros para que se unan.</p></div>';
+    return h;
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("[data-so]"); if (!a) return;
+    var k = a.getAttribute("data-so"), id = a.getAttribute("data-id"), v = a.getAttribute("data-v");
+    if (k === "com") { view.com = v; render(); }
+    else if (k === "reload") { SO.feed = null; SO.fol = null; SO.clubs = null; render(); }
+    else if (k === "scope") { if (v !== SO.scope) { SO.scope = v; if (v !== "club") SO.club = null; SO.feed = null; render(); } }
+    else if (k === "compose") composeSheet();
+    else if (k === "react") react(id, a.getAttribute("data-k"));
+    else if (k === "user") userSheet(id);
+    else if (k === "follow") follow(id, a);
+    else if (k === "segv") { view.segv = v; render(); }
+    else if (k === "clearq") { view.pq = ""; SO.found = null; render(); }
+    else if (k === "pmenu") postMenu(id);
+    else if (k === "delpost") {
+      if (!a.getAttribute("data-sure")) { a.setAttribute("data-sure", "1"); a.textContent = "Pulsa otra vez para borrarla"; return; }
+      var p = findPost(id); sb.from("posts").delete().eq("id", id).then(function (r) { if (r.error) { toast("No se ha podido borrar"); return; } if (p && p.img && p.user_id === user.id) sb.storage.from("muro").remove([p.img]).then(function () {}, function () {}); dropPost(id); closeSheet(); render(); toast("Publicación borrada"); });
+    }
+    else if (k === "report") { sb.from("reports").insert({ post_id: id, user_id: user.id }).then(function () { dropPost(id); closeSheet(); render(); toast("Gracias. La revisaremos y ya no la verás"); }); }
+    else if (k === "newclub") clubForm();
+    else if (k === "club") clubSheet(id);
+    else if (k === "join" || k === "leave") {
+      var q = k === "join" ? sb.from("club_members").insert({ club_id: id, user_id: user.id }) : sb.from("club_members").delete().eq("club_id", id).eq("user_id", user.id);
+      a.disabled = true; q.then(function (r) { if (r.error && r.error.code !== "23505") { toast("No se ha podido guardar"); a.disabled = false; return; } closeSheet(); toast(k === "join" ? "¡Ya eres del club!" : "Has salido del club"); loadClubs(true); });
+    }
+    else if (k === "clubwall") { var c = SO.clubs && SO.clubs.rows.filter(function (x) { return x.id === id; })[0]; if (c) { SO.scope = "club"; SO.club = c; SO.feed = null; view.com = "muro"; closeSheet(); render(); } }
+    else if (k === "delclub") {
+      if (!a.getAttribute("data-sure")) { a.setAttribute("data-sure", "1"); a.textContent = "Pulsa otra vez: se borra el club para todos"; return; }
+      sb.from("clubs").delete().eq("id", id).then(function (r) { if (r.error) { toast("No se ha podido borrar"); return; } closeSheet(); toast("Club borrado"); loadClubs(true); });
+    }
+  });
+  document.addEventListener("change", function (e) {
+    if (e.target.id === "pushtog") { if (e.target.checked) enablePush(); else disablePush(); }
+    if (e.target.id === "pf" && e.target.files[0]) {
+      shrink(e.target.files[0], function (b) {
+        var box = $("pprev"); if (!box) return;
+        if (!b) { toast("No hemos podido leer esa foto"); return; }
+        SO.img = b; box.innerHTML = '<img class="pimg" src="' + URL.createObjectURL(b) + '" alt="Foto elegida"><button class="link danger" type="button" id="pfx">Quitar foto</button>';
+      });
+    }
+  });
+  document.addEventListener("click", function (e) { if (e.target.id === "pfx") { SO.img = null; $("pprev").innerHTML = ""; $("pf").value = ""; } });
+  document.addEventListener("submit", function (e) {
+    if (e.target.id === "postf") { e.preventDefault(); publish(e.target); }
+    if (e.target.id === "pplf") { e.preventDefault(); searchPeople($("pplq").value.trim()); }
+    if (e.target.id === "clubf") {
+      e.preventDefault(); var fm = e.target, nm = $("cn").value.trim();
+      if (nm.length < 3) { toast("Pon el nombre del club"); return; }
+      busyBtn(fm, "Creando…");
+      sb.from("clubs").insert({ name: nm, prov: $("zp").value || null, city: $("cci").value.trim() || null, about: $("ca").value.trim() || null, owner: user.id }).then(function (r) {
+        if (r.error) { var b = fm.querySelector("button[type=submit]"); b.disabled = false; b.textContent = "Crear club"; toast(r.error.code === "23505" ? "Ya existe un club con ese nombre: búscalo y únete" : "No se ha podido crear el club"); return; }
+        closeSheet(); toast("¡Club creado!"); view.com = "clubes"; loadClubs(true);
+      });
+    }
+  });
 
   /* ---------- Hojas (ficha, marca, nombre) ---------- */
   var lastFocus = null;
@@ -910,7 +1157,7 @@
     var f = $("layer").querySelector(".sheet input, .sheet button, .sheet a"); if (f) f.focus();
     motion.sheet($("layer").firstChild);
   }
-  function closeSheet() { authScreen.open = false; resState = null; document.documentElement.classList.remove("lock"); $("layer").innerHTML = ""; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  function closeSheet() { authScreen.open = false; resState = null; document.documentElement.classList.remove("lock"); $("layer").innerHTML = ""; if (lastFocus && lastFocus.focus) lastFocus.focus(); if (gated()) setTimeout(gate, 0); }
 
   function raceSheet(id) {
     var r = BY[id]; if (!r) return;
@@ -1155,7 +1402,7 @@
     if (uc0) { sb.rpc("unclaim_result", { rid: +uc0.getAttribute("data-unclaim") }).then(function () { toast("Hecho"); resScreen(resState.id, resState.q); }); return; }
     var pu = t.closest(".poster[data-url]"); if (pu) { window.open(pu.getAttribute("data-url"), "_blank", "noopener"); return; }
     var ob = t.closest("[data-onb]");
-    if (ob) { var v = ob.getAttribute("data-onb"); if (v === "done") onbDone(); else if (v === "signup") { S.onb = true; save(); closeSheet(); render(); authScreen("signup"); } else onboarding(+v); return; }
+    if (ob) { var v = ob.getAttribute("data-onb"); if (v === "done") onbDone(); else if (v === "signup" || v === "login") { S.onb = true; save(); if (!cloudReady) { $("layer").innerHTML = ""; gate(); } else authScreen(v); } else onboarding(+v); return; }
     var wd = t.closest("[data-day]"); if (wd) { view.day = +wd.getAttribute("data-day"); var pool = S.prov ? upcoming().filter(inProv) : upcoming(), w = $("wkw"); w.innerHTML = weekStrip(pool); var nb = w.querySelector('[data-day="' + view.day + '"]'); if (nb && nb.scrollIntoView) nb.scrollIntoView({ block: "nearest", inline: "nearest" }); return; }
     var exb = t.closest("[data-ex]"); if (exb) { view.ex = exb.getAttribute("data-ex"); render(); return; }
     var rc = t.closest("[data-race]:not([data-act])"); if (rc) { raceSheet(rc.getAttribute("data-race")); return; }

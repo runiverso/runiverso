@@ -5,7 +5,7 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:carrera-popular-corre-por-la-esclerosis-multiple-2026-11
  -08@runiverso.com
-DTSTAMP:20261111T120000Z
+DTSTAMP:20261112T120000Z
 DTSTART;TZID=Europe/Madrid:20261108T103000
 DTEND;TZID=Europe/Madrid:20261108T133000
 SUMMARY:Carrera Popular Corre por la Esclerosis Múltiple
