@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "41";
+  var APP_V = "42";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -514,7 +514,7 @@
     if (user) {
       h += '<div class="card set"><h3>Avisos</h3>' + pushRow() + '</div>';
       h += '<div class="card set"><h3>Privacidad</h3><label class="sw"><input type="checkbox" id="pubtog"' + (S.pub ? " checked" : "") + '><span><b>Aparecer con mi nombre</b>En el ranking de ' + (S.prov ? esc(S.prov) : "tu provincia") + ' y en «¿Quién va?» de mis carreras. Si lo quitas, tus marcas solo las ves tú.</span></label>' +
-        '<p class="muted">Tu nombre, tu foto y lo que publicas en el muro lo ven los corredores con cuenta. <a href="../privacidad/">Política de privacidad</a></p></div>';
+        '<p class="muted">Tu nombre, tu foto y lo que publicas en el muro lo ven los corredores con cuenta. <a href="../privacidad/">Política de privacidad</a></p>' + (user ? '<button class="btn sm alt" type="button" data-so="blocked" style="align-self:flex-start">Usuarios bloqueados</button>' : '') + '</div>';
     }
     h += '<div class="card set pro"><h3>Runiverso Pro <span class="pill pro">Muy pronto</span></h3><p class="prop"><b>0,99 €</b> al mes · precio de lanzamiento</p><ul class="aperks"><li>Aviso en el móvil cuando abran las inscripciones de tus carreras favoritas</li><li>Plan de entrenamiento hasta tu próxima carrera</li><li>Ranking por edad y estadísticas de tu temporada</li><li>Insignia Pro en tu perfil y en el muro</li></ul>' +
       (proAsked() ? '<p class="ok" role="status">Apuntado: te avisaremos el primero cuando esté disponible.</p>' : '<button class="btn wide" type="button" data-act="prowant">Avísame cuando salga</button>') + '<p class="muted">Todavía no se puede contratar ni se cobra nada. Runiverso seguirá siendo gratis.</p></div>';
@@ -655,7 +655,7 @@
     } else {
       h += '<div class="sec"><div class="sechd"><h2>Próximas carreras</h2><a href="#carreras">Ver todas</a></div><div class="hscroll">' + up.slice(0, 10).map(function (r) { return poster(r); }).join("") + '</div></div>';
     }
-    h += canalCard("Avisos de dorsales en WhatsApp", "Cuándo abren y suben las inscripciones" + (S.prov ? " en " + esc(S.prov) : "") + ", horarios y novedades. Gratis.");
+    h += canalCard("Avisos de dorsales en WhatsApp", "Cuándo abren y suben las inscripciones de las carreras de Andalucía y España, horarios y novedades. Gratis.");
     if (RESULTS.length) {
       h += '<div class="sec"><div class="sechd"><h2>Últimos resultados</h2><a href="#clasificaciones">Ver todos</a></div><div class="list">' + RESULTS.slice().sort(function (a, b) { return near({ p: a.p, r: ccaaOf(a.p), date: -pd(a.d) }, { p: b.p, r: ccaaOf(b.p), date: -pd(b.d) }); }).slice(0, 3).map(resLi).join("") + '</div></div>';
     }
@@ -944,7 +944,7 @@
   /* ---------- Comunidad: muro, seguidores y clubes ---------- */
   var REACTS = ["👏", "🔥", "💪", "❤️"];
   var SO = { scope: "all", club: null, feed: null, fol: null, clubs: null, found: null, img: null };
-  function soReset() { SO.act = null; SO.mod = null; SO.usr = null; SO.scope = "all"; SO.club = null; SO.feed = null; SO.fol = null; SO.clubs = null; SO.found = null; SO.img = null; }
+  function soReset() { SO.act = null; SO.mod = null; SO.usr = null; SO.blk = null; SO.scope = "all"; SO.club = null; SO.feed = null; SO.fol = null; SO.clubs = null; SO.found = null; SO.img = null; }
   function soOn() { return view.tab === "comunidad" || (view.tab === "perfil" && view.sub === "seg"); }
   function soDraw() { if (soOn() && !$("layer").innerHTML) render(); }
   function imgUrl(p) { return SUPA_URL + "/storage/v1/object/public/muro/" + p; }
@@ -973,6 +973,24 @@
       if (!ids.length) fin([]); else sb.from("people").select("id,name,prov,avatar").in("id", ids).then(function (q) { fin(q.data); }, function () { fin([]); });
     }, function () { SO.fol = { err: true, ing: [], ers: [], set: {} }; soDraw(); });
   }
+  /* Usuarios bloqueados: no ves lo que publican ni comentan */
+  function isBlk(id) { return !!(SO.blk && SO.blk[id]); }
+  function loadBlk() {
+    if (!user || !sb || SO.blk) return;
+    SO.blk = {};
+    sb.from("blocks").select("blocked").eq("blocker", user.id).then(function (r) { var m = {}; (r.data || []).forEach(function (x) { m[x.blocked] = 1; }); SO.blk = m; if (r.data && r.data.length) soDraw(); }, function () {});
+  }
+  function blockUser(id, on) {
+    if (!user || id === user.id) return;
+    SO.blk = SO.blk || {};
+    var done = function (r) { if (r && r.error) { toast("No se ha podido guardar. Inténtalo de nuevo"); return; } if (on) { SO.blk[id] = 1; if (SO.fol) { delete SO.fol.set[id]; SO.fol.ing = SO.fol.ing.filter(function (p) { return p.id !== id; }); SO.fol.ers = SO.fol.ers.filter(function (p) { return p.id !== id; }); } } else delete SO.blk[id]; closeSheet(); render(); toast(on ? "Usuario bloqueado: ya no verás lo que publica" : "Usuario desbloqueado"); };
+    (on ? sb.from("blocks").insert({ blocker: user.id, blocked: id }) : sb.from("blocks").delete().eq("blocker", user.id).eq("blocked", id)).then(done, done);
+  }
+  function blockedSheet() {
+    var ids = Object.keys(SO.blk || {});
+    openSheet('<h2>Usuarios bloqueados</h2><div id="blkl" class="list">' + (ids.length ? '<p class="muted">Cargando…</p>' : '<p class="muted">No has bloqueado a nadie. Puedes bloquear a un usuario desde su perfil o desde el menú «⋯» de sus publicaciones.</p>') + '</div><button class="btn alt wide" type="button" data-close="1">Cerrar</button>', "Usuarios bloqueados");
+    if (ids.length) sb.from("people").select("id,name,prov,avatar").in("id", ids).then(function (q) { var b = $("blkl"); if (b) b.innerHTML = (q.data || []).map(function (p) { return '<div class="li per"><span class="pav">' + av(p.name, p.avatar) + '</span><span class="tx"><b>' + esc(p.name || "Corredor") + '</b><span>' + esc(p.prov || "Runiverso") + '</span></span><button class="btn sm alt" type="button" data-so="unblock" data-id="' + p.id + '">Desbloquear</button></div>'; }).join(""); });
+  }
   function loadFeed(force) {
     if (!user || !sb || (SO.feed && !force)) return;
     if (!SO.feed) SO.feed = { loading: true, rows: [] };
@@ -980,6 +998,7 @@
     if (SO.scope === "fol") { var ids = Object.keys((SO.fol && SO.fol.set) || {}); ids.push(user.id); q = q.in("user_id", ids); }
     else if (SO.scope === "club" && SO.club) q = q.eq("club_id", SO.club.id);
     q.order("created_at", { ascending: false }).limit(40).then(function (r) { SO.feed = { rows: r.error ? [] : (r.data || []), err: !!r.error }; soDraw(); }, function () { SO.feed = { rows: [], err: true }; soDraw(); });
+    loadBlk();
   }
   function loadClubs(force) {
     if (!user || !sb || (SO.clubs && !force)) return;
@@ -1038,7 +1057,7 @@
   function searchPeople(q) {
     view.pq = q; if (!q || q.length < 2) { SO.found = null; soDraw(); return; }
     SO.found = { loading: true, rows: [] }; soDraw();
-    sb.from("people").select("id,name,prov,avatar").ilike("name", "%" + q.replace(/[%_,()]/g, " ") + "%").limit(30).then(function (r) { SO.found = { rows: (r.data || []).filter(function (p) { return p.name; }) }; soDraw(); }, function () { SO.found = { rows: [] }; soDraw(); });
+    sb.from("people").select("id,name,prov,avatar").ilike("name", "%" + q.replace(/[%_,()]/g, " ") + "%").limit(30).then(function (r) { SO.found = { rows: (r.data || []).filter(function (p) { return p.name && !isBlk(p.id); }) }; soDraw(); }, function () { SO.found = { rows: [] }; soDraw(); });
   }
   /* Ficha de otro corredor */
   function userSheet(id) {
@@ -1051,7 +1070,8 @@
       box.innerHTML = '<div class="prof"><span class="av">' + av(p.name, p.avatar) + '</span><span class="nm"><h2 style="margin:0">' + esc(p.name || "Corredor") + '</h2><span class="muted" style="font-size:14px">' + esc(p.prov || "Runiverso") + '</span></span></div>' +
         '<div class="stats"><div class="stat"><b>' + (r[1].count || 0) + '</b><span>Seguidores</span></div><div class="stat"><b>' + (r[2].count || 0) + '</b><span>Siguiendo</span></div><div class="stat"><b>' + SO.urows.length + (SO.urows.length === 8 ? "+" : "") + '</b><span>Publicaciones</span></div></div>' +
         (me ? '' : '<button class="btn wide' + (f ? ' alt' : '') + '" type="button" data-so="follow" data-id="' + id + '">' + (f ? "Siguiendo" : "Seguir") + '</button>') +
-        (SO.urows.length ? SO.urows.map(postHtml).join("") : '<p class="muted" style="text-align:center">Aún no ha publicado nada.</p>');
+        (isBlk(id) ? '<p class="muted" style="text-align:center">Has bloqueado a este usuario.</p>' : SO.urows.length ? SO.urows.map(postHtml).join("") : '<p class="muted" style="text-align:center">Aún no ha publicado nada.</p>') +
+        (me ? '' : '<div class="row ctr"><button class="link danger" type="button" data-so="' + (isBlk(id) ? "unblock" : "block") + '" data-id="' + id + '">' + (isBlk(id) ? "Desbloquear" : "Bloquear usuario") + '</button><button class="link danger" type="button" data-so="reportu" data-id="' + id + '">Denunciar usuario</button></div>');
     }, function () { var box = $("ush"); if (box) box.innerHTML = '<p class="muted" style="text-align:center">No hemos podido cargar este perfil.</p>'; });
   }
   /* Publicar en el muro */
@@ -1095,7 +1115,7 @@
     var mine = user && p.user_id === user.id;
     openSheet('<h2>Publicación de ' + esc(p.author || "Corredor") + '</h2><div class="f">' +
       (mine || isAdmin ? '<button class="btn wide danger" type="button" data-so="delpost" data-id="' + id + '">Borrar publicación</button>' : '') +
-      (mine ? '' : '<button class="btn alt wide" type="button" data-so="report" data-id="' + id + '">Denunciar publicación</button><button class="btn alt wide" type="button" data-so="user" data-id="' + p.user_id + '">Ver su perfil</button>') +
+      (mine ? '' : '<button class="btn alt wide" type="button" data-so="report" data-id="' + id + '">Denunciar publicación</button><button class="btn alt wide" type="button" data-so="user" data-id="' + p.user_id + '">Ver su perfil</button><button class="btn alt wide" type="button" data-so="block" data-id="' + p.user_id + '">Bloquear a ' + esc((p.author || "este usuario").split(" ")[0]) + '</button>') +
       '<button class="btn alt wide" type="button" data-close="1">Cerrar</button></div>', "Opciones de la publicación");
   }
   /* Comentarios de una publicación */
@@ -1107,7 +1127,7 @@
   function loadComments(id) {
     var p = findPost(id);
     sb.from("comments").select("id,user_id,body,created_at").eq("post_id", id).order("created_at", { ascending: true }).limit(100).then(function (r) {
-      var rows = r.data || [], box = $("cml"); if (!box) return;
+      var rows = (r.data || []).filter(function (c) { return !isBlk(c.user_id); }), box = $("cml"); if (!box) return;
       if (p) { p.n_comments = rows.length; [].forEach.call(document.querySelectorAll('[data-post="' + id + '"] .pcom b'), function (b) { b.textContent = rows.length || ""; }); }
       if (r.error) { box.innerHTML = '<p class="muted">No hemos podido cargar los comentarios.</p>'; return; }
       if (!rows.length) { box.innerHTML = '<p class="muted">Sé el primero en comentar.</p>'; return; }
@@ -1183,7 +1203,7 @@
     h += '<p class="muted" style="margin:0;font-size:12.5px">Los más recientes primero. «Último acceso» es la última vez que inició sesión, no cada vez que abre la app.</p>';
     h += '<div class="list" id="usrl">' + (A.users || []).map(function (u) {
       var nm = u.name || "Sin nombre", bits = [u.races ? u.races + (u.races === 1 ? " carrera" : " carreras") : "", u.marks ? u.marks + (u.marks === 1 ? " marca" : " marcas") : "", u.posts ? u.posts + " publ." : ""].filter(Boolean).join(" · ");
-      return '<div class="li per usr" data-q="' + esc((nm + " " + (u.email || "") + " " + (u.prov || "")).toLowerCase()) + '"><button class="pav" type="button" data-so="user" data-id="' + u.id + '" aria-label="Ver el perfil de ' + esc(nm) + '">' + av(nm, u.avatar) + '</button><button class="tx" type="button" data-so="user" data-id="' + u.id + '"><b>' + esc(nm) + (u.pro ? ' <span class="pill pro">Pro</span>' : '') + '</b><span>' + esc(u.email || "") + '</span><span>' + esc(u.prov || "Sin provincia") + ' · alta ' + dShort(u.created_at) + ' · último acceso ' + dShort(u.last_sign_in_at) + '</span>' + (bits ? '<span>' + bits + '</span>' : '') + '</button></div>';
+      return '<div class="li per usr" data-q="' + esc((nm + " " + (u.email || "") + " " + (u.prov || "")).toLowerCase()) + '"><button class="pav" type="button" data-so="user" data-id="' + u.id + '" aria-label="Ver el perfil de ' + esc(nm) + '">' + av(nm, u.avatar) + '</button><button class="tx" type="button" data-so="user" data-id="' + u.id + '"><b>' + esc(nm) + (u.pro ? ' <span class="pill pro">Pro</span>' : '') + (u.reports ? ' <span class="pill warn">' + u.reports + (u.reports === 1 ? " denuncia" : " denuncias") + '</span>' : '') + '</b><span>' + esc(u.email || "") + '</span><span>' + esc(u.prov || "Sin provincia") + ' · alta ' + dShort(u.created_at) + ' · último acceso ' + dShort(u.last_sign_in_at) + '</span>' + (bits ? '<span>' + bits + '</span>' : '') + '</button></div>';
     }).join("") + '</div>';
     return h;
   }
@@ -1207,7 +1227,7 @@
     sb.rpc("race_goers", { rid: id }).then(function (r) {
       var b = $("goers"), d = r && r.data; if (!b || !d || !d.n) return;
       var pp = d.people || [];
-      b.innerHTML = '<div class="marks"><span class="k">¿Quién va? · ' + d.n + (d.n === 1 ? " corredor apuntado" : " corredores apuntados") + '</span>' + (pp.length ? '<div class="gov">' + pp.map(function (p) { return '<button class="pav sm" type="button" data-so="user" data-id="' + p.id + '" title="' + esc(p.name) + '" aria-label="' + esc(p.name) + '">' + av(p.name, p.avatar) + '</button>'; }).join("") + '</div><span class="muted" style="font-size:12.5px">' + esc(pp.slice(0, 3).map(function (p) { return p.name.split(" ")[0]; }).join(", ")) + (d.n > 3 ? " y " + (d.n - Math.min(3, pp.length)) + " más" : "") + '</span>' : '<span class="muted" style="font-size:12.5px">Activa «Aparecer en el ranking» en tu perfil para salir aquí con tu nombre.</span>') + '</div>';
+      b.innerHTML = '<div class="marks"><span class="k">¿Quién va? · ' + d.n + (d.n === 1 ? " corredor la ha guardado" : " corredores la han guardado") + '</span>' + (pp.length ? '<div class="gov">' + pp.map(function (p) { return '<button class="pav sm" type="button" data-so="user" data-id="' + p.id + '" title="' + esc(p.name) + '" aria-label="' + esc(p.name) + '">' + av(p.name, p.avatar) + '</button>'; }).join("") + '</div><span class="muted" style="font-size:12.5px">' + esc(pp.slice(0, 3).map(function (p) { return p.name.split(" ")[0]; }).join(", ")) + (d.n > 3 ? " y " + (d.n - Math.min(3, pp.length)) + " más" : "") + '</span>' : '<span class="muted" style="font-size:12.5px">Activa «Aparecer en el ranking» en tu perfil para salir aquí con tu nombre.</span>') + '</div>';
     }, function () {});
   }
   /* Publicar una marca en el muro con su tarjeta */
@@ -1361,7 +1381,7 @@
         '<button type="button" class="actb" data-so="act" aria-label="Actividad' + (SO.act && SO.act.fresh ? ": " + SO.act.fresh + " novedades" : "") + '">🔔 Actividad' + (SO.act && SO.act.fresh ? '<em>' + SO.act.fresh + '</em>' : '') + '</button></div>';
       if (F.loading) h += '<p class="muted">Cargando el muro…</p>'; else if (F.err) h += soErr();
       else if (!F.rows.length) h += '<div class="card empty"><p>' + (SO.scope === "fol" ? "Aquí verás lo que publiquen los corredores a los que sigues. Búscalos en Perfil → Seguidores." : SO.scope === "club" ? "Este club aún no ha publicado nada. ¡Estrena su muro!" : "El muro está por estrenar. Sube la foto de tu última carrera y sé el primero.") + '</p></div>';
-      else h += '<div class="feed">' + F.rows.map(postHtml).join("") + '</div>';
+      else h += '<div class="feed">' + F.rows.filter(function (p) { return !isBlk(p.user_id); }).map(postHtml).join("") + '</div>';
       return h;
     }
     loadClubs();
@@ -1394,6 +1414,10 @@
     else if (k === "comments") commentsSheet(id);
     else if (k === "act") actSheet();
     else if (k === "usrre") { SO.usr = null; render(); }
+    else if (k === "block") { if (!a.getAttribute("data-sure")) { a.setAttribute("data-sure", "1"); a.textContent = "Pulsa otra vez para bloquear"; return; } blockUser(id, true); }
+    else if (k === "unblock") blockUser(id, false);
+    else if (k === "blocked") blockedSheet();
+    else if (k === "reportu") { a.disabled = true; sb.from("user_reports").insert({ reported: id, reporter: user.id }).then(function () { a.textContent = "Denuncia enviada. Gracias"; }, function () { a.disabled = false; }); }
     else if (k === "sharemark") shareMark(id, a);
     else if (k === "delcom") { var pid = a.getAttribute("data-post"); sb.from("comments").delete().eq("id", id).then(function () { loadComments(pid); }); }
     else if (k === "hide") { sb.from("posts").update({ hidden: v === "1" }).eq("id", id).then(function (r) { toast(r.error ? "No se ha podido cambiar" : v === "1" ? "Publicación oculta" : "Publicación restaurada"); loadMod(true); }); }
