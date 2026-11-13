@@ -3,7 +3,7 @@
   "path": "carreras-en/andalucia/",
   "name": "Andalucía",
   "kind": "r",
-  "n": 152
+  "n": 151
  },
  {
   "path": "carreras-en/cataluna/",
@@ -99,7 +99,7 @@
   "path": "granada/",
   "name": "Granada",
   "kind": "p",
-  "n": 19
+  "n": 18
  },
  {
   "path": "cordoba/",
@@ -225,7 +225,7 @@
   "path": "carreras-populares/",
   "name": "Carreras populares",
   "kind": "t",
-  "n": 85
+  "n": 84
  },
  {
   "path": "san-silvestre-2026/",
