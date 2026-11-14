@@ -1179,3 +1179,23 @@ html[data-theme="dark"] .arrd { background-color: #2A2E52; }
 .link { min-height: 36px; display: inline-flex; align-items: center; }
 .pname { min-height: 30px; display: inline-flex; align-items: center; }
 .foot a { display: inline-block; padding: 8px 2px; }
+
+/* ---------- v43 · bienvenida y acceso con la imagen nueva (claro y oscuro) ---------- */
+.auth.auth:not(.res) { --fg: inherit; --muted: inherit; --line: inherit; --surface: inherit; --surface-2: inherit; --accent: inherit; --sky: var(--accent); color: var(--fg);
+  background: radial-gradient(90% 46% at 100% 0%, rgba(232, 98, 44, .20), transparent 70%), radial-gradient(80% 40% at 0% 4%, rgba(91, 63, 209, .20), transparent 70%), radial-gradient(90% 40% at 50% 104%, rgba(242, 165, 65, .22), transparent 70%), var(--bg); }
+.auth.auth:not(.res) .seg { background: var(--surface-2); }
+.auth.auth:not(.res) .fld input { background: var(--surface); color: var(--fg); border-color: var(--line); }
+.auth.auth:not(.res) .err { color: #C0392B; }
+.auth.auth .aclose { background: var(--surface); border: 1px solid var(--line); color: var(--fg); }
+.auth.auth .alegal a { color: var(--accent); }
+.abrand.nw { flex-direction: column; align-items: flex-start; gap: 2px; margin-top: 14px; }
+.abrand.nw .wm { display: inline-flex; }
+.abrand.nw .wmt { font-size: 40px; }
+.abrand.nw .wmt .shoe { width: 44px; height: 25px; margin: 0 1px 3px 1px; }
+.abrand.nw small { font-family: var(--body); font-size: 13.5px; font-weight: 700; color: var(--muted); }
+.auth .arco { margin: 4px 0 6px; height: 176px; }
+.auth.auth h1 { color: var(--fg); }
+.auth .odots i { background: var(--line); }
+.auth .odots i.on { background: var(--accent); }
+.auth .aperks li { color: var(--fg); }
+html[data-theme="dark"] .auth.auth:not(.res) .err { color: #FF8A8A; }

@@ -40,3 +40,20 @@ def poster_html(rid, name, city, k, dist="", date=None, month=None, ok=True, hre
             f'<span class="pn">{e(name)}</span><span class="pc">{e(city)}</span>'
             f'<span class="pdate"><b>{e(big)}</b><span>{e(mon)}<small>{e(yr)}</small></span></span>'
             f'{prov_html}</{tag}>')
+
+
+def _slug(t):
+    import re as _re, unicodedata as _u
+    t = _u.normalize("NFD", t.lower())
+    t = "".join(c for c in t if _u.category(c) != "Mn")
+    return _re.sub(r"[^a-z0-9]+", "-", t).strip("-")
+
+
+def confirma(races, nota_vieja=None, campo="t"):
+    """Una carrera con cartel oficial tiene la fecha confirmada por la organización: se marca ok y se cambia la nota genérica."""
+    for r in races:
+        if not r.get("ok") and "d" in r and _slug(r["n"]) in CARTELES:
+            r["ok"] = True
+            if nota_vieja is not None and r.get(campo) == nota_vieja:
+                r[campo] = "Fecha confirmada en el cartel oficial de la organización."
+    return races

@@ -134,6 +134,8 @@ RACES = [
     dict(id="medio-maraton-de-jerez", n="Medio Maratón de Jerez", c="Jerez de la Frontera", m="2027-10", k="21K", dist="21,1 km", ok=False,
          note="La edición de 2026 se corrió el 18 de octubre. La de 2027 suele ser a finales de octubre; la fecha aún no está publicada."),
 ]
+from poster import confirma as _confirma  # noqa: E402
+_confirma(RACES)
 
 TYPES = {"21K": "Media maratón", "10K": "10K", "pop": "Popular", "trail": "Trail", "ss": "San Silvestre"}
 DIAS = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]

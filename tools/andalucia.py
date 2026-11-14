@@ -146,4 +146,10 @@ JAEN = [
     dict(n="San Silvestre Alcalá Pro Cáritas", c="Alcalá la Real", d="2026-12-26", k="SS", dist="San Silvestre", ok=False, t="Solidaria a favor de Cáritas. " + CAL),
 ]
 
+import pathlib as _pl, sys as _sys
+_sys.path.insert(0, str(_pl.Path(__file__).resolve().parent))
+from poster import confirma as _confirma  # noqa: E402
+for _l in (SEVILLA, MALAGA, GRANADA, CORDOBA, JAEN, HUELVA, ALMERIA):
+    _confirma(_l, CAL)
+
 PROVINCIAS = {"Sevilla": SEVILLA, "Málaga": MALAGA, "Granada": GRANADA, "Córdoba": CORDOBA, "Jaén": JAEN, "Huelva": HUELVA, "Almería": ALMERIA}
