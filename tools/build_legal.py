@@ -4,7 +4,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import build_seo as B
 
-B.REVISADO = "5 de noviembre de 2026"
+B.REVISADO = "14 de noviembre de 2026"
 FORM = B.FORM
 
 PRIV = f"""
@@ -17,7 +17,8 @@ PRIV = f"""
   <section class="box"><h2>Comunidad: qué ven los demás</h2><p>Si usas la comunidad de la app, los demás corredores con cuenta pueden ver tu <b>nombre</b> y tu <b>provincia</b>, a quién sigues y quién te sigue, los clubes de los que formas parte y lo que publiques en el muro (texto, fotos y reacciones). También tu foto de perfil y tus comentarios. Tus marcas solo se ven si activas «Aparecer en el ranking»; con esa misma opción apareces con tu nombre en «¿Quién va?» de las carreras a las que te apuntes (sin ella solo cuentas en el total). Las fotos del muro se guardan en Supabase y cualquiera que tenga su enlace puede abrirlas. Puedes borrar tus publicaciones cuando quieras; al eliminar tu cuenta se borran tus publicaciones, tus reacciones, tus seguidores y tu pertenencia a clubes.</p></section>
   <section class="box"><h2>Para qué los usamos</h2><p>Únicamente para darte el servicio: guardar tus datos en tu cuenta, que los veas en cualquier dispositivo, mandarte los correos de acceso y, si lo activas, mostrarte en el ranking. No vendemos ni cedemos tus datos y no los usamos para publicidad.</p><p>La base legal es tu consentimiento al crear la cuenta y la ejecución del servicio que pides.</p></section>
   <section class="box"><h2>Dónde se guardan</h2><p>Los datos de las cuentas se guardan en <b>Supabase</b>, en servidores de la Unión Europea. Los correos de acceso se envían con <b>Resend</b> (servidor en Irlanda). La web se sirve desde <b>Cloudflare</b>. Si entras con Google, el inicio de sesión lo gestiona <b>Google</b>.</p></section>
-  <section class="box"><h2>Cuánto tiempo</h2><p>Mientras tengas la cuenta. Puedes eliminarla tú mismo en la app, en Perfil → «Eliminar mi cuenta»: se borran al momento tu cuenta, tu correo, tu perfil, tus marcas, tus carreras apuntadas y tus avisos. También puedes pedirlo por correo (<a href="../borrar-cuenta/">cómo eliminar tu cuenta</a>).</p></section>
+  <section class="box"><h2>Avisos, bloqueos y denuncias</h2><p>Si activas los <b>avisos en el móvil</b>, guardamos el identificador que nos da tu navegador o tu teléfono para poder enviártelos; se borra al desactivarlos. Si <b>bloqueas</b> a alguien o <b>denuncias</b> una publicación o a un usuario, guardamos ese bloqueo o esa denuncia para aplicarlo y para que moderación pueda revisarlo. Si pulsas «Avísame» en Runiverso Pro, guardamos solo que te interesa.</p></section>
+  <section class="box"><h2>Cuánto tiempo</h2><p>Mientras tengas la cuenta. Puedes eliminarla tú mismo en la app, en Ajustes → «Eliminar mi cuenta»: se borran al momento tu cuenta, tu correo, tu perfil, tus marcas, tus carreras guardadas, tus avisos, tus publicaciones y las fotos que hayas subido (muro, foto de perfil y logos de tus clubes). También puedes pedirlo por correo (<a href="../borrar-cuenta/">cómo eliminar tu cuenta</a>).</p></section>
   <section class="box"><h2>Tus derechos</h2><p>Puedes acceder a tus datos, corregirlos, llevártelos o pedir que los borremos, y retirar tu consentimiento cuando quieras. Escríbenos a <a href="mailto:runniverso@gmail.com">runniverso@gmail.com</a> desde el correo de tu cuenta. Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</p></section>
   <section class="box"><h2>Uso de los datos de Google</h2><p>El uso que hace Runiverso de la información recibida de las API de Google cumple la <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Política de Datos del Usuario de los Servicios de las API de Google</a>, incluidos los requisitos de uso limitado.</p></section>
 """
@@ -25,9 +26,9 @@ PRIV = f"""
 BORRAR = f"""
   <section class="box"><h2>Desde la app (al momento)</h2><ol>
     <li>Abre la app en <a href="../app/">runiverso.com/app</a> e inicia sesión.</li>
-    <li>Ve a la pestaña <b>Perfil</b>.</li>
+    <li>Ve a la pestaña <b>Ajustes</b>.</li>
     <li>En la tarjeta de tu cuenta pulsa <b>Eliminar mi cuenta</b> y confirma.</li>
-  </ol><p>Se borran al momento y para siempre tu cuenta, tu correo, tu perfil, tus marcas y medallas, tus carreras apuntadas, tu puesto en el ranking y los avisos en el móvil.</p></section>
+  </ol><p>Se borran al momento y para siempre tu cuenta, tu correo, tu perfil, tus marcas y medallas, tus carreras guardadas, tu puesto en el ranking, tus publicaciones, comentarios y fotos de la comunidad y los avisos en el móvil.</p></section>
   <section class="box"><h2>Por correo (si ya no tienes la app)</h2><p>Escríbenos a <a href="mailto:runniverso@gmail.com?subject=Eliminar%20mi%20cuenta">runniverso@gmail.com</a> desde el correo con el que creaste la cuenta, con el asunto «Eliminar mi cuenta». La eliminamos en un plazo máximo de 30 días y te confirmamos por correo.</p></section>
   <section class="box"><h2>Qué se conserva</h2><p>Nada de tu cuenta. Si habías reclamado un resultado en una clasificación oficial, ese resultado sigue publicado tal y como lo publica la organización, pero ya no está unido a ti. Más detalles en la <a href="../privacidad/">política de privacidad</a>.</p></section>
 """
