@@ -19,7 +19,7 @@
   function pace(sec, km) { var p = sec / km; return Math.floor(p / 60) + ":" + pad(Math.round(p % 60)) + " /km"; }
   function seasonStart() { var y = today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1; return new Date(y, 8, 1); }
 
-  var APP_V = "43";
+  var APP_V = "44";
   var CANAL = "https://whatsapp.com/channel/0029VbDrJk2InlqSVj746L0L";
   var WA_ICO = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"/></svg>';
   function canalCard(title, text) {
@@ -184,7 +184,16 @@
   function deleteAccount(btn) {
     if (!sb || !user) return;
     btn.disabled = true; btn.textContent = "Eliminando…";
-    sb.rpc("delete_my_account").then(function (r) {
+    /* Antes de borrar la cuenta se borran del almacén sus fotos (muro, perfil y escudos): el SQL no puede tocarlas */
+    var wipe = Promise.all([sb.from("posts").select("img").eq("user_id", user.id), sb.from("clubs").select("logo").eq("owner", user.id)]).then(function (rr) {
+      var paths = [];
+      (rr[0].data || []).forEach(function (x) { if (x.img) paths.push(x.img); });
+      (rr[1].data || []).forEach(function (x) { if (x.logo) paths.push(x.logo); });
+      if (S.avatar) paths.push(S.avatar);
+      paths = paths.filter(function (p) { return p.indexOf(user.id + "/") === 0; });
+      return paths.length ? sb.storage.from("muro").remove(paths) : null;
+    }).then(null, function () {});
+    wipe.then(function () { return sb.rpc("delete_my_account"); }).then(function (r) {
       if (r.error) throw r.error;
       return sb.auth.signOut().catch(function () {});
     }).then(function () {
@@ -193,7 +202,7 @@
       toast("Tu cuenta y tus datos se han eliminado");
     }).catch(function (e) {
       console.warn("Runiverso eliminar cuenta", e); btn.disabled = false; btn.textContent = "Eliminar mi cuenta para siempre";
-      toast("No hemos podido eliminar la cuenta. Inténtalo de nuevo o escríbenos a hola@runiverso.com");
+      toast("No hemos podido eliminar la cuenta. Inténtalo de nuevo o escríbenos a runniverso@gmail.com");
     });
   }
   /* Bienvenida: tres pasos la primera vez */

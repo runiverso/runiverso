@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-rute-en-navidad-2026-12-07@runiverso.com
+DTSTAMP:20261114T120000Z
+DTSTART;VALUE=DATE:20261207
+DTEND;VALUE=DATE:20261208
+SUMMARY:Carrera Popular Rute en Navidad
+LOCATION:Rute\, Andalucía
+DESCRIPTION:5\,5 km · Rute\nhttps://runiverso.com/carreras/c
+ arrera-popular-rute-en-navidad/
+END:VEVENT
+END:VCALENDAR

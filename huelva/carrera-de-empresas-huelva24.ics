@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-de-empresas-huelva24-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;TZID=Europe/Madrid:20261122T100000
+DTEND;TZID=Europe/Madrid:20261122T130000
+SUMMARY:Carrera de Empresas Huelva24
+LOCATION:Huelva\, Huelva
+DESCRIPTION:Primera edición\, en el Parque Moret\, organizada por ABC y H
+ uelva24 con el Ayuntamiento. Se puede correr solo o en equipos de tres. M
+ ás info: https://runiverso.com/huelva/#carrera-de-empresas-huelva24
+URL:https://runiverso.com/huelva/#carrera-de-empresas-huelva24
+END:VEVENT
+END:VCALENDAR

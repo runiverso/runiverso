@@ -5,11 +5,12 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:carrera-de-fondo-villa-de-cajar-2026-11-15@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261115
-DTEND;VALUE=DATE:20261116
+DTSTART;TZID=Europe/Madrid:20261115T100000
+DTEND;TZID=Europe/Madrid:20261115T130000
 SUMMARY:Carrera de Fondo Villa de Cájar
 LOCATION:Cájar\, Andalucía
-DESCRIPTION:Fondo · Cájar\nhttps://runiverso.com/carreras/ca
- rrera-de-fondo-villa-de-cajar/
+DESCRIPTION:Fondo · Cájar\nhttps://www.global-tempo.com/carr
+ eras.php?id=3305\nhttps://runiverso.com/carreras/carrera-de
+ -fondo-villa-de-cajar/
 END:VEVENT
 END:VCALENDAR

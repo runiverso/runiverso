@@ -5,11 +5,12 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:carrera-popular-puerto-menesteo-2026-11-22@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261122
-DTEND;VALUE=DATE:20261123
+DTSTART;TZID=Europe/Madrid:20261122T100000
+DTEND;TZID=Europe/Madrid:20261122T130000
 SUMMARY:Carrera Popular Puerto Menesteo
 LOCATION:El Puerto de Santa María\, Andalucía
-DESCRIPTION:Popular · El Puerto de Santa María\nhttps://runi
- verso.com/carreras/carrera-popular-puerto-menesteo/
+DESCRIPTION:10 km · El Puerto de Santa María\nhttps://www.ru
+ nnink.com/evento.php?id=121\nhttps://runiverso.com/carreras
+ /carrera-popular-puerto-menesteo/
 END:VEVENT
 END:VCALENDAR

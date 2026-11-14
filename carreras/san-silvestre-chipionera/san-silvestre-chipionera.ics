@@ -5,11 +5,12 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:san-silvestre-chipionera-2026-12-29@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261229
-DTEND;VALUE=DATE:20261230
+DTSTART;TZID=Europe/Madrid:20261229T163000
+DTEND;TZID=Europe/Madrid:20261229T193000
 SUMMARY:San Silvestre Chipionera
 LOCATION:Chipiona\, Andalucía
-DESCRIPTION:San Silvestre · Chipiona\nhttps://runiverso.com/
- carreras/san-silvestre-chipionera/
+DESCRIPTION:San Silvestre · Chipiona\nhttps://www.runnink.co
+ m/evento.php?id=113\nhttps://runiverso.com/carreras/san-sil
+ vestre-chipionera/
 END:VEVENT
 END:VCALENDAR

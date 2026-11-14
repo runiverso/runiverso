@@ -5,13 +5,13 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:carrera-nocturna-de-las-gabias-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261225
-DTEND;VALUE=DATE:20261226
+DTSTART;TZID=Europe/Madrid:20261230T183000
+DTEND;TZID=Europe/Madrid:20261230T213000
 SUMMARY:Carrera Nocturna de Las Gabias
 LOCATION:Las Gabias\, Granada
 DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
- írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
-  info: https://runiverso.com/granada/#carrera-nocturna-de-las-gabias
+ írmala en la web oficial antes de inscribirte. Más info: https://runive
+ rso.com/granada/#carrera-nocturna-de-las-gabias
 URL:https://runiverso.com/granada/#carrera-nocturna-de-las-gabias
 END:VEVENT
 END:VCALENDAR

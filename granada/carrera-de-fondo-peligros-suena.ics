@@ -5,8 +5,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:carrera-de-fondo-peligros-suena-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261122
-DTEND;VALUE=DATE:20261123
+DTSTART;TZID=Europe/Madrid:20261122T110000
+DTEND;TZID=Europe/Madrid:20261122T140000
 SUMMARY:Carrera de Fondo Peligros Suena
 LOCATION:Peligros\, Granada
 DESCRIPTION:10.ª edición. Fecha según los calendarios de carreras de la

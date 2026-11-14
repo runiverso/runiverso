@@ -5,13 +5,13 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:san-silvestre-gaditana-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261227
-DTEND;VALUE=DATE:20261228
+DTSTART;TZID=Europe/Madrid:20261227T180000
+DTEND;TZID=Europe/Madrid:20261227T210000
 SUMMARY:San Silvestre Gaditana
 LOCATION:Cádiz\, Cádiz
 DESCRIPTION:La organiza el Club de Atletismo Olimpo. En 2025 se corrió el
-  sábado 27 de diciembre\, con unos 1.000 participantes. Fecha por confir
- mar. Más info: https://runiverso.com/cadiz/#san-silvestre-gaditana
+  sábado 27 de diciembre\, con unos 1.000 participantes. Más info: https
+ ://runiverso.com/cadiz/#san-silvestre-gaditana
 URL:https://runiverso.com/cadiz/#san-silvestre-gaditana
 END:VEVENT
 END:VCALENDAR

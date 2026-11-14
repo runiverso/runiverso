@@ -6,11 +6,11 @@ BEGIN:VEVENT
 UID:carrera-solidaria-inmaculada-alcaldesa-perpetua-2026-11-
  28@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261128
-DTEND;VALUE=DATE:20261129
+DTSTART;TZID=Europe/Madrid:20261128T193000
+DTEND;TZID=Europe/Madrid:20261128T223000
 SUMMARY:Carrera Solidaria Inmaculada Alcaldesa Perpetua
 LOCATION:La Línea de la Concepción\, Andalucía
-DESCRIPTION:Solidaria · La Línea de la Concepción\nhttps://r
- universo.com/carreras/carrera-solidaria-inmaculada-alcaldesa-perpetua/
+DESCRIPTION:5 km · La Línea de la Concepción\nhttps://runive
+ rso.com/carreras/carrera-solidaria-inmaculada-alcaldesa-perpetua/
 END:VEVENT
 END:VCALENDAR

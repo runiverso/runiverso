@@ -5,8 +5,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:san-silvestre-chipionera-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261229
-DTEND;VALUE=DATE:20261230
+DTSTART;TZID=Europe/Madrid:20261229T163000
+DTEND;TZID=Europe/Madrid:20261229T193000
 SUMMARY:San Silvestre Chipionera
 LOCATION:Chipiona\, Cádiz
 DESCRIPTION:33.ª edición. Más info: https://runiverso.com/cadiz/#san-si

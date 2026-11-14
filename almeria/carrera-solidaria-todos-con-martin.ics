@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-todos-con-martin-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270117
+DTEND;VALUE=DATE:20270118
+SUMMARY:Carrera Solidaria Todos con Martín
+LOCATION:Albox\, Almería
+DESCRIPTION:Con ruta de senderismo el mismo día. Fecha según los calenda
+ rios de carreras de la provincia. Confírmala en la web oficial antes de 
+ inscribirte. Fecha por confirmar. Más info: https://runiverso.com/almeri
+ a/#carrera-solidaria-todos-con-martin
+URL:https://runiverso.com/almeria/#carrera-solidaria-todos-con-martin
+END:VEVENT
+END:VCALENDAR

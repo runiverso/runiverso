@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:sp-running-series-aje-cordoba-2026-11-15@runiverso.com
+DTSTAMP:20261114T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:SP Running Series AJE Córdoba
+LOCATION:Córdoba\, Andalucía
+DESCRIPTION:10 km · Córdoba\nhttps://ajeandalucia.org\nhttps
+ ://runiverso.com/carreras/sp-running-series-aje-cordoba/
+END:VEVENT
+END:VCALENDAR

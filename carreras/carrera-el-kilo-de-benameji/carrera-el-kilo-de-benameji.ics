@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-el-kilo-de-benameji-2026-11-28@runiverso.com
+DTSTAMP:20261114T120000Z
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20261129
+SUMMARY:Carrera El Kilo de Benamejí
+LOCATION:Benamejí\, Andalucía
+DESCRIPTION:7 km · Benamejí\nhttps://runiverso.com/carreras/
+ carrera-el-kilo-de-benameji/
+END:VEVENT
+END:VCALENDAR

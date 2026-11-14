@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-de-reyes-de-trasmulas-2027@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20270103
+DTEND;VALUE=DATE:20270104
+SUMMARY:Carrera de Reyes de Trasmulas
+LOCATION:Pinos Puente\, Granada
+DESCRIPTION:En Trasmulas (Pinos Puente). Fecha según los calendarios de c
+ arreras de la provincia. Confírmala en la web oficial antes de inscribir
+ te. Fecha por confirmar. Más info: https://runiverso.com/granada/#carrer
+ a-de-reyes-de-trasmulas
+URL:https://runiverso.com/granada/#carrera-de-reyes-de-trasmulas
+END:VEVENT
+END:VCALENDAR

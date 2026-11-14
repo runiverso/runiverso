@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-de-torrecampo-2026-11-14@runiverso.com
+DTSTAMP:20261114T120000Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:Carrera Popular de Torrecampo
+LOCATION:Torrecampo\, Andalucía
+DESCRIPTION:4 km · Torrecampo\nhttps://runiverso.com/carrera
+ s/carrera-popular-de-torrecampo/
+END:VEVENT
+END:VCALENDAR

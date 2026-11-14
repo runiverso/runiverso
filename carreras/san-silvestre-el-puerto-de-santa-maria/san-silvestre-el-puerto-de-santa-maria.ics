@@ -5,11 +5,12 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:san-silvestre-el-puerto-de-santa-maria-2026-12-27@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261227
-DTEND;VALUE=DATE:20261228
+DTSTART;TZID=Europe/Madrid:20261227T100000
+DTEND;TZID=Europe/Madrid:20261227T130000
 SUMMARY:San Silvestre El Puerto de Santa María
 LOCATION:El Puerto de Santa María\, Andalucía
-DESCRIPTION:5 km · El Puerto de Santa María\nhttps://runiver
- so.com/carreras/san-silvestre-el-puerto-de-santa-maria/
+DESCRIPTION:5 km · El Puerto de Santa María\nhttps://www.run
+ nink.com/evento.php?id=140\nhttps://runiverso.com/carreras/
+ san-silvestre-el-puerto-de-santa-maria/
 END:VEVENT
 END:VCALENDAR

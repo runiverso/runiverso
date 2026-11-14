@@ -5,11 +5,12 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:san-silvestre-de-armilla-2026-12-12@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261212
-DTEND;VALUE=DATE:20261213
+DTSTART;TZID=Europe/Madrid:20261212T190000
+DTEND;TZID=Europe/Madrid:20261212T220000
 SUMMARY:San Silvestre de Armilla
 LOCATION:Armilla\, Andalucía
-DESCRIPTION:San Silvestre · Armilla\nhttps://runiverso.com/c
- arreras/san-silvestre-de-armilla/
+DESCRIPTION:3 km · Armilla\nhttps://www.global-tempo.com/car
+ reras.php?id=3319\nhttps://runiverso.com/carreras/san-silve
+ stre-de-armilla/
 END:VEVENT
 END:VCALENDAR

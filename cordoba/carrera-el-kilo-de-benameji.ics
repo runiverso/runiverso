@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-el-kilo-de-benameji-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20261129
+SUMMARY:Carrera El Kilo de Benamejí
+LOCATION:Benamejí\, Córdoba
+DESCRIPTION:14.ª edición\, del Circuito Provincial de la Diputación de 
+ Córdoba. Más info: https://runiverso.com/cordoba/#carrera-el-kilo-de-be
+ nameji
+URL:https://runiverso.com/cordoba/#carrera-el-kilo-de-benameji
+END:VEVENT
+END:VCALENDAR

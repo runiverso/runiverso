@@ -5,8 +5,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:carrera-popular-de-albanchez-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261129
-DTEND;VALUE=DATE:20261130
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
 SUMMARY:Carrera Popular de Albánchez
 LOCATION:Albánchez\, Almería
 DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf

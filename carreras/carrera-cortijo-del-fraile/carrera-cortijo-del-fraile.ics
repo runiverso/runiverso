@@ -3,10 +3,10 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:carrera-cortijo-del-fraile-2026-11-29@runiverso.com
+UID:carrera-cortijo-del-fraile-2026-12-13@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261129
-DTEND;VALUE=DATE:20261130
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
 SUMMARY:Carrera Cortijo del Fraile
 LOCATION:Níjar\, Andalucía
 DESCRIPTION:Popular · Níjar\nhttps://runiverso.com/carreras/

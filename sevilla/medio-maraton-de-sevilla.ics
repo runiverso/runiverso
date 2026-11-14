@@ -5,8 +5,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:medio-maraton-de-sevilla-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261213
-DTEND;VALUE=DATE:20261214
+DTSTART;TZID=Europe/Madrid:20261213T90000
+DTEND;TZID=Europe/Madrid:20261213T120000
 SUMMARY:Medio Maratón de Sevilla
 LOCATION:Sevilla\, Sevilla
 DESCRIPTION:Se movió del 29 de noviembre al 13 de diciembre de 2026 porqu

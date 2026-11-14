@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-arriatena-2026-12-27@runiverso.com
+DTSTAMP:20261114T120000Z
+DTSTART;VALUE=DATE:20261227
+DTEND;VALUE=DATE:20261228
+SUMMARY:San Silvestre Arriatena
+LOCATION:Arriate\, Andalucía
+DESCRIPTION:San Silvestre · Arriate\nhttps://runiverso.com/c
+ arreras/san-silvestre-arriatena/
+END:VEVENT
+END:VCALENDAR

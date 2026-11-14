@@ -3,16 +3,15 @@ VERSION:2.0
 PRODID:-//Runiverso//Cadiz//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:carrera-popular-de-villanueva-de-los-castillejos-2026@runiverso.com
+UID:carrera-popular-de-villanueva-de-los-castillejos-2027@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261226
-DTEND;VALUE=DATE:20261227
+DTSTART;VALUE=DATE:20270103
+DTEND;VALUE=DATE:20270104
 SUMMARY:Carrera Popular de Villanueva de los Castillejos
 LOCATION:Villanueva de los Castillejos\, Huelva
 DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
- írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
-  info: https://runiverso.com/huelva/#carrera-popular-de-villanueva-de-los
- -castillejos
+ írmala en la web oficial antes de inscribirte. Más info: https://runive
+ rso.com/huelva/#carrera-popular-de-villanueva-de-los-castillejos
 URL:https://runiverso.com/huelva/#carrera-popular-de-villanueva-de-los-cas
  tillejos
 END:VEVENT

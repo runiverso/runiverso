@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-de-torrecampo-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+SUMMARY:Carrera Popular de Torrecampo
+LOCATION:Torrecampo\, Córdoba
+DESCRIPTION:17.ª edición\, del Circuito Provincial de Carreras Populares
+  de la Diputación de Córdoba. Más info: https://runiverso.com/cordoba/
+ #carrera-popular-de-torrecampo
+URL:https://runiverso.com/cordoba/#carrera-popular-de-torrecampo
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-de-huercal-overa-2026-12-26@runiverso.com
+DTSTAMP:20261114T120000Z
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+SUMMARY:San Silvestre de Huércal-Overa
+LOCATION:Huércal-Overa\, Andalucía
+DESCRIPTION:9 km · Huércal-Overa\nhttps://runiverso.com/carr
+ eras/san-silvestre-de-huercal-overa/
+END:VEVENT
+END:VCALENDAR

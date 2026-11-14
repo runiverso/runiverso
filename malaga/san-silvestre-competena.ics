@@ -5,13 +5,13 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:san-silvestre-competena-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261228
-DTEND;VALUE=DATE:20261229
+DTSTART;TZID=Europe/Madrid:20261227T121500
+DTEND;TZID=Europe/Madrid:20261227T151500
 SUMMARY:San Silvestre Competeña
 LOCATION:Cómpeta\, Málaga
 DESCRIPTION:Fecha según los calendarios de carreras de la provincia. Conf
- írmala en la web oficial antes de inscribirte. Fecha por confirmar. Más
-  info: https://runiverso.com/malaga/#san-silvestre-competena
+ írmala en la web oficial antes de inscribirte. Más info: https://runive
+ rso.com/malaga/#san-silvestre-competena
 URL:https://runiverso.com/malaga/#san-silvestre-competena
 END:VEVENT
 END:VCALENDAR

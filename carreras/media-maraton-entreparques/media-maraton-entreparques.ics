@@ -3,13 +3,14 @@ VERSION:2.0
 PRODID:-//Runiverso//ES
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:media-maraton-entreparques-2026-11-29@runiverso.com
+UID:media-maraton-entreparques-2027-01-24@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261129
-DTEND;VALUE=DATE:20261130
+DTSTART;TZID=Europe/Madrid:20270124T100000
+DTEND;TZID=Europe/Madrid:20270124T130000
 SUMMARY:Media Maratón Entreparques
 LOCATION:La Rinconada\, Andalucía
-DESCRIPTION:21\,1 km · La Rinconada\nhttps://runiverso.com/c
- arreras/media-maraton-entreparques/
+DESCRIPTION:21\,1 km · La Rinconada\nhttps://inscripciones.t
+ ecnocrono.com/inscripcion/viii-media-maraton-entreparques-l
+ a-rinconada/\nhttps://runiverso.com/carreras/media-maraton-entreparques/
 END:VEVENT
 END:VCALENDAR

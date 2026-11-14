@@ -5,11 +5,12 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:media-maraton-sevilla-los-palacios-2026-12-20@runiverso.com
 DTSTAMP:20261114T120000Z
-DTSTART;VALUE=DATE:20261220
-DTEND;VALUE=DATE:20261221
+DTSTART;TZID=Europe/Madrid:20261220T110000
+DTEND;TZID=Europe/Madrid:20261220T140000
 SUMMARY:Media Maratón Sevilla-Los Palacios
 LOCATION:Los Palacios y Villafranca\, Andalucía
-DESCRIPTION:21\,1 km · Los Palacios y Villafranca\nhttps://r
- universo.com/carreras/media-maraton-sevilla-los-palacios/
+DESCRIPTION:21\,1 km · Los Palacios y Villafranca\nhttps://m
+ ediamaratonlospalacios.com\nhttps://runiverso.com/carreras/
+ media-maraton-sevilla-los-palacios/
 END:VEVENT
 END:VCALENDAR

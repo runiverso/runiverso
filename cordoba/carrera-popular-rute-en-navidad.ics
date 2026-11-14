@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-popular-rute-en-navidad-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261207
+DTEND;VALUE=DATE:20261208
+SUMMARY:Carrera Popular Rute en Navidad
+LOCATION:Rute\, Córdoba
+DESCRIPTION:16.ª edición\, del Circuito Provincial de la Diputación de 
+ Córdoba. Inscripción en la FAA. Más info: https://runiverso.com/cordob
+ a/#carrera-popular-rute-en-navidad
+URL:https://runiverso.com/cordoba/#carrera-popular-rute-en-navidad
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-nueva-bahia-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Carrera Solidaria Asociación Nueva Bahía
+LOCATION:El Puerto de Santa María\, Cádiz
+DESCRIPTION:Carrera solidaria en Los Toruños. Aparece en el calendario de
+  actividades deportivas del Ayuntamiento de El Puerto. Más info: https:/
+ /runiverso.com/cadiz/#carrera-solidaria-nueva-bahia
+URL:https://runiverso.com/cadiz/#carrera-solidaria-nueva-bahia
+END:VEVENT
+END:VCALENDAR

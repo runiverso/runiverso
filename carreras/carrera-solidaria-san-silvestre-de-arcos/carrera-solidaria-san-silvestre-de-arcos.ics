@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:carrera-solidaria-san-silvestre-de-arcos-2026-12-27@runiverso.com
+DTSTAMP:20261114T120000Z
+DTSTART;VALUE=DATE:20261227
+DTEND;VALUE=DATE:20261228
+SUMMARY:Carrera Solidaria San Silvestre de Arcos
+LOCATION:Arcos de la Frontera\, Andalucía
+DESCRIPTION:San Silvestre · Arcos de la Frontera\nhttps://ru
+ niverso.com/carreras/carrera-solidaria-san-silvestre-de-arcos/
+END:VEVENT
+END:VCALENDAR

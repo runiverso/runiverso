@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:gran-prix-solidario-kambia-2026-11-21@runiverso.com
+DTSTAMP:20261114T120000Z
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+SUMMARY:Gran Prix Solidario Kambia
+LOCATION:Sevilla\, Andalucía
+DESCRIPTION:10 y 5 km · Sevilla\nhttps://runiverso.com/carre
+ ras/gran-prix-solidario-kambia/
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:san-silvestre-jerezana-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:San Silvestre Jerezana
+LOCATION:Jerez de la Frontera\, Cádiz
+DESCRIPTION:La organiza la A.D. Maratón Jerez y se corre cada 31 de dicie
+ mbre por la tarde (a las 17:00 en 2024). Fecha de 2026 según Sportplan. 
+ Fecha por confirmar. Más info: https://runiverso.com/cadiz/#san-silvestr
+ e-jerezana
+URL:https://runiverso.com/cadiz/#san-silvestre-jerezana
+END:VEVENT
+END:VCALENDAR

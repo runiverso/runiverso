@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:gran-prix-solidario-kambia-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+SUMMARY:Gran Prix Solidario Kambia
+LOCATION:Sevilla\, Sevilla
+DESCRIPTION:5.ª edición\, en el Parque del Alamillo\, a beneficio de la 
+ Fundación Kambia. Fecha según los calendarios de carreras de la provinc
+ ia. Confírmala en la web oficial antes de inscribirte. Fecha por confirm
+ ar. Más info: https://runiverso.com/sevilla/#gran-prix-solidario-kambia
+URL:https://runiverso.com/sevilla/#gran-prix-solidario-kambia
+END:VEVENT
+END:VCALENDAR

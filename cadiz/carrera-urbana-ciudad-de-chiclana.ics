@@ -5,8 +5,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:carrera-urbana-ciudad-de-chiclana-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261122
-DTEND;VALUE=DATE:20261123
+DTSTART;TZID=Europe/Madrid:20261122T93000
+DTEND;TZID=Europe/Madrid:20261122T123000
 SUMMARY:Carrera Urbana Ciudad de Chiclana
 LOCATION:Chiclana de la Frontera\, Cádiz
 DESCRIPTION:44.ª edición. Más info: https://runiverso.com/cadiz/#carrer

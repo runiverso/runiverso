@@ -3,7 +3,7 @@
   "path": "carreras-en/andalucia/",
   "name": "Andalucía",
   "kind": "r",
-  "n": 151
+  "n": 166
  },
  {
   "path": "carreras-en/cataluna/",
@@ -81,37 +81,43 @@
   "path": "cadiz/",
   "name": "Cádiz",
   "kind": "p",
-  "n": 44
+  "n": 48
  },
  {
   "path": "malaga/",
   "name": "Málaga",
   "kind": "p",
-  "n": 27
+  "n": 28
  },
  {
   "path": "sevilla/",
   "name": "Sevilla",
   "kind": "p",
-  "n": 27
+  "n": 28
  },
  {
   "path": "granada/",
   "name": "Granada",
   "kind": "p",
-  "n": 18
+  "n": 19
  },
  {
   "path": "cordoba/",
   "name": "Córdoba",
   "kind": "p",
-  "n": 12
+  "n": 16
  },
  {
   "path": "jaen/",
   "name": "Jaén",
   "kind": "p",
-  "n": 12
+  "n": 11
+ },
+ {
+  "path": "huelva/",
+  "name": "Huelva",
+  "kind": "p",
+  "n": 8
  },
  {
   "path": "carreras-en/barcelona/",
@@ -120,10 +126,10 @@
   "n": 6
  },
  {
-  "path": "huelva/",
-  "name": "Huelva",
+  "path": "almeria/",
+  "name": "Almería",
   "kind": "p",
-  "n": 6
+  "n": 8
  },
  {
   "path": "carreras-en/santa-cruz-de-tenerife/",
@@ -136,12 +142,6 @@
   "name": "Castellón",
   "kind": "p",
   "n": 4
- },
- {
-  "path": "almeria/",
-  "name": "Almería",
-  "kind": "p",
-  "n": 5
  },
  {
   "path": "carreras-en/valencia/",
@@ -213,7 +213,7 @@
   "path": "carreras-10k/",
   "name": "Carreras de 10 km",
   "kind": "t",
-  "n": 6
+  "n": 9
  },
  {
   "path": "trail/",
@@ -225,12 +225,12 @@
   "path": "carreras-populares/",
   "name": "Carreras populares",
   "kind": "t",
-  "n": 84
+  "n": 90
  },
  {
   "path": "san-silvestre-2026/",
   "name": "San Silvestres",
   "kind": "t",
-  "n": 65
+  "n": 71
  }
 ]

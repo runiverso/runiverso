@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Runiverso//Cadiz//ES
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:sp-running-series-aje-cordoba-2026@runiverso.com
+DTSTAMP:20261103T120000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:SP Running Series AJE Córdoba
+LOCATION:Córdoba\, Córdoba
+DESCRIPTION:Del Circuito Provincial de la Diputación de Córdoba. Más in
+ fo: https://runiverso.com/cordoba/#sp-running-series-aje-cordoba
+URL:https://runiverso.com/cordoba/#sp-running-series-aje-cordoba
+END:VEVENT
+END:VCALENDAR

@@ -5,8 +5,8 @@ CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:san-silvestre-el-puerto-de-santa-maria-2026@runiverso.com
 DTSTAMP:20261103T120000Z
-DTSTART;VALUE=DATE:20261227
-DTEND;VALUE=DATE:20261228
+DTSTART;TZID=Europe/Madrid:20261227T100000
+DTEND;TZID=Europe/Madrid:20261227T130000
 SUMMARY:San Silvestre El Puerto de Santa María
 LOCATION:El Puerto de Santa María\, Cádiz
 DESCRIPTION:5 km por El Puerto. Aparece en el calendario de ClubRunning. M
